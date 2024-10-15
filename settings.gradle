@@ -1,6 +1,6 @@
 plugins {
-    id "com.gradle.enterprise" version "3.16.1"
-    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.12.1'
+    id "com.gradle.enterprise" version "3.16.2"
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.13'
 }
 
 gradleEnterprise {
@@ -28,10 +28,7 @@ include 'docs'
 include 'plugin'
 include 'testapp-spring-security-cas-test1'
 
-project(':testapp-spring-security-cas-test1').projectDir = new File(settingsDir, 'testapps/testapp-spring-security-cas-test1')
-include 'testapp-spring-security-cas-test2'
-
-project(':testapp-spring-security-cas-test2').projectDir = new File(settingsDir, 'testapps/testapp-spring-security-cas-test2')
+project(':testapp-spring-security-cas-test1').projectDir = new File(settingsDir, 'testapps/spring-security-cas-test1')
 
 rootProject.name = 'spring-security-cas'
 

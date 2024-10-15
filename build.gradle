@@ -1,7 +1,7 @@
 buildscript {
     repositories {
-        maven { url "https://repo.grails.org/grails/core" }
         mavenCentral()
+        maven { url "https://repo.grails.org/grails/core" }
         gradlePluginPortal()
     }
     dependencies {
@@ -13,25 +13,6 @@ version = project.projectVersion
 
 ext.isSnapshot = project.projectVersion.endsWith('-SNAPSHOT')
 ext.isReleaseVersion = !isSnapshot
-
-subprojects { project->
-
-    if (!project.name.contains('test')) {
-        return
-    }
-
-    configurations {
-        documentation
-    }
-
-    dependencies {
-        documentation "com.github.javaparser:javaparser-core:3.25.8"
-    }
-
-    tasks.withType(Groovydoc).configureEach {
-        it.classpath += configurations.documentation
-    }
-}
 
 if (isReleaseVersion) {
     apply plugin: 'maven-publish'

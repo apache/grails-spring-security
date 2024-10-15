@@ -17,8 +17,11 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'org.grails.grails-plugin'
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : "${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg"
@@ -63,14 +66,14 @@ configurations {
 }
 
 dependencies {
-	compileOnly "javax.servlet:javax.servlet-api:$javaxServletApiVersion"
+	compileOnly "jakarta.servlet:jakarta.servlet-api:$jakartaServletApiVersion"
 	compileOnly "org.springframework.boot:spring-boot-starter-logging"
 	compileOnly "org.grails:grails-web-boot"
 
 	profile "org.grails.profiles:web-plugin"
 	api "org.grails.plugins:spring-security-core:$springSecurityCoreVersion"
 
-	api "org.jasig.cas.client:cas-client-core:$casClientCoreVersion", {
+	api "org.apereo.cas.client:cas-client-core:$casClientCoreVersion", {
 		exclude module: 'slf4j-api'
 	}
 	api "org.springframework.security:spring-security-cas:$springSecurityVersion", {
@@ -78,7 +81,7 @@ dependencies {
 		 'spring-security-web', 'spring-web'].each { exclude module: it }
 	}
 
-	documentation "com.github.javaparser:javaparser-core:3.25.8"
+	documentation "com.github.javaparser:javaparser-core:3.26.2"
 }
 
 tasks.withType(Groovydoc).configureEach {

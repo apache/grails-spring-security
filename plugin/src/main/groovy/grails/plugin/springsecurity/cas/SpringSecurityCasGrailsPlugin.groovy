@@ -16,11 +16,11 @@ package grails.plugin.springsecurity.cas
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.jasig.cas.client.proxy.Cas20ProxyRetriever
-import org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl
-import org.jasig.cas.client.session.SingleSignOutFilter
-import org.jasig.cas.client.session.SingleSignOutHttpSessionListener
-import org.jasig.cas.client.validation.Cas20ServiceTicketValidator
+import org.apereo.cas.client.proxy.Cas20ProxyRetriever
+import org.apereo.cas.client.proxy.ProxyGrantingTicketStorageImpl
+import org.apereo.cas.client.session.SingleSignOutFilter
+import org.apereo.cas.client.session.SingleSignOutHttpSessionListener
+import org.apereo.cas.client.validation.Cas20ServiceTicketValidator
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.core.Ordered
@@ -37,7 +37,7 @@ import grails.plugins.Plugin
 @CompileStatic
 class SpringSecurityCasGrailsPlugin extends Plugin {
 
-	String grailsVersion = '3.0.0 > *'
+	String grailsVersion = '7.0.0 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'burt@burtbeckwith.com'
 	String title = 'Jasig CAS support for the Spring Security plugin.'

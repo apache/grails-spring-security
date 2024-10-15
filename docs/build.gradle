@@ -3,10 +3,10 @@ buildscript {
         maven { url 'https://repo.grails.org/grails/core' }
     }
     dependencies {
-        classpath 'org.asciidoctor:asciidoctor-gradle-jvm:3.3.2'
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm-epub:3.3.2"
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2"
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm-gems:3.3.2"
+        classpath 'org.asciidoctor:asciidoctor-gradle-jvm:4.0.3'
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm-epub:4.0.3"
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm-pdf:4.0.3"
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm-gems:4.0.3"
     }
 }
 
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    asciidoctorGems 'rubygems:rouge:3.15.0'
+    asciidoctorGems 'rubygems:rouge:4.4.0'
 }
 
 

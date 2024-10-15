@@ -14,7 +14,7 @@
  */
 package grails.plugin.springsecurity.cas
 
-import org.jasig.cas.client.proxy.ProxyGrantingTicketStorage
+import org.apereo.cas.client.proxy.ProxyGrantingTicketStorage
 
 import groovy.transform.CompileStatic
 
