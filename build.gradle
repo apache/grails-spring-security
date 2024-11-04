@@ -27,7 +27,7 @@ def pluginProjects = ['spring-security-rest', 'spring-security-rest-memcached', 
 def profileProjects = ['spring-security-rest-testapp-profile']
 def publishedProjects = pluginProjects + profileProjects
 
-if (!version.endsWith('SNAPSHOT')) {
+if (!projectVersion.endsWith('SNAPSHOT')) {
     nexusPublishing {
         String nexusUser = findProperty('sonatypeUsername')
         String nexusPass = findProperty('sonatypePassword')
