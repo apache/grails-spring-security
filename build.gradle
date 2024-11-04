@@ -1,5 +1,3 @@
-import io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository
-
 buildscript {
     repositories {
         mavenCentral()
@@ -114,8 +112,3 @@ subprojects { Project project ->
 }
 
 apply from: rootProject.file("gradle/docs.gradle")
-
-//do not generate extra load on Nexus with new staging repository if signing fails
-tasks.withType(InitializeNexusStagingRepository).configureEach {
-    shouldRunAfter(tasks.withType(Sign))
-}
