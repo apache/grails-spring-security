@@ -39,6 +39,23 @@ subprojects { Project project ->
         isProfile = project.name.endsWith('-profile')
     }
 
+    if (isReleaseVersion) {
+        nexusPublishing {
+            String nexusUser = findProperty('sonatypeUsername')
+            String nexusPass = findProperty('sonatypePassword')
+            String nexusStagingProfileId = findProperty('sonatypeStagingProfileId')
+            String nexusUrl = findProperty('sonatypeNexusUrl') ?: 'https://s01.oss.sonatype.org/service/local/'
+            repositories {
+                sonatype {
+                    nexusUrl = uri(nexusUrl)
+                    username = nexusUser
+                    password = nexusPass
+                    stagingProfileId = nexusStagingProfileId
+                }
+            }
+        }
+    }
+
     repositories {
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
