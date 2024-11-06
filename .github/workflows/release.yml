@@ -6,27 +6,34 @@ env:
   GIT_USER_NAME: 'grails-build'
   GIT_USER_EMAIL: 'grails-build@users.noreply.github.com'
 jobs:
-  release:
+  publish:
+    outputs:
+      release_version: ${{ steps.release_version.outputs.value }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - name: Wrapper Integrity
         uses: gradle/actions/wrapper-validation@v3
-      - name: Setup Java
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with: { java-version: 11, distribution: temurin }
-      - name: Get the current release version
-        run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
+      - name: Set the current release version
+        id: release_version
+        run: echo "value=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
       - name: Tag the release version
         uses: micronaut-projects/github-actions/pre-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
-      - name: Publish to Sonatype
-        id: publish_to_sonatype
-        uses: gradle/actions/setup-gradle@v3
+      - name: Publish to Sonatype OSSRH
+        id: publish
+        uses: gradle/gradle-build-action@v3
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -38,11 +45,62 @@ jobs:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
         with:
           arguments: |
-            -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg
-            publishToSonatype
-            closeAndReleaseSonatypeStagingRepository
-      - name: Generate Documentation
+            -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg 
+            publishToSonatype 
+            closeSonatypeStagingRepository
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: v${{ needs.publish.outputs.release_version }}
+      - name: Wrapper Integrity
+        uses: gradle/actions/wrapper-validation@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with: { java-version: 11, distribution: temurin }
+      - name: Nexus Staging Close And Release
+        uses: gradle/gradle-build-action@v3
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_sonatypeStagingProfileId: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+          ORG_GRADLE_PROJECT_sonatypeNexusUrl: ${{ secrets.SONATYPE_NEXUS_URL }}
+          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+        with:
+          arguments: |
+            findSonatypeStagingRepository
+            releaseSonatypeStagingRepository
+      - name: Run post-release
         if: success()
+        uses: micronaut-projects/github-actions/post-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          SNAPSHOT_SUFFIX: -SNAPSHOT
+  docs:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: v${{ needs.publish.outputs.release_version }}
+      - name: Wrapper Integrity
+        uses: gradle/actions/wrapper-validation@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with: { java-version: 11, distribution: temurin }
+      - name: Generate Documentation
+        id: docs
         uses: gradle/actions/setup-gradle@v3
         env:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
@@ -58,7 +116,4 @@ jobs:
           FOLDER: build/docs
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           SKIP_SNAPSHOT: ${{ contains(steps.release_version.outputs.release_version, 'M') }}
-          VERSION: ${{ steps.release_version.outputs.release_version }}
-      - name: Run post-release
-        if: steps.publish_to_sonatype.outcome == 'success'
-        uses: micronaut-projects/github-actions/post-release@master
+          VERSION: ${{ needs.publish.outputs.release_version }}
