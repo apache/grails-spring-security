@@ -9,6 +9,7 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
         classpath "io.github.gradle-nexus:publish-plugin:$gradlePublishPlugin"
         classpath 'com.adarshr:gradle-test-logger-plugin:4.0.0'
+        classpath 'io.spring.gradle:dependency-management-plugin'
     }
 }
 
@@ -27,17 +28,33 @@ def profileProjects = ['spring-security-rest-testapp-profile']
 def publishedProjects = pluginProjects + profileProjects
 
 version projectVersion
+group "org.grails.plugins"
+
+ext.set('isSnapshot', projectVersion.endsWith('-SNAPSHOT'))
+ext.set('isReleaseVersion', !isSnapshot)
+
+if (isReleaseVersion) {
+    nexusPublishing {
+        String nexusUser = findProperty('sonatypeUsername')
+        String nexusPass = findProperty('sonatypePassword')
+        String nexusStagingProfileId = findProperty('sonatypeStagingProfileId')
+        repositories {
+            sonatype {
+                nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+                username = nexusUser
+                password = nexusPass
+                stagingProfileId = nexusStagingProfileId
+            }
+        }
+    }
+}
 
 subprojects { Project project ->
-    group projectGroup
+    group "org.grails.plugins"
     version projectVersion
 
-    ext {
-        grailsVersion = project.grailsVersion
-        isSnapshot = version.endsWith('SNAPSHOT')
-        isReleaseVersion = !ext.isSnapshot
-        isProfile = project.name.endsWith('-profile')
-    }
+    ext.set('grailsVersion', project.grailsVersion)
+    ext.set('isProfile', project.name.endsWith('-profile'))
 
     repositories {
         mavenCentral()
@@ -90,6 +107,7 @@ subprojects { Project project ->
 
     if (project.name in profileProjects) {
         apply plugin: "org.grails.grails-profile"
+        apply plugin: "io.spring.dependency-management"
     }
 
     if (project.name in publishedProjects) {
