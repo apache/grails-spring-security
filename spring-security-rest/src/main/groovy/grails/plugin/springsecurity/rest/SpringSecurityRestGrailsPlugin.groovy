@@ -45,6 +45,7 @@ import grails.plugin.springsecurity.rest.token.rendering.DefaultAccessTokenJsonR
 import grails.plugin.springsecurity.rest.token.storage.jwt.JwtTokenStorageService
 import grails.plugins.Plugin
 import groovy.util.logging.Slf4j
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder
@@ -338,6 +339,7 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
         final String ENCODING_ID_NOOP = "noop"
         final String ENCODING_ID_PBKDF2 = "pbkdf2"
         final String ENCODING_ID_SCRYPT = "scrypt"
+        final String ENCODING_ID_ARGON2 = "argon2"
         final String ENCODING_ID_SHA1 = "SHA-1"
         final String ENCODING_IDSHA256 = "SHA-256"
 
@@ -359,8 +361,9 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
          (ENCODING_ID_MD4): new Md4PasswordEncoder(),
          (ENCODING_ID_MD5): messageDigestPasswordEncoderMD5,
          (ENCODING_ID_NOOP): NoOpPasswordEncoder.getInstance(),
-         (ENCODING_ID_PBKDF2): new Pbkdf2PasswordEncoder(),
-         (ENCODING_ID_SCRYPT): new SCryptPasswordEncoder(),
+         (ENCODING_ID_PBKDF2): Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
+         (ENCODING_ID_SCRYPT): SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8(),
+         (ENCODING_ID_ARGON2): Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
          (ENCODING_ID_SHA1): messsageDigestPasswordEncoderSHA1,
          (ENCODING_IDSHA256): messsageDigestPasswordEncoderSHA256,
          "sha256": new StandardPasswordEncoder()]
