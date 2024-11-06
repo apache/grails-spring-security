@@ -28,6 +28,7 @@ def profileProjects = ['spring-security-rest-testapp-profile']
 def publishedProjects = pluginProjects + profileProjects
 
 version projectVersion
+group "org.grails.plugins"
 
 ext.set('isSnapshot', projectVersion.endsWith('-SNAPSHOT'))
 ext.set('isReleaseVersion', !isSnapshot)
