@@ -24,3 +24,5 @@ tasks.register('generateProfileConfig') {
         }
     }
 }
+
+compileProfile.dependsOn generateProfileConfig
