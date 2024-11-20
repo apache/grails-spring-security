@@ -165,6 +165,18 @@ ext.pomInfo = {
 }
 
 publishing {
+	if (isSnapshot) {
+		repositories {
+			maven {
+				credentials {
+					username = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
+					password = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
+				}
+				url "https://repo.grails.org/grails/plugins3-snapshots-local"
+			}
+		}
+	}
+
 	publications {
 		maven(MavenPublication) {
 			groupId = project.group
