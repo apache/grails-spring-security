@@ -1,13 +1,14 @@
 import io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository
+import org.grails.gradle.plugin.publishing.RepositoryType
 
 buildscript {
     repositories {
+        mavenLocal()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "io.github.gradle-nexus:publish-plugin:$gradlePublishPlugin"
         classpath 'com.adarshr:gradle-test-logger-plugin:4.0.0'
         classpath 'io.spring.gradle:dependency-management-plugin'
     }
@@ -15,7 +16,6 @@ buildscript {
 
 plugins {
     id 'idea'
-    id 'io.github.gradle-nexus.publish-plugin' version "$gradlePublishPlugin"
     id "com.github.ben-manes.versions" version "0.51.0"
 }
 
@@ -57,6 +57,7 @@ subprojects { Project project ->
     ext.set('isProfile', project.name.endsWith('-profile'))
 
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
     }
@@ -103,21 +104,28 @@ subprojects { Project project ->
             showSkippedStandardStreams false
             showFailedStandardStreams true
         }
+
+        apply plugin: "org.grails.grails-publish"
     }
 
     if (project.name in profileProjects) {
         apply plugin: "org.grails.grails-profile"
         apply plugin: "io.spring.dependency-management"
+        apply plugin: "org.grails.grails-profile-publish"
     }
 
-    if (project.name in publishedProjects) {
-        apply from: rootProject.file("gradle/publishing.gradle")
+    if(project.name in publishedProjects) {
+        grailsPublish {
+            license {
+                name = 'Apache-2.0'
+            }
+            githubSlug = 'grails/grails-spring-security-rest'
+            title = "Spring Security REST plugin"
+            desc = "Grails plugin to implement token-based, RESTful authentication using Spring Security"
+            developers = [alvarosanchez:"Alvaro Sanchez-Mariscal", jameskleeh: "James Kleeh", jdaugherty: "James Daugherty"]
+            snapshotRepoType = RepositoryType.ARTIFACTORY
+        }
     }
 }
 
 apply from: rootProject.file("gradle/docs.gradle")
-
-//do not generate extra load on Nexus with new staging repository if signing fails
-tasks.withType(InitializeNexusStagingRepository).configureEach {
-    shouldRunAfter(tasks.withType(Sign))
-}
