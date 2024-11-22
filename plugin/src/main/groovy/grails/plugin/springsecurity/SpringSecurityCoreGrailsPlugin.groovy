@@ -57,6 +57,7 @@ import grails.plugins.Plugin
 import grails.util.Metadata
 import groovy.util.logging.Slf4j
 import org.grails.web.mime.HttpServletResponseExtension
+import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.cache.jcache.JCacheCacheManager
@@ -221,17 +222,7 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 			filter = ref('springSecurityFilterChain')
 			urlPatterns = ['/*']
 			dispatcherTypes = EnumSet.of(DispatcherType.ERROR, DispatcherType.REQUEST)
-
-			// The filter chain has to be after grailsWebRequestFilter, but its order changed
-			// in 3.1 (from Ordered.HIGHEST_PRECEDENCE + 30 (-2147483618) to
-			// FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER + 30 (30))
-			String grailsVersion = Metadata.current.getGrailsVersion()
-			if (grailsVersion.startsWith('3.0')) {
-				order = Ordered.HIGHEST_PRECEDENCE + 100
-			}
-			else {
-				order = 100 // FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER + 100
-			}
+			order = SecurityProperties.DEFAULT_FILTER_ORDER
 		}
 
 		if (conf.useHttpSessionEventPublisher) {
@@ -673,6 +664,13 @@ to default to 'Annotation'; setting value to 'Annotation'
 		// build filters here to give dependent plugins a chance to register some
 		SortedMap<Integer, String> filterNames = ReflectionUtils.findFilterChainNames(conf)
 		def securityFilterChains = applicationContext.securityFilterChains
+
+		// if sitemesh 3 is installed, the filter should be applied a second time
+		// as part of the security filter chain so that pages are decorated using the security context
+		if (applicationContext.containsBean('sitemesh')) {
+			filterNames[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order - 10] = 'sitemesh'
+		}
+
 		SpringSecurityUtils.buildFilterChains filterNames, conf.filterChain.chainMap ?: [], securityFilterChains, applicationContext
 		log.trace 'Filter chain: {}', securityFilterChains
 

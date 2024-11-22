@@ -10,8 +10,8 @@ on:
       - '[3-9]+.[3-9]+.x'      
   workflow_dispatch:
 env:
-  GIT_USER_NAME: puneetbehl
-  GIT_USER_EMAIL: behlp@unityfoundation.io
+  GIT_USER_NAME: grails-build
+  GIT_USER_EMAIL: grails-build@users.noreply.github.com
 
 jobs:
   core-tests:
@@ -70,6 +70,7 @@ jobs:
             spring-security-core:build 
             --refresh-dependencies
             -Dgeb.env=chromeHeadless
+            -x javadoc
 
       - name: Publish Snapshot artifacts to Artifactory (repo.grails.org)
         uses: gradle/actions/setup-gradle@v3
@@ -82,6 +83,7 @@ jobs:
           arguments: |
             -Dorg.gradle.internal.publish.checksums.insecure=true 
             spring-security-core:publish
+            -x javadoc            
 
       - name: Generate Snapshot Documentation
         if: success()
