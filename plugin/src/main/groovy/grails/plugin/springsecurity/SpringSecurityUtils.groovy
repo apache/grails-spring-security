@@ -21,7 +21,8 @@ import grails.util.Environment
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.text.StringEscapeUtils
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.ApplicationContext
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -40,9 +41,9 @@ import org.springframework.security.web.savedrequest.SavedRequest
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartHttpServletRequest
 
-import javax.servlet.Filter
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpSession
+import jakarta.servlet.Filter
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpSession
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY
 
@@ -420,11 +421,14 @@ final class SpringSecurityUtils {
 		assert !oldFilter,
 			"Cannot register filter '$beanName' at position $order; '$oldFilter' is already registered in that position"
 
-		Filter filter = getBean(beanName)
-		configuredOrderedFilters[order] = filter
+		def filter = getBean(beanName)
+		if (filter instanceof FilterRegistrationBean) {
+			filter = ((FilterRegistrationBean) filter).filter
+		}
+		configuredOrderedFilters[order] = (Filter) filter
 
 		List<GrailsSecurityFilterChain> filterChains = getBean('securityFilterChains', List)
-		mergeFilterChains configuredOrderedFilters, filter, beanName, order, filterChains
+		mergeFilterChains configuredOrderedFilters, (Filter) filter, beanName, order, filterChains
 
 		log.trace 'Client registered bean "{}" as a filter at order {}', beanName, order
 		log.trace 'Updated filter chain: {}', filterChains
@@ -613,7 +617,7 @@ final class SpringSecurityUtils {
 	static String getLastUsername(HttpSession session) {
 		String username = (String)session.getAttribute(SPRING_SECURITY_LAST_USERNAME_KEY)
 		if (username) {
-			username = StringEscapeUtils.unescapeHtml(username)
+			username = StringEscapeUtils.unescapeHtml4(username)
 		}
 		username
 	}
@@ -758,7 +762,7 @@ final class SpringSecurityUtils {
 				orderedNames[SecurityFilterPosition.SWITCH_USER_FILTER.order] = 'switchUserProcessingFilter'
 			}
 
-			orderedNames[SecurityFilterPosition.FORM_CONTENT_FILTER.order] = 'formContentFilter'
+			orderedNames[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-10] = 'formContentFilter'
 
 			// add in filters contributed by secondary plugins
 			orderedNames << SpringSecurityUtils.orderedFilters
@@ -774,9 +778,12 @@ final class SpringSecurityUtils {
 
 		def allConfiguredFilters = [:]
 		filterNames.each { Integer order, String name ->
-			Filter filter = applicationContext.getBean(name, Filter)
-			allConfiguredFilters[name] = filter
-			SpringSecurityUtils.configuredOrderedFilters[order] = filter
+			def filter = applicationContext.getBean(name)
+			if (filter instanceof FilterRegistrationBean) {
+				filter = ((FilterRegistrationBean) filter).filter
+			}
+			allConfiguredFilters[name] = (Filter) filter
+			SpringSecurityUtils.configuredOrderedFilters[order] = (Filter) filter
 		}
 		log.trace 'Ordered filters: {}', SpringSecurityUtils.configuredOrderedFilters
 

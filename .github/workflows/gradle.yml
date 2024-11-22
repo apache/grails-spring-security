@@ -10,8 +10,8 @@ on:
       - '[3-9]+.[3-9]+.x'      
   workflow_dispatch:
 env:
-  GIT_USER_NAME: puneetbehl
-  GIT_USER_EMAIL: behlp@unityfoundation.io
+  GIT_USER_NAME: grails-build
+  GIT_USER_EMAIL: grails-build@users.noreply.github.com
 
 jobs:
   core-tests:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v2
       - uses: actions/setup-java@v4
-        with: { java-version: 11, distribution: temurin }
+        with: { java-version: 17, distribution: temurin }
       - name: Run Tests
         uses: gradle/actions/setup-gradle@v3
         env:
@@ -29,6 +29,7 @@ jobs:
         with:
           arguments: |
             check 
+            --refresh-dependencies
             -Dgeb.env=chromeHeadless
 
   functional-test:
@@ -36,11 +37,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test-config: [ 'static', 'annotation', 'requestmap', 'basic', 'misc', 'putWithParams', 'bcrypt', 'issue503' ]
+        test-config: [ 'static', 'annotation', 'requestmap', 'basic', 'basicCacheUsers', 'misc', 'putWithParams', 'bcrypt', 'issue503' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with: { java-version: 11, distribution: temurin }
+        with: { java-version: 17, distribution: temurin }
       - name: Run Tests
         uses: gradle/actions/setup-gradle@v3
         env:
@@ -58,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v2
       - uses: actions/setup-java@v4
-        with: { java-version: 11, distribution: temurin }
+        with: { java-version: 17, distribution: temurin }
       - name: Run Build
         id: build
         uses: gradle/actions/setup-gradle@v3
@@ -67,7 +68,9 @@ jobs:
         with:
           arguments: |
             spring-security-core:build 
+            --refresh-dependencies
             -Dgeb.env=chromeHeadless
+            -x javadoc
 
       - name: Publish Snapshot artifacts to Artifactory (repo.grails.org)
         uses: gradle/actions/setup-gradle@v3
@@ -80,6 +83,7 @@ jobs:
           arguments: |
             -Dorg.gradle.internal.publish.checksums.insecure=true 
             spring-security-core:publish
+            -x javadoc            
 
       - name: Generate Snapshot Documentation
         if: success()

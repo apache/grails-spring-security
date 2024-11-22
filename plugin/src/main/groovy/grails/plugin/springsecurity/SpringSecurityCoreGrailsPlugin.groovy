@@ -20,6 +20,7 @@ import grails.plugin.springsecurity.access.vote.AuthenticatedVetoableDecisionMan
 import grails.plugin.springsecurity.access.vote.ClosureVoter
 import grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationProvider
 import grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher
+import grails.plugin.springsecurity.cache.SpringUserCacheFactoryBean
 import grails.plugin.springsecurity.userdetails.DefaultPostAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.DefaultPreAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.GormUserDetailsService
@@ -56,10 +57,10 @@ import grails.plugins.Plugin
 import grails.util.Metadata
 import groovy.util.logging.Slf4j
 import org.grails.web.mime.HttpServletResponseExtension
+import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
-import org.springframework.cache.ehcache.EhCacheFactoryBean
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean
+import org.springframework.cache.jcache.JCacheCacheManager
 import org.springframework.core.Ordered
 import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.security.access.event.LoggerListener
@@ -79,7 +80,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
-import org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache
 import org.springframework.security.core.userdetails.cache.NullUserCache
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -131,7 +131,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher
 import org.springframework.security.web.util.matcher.AnyRequestMatcher
 import org.springframework.web.filter.FormContentFilter
 
-import javax.servlet.DispatcherType
+import jakarta.servlet.DispatcherType
 
 /**
  * @author Burt Beckwith
@@ -222,17 +222,7 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 			filter = ref('springSecurityFilterChain')
 			urlPatterns = ['/*']
 			dispatcherTypes = EnumSet.of(DispatcherType.ERROR, DispatcherType.REQUEST)
-
-			// The filter chain has to be after grailsWebRequestFilter, but its order changed
-			// in 3.1 (from Ordered.HIGHEST_PRECEDENCE + 30 (-2147483618) to
-			// FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER + 30 (30))
-			String grailsVersion = Metadata.current.getGrailsVersion()
-			if (grailsVersion.startsWith('3.0')) {
-				order = Ordered.HIGHEST_PRECEDENCE + 100
-			}
-			else {
-				order = 100 // FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER + 100
-			}
+			order = SecurityProperties.DEFAULT_FILTER_ORDER
 		}
 
 		if (conf.useHttpSessionEventPublisher) {
@@ -600,16 +590,11 @@ to default to 'Annotation'; setting value to 'Annotation'
 		// user details cache
 		if (conf.cacheUsers) {
 			log.trace 'Configuring user cache'
-			userCache(classFor('userCache', EhCacheBasedUserCache)) {
-				cache = ref('securityUserCache')
-			}
-			securityUserCache(classFor('securityUserCache', EhCacheFactoryBean)) {
+			userCache(classFor('userCache', SpringUserCacheFactoryBean)) {
 				cacheManager = ref('cacheManager')
 				cacheName = 'userCache'
 			}
-			cacheManager(classFor('cacheManager', EhCacheManagerFactoryBean)) {
-				cacheManagerName = 'spring-security-core-user-cache-' + UUID.randomUUID()
-			}
+			cacheManager(classFor('cacheManager', JCacheCacheManager))
 		}
 		else {
 			userCache(classFor('userCache', NullUserCache))
@@ -679,6 +664,13 @@ to default to 'Annotation'; setting value to 'Annotation'
 		// build filters here to give dependent plugins a chance to register some
 		SortedMap<Integer, String> filterNames = ReflectionUtils.findFilterChainNames(conf)
 		def securityFilterChains = applicationContext.securityFilterChains
+
+		// if sitemesh 3 is installed, the filter should be applied a second time
+		// as part of the security filter chain so that pages are decorated using the security context
+		if (applicationContext.containsBean('sitemesh')) {
+			filterNames[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order - 10] = 'sitemesh'
+		}
+
 		SpringSecurityUtils.buildFilterChains filterNames, conf.filterChain.chainMap ?: [], securityFilterChains, applicationContext
 		log.trace 'Filter chain: {}', securityFilterChains
 
@@ -1122,9 +1114,9 @@ to default to 'Annotation'; setting value to 'Annotation'
 		 (ENCODING_ID_MD4): new Md4PasswordEncoder(),
 		 (ENCODING_ID_MD5): messageDigestPasswordEncoderMD5,
 		 (ENCODING_ID_NOOP): NoOpPasswordEncoder.getInstance(),
-		 (ENCODING_ID_PBKDF2): new Pbkdf2PasswordEncoder(),
-		 (ENCODING_ID_SCRYPT): new SCryptPasswordEncoder(),
-		 (ENCODING_ID_ARGON2): new Argon2PasswordEncoder(),
+		 (ENCODING_ID_PBKDF2): Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
+		 (ENCODING_ID_SCRYPT): SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8(),
+		 (ENCODING_ID_ARGON2): Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
 		 (ENCODING_ID_SHA1): messageDigestPasswordEncoderSHA1,
 		 (ENCODING_IDSHA256): messageDigestPasswordEncoderSHA256,
 		 "sha256": new StandardPasswordEncoder()]

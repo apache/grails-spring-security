@@ -17,6 +17,7 @@ package grails.plugin.springsecurity
 import grails.plugin.springsecurity.web.GrailsSecurityFilterChain
 import grails.plugin.springsecurity.web.SecurityRequestHolder
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
+import org.springframework.security.config.http.SecurityFiltersMapper
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.web.FilterChainProxy
@@ -25,9 +26,9 @@ import org.springframework.security.web.savedrequest.DefaultSavedRequest
 import org.springframework.web.filter.GenericFilterBean
 import spock.lang.Unroll
 
-import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
+import jakarta.servlet.FilterChain
+import jakarta.servlet.ServletRequest
+import jakarta.servlet.ServletResponse
 
 /**
  * @author Burt Beckwith
@@ -338,6 +339,11 @@ class SpringSecurityUtilsSpec extends AbstractUnitSpec {
 		SpringSecurityUtils.ifAnyGranted('ROLE_1,ROLE_2,ROLE_3')
 		SpringSecurityUtils.ifAnyGranted('ROLE_3')
 		!SpringSecurityUtils.ifAnyGranted('ROLE_4')
+	}
+
+	void 'SecurityFilterPosition order should match SecurityFilters'() {
+		expect:
+			SecurityFilterPosition.SWITCH_USER_FILTER.order == SecurityFiltersMapper.SWITCH_USER_FILTER.order
 	}
 
 	void 'private constructor'() {
