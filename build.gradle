@@ -26,25 +26,6 @@ def publishedProjects = pluginProjects + profileProjects
 version projectVersion
 group "org.grails.plugins"
 
-ext.set('isSnapshot', projectVersion.endsWith('-SNAPSHOT'))
-ext.set('isReleaseVersion', !isSnapshot)
-
-if (isReleaseVersion) {
-    nexusPublishing {
-        String nexusUser = findProperty('sonatypeUsername')
-        String nexusPass = findProperty('sonatypePassword')
-        String nexusStagingProfileId = findProperty('sonatypeStagingProfileId')
-        repositories {
-            sonatype {
-                nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
-                username = nexusUser
-                password = nexusPass
-                stagingProfileId = nexusStagingProfileId
-            }
-        }
-    }
-}
-
 subprojects { Project project ->
     group "org.grails.plugins"
     version projectVersion
