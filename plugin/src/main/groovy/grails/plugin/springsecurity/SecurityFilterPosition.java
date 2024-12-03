@@ -1,4 +1,4 @@
-/* Copyright 2006-2016 the original author or authors.
+/* Copyright 2006-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@ package grails.plugin.springsecurity;
 
 /**
  * Stores the default order numbers of all Spring Security filters for use in configuration.
- *
+ * <p>
  * Equivalent to <code>org.springframework.security.config.http.SecurityFilters</code> which
  * unfortunately is package-default.
  *
  * @author Burt Beckwith
  */
-enum SecurityFilterPosition {
+public enum SecurityFilterPosition {
 
 	FIRST(Integer.MIN_VALUE),
 
