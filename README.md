@@ -7,7 +7,8 @@ See [documentation](https://grails-plugins.github.io/grails-spring-security-core
 
 ### Branch structure 
 
-- `6.0.x` compatible with Grails 6
+- `6.1.x` compatible with Grails 6.1.x-6.2.x
+- `6.0.x` compatible with Grails 6.0.x
 - `5.0.x` compatible with Grails 5
 - `4.0.x` compatible with Grails 4
 - `3.3.x` compatible with Grails 3.3.x
