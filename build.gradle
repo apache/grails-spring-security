@@ -1,9 +1,5 @@
-import io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository
-import org.grails.gradle.plugin.publishing.RepositoryType
-
 buildscript {
     repositories {
-        mavenLocal()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
     }
@@ -57,7 +53,6 @@ subprojects { Project project ->
     ext.set('isProfile', project.name.endsWith('-profile'))
 
     repositories {
-        mavenLocal()
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
     }
@@ -123,7 +118,6 @@ subprojects { Project project ->
             title = "Spring Security REST plugin"
             desc = "Grails plugin to implement token-based, RESTful authentication using Spring Security"
             developers = [alvarosanchez:"Alvaro Sanchez-Mariscal", jameskleeh: "James Kleeh", jdaugherty: "James Daugherty"]
-            snapshotRepoType = RepositoryType.ARTIFACTORY
         }
     }
 }
