@@ -17,6 +17,6 @@ See [documentation](https://grails-plugins.github.io/grails-spring-security-ldap
 
 Branches:
 
-- '5.0.x' Grails 7 compatible versions.
-- '4.0.x' Grails 4 compatible versions.
+- `5.0.x` Grails 7 compatible versions.
+- `4.0.x` Grails 4 compatible versions.
 - `3.x` Grails 3 compatible versions.
