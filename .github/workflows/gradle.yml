@@ -67,7 +67,7 @@ jobs:
         env:
           DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
         working-directory: ${{ github.workspace }}
-        run: ../gradlew docs
+        run: ./gradlew docs
       - name: "🚀 Publish to Github Pages"
         if: success()
         uses: micronaut-projects/github-pages-deploy-action@grails
