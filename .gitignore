@@ -3,8 +3,12 @@
 *.iws
 *.log
 *.sublime-workspace
-.asscache
 .DS_Store
+.asscache
+.classpath
 .gradle
 .idea
+.project
+.settings
+Thumbs.db
 build
