@@ -7,7 +7,7 @@ Removes a granted permission.
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 aclUtilService.deletePermission Report, 42, 'user123', BasePermission.WRITE
 
@@ -16,7 +16,7 @@ aclUtilService.deletePermission reportInstance, 'user123', BasePermission.WRITE
 
 .Description
 
-[source,java]
+[source,groovy]
 ----
 void deletePermission(domainObject, recipient, Permission permission)
 

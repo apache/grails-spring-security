@@ -1,11 +1,11 @@
 [[Snapshots]]
 === Snapshots
 
-Snapshots are published automatically to https://oss.jfrog.org/[Artifactory OSS] on every successful build.
+Snapshots are published automatically to https://repo.grails.org/ui/native/core/org/grails/plugins/spring-security-acl/[repo.grails.org] on every successful build.
 You can use them by defining this Maven repository inside
 the `repositories` block in your `build.gradle`:
 
 [source, groovy]
 ----
-maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
+maven { url "https://repo.grails.org/grails/core" }
 ----

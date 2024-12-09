@@ -54,6 +54,10 @@ asciidoctor {
     }
     outputDir = new File(buildDir, 'docs')
     attributes asciidoctorAttributes
+    executionMode = 'JAVA_EXEC'
+    forkOptions {
+        jvmArgs "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED"
+    }
 }
 
 asciidoctorPdf {
@@ -63,6 +67,10 @@ asciidoctorPdf {
         include 'index.adoc'
     }
     outputDir = new File(buildDir, 'docs')
+    executionMode = 'JAVA_EXEC'
+    forkOptions {
+        jvmArgs "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED"
+    }
 
     asciidoctorj {
         requires 'rouge'
@@ -77,6 +85,10 @@ asciidoctorEpub {
         include 'index.adoc'
     }
     outputDir = new File(buildDir, 'docs')
+    executionMode = 'JAVA_EXEC'
+    forkOptions {
+        jvmArgs "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED"
+    }
 
     asciidoctorj {
         requires 'rouge'

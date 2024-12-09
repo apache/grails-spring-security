@@ -7,14 +7,14 @@ Change the ACL owner for a domain class instance.
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 aclUtilService.changeOwner reportInstance, 'user123'
 ----
 
 .Description
 
-[source,java]
+[source,groovy]
 ----
 void changeOwner(domainObject, String newUsername)
 ----

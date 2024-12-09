@@ -7,7 +7,7 @@ Grant a permission on a domain object instance to a recipient.
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 aclUtilService.addPermission Report, 1124, 'user123', BasePermission.WRITE
 
@@ -18,7 +18,7 @@ aclUtilService.addPermission reportInstance, 'user123', BasePermission.WRITE
 
 `addPermission` has three signatures:
 
-[source,java]
+[source,groovy]
 ----
 void addPermission(Class<?> domainClass, long id, recipient, Permission permission)
 

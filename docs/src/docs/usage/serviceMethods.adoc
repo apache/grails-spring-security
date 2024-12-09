@@ -5,19 +5,20 @@ There are two primary use cases for ACL security: determining whether a user is 
 
 There are four annotations:
 
-* http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/access/prepost/PreAuthorize.html[@PreAuthorize]
-* http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/access/prepost/PreFilter.html[@PreFilter]
-* http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/access/prepost/PostAuthorize.html[@PostAuthorize]
-* http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/access/prepost/PostFilter.html[@PostFilter]
+* https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/access/prepost/PreAuthorize.html[@PreAuthorize]
+* https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/access/prepost/PreFilter.html[@PreFilter]
+* https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/access/prepost/PostAuthorize.html[@PostAuthorize]
+* https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/access/prepost/PostFilter.html[@PostFilter]
 
-The annotations use security-specific Spring expression language (SpEL) expressions - see http://docs.spring.io/spring-security/site/docs/5.0.x/reference/htmlsingle/#el-access[the documentation] for the available standard and method expressions.
+The annotations use security-specific Spring expression language (SpEL) expressions - see https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#authorization-expressions[the documentation] for the available standard and method expressions.
 
 Here's an example service that manages a `Report` domain class and uses these annotations and expressions:
 
-[source,java]
+[source,groovy]
 ----
 import org.springframework.security.access.prepost.PostFilter
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.parameters.P
 import grails.gorm.transactions.Transactional
 
 import com.yourapp.Report
@@ -26,7 +27,7 @@ class ReportService {
 
    @PreAuthorize("hasPermission(#id, 'com.yourapp.Report', read) or " +
                  "hasPermission(#id, 'com.yourapp.Report', admin)")
-   Report getReport(long id) {
+   Report getReport(@P("id") long id) {
       Report.get(id)
    }
 
@@ -53,7 +54,7 @@ class ReportService {
    @Transactional
    @PreAuthorize("hasPermission(#report, write) or " +
                  "hasPermission(#report, admin)")
-   Report updateReport(Report report, params) {
+   Report updateReport(@P("report") Report report, params) {
       report.properties = params
       report.save()
       report
@@ -62,7 +63,7 @@ class ReportService {
    @Transactional
    @PreAuthorize("hasPermission(#report, delete) or " +
                  "hasPermission(#report, admin)")
-   void deleteReport(Report report) {
+   void deleteReport(@P("report") Report report) {
       report.delete()
    }
 }

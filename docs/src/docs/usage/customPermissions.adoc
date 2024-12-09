@@ -30,7 +30,7 @@ It sets the mask value to 32 (1 << 5) since the values up to 16 are defined in t
 
 To use your class instead of the default, specify it in with the `grails.plugin.springsecurity.acl.permissionClass` attribute either as a Class or a String, for example
 
-[source,java]
+[source,groovy]
 ----
 import com.mycompany.myapp.MyPermissions
 ...
@@ -39,14 +39,14 @@ grails.plugin.springsecurity.acl. permissionClass = MyPermissions
 
 or
 
-[source,java]
+[source,groovy]
 ----
 grails.plugin.springsecurity.acl.permissionClass = 'com.mycompany.myapp.MyPermissions'
 ----
 
 You can also override the `aclPermissionFactory` bean in `grails-app/conf/spring/resources.groovy`, keeping the `org.springframework.security.acls.domain. DefaultPermissionFactory` class but passing your class as the constructor argument to keep it from defaulting to `BasePermission`, or do a more complex override to more fully reconfigure the behavior:
 
-[source,java]
+[source,groovy]
 ----
 import org.springframework.security.acls.domain.DefaultPermissionFactory
 import com.mycompany.myapp.MyPermission
@@ -58,10 +58,10 @@ beans = {
 
 Once this is done you can use the permission like any other, specifying its quoted lowercase name in an expression, e.g.
 
-[source,java]
+[source,groovy]
 ----
 @PreAuthorize("hasPermission(#id, 'com.testacl.Report', 'approve')")
-Report get(long id) {
+Report get(@P("id") long id) {
    Report.get id
 }
 ----

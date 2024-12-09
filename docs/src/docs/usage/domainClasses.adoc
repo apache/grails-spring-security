@@ -35,7 +35,7 @@ include::../code/grails-app/domain/grails/plugin/springsecurity/acl/AclObjectIde
 
 `AclObjectIdentity` actually extends a base class, `AbstractAclObjectIdentity`:
 
-[source,java]
+[source,groovy]
 ----
 abstract class AbstractAclObjectIdentity {
 
@@ -57,7 +57,7 @@ By default it's assumed that domain classes have a numeric primary key, but that
 
 Finally, the `AclEntry` domain class contains entries representing grants (or denials) of a permission on an object instance to a recipient. The `aclObjectIdentity` field references the domain class instance (since an instance can have many granted permissions). The `sid` field references the recipient. The `granting` field determines whether the entry grants the permission (`true`) or denies it (`false`). The `aceOrder` field specifies the position of the entry, which is important because the entries are evaluated in order and the first matching entry determines whether access is allowed. `auditSuccess` and `auditFailure` determine whether to log success and/or failure events (these both default to `false`).
 
-The `mask` field holds the permission. This can be a source of confusion because the name (and the Spring Security documentation) indicates that it's a bit mask. A value of 1 indicates permission A, a value of 2 indicates permission B, a value of 4 indicates permission C, a value of 8 indicates permission D, etc. So you would think that a value of 5 would indicate a grant of both permission A and C. Unfortunately this is not the case. There is a http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/acls/domain/CumulativePermission.html[CumulativePermission] class that supports this, but the standard classes don't support it (`AclImpl.isGranted()` checks for == rather than using | (bitwise or) so a combined entry would never match). So rather than grouping all permissions for one recipient on one instances into a bit mask, you must create individual records for each.
+The `mask` field holds the permission. This can be a source of confusion because the name (and the Spring Security documentation) indicates that it's a bit mask. A value of 1 indicates permission A, a value of 2 indicates permission B, a value of 4 indicates permission C, a value of 8 indicates permission D, etc. So you would think that a value of 5 would indicate a grant of both permission A and C. Unfortunately this is not the case. There is a https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/acls/domain/CumulativePermission.html[CumulativePermission] class that supports this, but the standard classes don't support it (`AclImpl.isGranted()` checks for == rather than using | (bitwise or) so a combined entry would never match). So rather than grouping all permissions for one recipient on one instances into a bit mask, you must create individual records for each.
 
 [source,groovy]
 ----

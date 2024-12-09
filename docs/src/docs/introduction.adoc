@@ -1,10 +1,10 @@
 [[introduction]]
 == Introduction to the Spring Security ACL Plugin
 
-The ACL plugin adds Domain Object Security support to a Grails application that uses Spring Security. It depends on the http://grails.org/plugin/spring-security-core[Spring Security Core plugin].
+The ACL plugin adds Domain Object Security support to a Grails application that uses Spring Security. It depends on the https://github.com/grails/grails-spring-security-core[Spring Security Core plugin].
 
 The core plugin and other extension plugins support restricting access to URLs via rules that include checking a user's authentication status, roles, etc. and the ACL plugin extends this by adding support for restricting access to individual domain class instances. The access can be very fine-grained and can define which actions can be taken on an object - these typically include Read, Create, Write, Delete, and Administer but you're free to define whatever actions you like.
 
 To learn about using ACLs in Grails, you can follow the <<tutorial>> and in addition you can download and run a complete Grails application that uses the plugin. Installing and running the application are described in <<sampleApp>>.
 
-In addition to this document, you should read the http://docs.spring.io/spring-security/site/docs/5.0.x/reference/htmlsingle/#domain-acls[Spring Security documentation].
+In addition to this document, you should read the https://docs.spring.io/spring-security/reference/servlet/authorization/acls.html[Spring Security documentation].

@@ -3,9 +3,9 @@
 
 ==== Suggested application changes
 
-To properly display access denied exceptions (e.g. when a user tries to perform an action but doesn't have a grant authorizing it), you should create a mapping in `grails-app/controllers/UrlMappings.groovy` for error code 403. In addition, it's possible to trigger a http://docs.spring.io/spring-security/site/docs/5.0.x/apidocs/org/springframework/security/acls/model/NotFoundException.html[NotFoundException] which will create an error 500, but should be treated like a 403 error, so you should add mappings for these conditions:
+To properly display access denied exceptions (e.g. when a user tries to perform an action but doesn't have a grant authorizing it), you should create a mapping in `grails-app/controllers/UrlMappings.groovy` for error code 403. In addition, it's possible to trigger a https://docs.spring.io/spring-security/site/docs/6.4.x/api/org/springframework/security/acls/model/NotFoundException.html[NotFoundException] which will create an error 500, but should be treated like a 403 error, so you should add mappings for these conditions:
 
-[source,java]
+[source,groovy]
 ----
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.acls.model.NotFoundException
@@ -28,7 +28,7 @@ class UrlMappings {
 
 These depend on an `ErrorsController`:
 
-[source,java]
+[source,groovy]
 ----
 package com.yourcompany.yourapp
 
@@ -74,7 +74,7 @@ Note that this is not an issue when using the generated GSPs in Grails 3 because
 
 It's simple to adjust the `actionSubmit` buttons and you'll need to change them in `show.gsp` and `edit.gsp`; `list.gsp` (or `index.gsp`) and `show.gsp` don't need any changes. In `show.gsp`, replace the two actionSubmit buttons with these two forms (maintain the g:message tags; the strings are hard-coded here to reduce clutter):
 
-[source,html]
+[source,xml]
 ----
 <div class="buttons">
    <g:form action='edit'>
@@ -95,14 +95,14 @@ It's simple to adjust the `actionSubmit` buttons and you'll need to change them 
 
 In `edit.gsp`, change the `<form>` tag to
 
-[source,html]
+[source,xml]
 ----
 <g:form action='update'>
 ----
 
 and convert the update button to a regular submit button:
 
-[source,html]
+[source,xml]
 ----
 <div class="buttons">
    <span class="button">
@@ -113,7 +113,7 @@ and convert the update button to a regular submit button:
 
 and move the delete button out of the form into its own form just below the main form:
 
-[source,html]
+[source,xml]
 ----
 <g:form action='delete'>
    <g:hiddenField name="id" value="${reportInstance?.id}" />

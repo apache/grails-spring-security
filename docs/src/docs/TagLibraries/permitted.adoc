@@ -9,7 +9,7 @@ Renders the body if the user is granted the specified permission(s)
 
 Single String:
 
-[source,html]
+[source,xml]
 ----
 <sec:permitted className='com.foo.Report' id='${reportId}' permission='read'>
 
@@ -20,7 +20,7 @@ the body content
 
 Multiple String:
 
-[source,html]
+[source,xml]
 ----
 <sec:permitted className='com.foo.Report' id='${reportId}' permission='write,read'>
 
@@ -31,7 +31,7 @@ the body content
 
 Single Permission:
 
-[source,html]
+[source,xml]
 ----
 <%@ page import="org.springframework.security.acls.domain.BasePermission" %>
 
@@ -44,7 +44,7 @@ the body content
 
 List of Permission:
 
-[source,html]
+[source,xml]
 ----
 <%@ page import="org.springframework.security.acls.domain.BasePermission" %>
 
@@ -57,7 +57,7 @@ the body content
 
 Single mask int:
 
-[source,html]
+[source,xml]
 ----
 <sec:permitted className='com.foo.Report' id='${reportId}' permission='${1}'>
 
@@ -68,7 +68,7 @@ the body content
 
 Multiple mask int:
 
-[source,html]
+[source,xml]
 ----
 <sec:permitted className='com.foo.Report' id='${reportId}' permission='2,1'>
 

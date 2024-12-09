@@ -10,12 +10,12 @@ $ cd acltest
 
 Add a dependency for the plugin by adding it to the `dependencies` block in build.gradle:
 
-[source,java]
+[source,groovy]
 [subs="attributes"]
 ----
 dependencies {
    ...
-   compile 'org.grails.plugins:spring-security-acl:{project-version}'
+   implementation 'org.grails.plugins:spring-security-acl:{project-version}'
    ...
 }
 ----
@@ -26,7 +26,7 @@ and run the `compile` command to resolve the dependencies:
 $ grails compile
 ....
 
-This will transitively install the http://grails.org/plugin/spring-security-core[Spring Security Core] plugin, so you'll need to configure that by running the `s2-quickstart` script:
+This will transitively install the https://github.com/grails/grails-spring-security-core[Spring Security Core] plugin, so you'll need to configure that by running the `s2-quickstart` script:
 
 ....
 $ grails s2-quickstart com.testacl User Role
@@ -46,7 +46,7 @@ $ grails create-domain-class com.testacl.Report
 
 and add a `name` property for testing:
 
-[source,java]
+[source,groovy]
 ----
 package com.testacl
 
@@ -63,7 +63,7 @@ $ grails create-service com.testacl.Report
 
 and add some methods that work with ``Report``s:
 
-[source,java]
+[source,groovy]
 ----
 package com.testacl
 
@@ -76,6 +76,7 @@ import org.springframework.security.acls.model.AccessControlEntry
 import org.springframework.security.acls.model.MutableAcl
 import org.springframework.security.acls.model.Permission
 import org.springframework.security.acls.model.Sid
+import org.springframework.security.core.parameters.P
 
 import grails.compiler.GrailsCompileStatic
 import grails.plugin.springsecurity.SpringSecurityService
@@ -97,7 +98,7 @@ class ReportService {
 
    @PreAuthorize('hasPermission(#report, admin)')
    @Transactional
-   void addPermission(Report report, String username, Permission permission) {
+   void addPermission(@P("report") Report report, String username, Permission permission) {
       aclUtilService.addPermission report, username, permission
    }
 
@@ -113,7 +114,7 @@ class ReportService {
    }
 
    @PreAuthorize('hasPermission(#id, "com.testacl.Report", read) or hasPermission(#id, "com.testacl.Report", admin)')
-   Report get(long id) {
+   Report get(@P("id") long id) {
       Report.get id
    }
 
@@ -129,13 +130,13 @@ class ReportService {
 
    @Transactional
    @PreAuthorize('hasPermission(#report, write) or hasPermission(#report, admin)')
-   void update(Report report, String name) {
+   void update(@P("report") Report report, String name) {
       report.name = name
    }
 
    @Transactional
    @PreAuthorize('hasPermission(#report, delete) or hasPermission(#report, admin)')
-   void delete(Report report) {
+   void delete(@P("report") Report report) {
       report.delete()
 
       // Delete the ACL information as well
@@ -144,7 +145,7 @@ class ReportService {
 
    @Transactional
    @PreAuthorize('hasPermission(#report, admin)')
-   void deletePermission(Report report, Sid recipient, Permission permission) {
+   void deletePermission(@P("report") Report report, Sid recipient, Permission permission) {
       MutableAcl acl = (MutableAcl)aclUtilService.readAcl(report)
 
       // Remove all permissions associated with this particular
@@ -179,7 +180,7 @@ $ grails create-service com.testacl.SampleData
 
 and add this code:
 
-[source,java]
+[source,groovy]
 ----
 package com.testacl
 
@@ -271,7 +272,7 @@ class SampleDataService {
 
 and configure BootStrap.groovy to call the service at startup:
 
-[source,java]
+[source,groovy]
 ----
 class BootStrap {
 
@@ -291,7 +292,7 @@ $ grails generate-all com.testacl.Report
 
 But to use the controller, it will have to be reworked to use `ReportService`. It's a good idea to put all create/edit/delete code in a transactional service, but in this case we need to move all database access to the service to ensure that appropriate access checks are made:
 
-[source,java]
+[source,groovy]
 ----
 package com.testacl
 
@@ -405,7 +406,7 @@ Finally, we'll make a few adjustments so errors are handled gracefully.
 
 First, edit `grails-app/controllers/UrlMappings.groovy` and add some error code mappings:
 
-[source,java]
+[source,groovy]
 ----
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.acls.model.NotFoundException
@@ -435,7 +436,7 @@ $ grails create-controller com.testacl.Errors
 
 and add this code:
 
-[source,java]
+[source,groovy]
 ----
 package com.testacl
 
@@ -485,7 +486,7 @@ Note that this is not an issue when using the generated GSPs in Grails 3 because
 
 It's simple to adjust the `actionSubmit` buttons and you'll need to change them in `show.gsp` and `edit.gsp`; `list.gsp` (or `index.gsp`) and `show.gsp` don't need any changes. In `show.gsp`, replace the two actionSubmit buttons with these two forms (maintain the g:message tags; the strings are hard-coded here to reduce clutter):
 
-[source,html]
+[source,xml]
 ----
 <div class="buttons">
     <g:form action='edit'>
@@ -506,14 +507,14 @@ It's simple to adjust the `actionSubmit` buttons and you'll need to change them 
 
 In `grails-app/views/report/edit.gsp`, change the `<form>` tag to
 
-[source,html]
+[source,xml]
 ----
 <g:form action='update'>
 ----
 
 and convert the update button to a regular submit button:
 
-[source,html]
+[source,xml]
 ----
 <div class="buttons">
     <span class="button"><g:submitButton class="save" name="Update" /></span>
@@ -522,7 +523,7 @@ and convert the update button to a regular submit button:
 
 and move the delete button out of the form into its own form just below the main form:
 
-[source,html]
+[source,xml]
 ----
 <g:form action='delete'>
     <g:hiddenField name="id" value="${reportInstance?.id}" />
@@ -539,7 +540,7 @@ and move the delete button out of the form into its own form just below the main
 
 Finally, to make it easier to log out (by default POST is required, so typical link that uses GET won't work), add this to `grails-app/views/layouts/main.gsp` before the `<g:layoutBody/>` tag:
 
-[source,html]
+[source,xml]
 ----
 <sec:ifLoggedIn>
 
@@ -569,7 +570,7 @@ and open http://localhost:8080/report.
 
 [NOTE]
 ====
-If you see the error `NoSuchMethodError: org.springframework.cache.ehcache.EhCacheFactoryBean.setMaxEntriesLocalHeap(J)V` when starting the app, comment out the `compile 'org.hibernate:hibernate-ehcache'` dependency and disable the second-level cache in `application.yml` with `use_second_level_cache: false`, and restart.
+If you see the error `NoSuchMethodError: org.springframework.cache.ehcache.EhCacheFactoryBean.setMaxEntriesLocalHeap(J)V` when starting the app, comment out the `implementation 'org.hibernate:hibernate-ehcache'` dependency and disable the second-level cache in `application.yml` with `use_second_level_cache: false`, and restart.
 ====
 
 Login as user1/password1 and you should see the first page of results. But if you click on page 7 or higher, you'll see that you can only see a subset of the ``Report``s. This illustrates one issue with using ACLs to restrict view access to instances; you would have to add joins in your query to the ACL database tables to get an accurate count of the total number of visible instances.

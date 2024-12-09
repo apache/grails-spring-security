@@ -7,14 +7,14 @@ Deletes the ACL for a domain class instance.
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 aclUtilService.deleteAcl reportInstance
 ----
 
 .Description
 
-[source,java]
+[source,groovy]
 ----
 void deleteAcl(domainObject)
 ----

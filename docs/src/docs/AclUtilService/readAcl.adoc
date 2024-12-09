@@ -7,7 +7,7 @@ Retrieves the ACL for a domain class instance.
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 def acl = aclUtilService.readAcl(reportInstance)
 
@@ -16,7 +16,7 @@ def acl = aclUtilService.readAcl(Report, 42)
 
 .Description
 
-[source,java]
+[source,groovy]
 ----
 Acl readAcl(domainObject)
 

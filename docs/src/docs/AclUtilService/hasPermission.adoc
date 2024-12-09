@@ -7,7 +7,7 @@ Check if the authentication has grants for the specified permission(s) on the do
 
 .Examples
 
-[source,java]
+[source,groovy]
 ----
 if (aclUtilService.hasPermission(auth, reportInstance, BasePermission.WRITE)) {
    ...
@@ -16,7 +16,7 @@ if (aclUtilService.hasPermission(auth, reportInstance, BasePermission.WRITE)) {
 
 .Description
 
-[source,java]
+[source,groovy]
 ----
 boolean hasPermission(Authentication authentication, domainObject, Permission... permissions)
 

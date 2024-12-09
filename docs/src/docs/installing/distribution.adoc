@@ -1,5 +1,5 @@
 [[Distribution]]
 === Distribution
 
-Grails Spring Security ACL plugin is https://bintray.com/grails/plugins/spring-security-acl[distributed in bintray].
+Grails Spring Security ACL plugin is https://repo.grails.org/ui/native/core/org/grails/plugins/spring-security-acl/[distributed in repo.grails.org].
 
