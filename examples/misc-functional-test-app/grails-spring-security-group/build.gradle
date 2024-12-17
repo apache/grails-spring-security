@@ -28,8 +28,6 @@ dependencies {
     runtimeOnly libs.springboot.starter.tomcat
     runtimeOnly libs.h2database
     runtimeOnly libs.tomcat.jdbc
-
-    compileOnly libs.micronaut.inject.groovy
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')

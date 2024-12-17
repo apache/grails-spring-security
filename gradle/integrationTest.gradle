@@ -1,6 +1,5 @@
 dependencies {
     add('testImplementation', libs.micronaut.httpclient)
-    add('testImplementation', libs.micronaut.inject.groovy)
     add('testImplementation', libs.bundles.grails.testing.support)
 
     integrationTestImplementation testFixtures(libs.geb.plugin)

@@ -39,7 +39,6 @@ jakarta-annotation-api = { module = 'jakarta.annotation:jakarta.annotation-api' 
 jakarta-servlet-api = { module = 'jakarta.servlet:jakarta.servlet-api' }
 h2database = { module = 'com.h2database:h2' }
 micronaut-httpclient = { module = 'io.micronaut:micronaut-http-client', version.ref = 'micronaut' }
-micronaut-inject-groovy = { module = 'io.micronaut:micronaut-inject-groovy', version.ref = 'micronaut' }
 micronaut-jackson-databind = { module = 'io.micronaut:micronaut-jackson-databind', version.ref = 'micronaut' }
 slf4j-nop = { module = 'org.slf4j:slf4j-nop' }
 spock-core = { module = 'org.spockframework:spock-core' }
