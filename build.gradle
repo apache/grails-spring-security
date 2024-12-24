@@ -17,9 +17,11 @@ allprojects {
 }
 
 version project.projectVersion
+group "org.grails.plugins"
 
 subprojects { project ->
     version project.projectVersion
+    group "org.grails.plugins"
 
     apply plugin: "groovy"
 
