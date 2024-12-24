@@ -20,7 +20,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v3
       - name: Setup Java
         uses: actions/setup-java@v4
-        with: { java-version: 17, distribution: temurin }
+        with: { java-version: 17, distribution: liberica }
       - name: Run Tests
         uses: gradle/actions/setup-gradle@v3
         env:
@@ -39,7 +39,7 @@ jobs:
       - uses: gradle/wrapper-validation-action@v3
       - uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: liberica
           java-version: 17
       - name: Publish to Artifactory (repo.grails.org)
         uses: gradle/actions/setup-gradle@v3

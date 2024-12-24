@@ -27,8 +27,8 @@ version projectVersion
 group "org.grails.plugins"
 
 subprojects { Project project ->
-    group "org.grails.plugins"
-    version projectVersion
+    project.group "org.grails.plugins"
+    project.version projectVersion
 
     ext.set('grailsVersion', project.grailsVersion)
     ext.set('isProfile', project.name.endsWith('-profile'))
@@ -54,6 +54,8 @@ subprojects { Project project ->
         apply plugin: "java-library"
 
         dependencies {
+            implementation platform("org.grails:grails-bom:$grailsVersion")
+
             console "org.grails:grails-console"
 
             api "org.springframework.boot:spring-boot-starter-logging"

@@ -1,12 +1,3 @@
-buildscript {
-    repositories {
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-    }
-}
-
 tasks.register('generateProfileConfig') {
     copy {
         from 'profile.yml.tmpl'

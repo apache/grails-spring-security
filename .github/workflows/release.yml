@@ -19,7 +19,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v3
       - name: Set up JDK
         uses: actions/setup-java@v4
-        with: { java-version: 17, distribution: temurin }
+        with: { java-version: 17, distribution: liberica }
       - name: Set the current release version
         id: release_version
         run: echo "value=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
@@ -63,7 +63,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v3
       - name: Set up JDK
         uses: actions/setup-java@v4
-        with: { java-version: 17, distribution: temurin }
+        with: { java-version: 17, distribution: liberica }
       - name: Nexus Staging Close And Release
         uses: gradle/gradle-build-action@v3
         env:
@@ -98,7 +98,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v3
       - name: Set up JDK
         uses: actions/setup-java@v4
-        with: { java-version: 17, distribution: temurin }
+        with: { java-version: 17, distribution: liberica }
       - name: Generate Documentation
         id: docs
         uses: gradle/actions/setup-gradle@v3
