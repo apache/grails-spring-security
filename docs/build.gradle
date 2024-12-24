@@ -24,15 +24,15 @@ def asciidoctorAttributes = [
         version                           : project.version,
         projectUrl                        : "https://github.com/grails-plugins/grails-spring-security-ldap",
         sourcedir                         : "${rootProject.allprojects.find { it.name == 'spring-security-ldap' }.projectDir}/src/main/groovy",
-        gormDetailedLink                  : "https://gorm.grails.org/${getGrailsDocumentationVersion(project['gorm.version'] as String)}/hibernate/manual/index.html",
+        gormDetailedLink                  : "https://gorm.grails.org/${getGrailsDocumentationVersion(project.documentationGormHibernateVersion as String)}/hibernate/manual/index.html",
         gormSummaryLink                   : "https://docs.grails.org/${getGrailsDocumentationVersion(project.grailsVersion)}/guide/GORM.html",
         grailsDocBase                     : "https://docs.grails.org/${getGrailsDocumentationVersion(project.grailsVersion)}",
         functionalTestAppPath             : "${rootProject.allprojects.find { it.name == 'functional-test-app' }.projectDir}",
         customUserDetailsContextMapperPath: "${rootProject.allprojects.find { it.name == 'custom-user-details-context-mapper' }.projectDir}",
         grailsSpringSecurityCoreVersion   : project['grailsSpringSecurityCoreVersion'],
         grailsSpringSecurityCoreLink      : "https://grails.github.io/grails-spring-security-core/${getGrailsDocumentationVersion(project.grailsSpringSecurityCoreVersion)}/index.html",
-        springSecurityLdapLink            : "https://docs.spring.io/spring-security/reference/${project.springSecurityVersion}/servlet/authentication/passwords/ldap.html",
-        springSecurityLdapApiLink         : "https://docs.spring.io/spring-security/site/docs/${project.springSecurityVersion}/api"
+        springSecurityLdapLink            : "https://docs.spring.io/spring-security/reference/${project.documentationSpringSecurityVersion}/servlet/authentication/passwords/ldap.html",
+        springSecurityLdapApiLink         : "https://docs.spring.io/spring-security/site/docs/${project.documentationSpringSecurityVersion}/api"
 
 ]
 

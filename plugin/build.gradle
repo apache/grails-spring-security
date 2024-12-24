@@ -20,11 +20,13 @@ plugins {
 group "org.grails.plugins"
 
 dependencies {
+	implementation platform("org.grails:grails-bom:$grailsVersion")
+
 	runtimeOnly 'org.grails:grails-web-boot'
 
 	api "org.grails.plugins:spring-security-core:$grailsSpringSecurityCoreVersion"
 
-	api "org.springframework.security:spring-security-ldap:$springSecurityVersion", {
+	api "org.springframework.security:spring-security-ldap", {
 		['apacheds-core', 'apacheds-core-entry', 'apacheds-protocol-ldap', 'apacheds-protocol-shared',
 		 'apacheds-server-jndi', 'commons-logging', 'fest-assert', 'jcl-over-slf4j', 'junit',
 		 'ldapsdk', 'logback-classic', 'mockito-core', 'shared-ldap', 'slf4j-api', 'spring-beans',
@@ -32,7 +34,7 @@ dependencies {
 		 'spring-test', 'spring-tx'].each { exclude module: it }
 	}
 
-	api "org.springframework.ldap:spring-ldap-core:$springLdapCoreVersion", {
+	api "org.springframework.ldap:spring-ldap-core", {
 		['commons-lang', 'gsbase', 'junit', 'mockito-core', 'powermock-api-mockito',
 		 'powermock-api-support', 'powermock-core', 'powermock-module-junit4',
 		 'powermock-module-junit4-common', 'powermock-reflect', 'slf4j-log4j12', 'spring-beans',
@@ -46,14 +48,3 @@ dependencies {
 bootJar.enabled = false
 
 apply from: rootProject.file("gradle/testing.gradle")
-
-apply plugin: "org.grails.grails-publish"
-grailsPublish {
-	githubSlug = 'grails-plugins/grails-spring-security-ldap'
-	license {
-		name = 'Apache-2.0'
-	}
-	title = 'Grails Spring Security LDAP Plugin'
-	desc = 'Adds Spring Security LDAP support to a Grails application.'
-	developers = [burtbeckwith: 'Burt Beckwith']
-}
