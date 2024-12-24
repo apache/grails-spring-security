@@ -1,7 +1,8 @@
 [versions]
 asciidoctorj = '4.0.3'
-asset-pipeline-gradle = '5.0.4'
-grails-gradle-plugin = '7.0.0-SNAPSHOT'
+asset-pipeline-gradle = '5.0.5'
+grails-gradle-plugin = '7.0.0-M3'
+grails = '7.0.0-M1'
 spock = '2.3-groovy-3.0'
 
 [libraries]
@@ -9,3 +10,4 @@ asciidoctorj = { module = 'org.asciidoctor:asciidoctor-gradle-jvm', version.ref 
 asset-pipeline-gradle = { module = 'com.bertramlabs.plugins:asset-pipeline-gradle', version.ref = 'asset-pipeline-gradle' }
 grails-gradle-plugin = { module = 'org.grails:grails-gradle-plugin', version.ref = 'grails-gradle-plugin' }
 spock-core = { module = 'org.spockframework:spock-core', version.ref = 'spock' }
+grails-bom = { module = 'org.grails:grails-bom', version.ref = 'grails' }

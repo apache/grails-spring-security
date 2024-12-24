@@ -1,8 +1,7 @@
 [versions]
-asset-pipeline = '5.0.4'
 ehcache = '3.10.8'
-grails = '7.0.0-SNAPSHOT'
-grails-async-and-events = '7.0.0-SNAPSHOT'
+grails = '7.0.0-M1'
+grails-async-and-events = '6.0.0-M2'
 groovy = '4.0.24'
 micronaut = '4.5.3'
 
@@ -11,7 +10,7 @@ commons-text = { module = 'org.apache.commons:commons-text' }
 ehcache = { module = 'org.ehcache:ehcache', version.ref = 'ehcache' }
 bytebuddy = { module = 'net.bytebuddy:byte-buddy' }
 gorm-hibernate5 = { module = 'org.grails.plugins:hibernate5' }
-grails-asset-pipeline = { module = 'com.bertramlabs.plugins:asset-pipeline-grails', version.ref = 'asset-pipeline' }
+grails-asset-pipeline = { module = 'com.bertramlabs.plugins:asset-pipeline-grails' }
 grails-bom = { module = 'org.grails:grails-bom', version.ref = 'grails' }
 grails-core = { module = 'org.grails:grails-core' }
 grails-bootstrap = { module = 'org.grails:grails-bootstrap' }
@@ -19,13 +18,13 @@ grails-converters = { module = 'org.grails.plugins:converters' }
 grails-datastore-core = { module = 'org.grails:grails-datastore-core'}
 grails-datastore-gorm = { module = 'org.grails:grails-datastore-gorm'}
 grails-domain = { module = 'org.grails:grails-plugin-domain-class' }
-grails-events-transform = { module = 'org.grails:grails-events-transform', version.ref = 'grails-async-and-events' }
+grails-events-transform = { module = 'org.grails:grails-events-transform', version.ref = 'grails-async-and-events' } # Not yet in the milestone bom
 grails-gsp = { module = 'org.grails.plugins:gsp' }
 grails-i18n = { module = 'org.grails:grails-plugin-i18n' }
 grails-interceptors = { module = 'org.grails:grails-plugin-interceptors' }
 grails-mimetypes = { module = 'org.grails:grails-plugin-mimetypes' }
-grails-plugin-async = { module = 'org.grails.plugins:async', version.ref = 'grails-async-and-events' }
-grails-plugin-events = { module = 'org.grails.plugins:events', version.ref = 'grails-async-and-events' }
+grails-plugin-async = { module = 'org.grails.plugins:async' }
+grails-plugin-events = { module = 'org.grails.plugins:events' }
 grails-rest = { module = 'org.grails:grails-plugin-rest' }
 grails-services = { module = 'org.grails:grails-plugin-services' }
 grails-testing-support-gorm = { module = 'org.grails:grails-gorm-testing-support' }
