@@ -41,6 +41,7 @@ jobs:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
         with:
           arguments: |
+            -U 
             -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg 
             publishToSonatype 
             closeAndReleaseSonatypeStagingRepository
