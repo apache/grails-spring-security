@@ -14,7 +14,9 @@ $ cd bookstore
 ----
 dependencies {
    ...
-   compile 'org.grails.plugins:spring-security-core:{project-version}'
+   implementation 'org.grails.plugins:spring-security-core:{project-version}'
+   // required for Grails 6, since spring-boot-dependencies:2.7.18 downgrades
+   implementation 'org.springframework.security:spring-security-core:{springsecuritycoreversion}'
    ...
 }
 ----
