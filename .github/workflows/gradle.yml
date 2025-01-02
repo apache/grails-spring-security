@@ -12,58 +12,53 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: ['8']
+        java: ['17']
     env:
       WORKSPACE: ${{ github.workspace }}
       GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
     steps:
-      - name: Print Dispatch Information
+      - name: "📢 Print Dispatch Information"
         if: github.event_name == 'workflow_dispatch'
         env:
           DISPATCH_INFORMATION: ${{ github.event.inputs.message }}
         run: echo $DISPATCH_INFORMATION
-      - uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'liberica'
           java-version: ${{ matrix.java }}
-      - name: Run Tests
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+      - name: "🏃 Run Tests"
         if: github.event_name == 'pull_request'
         id: tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: check -Pgeb.env=chromeHeadless
-      - name: Run Build
+        run: ./gradlew check
+      - name: "🔨 Build project"
         if: github.event_name == 'push'
         id: build
-        uses: gradle/gradle-build-action@v2
-        env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-        with:
-          arguments: build -Pgeb.env=chromeHeadless
-      - name: Publish Test Report
+        run: ./gradlew build
+      - name: "📄 Publish Test Report"
         if: steps.build.outcome == 'failure' || steps.tests.outcome == 'failure'
         uses: scacap/action-surefire-report@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Publish to repo.grails.org
-        uses: gradle/gradle-build-action@v2
-        if: steps.build.outcome == 'success' && github.event_name == 'push' && matrix.java == '8'
+      - name: "📤 Publish Snapshot"
+        if: steps.build.outcome == 'success' && github.event_name == 'push' && matrix.java == '17'
         env:
           ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-        with:
-          arguments: publish
-      - name: Generate Documentation
+        run: publish
+      - name: "✍️ Generate Documentation"
         id: docs
-        uses: gradle/gradle-build-action@v2
-        if: success() && github.event_name == 'push' && matrix.java == '8'
-        with:
-          arguments: docs
-      - name: Publish to Github Pages
-        if: steps.publish.outcome == 'success' && github.event_name == 'push' && matrix.java == '8'
+        if: success() && github.event_name == 'push' && matrix.java == '17'
+        run: ./gradlew docs
+      - name: "📤 Publish to Github Pages"
+        if: steps.publish.outcome == 'success' && github.event_name == 'push' && matrix.java == '17'
         uses: grails/github-pages-deploy-action@grails
         env:
           TARGET_REPOSITORY: ${{ github.repository }}
@@ -71,5 +66,5 @@ jobs:
           BRANCH: gh-pages
           FOLDER: build/docs
           DOC_FOLDER: gh-pages
-          COMMIT_EMAIL: behlp@objectcomputing.com
-          COMMIT_NAME: Puneet Behl
+          COMMIT_EMAIL: grails-build@users.noreply.github.com
+          COMMIT_NAME: grails-build

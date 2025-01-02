@@ -34,7 +34,7 @@ import groovy.util.logging.Slf4j
 @Slf4j
 class SpringSecurityUiGrailsPlugin extends Plugin {
 
-	String grailsVersion = '3.0.0 > *'
+	String grailsVersion = '7.0.0-SNAPSHOT > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'burt@burtbeckwith.com'
 	String title = 'Spring Security UI plugin'

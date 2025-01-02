@@ -1,20 +1,15 @@
 package spec
 
-import spock.lang.IgnoreIf
+import grails.testing.mixin.integration.Integration
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserCache
+import spock.lang.Stepwise
 
-@IgnoreIf({
-	if (!System.getProperty('geb.env')) {
-        return true
-    }
-	if (System.getProperty('geb.env') == 'phantomjs' && !System.getProperty('phantomjs.binary.path')) {
-		return true
-	}
-	if (System.getProperty('geb.env') == 'chrome' && !System.getProperty('webdriver.chrome.driver')) {
-		return true
-	}
-	false
-})
+@Stepwise
+@Integration
 class ExtendedSecurityInfoSpec extends AbstractSecuritySpec {
+
+	UserCache userCache
 
 	void testConfig() {
 		when:
@@ -43,17 +38,32 @@ class ExtendedSecurityInfoSpec extends AbstractSecuritySpec {
 		go 'securityInfo/currentAuth'
 
 		then:
-		assertContentContains 'org.springframework.security.web.authentication.WebAuthenticationDetails'
+		assertContentContains 'Details WebAuthenticationDetails'
 		assertContentContains '__grails.anonymous.user__'
 	}
 
 	void testUsercache() {
+		given:
+		userCache.putUserInCache(new User('testuser', 'pw', []))
+
 		when:
 		go 'securityInfo/usercache'
 
 		then:
-		assertContentContains 'UserCache class: net.sf.ehcache.Cache'
-		assertContentContains 'Memory Store Object Count 0'
+		assertContentContains 'UserCache class: org.ehcache.jsr107.Eh107Cache'
+		assertContentContains 'testuser'
+
+		cleanup:
+		userCache.removeUserFromCache('testuser')
+	}
+
+	void testEmptyUsercache() {
+		when:
+		go 'securityInfo/usercache'
+
+		then:
+		assertContentContains 'UserCache class: org.ehcache.jsr107.Eh107Cache'
+		assertContentDoesNotContain'testuser'
 	}
 
 	void testFilterChains() {

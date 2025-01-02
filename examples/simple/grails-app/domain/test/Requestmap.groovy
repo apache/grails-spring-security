@@ -27,7 +27,7 @@ class Requestmap implements Serializable {
 		url validator: { String url, Requestmap requestmap, errors ->
 			if (!url) return
 
-			Requestmap.withNewSession {
+			Requestmap.withSession {
 				def existing = requestmap.httpMethod ?
 					Requestmap.findByUrlAndHttpMethod(requestmap.url, requestmap.httpMethod) :
 					Requestmap.findByUrlAndHttpMethodIsNull(requestmap.url)

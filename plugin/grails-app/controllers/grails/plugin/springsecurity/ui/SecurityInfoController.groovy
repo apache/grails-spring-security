@@ -52,7 +52,7 @@ class SecurityInfoController {
 	}
 
 	def usercache() {
-		[cache: conf.cacheUsers ? userCache.cache : false]
+		[cache: conf.cacheUsers ? userCache.cache.nativeCache : false]
 	}
 
 	def filterChains() {

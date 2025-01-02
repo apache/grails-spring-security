@@ -9,64 +9,54 @@
 <g:message code='spring.security.ui.info.usercache.classname' args='[cache.getClass().name]'/>
 <s2ui:securityInfoTable type='usercache' headerCodes='attribute,value'>
 	<tr class='even'>
-		<td><g:message code='spring.security.ui.info.usercache.label.size'/></td>
-		<td>${cache.size}</td>
-	</tr>
-	<tr class='odd'>
-		<td><g:message code='spring.security.ui.info.usercache.label.status'/></td>
-		<td>${cache.status}</td>
-	</tr>
-	<tr class='even'>
 		<td><g:message code='spring.security.ui.info.usercache.label.name'/></td>
 		<td>${cache.name}</td>
 	</tr>
-	<tr class='odd'>
-		<td><g:message code='spring.security.ui.info.usercache.label.guid'/></td>
-		<td>${cache.guid}</td>
-	</tr>
 	<tr class='even'>
 		<td colspan='2'>
-	<s2ui:securityInfoTable type='usercache.statistics' headerCodes='attribute,value'>
+		<s2ui:securityInfoTable type='usercache.statistics' headerCodes='attribute,value'>
 		<tr>
 			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheHits'/></td>
-			<td>${cache.statistics.cacheHitCount()}</td>
+			<td>${cache.statisticsMBean.cacheHits}</td>
 		</tr>
 		<tr>
-			<td><g:message code='spring.security.ui.info.usercache.label.stats.memoryHits'/></td>
-			<td>${cache.statistics.localHeapHitCount()}</td>
-		</tr>
-		<tr>
-			<td><g:message code='spring.security.ui.info.usercache.label.stats.diskHits'/></td>
-			<td>${cache.statistics.localDiskHitCount()}</td>
+			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheHitPercentage'/></td>
+			<td>${cache.statisticsMBean.cacheHitPercentage}</td>
 		</tr>
 		<tr>
 			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheMisses'/></td>
-			<td>${cache.statistics.cacheMissCount()}</td>
+			<td>${cache.statisticsMBean.cacheMisses}</td>
 		</tr>
 		<tr>
-			<td><g:message code='spring.security.ui.info.usercache.label.stats.objectCount'/></td>
-			<td>${cache.statistics.size}</td>
+			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheMissPercentage'/></td>
+			<td>${cache.statisticsMBean.cacheMissPercentage}</td>
 		</tr>
 		<tr>
-			<td><g:message code='spring.security.ui.info.usercache.label.stats.memoryObjectCount'/></td>
-			<td>${cache.statistics.localHeapSize}</td>
+			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheGets'/></td>
+			<td>${cache.statisticsMBean.cacheGets}</td>
 		</tr>
 		<tr>
-			<td><g:message code='spring.security.ui.info.usercache.label.stats.diskObjectCount'/></td>
-			<td>${cache.statistics.localDiskSize}</td>
+			<td><g:message code='spring.security.ui.info.usercache.label.stats.cachePuts'/></td>
+			<td>${cache.statisticsMBean.cachePuts}</td>
+		</tr>
+		<tr>
+			<td><g:message code='spring.security.ui.info.usercache.label.stats.cacheRemovals'/></td>
+			<td>${cache.statisticsMBean.cacheRemovals}</td>
 		</tr>
 		<tr>
 			<td><g:message code='spring.security.ui.info.usercache.label.stats.evictionCount'/></td>
-			<td>${cache.statistics.cacheEvictedCount()}</td>
+			<td>${cache.statisticsMBean.cacheEvictions}</td>
 		</tr>
-	</s2ui:securityInfoTable>
+		</s2ui:securityInfoTable>
 	</td>
 </tr>
 <tr>
 	<td colspan='2'>
-	<s2ui:securityInfoTable type='usercache.cachedUsers' items='${cache.keys}' headerCodes='username,user' captionArgs='[cache.size]'>
-		<td>${it}</td>
-		<td>${cache.get(it)?.value}</td>
+	<s2ui:securityInfoTable type='usercache.cachedUsers' items='${cache.iterator()}' headerCodes='username,user'>
+		<g:if test="${it}">
+			<td>${it.key}</td>
+			<td>${it.value}</td>
+		</g:if>
 	</s2ui:securityInfoTable>
 	</td>
 </tr>

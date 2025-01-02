@@ -1,4 +1,5 @@
 tasks.withType(Test) {
+    useJUnitPlatform()
     afterTest { desc, result ->
         logger.quiet " -- Executed test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }

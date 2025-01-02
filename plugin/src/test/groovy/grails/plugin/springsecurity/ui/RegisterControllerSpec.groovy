@@ -9,7 +9,7 @@ import spock.lang.Unroll
 class RegisterControllerSpec extends Specification implements ControllerUnitTest<RegisterController> {
 
 	void setup() {
-		SpringSecurityUtils.setSecurityConfig [:] as ConfigObject
+		SpringSecurityUtils.setSecurityConfig([:] as ConfigObject)
 	}
 
 	void cleanup() {

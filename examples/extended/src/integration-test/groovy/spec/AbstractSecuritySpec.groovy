@@ -5,17 +5,11 @@ import geb.spock.GebReportingSpec
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.testing.mixin.integration.Integration
 import spock.lang.Stepwise
+import grails.plugin.geb.ContainerGebSpec
 
-@Integration
-@Stepwise
-abstract class AbstractSecuritySpec extends GebReportingSpec {
+abstract class AbstractSecuritySpec extends ContainerGebSpec {
 
 	void setup() {
-		if ( hasProperty('serverPort') ) {
-			browser.baseUrl = "http://localhost:${getProperty('serverPort')}/"
-		} else {
-			browser.baseUrl = 'http://localhost:8080/'
-		}
 		logout()
 	}
 

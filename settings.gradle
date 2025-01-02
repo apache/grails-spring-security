@@ -1,3 +1,26 @@
+plugins {
+    id 'com.gradle.develocity' version '3.19'
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '2.0.2'
+}
+
+def isCI = System.getenv('CI') == 'true'
+
+develocity {
+    server = 'https://ge.grails.org'
+    buildScan {
+        publishing.onlyIf { isCI }
+        uploadInBackground = !isCI
+    }
+}
+
+buildCache {
+    local { enabled = !isCI }
+    remote(develocity.buildCache) {
+        enabled = true
+        push = isCI && System.getenv('DEVELOCITY_ACCESS_KEY')
+    }
+}
+
 include 'docs'
 
 include 'examples-simple'

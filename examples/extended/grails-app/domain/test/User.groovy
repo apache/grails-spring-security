@@ -47,6 +47,10 @@ class User implements Serializable {
 
 	static transients = ['springSecurityService']
 
+	static mapping = {
+		table name: '`user`'
+	}
+
 	static constraints = {
 		email nullable: true, email: true, unique: true
 		username unique: true
