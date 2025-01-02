@@ -9,6 +9,7 @@ def softwareVersion = SoftwareVersion.build(version.toString())
 def asciidoctorAttributes = [
         stableversion        : softwareVersion.stableVersion,
         snapshotversion      : softwareVersion.snapshotVersion,
+        springsecuritycoreversion : libs.versions.spring.security.get(),
         copyright            : 'Apache License, Version 2.0',
         docinfo1             : 'true',
         doctype              : 'book',
