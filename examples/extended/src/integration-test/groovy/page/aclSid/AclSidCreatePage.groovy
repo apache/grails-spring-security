@@ -7,9 +7,7 @@ import page.CreatePage
 class AclSidCreatePage extends CreatePage {
 
 	static url = 'aclSid/create'
-
 	static typeName = { 'AclSid' }
-
 	static content = {
 		sid { $(name: 'sid').module(TextInput) }
 		principal { $(name: 'principal').module(Checkbox) }

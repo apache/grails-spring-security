@@ -6,9 +6,7 @@ import page.CreatePage
 class RoleCreatePage extends CreatePage {
 
 	static url = 'role/create'
-
 	static typeName = { 'Role' }
-
 	static content = {
 		authority { $(name: 'authority').module(TextInput) }
 	}

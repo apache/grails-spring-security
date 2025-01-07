@@ -7,9 +7,7 @@ import page.SearchPage
 class AclSidSearchPage extends SearchPage {
 
 	static url = 'aclSid/search'
-
 	static typeName = { 'AclSid' }
-
 	static content = {
 		sid { $(name: 'sid').module(TextInput) }
 		principal { $(name: 'principal').module(RadioButtons) }

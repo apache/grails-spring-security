@@ -4,61 +4,62 @@ import grails.testing.mixin.integration.Integration
 import page.aclObjectIdentity.AclObjectIdentityCreatePage
 import page.aclObjectIdentity.AclObjectIdentityEditPage
 import page.aclObjectIdentity.AclObjectIdentitySearchPage
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class AclObjectIdentitySpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		to AclObjectIdentitySearchPage
+		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage)
 
 		then:
-		assertNotSearched()
+		aclObjectIdentitySearchPage.assertNotSearched()
 
 		when:
-		submit()
+		aclObjectIdentitySearchPage.submit()
 
 		then:
-		at AclObjectIdentitySearchPage
-		assertResults 1, 10, 100
+		browser.at(AclObjectIdentitySearchPage)
+		aclObjectIdentitySearchPage.assertResults(1, 10, 100)
 	}
 
 	void testFindById() {
 		when:
-		to AclObjectIdentitySearchPage
-		objectId = '10'
-		submit()
+		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+			objectId = '10'
+			submit()
+		}
 
 		then:
-		at AclObjectIdentitySearchPage
-		assertResults 1, 1, 1
-		assertContentContains 'test.Report'
+		browser.at(AclObjectIdentitySearchPage)
+		aclObjectIdentitySearchPage.assertResults(1, 1, 1)
+		assertContentContains('test.Report')
 	}
 
 	void testFindByOwner() {
 		when:
-		to AclObjectIdentitySearchPage
-		ownerId = '1'
-		submit()
+		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+			ownerId = '1'
+			submit()
+		}
 
 		then:
-		at AclObjectIdentitySearchPage
-		assertResults 1, 10, 98
+		browser.at(AclObjectIdentitySearchPage)
+		aclObjectIdentitySearchPage.assertResults(1, 10, 98)
 	}
 
 	void testUniqueId() {
 		when:
-		to AclObjectIdentityCreatePage
-		aclClass.selected = '1'
-		objectId = 1
-		ownerId.selected = '2'
-		submit()
+		def aclObjectIdentityCreatePage = browser.to(AclObjectIdentityCreatePage).tap {
+			aclClass.selected = '1'
+			objectId = 1
+			ownerId.selected = '2'
+			submit()
+		}
 
 		then:
-		at AclObjectIdentityCreatePage
-		assertNotUnique()
+		browser.at(AclObjectIdentityCreatePage)
+		aclObjectIdentityCreatePage.assertNotUnique()
 	}
 
 	void testCreateAndEdit() {
@@ -67,47 +68,49 @@ class AclObjectIdentitySpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		to AclObjectIdentitySearchPage
-		objectId = newId
-		submit()
+		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+			objectId = newId
+			submit()
+		}
 
 		then:
-		assertNoResults()
+		aclObjectIdentitySearchPage.assertNoResults()
 
 		// create
 		when:
-		to AclObjectIdentityCreatePage
-		aclClass.selected = '1'
-		objectId = newId
-		ownerId.selected = '2'
-		submit()
+		browser.to(AclObjectIdentityCreatePage).with {
+			aclClass.selected = '1'
+			objectId = newId
+			ownerId.selected = '2'
+			submit()
+		}
 
 		then:
-		at AclObjectIdentityEditPage
-		objectId == newId
+		def aclObjectIdentityEditPage = browser.at(AclObjectIdentityEditPage)
+		aclObjectIdentityEditPage.objectId.text == newId
 
 		// edit
 		when:
-		objectId = (newId.toInteger() + 1).toString()
-		submit()
+		aclObjectIdentityEditPage.objectId = (newId.toInteger() + 1).toString()
+		aclObjectIdentityEditPage.submit()
 
 		then:
-		at AclObjectIdentityEditPage
-		objectId == (newId.toInteger() + 1).toString()
+		browser.at(AclObjectIdentityEditPage)
+		aclObjectIdentityEditPage.objectId.text == (newId.toInteger() + 1).toString()
 
 		// delete
 		when:
-		delete()
+		aclObjectIdentityEditPage.delete()
 
 		then:
-		at AclObjectIdentitySearchPage
+		browser.at(AclObjectIdentitySearchPage)
 
 		when:
-		objectId = (newId.toInteger() + 1).toString()
-		submit()
+		aclObjectIdentitySearchPage.objectId = (newId.toInteger() + 1).toString()
+		aclObjectIdentitySearchPage.submit()
 
 		then:
-		at AclObjectIdentitySearchPage
-		assertNoResults()
+		browser.at(AclObjectIdentitySearchPage)
+		aclObjectIdentitySearchPage.assertNoResults()
 	}
 }

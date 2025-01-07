@@ -5,7 +5,7 @@ import geb.Page
 abstract class AbstractSecurityPage extends Page {
 
 	void submit() {
-		submit.click()
+		submitBtn.click()
 	}
 
 	protected boolean assertContentContains(String expected) {

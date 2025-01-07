@@ -8,9 +8,7 @@ import page.CreatePage
 class AclEntryCreatePage extends CreatePage {
 
 	static url = 'aclEntry/create'
-
 	static typeName = { 'AclEntry' }
-
 	static content = {
 		aclObjectIdentityId { $(name: 'aclObjectIdentity.id').module(TextInput) }
 		aceOrder { $(name: 'aceOrder').module(TextInput) }

@@ -4,108 +4,112 @@ import grails.testing.mixin.integration.Integration
 import page.aclSid.AclSidCreatePage
 import page.aclSid.AclSidEditPage
 import page.aclSid.AclSidSearchPage
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class AclSidSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		to AclSidSearchPage
+		def aclSidSearchPage = browser.to(AclSidSearchPage)
 
 		then:
-		assertNotSearched()
+		aclSidSearchPage.assertNotSearched()
 
 		when:
-		submit()
+		aclSidSearchPage.submit()
 
 		then:
-		at AclSidSearchPage
-		assertResults 1, 3, 3
+		browser.at(AclSidSearchPage)
+		aclSidSearchPage.assertResults(1, 3, 3)
 	}
 
 	void testFindBySid() {
 		when:
-		to AclSidSearchPage
-		search 'user'
+		def aclSidSearchPage = browser.to(AclSidSearchPage).tap {
+			search('user')
+		}
 
 		then:
-		at AclSidSearchPage
-		assertResults 1, 2, 2
+		browser.at(AclSidSearchPage)
+		aclSidSearchPage.assertResults(1, 2, 2)
 
-		assertContentContains 'user1'
-		assertContentContains 'user2'
+		assertContentContains('user1')
+		assertContentContains('user2')
 	}
 
 	void testFindByPrincipal() {
 		when:
-		to AclSidSearchPage
-		principal.checked = '1'
-		submit()
+		def aclSidSearchPage = browser.to(AclSidSearchPage)
+		// Temporary workaround for problem with Geb RadioButtons module
+		//aclSidSearchPage.principal.checked = '1'
+		browser.$('input', type: 'radio', name: 'principal', value: '1').click()
+		aclSidSearchPage.submit()
 
 		then:
-		at AclSidSearchPage
-		assertContentContains 'user1'
-		assertContentContains 'user2'
-		assertContentContains 'admin'
+		browser.at(AclSidSearchPage)
+		assertContentContains('user1')
+		assertContentContains('user2')
+		assertContentContains('admin')
 	}
 
 	void testUniqueName() {
 		when:
-		to AclSidCreatePage
-		create 'user1', true
+		def aclSidCreatePage = browser.to(AclSidCreatePage).tap {
+			create('user1', true)
+		}
 
 		then:
-		at AclSidCreatePage
-		assertContentContains 'must be unique'
+		browser.at(AclSidCreatePage)
+		assertContentContains('must be unique')
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newName = 'newuser' + UUID.randomUUID()
+		String newName = "newuser${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
-		to AclSidSearchPage
-		sid = newName
-		submit()
+		def aclSidSearchPage = browser.to(AclSidSearchPage).tap {
+			sid = newName
+			submit()
+		}
 
 		then:
-		assertNoResults()
+		aclSidSearchPage.assertNoResults()
 
 		// create
 		when:
-		to AclSidCreatePage
-		create newName, true
+		def aclSidCreatePage = browser.to(AclSidCreatePage).tap {
+			create(newName, true)
+		}
 
 		then:
-		at AclSidEditPage
-		sid == newName
-		principal.checked
+		def aclSidEditPage = browser.at(AclSidEditPage)
+		aclSidEditPage.sid.text == newName
+		aclSidEditPage.principal.checked
 
 		// edit
 		when:
-		sid = newName + '_new'
-		submit()
+		aclSidEditPage.sid = "${newName}_new"
+		aclSidEditPage.submit()
 
 		then:
-		at AclSidEditPage
-		sid == newName + '_new'
+		browser.at(AclSidEditPage)
+		aclSidEditPage.sid.text == "${newName}_new"
 
 		// delete
 		when:
-		delete()
+		aclSidEditPage.delete()
 
 		then:
-		at AclSidSearchPage
+		browser.at(AclSidSearchPage)
 
 		when:
-		sid = newName + '_new'
-		submit()
+		aclSidSearchPage.sid = "${newName}_new"
+		aclSidSearchPage.submit()
 
 		then:
-		at AclSidSearchPage
-		assertNoResults()
+		browser.at(AclSidSearchPage)
+		aclSidSearchPage.assertNoResults()
 	}
 }

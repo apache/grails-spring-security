@@ -4,117 +4,120 @@ import grails.testing.mixin.integration.Integration
 import page.requestmap.RequestmapCreatePage
 import page.requestmap.RequestmapEditPage
 import page.requestmap.RequestmapSearchPage
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class RequestmapSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		to RequestmapSearchPage
+		def requestmapSearchPage = browser.to(RequestmapSearchPage)
 
 		then:
-		assertNotSearched()
+		requestmapSearchPage.assertNotSearched()
 
 		when:
-		submit()
+		requestmapSearchPage.submit()
 
 		then:
-		at RequestmapSearchPage
-		assertResults 1, 3, 3
-		assertContentContains '/secure/**'
-		assertContentContains 'ROLE_ADMIN'
-		assertContentContains '/j_spring_security_switch_user'
-		assertContentContains 'ROLE_RUN_AS'
-		assertContentContains '/**'
-		assertContentContains 'permitAll'
+		browser.at(RequestmapSearchPage)
+		requestmapSearchPage.assertResults(1, 3, 3)
+		assertContentContains('/secure/**')
+		assertContentContains('ROLE_ADMIN')
+		assertContentContains('/j_spring_security_switch_user')
+		assertContentContains('ROLE_RUN_AS')
+		assertContentContains('/**')
+		assertContentContains('permitAll')
 	}
 
 	void testFindByConfigAttribute() {
 		when:
-		to RequestmapSearchPage
-		configAttribute = 'run'
-		submit()
+		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+			configAttribute = 'run'
+			submit()
+		}
 
 		then:
-		at RequestmapSearchPage
-		assertResults 1, 1, 1
-		assertContentContains '/j_spring_security_switch_user'
-		assertContentContains 'ROLE_RUN_AS'
+		browser.at(RequestmapSearchPage)
+		requestmapSearchPage.assertResults(1, 1, 1)
+		assertContentContains('/j_spring_security_switch_user')
+		assertContentContains('ROLE_RUN_AS')
 	}
 
 	void testFindByUrl() {
 		when:
-		to RequestmapSearchPage
-		urlPattern = 'secure'
-		submit()
+		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+			urlPattern = 'secure'
+			submit()
+		}
 
 		then:
-		at RequestmapSearchPage
-		assertResults 1, 1, 1
-		assertContentContains '/secure/**'
-		assertContentContains 'ROLE_ADMIN'
+		browser.at(RequestmapSearchPage)
+		requestmapSearchPage.assertResults(1, 1, 1)
+		assertContentContains('/secure/**')
+		assertContentContains('ROLE_ADMIN')
 	}
 
 	void testUniqueUrl() {
 		when:
-		to RequestmapCreatePage
-		urlPattern = '/secure/**'
-		configAttribute = 'ROLE_FOO'
-		submit()
+		def requestmapCreatePage = browser.to(RequestmapCreatePage).tap {
+			urlPattern = '/secure/**'
+			configAttribute = 'ROLE_FOO'
+			submit()
+		}
 
 		then:
-		at RequestmapCreatePage
-		assertNotUnique()
+		browser.at(RequestmapCreatePage)
+		requestmapCreatePage.assertNotUnique()
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newPattern = '/foo/' + UUID.randomUUID()
+		String newPattern = "/foo/${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
-		to RequestmapSearchPage
-		urlPattern = newPattern
-		submit()
+		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+			urlPattern = newPattern
+			submit()
+		}
 
 		then:
-		assertNoResults()
+		requestmapSearchPage.assertNoResults()
 
 		// create
 		when:
-		to RequestmapCreatePage
-		urlPattern = newPattern
-		configAttribute = 'ROLE_FOO'
-		submit()
+		browser.to(RequestmapCreatePage).with {
+			urlPattern = newPattern
+			configAttribute = 'ROLE_FOO'
+			submit()
+		}
 
 		then:
-		at RequestmapEditPage
-		urlPattern == newPattern
+		def requestmapEditPage = browser.at(RequestmapEditPage)
+		requestmapSearchPage.urlPattern.text == newPattern
 
 		// edit
 		when:
-		urlPattern = newPattern + '/new'
-		submit()
+		requestmapEditPage.urlPattern = "${newPattern}/new"
+		requestmapEditPage.submit()
 
 		then:
-		at RequestmapEditPage
-		urlPattern == newPattern + '/new'
+		browser.at(RequestmapEditPage)
+		requestmapEditPage.urlPattern.text == "${newPattern}/new"
 
 		// delete
 		when:
-		delete()
+		requestmapEditPage.delete()
 
 		then:
-		at RequestmapSearchPage
+		browser.at(RequestmapSearchPage)
 
 		when:
-		urlPattern = newPattern + '/new'
-		submit()
+		requestmapSearchPage.urlPattern = "${newPattern}/new"
+		requestmapSearchPage.submit()
 
 		then:
-		at RequestmapSearchPage
-		assertNoResults()
+		browser.at(RequestmapSearchPage)
+		requestmapSearchPage.assertNoResults()
 	}
 }

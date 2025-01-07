@@ -1,266 +1,220 @@
 package spec
 
-import com.dumbster.smtp.SimpleSmtpServer
-import com.dumbster.smtp.SmtpMessage
 import grails.testing.mixin.integration.Integration
-import org.springframework.test.annotation.DirtiesContext
+import page.profile.ProfileCreatePage
 import page.profile.ProfileEditPage
 import page.profile.ProfileListPage
 import page.register.ForgotPasswordPage
 import page.register.RegisterPage
+import page.register.ResetPasswordPage
 import page.register.SecurityQuestionsPage
-import page.profile.ProfileCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
-import page.register.ResetPasswordPage
-import spock.lang.PendingFeature
-import spock.lang.Stepwise
 
-@DirtiesContext(classMode=DirtiesContext.ClassMode.BEFORE_CLASS)
-@Stepwise
 @Integration
 class RegisterSpec extends AbstractSecuritySpec {
 
-	private SimpleSmtpServer server
-
-	void setup() {
-		startMailServer()
-	}
-
-	void cleanup() {
-		server.stop()
-	}
-
 	void testRegisterValidation() {
 		when:
-		to RegisterPage
-		submit()
+		def registerPage = browser.to(RegisterPage).tap {
+			submit()
+		}
 
 		then:
-		assertContentContains 'Username is required'
-		assertContentContains 'Email is required'
-		assertContentContains 'Password is required'
+		assertContentContains('Username is required')
+		assertContentContains('Email is required')
+		assertContentContains('Password is required')
 
 		when:
-		username = 'admin'
-		email = 'foo'
-		$('#password') << 'abcdefghijk'
-		$('#password2') << 'mnopqrstuwzy'
-		submit()
+		registerPage.with {
+			username = 'admin'
+			email = 'foo'
+			password = 'abcdefghijk'
+			password2 = 'mnopqrstuwzy'
+			submit()
+		}
 
 		then:
-		assertContentContains 'The username is taken'
-		assertContentContains 'Please provide a valid email address'
-		assertContentContains 'Password must have at least one letter, number, and special character: !@#$%^&'
-		assertContentContains 'Passwords do not match'
+		assertContentContains('The username is taken')
+		assertContentContains('Please provide a valid email address')
+		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
+		assertContentContains('Passwords do not match')
 
 		when:
-		username = 'abcdef123'
-		email = 'abcdef@abcdef.com'
-		$('#password') << 'aaaaaaaa'
-		$('#password2') << 'aaaaaaaa'
-		submit()
+		registerPage.with {
+			username = 'abcdef123'
+			email = 'abcdef@abcdef.com'
+			password = 'aaaaaaaa'
+			password2 = 'aaaaaaaa'
+			submit()
+		}
 
 		then:
-		assertContentContains 'Password must have at least one letter, number, and special character: !@#$%^&'
-
+		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
 	}
 
 	void testForgotPasswordValidation() {
 		when:
-		to ForgotPasswordPage
-		submit()
+		def forgotPasswordPage = browser.to(ForgotPasswordPage).tap {
+			submit()
+		}
 
 		then:
-		assertContentContains 'Please enter your username'
+		assertContentContains('Please enter your username')
 
 		when:
-		username = '1111'
-		submit()
+		forgotPasswordPage.with {
+			username = '1111'
+			submit()
+		}
 
 		then:
-		assertContentContains 'No user was found with that username'
+		assertContentContains('No user was found with that username')
 	}
 
-	// FIXME
-	@DirtiesContext
-	@PendingFeature(reason="test is failing at deleteProfile stage")
 	void testRegisterAndForgotPassword() {
-
 		given:
-		String un = 'test_user_abcdef' + System.currentTimeMillis()
-		when:
-		go 'register/resetPassword?t=123'
-
-		then:
-		assertHtmlContains 'Sorry, we have no record of that request, or it has expired'
+		String un = "test_user_abcdef${System.currentTimeMillis()}"
 
 		when:
-		to RegisterPage
+		browser.go('register/resetPassword?t=123')
 
 		then:
-		at RegisterPage
+		assertHtmlContains('Sorry, we have no record of that request, or it has expired')
 
 		when:
-		username = un
-		email = un + '@abcdef.com'
-		$('#password') << 'aaaaaa1#'
-		$('#password2') << 'aaaaaa1#'
-		submit()
-
+		def registerPage = browser.to(RegisterPage)
 
 		then:
-		assertHtmlContains 'Your registration is complete'
-
+		browser.at(RegisterPage)
 
 		when:
-		to ProfileCreatePage
-		create(un)
+		registerPage.with {
+			username = un
+			email = "$un@abcdef.com"
+			password = 'aaaaaa1#'
+			password2 = 'aaaaaa1#'
+			submit()
+		}
 
 		then:
-		at ProfileListPage
-		assertHtmlContains 'created'
+		assertHtmlContains('Your registration is complete')
 
 		when:
-		$("a", text: "User(username:"+un+")").parent().parent().children().first().children('a').click()
+		browser.to(ProfileCreatePage).with {
+			create(un)
+		}
 
 		then:
-		at ProfileEditPage
+		def profileListPage = browser.at(ProfileListPage)
+		assertHtmlContains('created')
 
 		when:
-		updateProfile(un)
+		profileListPage.editProfile(un)
 
 		then:
-		at ProfileListPage
-		assertHtmlContains "updated"
+		def profileEditPage = browser.at(ProfileEditPage)
+
+		when:
+		profileEditPage.updateProfile(un)
+
+		then:
+		browser.at(ProfileListPage)
+		assertHtmlContains('updated')
 
 		when:
 		logout()
-		go ''
+		browser.go('')
 
 		then:
-		assertContentContains 'Log in'
+		assertContentContains('Log in')
 
 		when:
-		to ForgotPasswordPage
-		username = un
-		submit()
+		browser.to(ForgotPasswordPage).with {
+			username = un
+			submit()
+		}
 
 		then:
-		at SecurityQuestionsPage
-
+		def securityQuestionPage = browser.at(SecurityQuestionsPage)
 
 		when:
-		question1 = '1234'
-		question2 = '12345'
-		submit()
+		securityQuestionPage.with {
+			question1 = '1234'
+			question2 = '12345'
+			submit()
+		}
 
 		then:
-		at ResetPasswordPage
+		def resetPasswordPage = browser.at(ResetPasswordPage)
 
 		when:
-		submit()
+		resetPasswordPage.submit()
 
 		then:
-		assertContentContains 'Password is required'
+		assertContentContains('Password is required')
 
 		when:
-		enterNewPassword('abcdefghijk','mnopqrstuwzy')
+		resetPasswordPage.enterNewPassword('abcdefghijk','mnopqrstuwzy')
 
 		then:
-		assertContentContains 'Password must have at least one letter, number, and special character: !@#$%^&'
-		assertContentContains 'Passwords do not match'
+		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
+		assertContentContains('Passwords do not match')
 
 		when:
-		enterNewPassword('aaaaaaaa','aaaaaaaa')
+		resetPasswordPage.enterNewPassword('aaaaaaaa', 'aaaaaaaa')
 
 		then:
-		assertContentContains 'Password must have at least one letter, number, and special character: !@#$%^&'
+		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
 
 		when:
-		enterNewPassword('aaaaaa1#','aaaaaa1#')
+		resetPasswordPage.enterNewPassword('aaaaaa1#', 'aaaaaa1#')
 
 		then:
-		assertHtmlContains 'Your password was successfully changed'
+		assertHtmlContains('Your password was successfully changed')
 
 		when:
 		logout()
-		go ''
+		browser.go('')
 
 		then:
-		assertContentContains 'Log in'
+		assertContentContains('Log in')
 
 		when:
-		to ProfileListPage
+		browser.to(ProfileListPage)
 
 		then:
-		at ProfileListPage
+		browser.at(ProfileListPage)
 
 		when:
-		$("a", text: "User(username:"+un+")").parent().parent().children().first().children('a').click()
+		profileListPage.editProfile(un)
 
 		then:
-		at ProfileEditPage
+		def profileEditPage2 = browser.at(ProfileEditPage)
 
 		when:
-		deleteProfile()
+		profileEditPage2.deleteProfile()
 
 		then:
-		assertHtmlContains 'deleted'
+		assertHtmlContains('deleted')
 
 		when:
-		go 'user/edit?username=' + un
+		browser.go("user/edit?username=$un")
 
 		then:
-		at UserEditPage
-		username == un
+		def userEditPage = browser.at(UserEditPage)
+		userEditPage.username.text == un
 
 		when:
-		delete()
+		userEditPage.delete()
 
 		then:
-		at UserSearchPage
+		browser.at(UserSearchPage)
 
 		when:
-		go 'user/edit?username=' + un
+		browser.go("user/edit?username=$un")
 
 		then:
-		assertHtmlContains 'User not found'
-	}
-
-	private SmtpMessage getCurrentEmail() {
-		def received = server.receivedEmail
-		def email
-		while (received.hasNext()) {
-			email = received.next()
-		}
-		email
-	}
-
-	private String findCode(String body, String action) {
-		def matcher = body =~ /(?s).*$action\?t=(.+)".*/
-		assert matcher.hasGroup()
-		assert matcher.count == 1
-		matcher[0][1]
-	}
-
-	private void startMailServer() {
-
-		int port = 1025
-		while (true) {
-			try {
-				new ServerSocket(port).close()
-				break
-			}
-			catch (IOException e) {
-				port++
-				assert port < 2000, 'cannot find open port'
-			}
-		}
-
-		server = SimpleSmtpServer.start(port)
-
-		go 'testData/updateMailSenderPort?port=' + port
-		assertContentContains 'OK: ' + port
+		assertHtmlContains('User not found')
 	}
 }

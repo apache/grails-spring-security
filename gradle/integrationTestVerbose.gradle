@@ -27,4 +27,5 @@ tasks.withType(Test) {
             }
         }
     }
+    //systemProperty('grails.geb.recording.mode', 'RECORD_FAILING')
 }

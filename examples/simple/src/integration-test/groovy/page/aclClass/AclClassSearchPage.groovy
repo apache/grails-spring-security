@@ -6,9 +6,7 @@ import page.SearchPage
 class AclClassSearchPage extends SearchPage {
 
 	static url = 'aclClass/search'
-
 	static typeName = { 'AclClass' }
-
 	static content = {
 		className { $(name: 'className').module(TextInput) }
 	}

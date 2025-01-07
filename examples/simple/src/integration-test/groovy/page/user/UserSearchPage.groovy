@@ -7,9 +7,7 @@ import page.SearchPage
 class UserSearchPage extends SearchPage {
 
 	static url = 'user/search'
-
 	static typeName = { 'User' }
-
 	static content = {
 		username { $('#username').module(TextInput) }
 		enabled { $(name: 'enabled').module(RadioButtons) }

@@ -5,14 +5,13 @@ import geb.Page
 abstract class AbstractSecurityPage extends Page {
 
 	void submit() {
-		submit.click()
+		submitBtn.click()
 	}
 
 	protected boolean assertContentContains(String expected) {
 		assert $().text().contains(expected)
 		true
 	}
-
 
 	protected boolean assertContentMatches(String regex) {
 		assert $().text() ==~ regex

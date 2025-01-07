@@ -9,16 +9,16 @@ import geb.navigator.Navigator
 class RolesTab extends Module {
 
     static content = {
-        tab { $("a", href: "#tab-roles") }
+        tab { $('a', href: '#tab-roles') }
     }
 
     void select() {
         tab.click()
-        waitFor { $("li", "aria-controls": "tab-roles", "aria-selected": "true") }
+        waitFor { $('li', 'aria-controls': 'tab-roles', 'aria-selected': 'true') }
     }
 
     int totalRoles() {
-        return $("input", type: "checkbox", id: startsWith("ROLE_")).size().toInteger()
+        return $('input', type: 'checkbox', id: startsWith('ROLE_')).size().toInteger()
     }
 
     int totalEnabledRoles() {
@@ -26,15 +26,15 @@ class RolesTab extends Module {
     }
 
     Navigator findAllEnabledRoles() {
-        return $("input", type: "checkbox", id: startsWith("ROLE_"), checked: "checked")
+        return $('input', type: 'checkbox', id: startsWith('ROLE_'), checked: 'checked')
     }
 
     void enableRole(String roleName) {
-        $("input", type: "checkbox", id: roleName).value(true)
+        $('input', type: 'checkbox', id: roleName).value(true)
     }
 
     void disableRole(String roleName) {
-        $("input", type: "checkbox", id: roleName).value(false)
+        $('input', type: 'checkbox', id: roleName).value(false)
     }
 
     boolean hasEnabledRole(String roleName) {
@@ -44,6 +44,4 @@ class RolesTab extends Module {
     boolean hasEnabledRoles(List<String> roleNames) {
         return findAllEnabledRoles().collect { it.attr('id') }.containsAll(roleNames)
     }
-
-
 }

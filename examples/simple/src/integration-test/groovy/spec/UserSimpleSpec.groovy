@@ -5,251 +5,264 @@ import page.user.UserCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 import spock.lang.Issue
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class UserSimpleSpec extends AbstractSecuritySpec {
 
     void testFindAll() {
         when:
-        to UserSearchPage
+        def userSearchPage = browser.to(UserSearchPage)
 
         then:
-        assertNotSearched()
+        userSearchPage.assertNotSearched()
 
         when:
-        submit()
+        userSearchPage.submit()
 
         then:
-        at UserSearchPage
-        assertResults 1, 10, 22
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 10, 22)
     }
 
     void testFindByUsername() {
         when:
-        to UserSearchPage
-
-        username = 'foo'
-        submit()
+        def userSearchPage = browser.to(UserSearchPage).tap {
+            username = 'foo'
+            submit()
+        }
 
         then:
-        at UserSearchPage
-        assertResults 1, 3, 3
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 3, 3)
 
-        assertContentContains 'foon_2'
-        assertContentContains 'foolkiller'
-        assertContentContains 'foostra'
+        assertContentContains('foon_2')
+        assertContentContains('foolkiller')
+        assertContentContains('foostra')
     }
 
     void testFindByDisabled() {
         when:
-        to UserSearchPage
+        def userSearchPage = browser.to(UserSearchPage)
 
-        enabled.checked = '-1'
-        submit()
+        // Temporary workaround for problem with Geb RadioButtons module
+        //userSearchPage.enabled.checked = '-1'
+        browser.$('input', type: 'radio', name: 'enabled', value: '-1').click()
+        userSearchPage.submit()
 
         then:
-        at UserSearchPage
-        assertResults 1, 1, 1
-        assertContentContains 'billy9494'
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 1, 1)
+        assertContentContains('billy9494')
     }
 
     void testFindByAccountExpired() {
         when:
-        to UserSearchPage
+        def userSearchPage = browser.to(UserSearchPage)
 
-        accountExpired.checked = '1'
-
-        submit()
+        // Temporary workaround for problem with Geb RadioButtons module
+        //userSearchPage.accountExpired.checked = '1'
+        browser.$('input', type: 'radio', name: 'accountExpired', value: '1').click()
+        userSearchPage.submit()
 
         then:
-        at UserSearchPage
-        assertResults 1, 3, 3
-        assertContentContains 'maryrose'
-        assertContentContains 'ratuig'
-        assertContentContains 'rome20c'
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 3, 3)
+        assertContentContains('maryrose')
+        assertContentContains('ratuig')
+        assertContentContains('rome20c')
     }
 
     void testFindByAccountLocked() {
         when:
-        to UserSearchPage
+        def userSearchPage = browser.to(UserSearchPage)
 
-        accountLocked.checked = '1'
-
-        submit()
+        // Temporary workaround for problem with Geb RadioButtons module
+        //userSearchPage.accountLocked.checked = '1'
+        browser.$('input', type: 'radio', name: 'accountLocked', value: '1').click()
+        userSearchPage.submit()
 
         then:
-        at UserSearchPage
-        assertResults 1, 3, 3
-        assertContentContains 'aaaaaasd'
-        assertContentContains 'achen'
-        assertContentContains 'szhang1999'
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 3, 3)
+        assertContentContains('aaaaaasd')
+        assertContentContains('achen')
+        assertContentContains('szhang1999')
     }
 
     void testFindByPasswordExpired() {
         when:
-        to UserSearchPage
+        def userSearchPage = browser.to(UserSearchPage)
 
-        passwordExpired.checked = '1'
-
-        submit()
+        // Temporary workaround for problem with Geb RadioButtons module
+        //userSearchPage.passwordExpired.checked = '1'
+        browser.$('input', type: 'radio', name: 'passwordExpired', value: '1').click()
+        userSearchPage.submit()
 
         then:
-        at UserSearchPage
-        assertResults 1, 3, 3
-        assertContentContains 'hhheeeaaatt'
-        assertContentContains 'mscanio'
-        assertContentContains 'kittal'
+        browser.at(UserSearchPage)
+        userSearchPage.assertResults(1, 3, 3)
+        assertContentContains('hhheeeaaatt')
+        assertContentContains('mscanio')
+        assertContentContains('kittal')
     }
 
     void testCreateAndEdit() {
         given:
-        String newUsername = 'newuser' + UUID.randomUUID()
+        String newUsername = "newuser${UUID.randomUUID()}"
 
         // make sure it doesn't exist
         when:
-        to UserSearchPage
-
-        username = newUsername
-        submit()
+        def userSearchPage = browser.to(UserSearchPage).tap {
+            username = newUsername
+            submit()
+        }
 
         then:
-        at UserSearchPage
-        assertNoResults()
+        browser.at(UserSearchPage)
+        userSearchPage.assertNoResults()
 
         // create
         when:
-        to UserCreatePage
-
-        username = newUsername
-        $('#password') << 'password'
-        enabled.check()
-        submit()
+        browser.to(UserCreatePage).with {
+            username = newUsername
+            password =  'password'
+            enabled.check()
+            submit()
+        }
 
         then:
-        at UserEditPage
-        username == newUsername
-        enabled.checked
-        !accountExpired.checked
-        !accountLocked.checked
-        !passwordExpired.checked
+        def userEditPage = browser.at(UserEditPage)
+        userEditPage.username.text == newUsername
+        userEditPage.enabled.checked
+        !userEditPage.accountExpired.checked
+        !userEditPage.accountLocked.checked
+        !userEditPage.passwordExpired.checked
 
         // edit
         when:
-        String updatedName = newUsername + '_updated'
-        username = updatedName
-        enabled.uncheck()
-        accountExpired.check()
-        accountLocked.check()
-        passwordExpired.check()
-        submit()
+        String updatedName = "${newUsername}_updated"
+        userEditPage.with {
+            username = updatedName
+            enabled.uncheck()
+            accountExpired.check()
+            accountLocked.check()
+            passwordExpired.check()
+            submit()
+        }
 
         then:
-        at UserEditPage
-        username == updatedName
-        !enabled.checked
-        accountExpired.checked
-        accountLocked.checked
-        passwordExpired.checked
+        browser.at(UserEditPage)
+        userEditPage.username.text == updatedName
+        !userEditPage.enabled.checked
+        userEditPage.accountExpired.checked
+        userEditPage.accountLocked.checked
+        userEditPage.passwordExpired.checked
 
         // delete
         when:
-        delete()
+        userEditPage.delete()
 
         then:
-        at UserSearchPage
+        browser.at(UserSearchPage)
 
         when:
-        username = updatedName
-        submit()
+        userSearchPage.with {
+            username = updatedName
+            submit()
+        }
 
         then:
-        at UserSearchPage
-        assertNoResults()
+        browser.at(UserSearchPage)
+        userSearchPage.assertNoResults()
     }
 
-    @Issue("https://github.com/grails-plugins/grails-spring-security-ui/issues/89")
+    @Issue('https://github.com/grails-plugins/grails-spring-security-ui/issues/89')
     void testUserRoleAssociationsAreNotRemoved() {
-        when: "edit user 1"
-        go 'user/edit/1'
+        when: 'edit user 1'
+        browser.go('user/edit/1')
 
         then:
-        at UserEditPage
+        def userEditPage = browser.at(UserEditPage)
 
-        when: "select Roles tab"
-        rolesTab.select()
+        when: 'select Roles tab'
+        userEditPage.rolesTab.select()
 
-        then: "12 roles are listed and 1 is enabled"
-        assert rolesTab.totalRoles() == 12
-        assert rolesTab.totalEnabledRoles() == 1
-        assert rolesTab.hasEnabledRole('ROLE_USER')
+        then: '12 roles are listed and 1 is enabled'
+        userEditPage.rolesTab.totalRoles() == 12
+        userEditPage.rolesTab.totalEnabledRoles() == 1
+        userEditPage.rolesTab.hasEnabledRole('ROLE_USER')
 
-        when: "ROLE_ADMIN is enabled and the changes are saved"
-        rolesTab.enableRole "ROLE_ADMIN"
-        submit()
-        rolesTab.select()
+        when: 'ROLE_ADMIN is enabled and the changes are saved'
+        userEditPage.with {
+            rolesTab.enableRole 'ROLE_ADMIN'
+            submit()
+            rolesTab.select()
+        }
 
-        then: "12 roles are listed and 2 are enabled"
-        assert rolesTab.totalEnabledRoles() == 2
-        assert rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
-        assert rolesTab.totalRoles() == 12
+        then: '12 roles are listed and 2 are enabled'
+        userEditPage.rolesTab.totalEnabledRoles() == 2
+        userEditPage.rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
+        userEditPage.rolesTab.totalRoles() == 12
     }
 
-    @Issue("https://github.com/grails-plugins/grails-spring-security-ui/issues/106")
+    @Issue('https://github.com/grails-plugins/grails-spring-security-ui/issues/106')
     void testUserRoleAssociationsAreRemoved() {
-        when: "edit user 2"
-        go 'user/edit/2'
+        when: 'edit user 2'
+        browser.go('user/edit/2')
 
         then:
-        at UserEditPage
+        def userEditPage = browser.at(UserEditPage)
 
-        when: "select Roles tab"
-        rolesTab.select()
+        when: 'select Roles tab'
+        userEditPage.rolesTab.select()
 
-        then: "12 roles are listed and 1 is enabled"
-        assert rolesTab.totalRoles() == 12
-        assert rolesTab.totalEnabledRoles() == 1
-        assert rolesTab.hasEnabledRole('ROLE_USER')
+        then: '12 roles are listed and 1 is enabled'
+        userEditPage.rolesTab.totalRoles() == 12
+        userEditPage.rolesTab.totalEnabledRoles() == 1
+        userEditPage.rolesTab.hasEnabledRole('ROLE_USER')
 
-        when: "ROLE_ADMIN is enabled and the changes are saved"
-        rolesTab.enableRole "ROLE_ADMIN"
-        submit()
-        rolesTab.select()
+        when: 'ROLE_ADMIN is enabled and the changes are saved'
+        userEditPage.with {
+            rolesTab.enableRole('ROLE_ADMIN')
+            submit()
+            rolesTab.select()
+        }
 
-        then: "12 roles are listed and 2 are enabled"
-        assert rolesTab.totalEnabledRoles() == 2
-        assert rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
-        assert rolesTab.totalRoles() == 12
+        then: '12 roles are listed and 2 are enabled'
+        userEditPage.rolesTab.totalEnabledRoles() == 2
+        userEditPage.rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
+        userEditPage.rolesTab.totalRoles() == 12
 
-        when: "edit user 2"
-        go 'user/edit/2'
-
-        then:
-        at UserEditPage
-
-        when: "select Roles tab"
-        rolesTab.select()
-
-        then: "12 roles are listed and 2 are enabled"
-        assert rolesTab.totalRoles() == 12
-        assert rolesTab.totalEnabledRoles() == 2
-        assert rolesTab.hasEnabledRole('ROLE_USER')
-
-        when: "ROLE_ADMIN is disabled and the changes are saved"
-        rolesTab.disableRole "ROLE_ADMIN"
-        submit()
-        go 'user/edit/2'
+        when: 'edit user 2'
+        browser.go('user/edit/2')
 
         then:
-        at UserEditPage
+        browser.at(UserEditPage)
 
-        when: "select Roles tab"
-        rolesTab.select()
+        when: 'select Roles tab'
+        userEditPage.rolesTab.select()
 
-        then: "12 roles are listed and 1 is enabled"
-        assert rolesTab.totalEnabledRoles() == 1
-        assert rolesTab.hasEnabledRoles(['ROLE_USER'])
-        assert rolesTab.totalRoles() == 12
+        then: '12 roles are listed and 2 are enabled'
+        userEditPage.rolesTab.totalRoles() == 12
+        userEditPage.rolesTab.totalEnabledRoles() == 2
+        userEditPage.rolesTab.hasEnabledRole('ROLE_USER')
+
+        when: 'ROLE_ADMIN is disabled and the changes are saved'
+        userEditPage.with {
+            rolesTab.disableRole('ROLE_ADMIN')
+            submit()
+        }
+        browser.go('user/edit/2')
+
+        then:
+        browser.at(UserEditPage)
+
+        when: 'select Roles tab'
+        userEditPage.rolesTab.select()
+
+        then: '12 roles are listed and 1 is enabled'
+        userEditPage.rolesTab.totalEnabledRoles() == 1
+        userEditPage.rolesTab.hasEnabledRoles(['ROLE_USER'])
+        userEditPage.rolesTab.totalRoles() == 12
     }
 }

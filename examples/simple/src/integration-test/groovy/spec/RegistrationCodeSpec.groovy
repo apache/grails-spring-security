@@ -3,80 +3,80 @@ package spec
 import grails.testing.mixin.integration.Integration
 import page.registrationCode.RegistrationCodeEditPage
 import page.registrationCode.RegistrationCodeSearchPage
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class RegistrationCodeSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		to RegistrationCodeSearchPage
+		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage)
 
 		then:
-		assertNotSearched()
+		registrationCodeSearchPage.assertNotSearched()
 
 		when:
-		submit()
+		registrationCodeSearchPage.submit()
 
 		then:
-		at RegistrationCodeSearchPage
-		assertResults 1, 10, 14
-		assertContentContains 'registration_test_2'
-		assertContentContains '0a154624f36d42e4aa68991a9477bd04'
+		browser.at(RegistrationCodeSearchPage)
+		registrationCodeSearchPage.assertResults(1, 10, 14)
+		assertContentContains('registration_test_2')
+		assertContentContains('0a154624f36d42e4aa68991a9477bd04')
 	}
 
 	void testFindByToken() {
 		when:
-		to RegistrationCodeSearchPage
-		token = '4a7f88afec3746f7aab2f5d0d8df6d8e'
-		submit()
+		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage)
+		registrationCodeSearchPage.token = '4a7f88afec3746f7aab2f5d0d8df6d8e'
+		registrationCodeSearchPage.submit()
 
 		then:
-		at RegistrationCodeSearchPage
-		assertResults 1, 1, 1
-		assertContentContains 'registration_test_1'
-		assertContentContains '4a7f88afec3746f7aab2f5d0d8df6d8e'
+		browser.at(RegistrationCodeSearchPage)
+		registrationCodeSearchPage.assertResults(1, 1, 1)
+		assertContentContains('registration_test_1')
+		assertContentContains('4a7f88afec3746f7aab2f5d0d8df6d8e')
 	}
 
 	void testFindByUsername() {
 		when:
-		to RegistrationCodeSearchPage
-		username = 'registration_test_3'
-		submit()
+		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage)
+		registrationCodeSearchPage.username = 'registration_test_3'
+		registrationCodeSearchPage.submit()
 
 		then:
-		at RegistrationCodeSearchPage
-		assertResults 1, 5, 5
-		assertContentContains 'registration_test_3'
-		assertContentContains '89f9bbc658b14808ae4c77c6e17e551a'
+		browser.at(RegistrationCodeSearchPage)
+		registrationCodeSearchPage.assertResults(1, 5, 5)
+		assertContentContains('registration_test_3')
+		assertContentContains('89f9bbc658b14808ae4c77c6e17e551a')
 	}
 
 	void testEdit() {
 		when:
-		go 'registrationCode/edit/4'
+		browser.go('registrationCode/edit/4')
 
 		then:
-		at RegistrationCodeEditPage
-		username == 'registration_test_1'
-		token == 'a50e061e0e2f424fb7fbc2ff3dae597d'
+		def registrationCodeEditPage = browser.at(RegistrationCodeEditPage)
+		registrationCodeEditPage.username.text == 'registration_test_1'
+		registrationCodeEditPage.token.text == 'a50e061e0e2f424fb7fbc2ff3dae597d'
 
 		when:
-		username = 'new_user'
-		token = 'new_token'
-		submit()
+		registrationCodeEditPage.with {
+			username = 'new_user'
+			token = 'new_token'
+			submit()
+		}
 
 		then:
-		at RegistrationCodeEditPage
-		username == 'new_user'
-		token == 'new_token'
+		browser.at(RegistrationCodeEditPage)
+		registrationCodeEditPage.username.text == 'new_user'
+		registrationCodeEditPage.token.text == 'new_token'
 
 		when:
-		go 'registrationCode/edit/4'
+		browser.go('registrationCode/edit/4')
 
 		then:
-		at RegistrationCodeEditPage
-		username == 'new_user'
-		token == 'new_token'
+		browser.at(RegistrationCodeEditPage)
+		registrationCodeEditPage.username.text == 'new_user'
+		registrationCodeEditPage.token.text == 'new_token'
 	}
 }

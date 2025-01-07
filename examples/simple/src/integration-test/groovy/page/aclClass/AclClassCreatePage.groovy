@@ -6,9 +6,7 @@ import page.CreatePage
 class AclClassCreatePage extends CreatePage {
 
 	static url = 'aclClass/create'
-
 	static typeName = { 'AclClass' }
-
 	static content = {
 		className { $(name: 'className').module(TextInput) }
 	}

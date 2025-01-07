@@ -6,9 +6,7 @@ import page.EditPage
 class RoleEditPage extends EditPage {
 
 	static url = 'role/edit'
-
 	static typeName = { 'Role' }
-
 	static content = {
 		authority { $(name: 'authority').module(TextInput) }
 	}

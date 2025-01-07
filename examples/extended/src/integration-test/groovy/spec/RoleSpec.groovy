@@ -4,92 +4,94 @@ import grails.testing.mixin.integration.Integration
 import page.role.RoleCreatePage
 import page.role.RoleEditPage
 import page.role.RoleSearchPage
-import spock.lang.Stepwise
 
-@Stepwise
 @Integration
 class RoleSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		to RoleSearchPage
+		def roleSearchPage = browser.to(RoleSearchPage)
 
 		then:
-		assertNotSearched()
+		roleSearchPage.assertNotSearched()
 
 		when:
-		submit()
+		roleSearchPage.submit()
 
 		then:
-		at RoleSearchPage
-		assertResults 1, 10, 12
-		assertContentContains 'ROLE_COFFEE'
+		browser.at(RoleSearchPage)
+		roleSearchPage.assertResults(1, 10, 12)
+		assertContentContains('ROLE_COFFEE')
 	}
 
 	void testFindByAuthority() {
 		when:
-		to RoleSearchPage
-		search 'ad'
+		def roleSearchPage = browser.to(RoleSearchPage).tap {
+			search('ad')
+		}
 
 		then:
-		at RoleSearchPage
-		assertResults 1, 2, 2
+		browser.at(RoleSearchPage)
+		roleSearchPage.assertResults(1, 2, 2)
 
-		assertContentContains 'ROLE_ADMIN'
-		assertContentContains 'ROLE_INSTEAD'
+		assertContentContains('ROLE_ADMIN')
+		assertContentContains('ROLE_INSTEAD')
 	}
 
 	void testUniqueName() {
 		when:
-		to RoleCreatePage
-		create 'ROLE_ADMIN'
+		def roleCreatePage = browser.to(RoleCreatePage).tap {
+			create('ROLE_ADMIN')
+		}
 
 		then:
-		at RoleCreatePage
-		assertNotUnique()
+		browser.at(RoleCreatePage)
+		roleCreatePage.assertNotUnique()
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newName = 'ROLE_NEW_TEST' + UUID.randomUUID()
+		String newName = "ROLE_NEW_TEST${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
-		to RoleSearchPage
-		search newName
+		def roleSearchPage = browser.to(RoleSearchPage).tap {
+			search(newName)
+		}
 
 		then:
-		assertNoResults()
+		roleSearchPage.assertNoResults()
 
 		// create
 		when:
-		to RoleCreatePage
-		create newName
+		browser.to(RoleCreatePage).with {
+			create(newName)
+		}
 
 		then:
-		at RoleEditPage
-		authority == newName
+		def roleEditPage = browser.at(RoleEditPage)
+		roleEditPage.authority.text == newName
 
 		// edit
 		when:
-		update newName + '_new'
+		roleEditPage.update("${newName}_new")
 
 		then:
-		at RoleEditPage
-		authority == newName + '_new'
+		browser.at(RoleEditPage)
+		roleEditPage.authority.text == "${newName}_new"
 
 		// delete
 		when:
-		delete()
+		roleEditPage.delete()
 
 		then:
-		at RoleSearchPage
+		browser.at(RoleSearchPage)
 
 		when:
-		search newName + '_new'
+		roleSearchPage.search("${newName}_new")
 
 		then:
-		at RoleSearchPage
-		assertNoResults()
+		browser.at(RoleSearchPage)
+		roleSearchPage.assertNoResults()
 	}
 }
