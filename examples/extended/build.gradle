@@ -3,7 +3,7 @@ buildscript {
         maven { url = 'https://repo.grails.org/grails/core' }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
     }
 }
 
@@ -53,6 +53,5 @@ dependencies {
 
 }
 
-compileJava.options.release = javaVersion.toInteger()
-
-apply from: rootProject.layout.projectDirectory.file('gradle/integrationTestVerbose.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')

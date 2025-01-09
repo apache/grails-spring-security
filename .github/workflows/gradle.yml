@@ -44,8 +44,10 @@ jobs:
       - name: "📤 Publish Snapshot"
         if: github.event_name == 'push' && steps.build.outcome == 'success' && matrix.java == '17'
         env:
-          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+          GRADLE_PUBLISH_RELEASE: 'false'
+          MAVEN_PUBLISH_USERNAME: ${{ secrets.MAVEN_PUBLISH_USERNAME }}
+          MAVEN_PUBLISH_PASSWORD: ${{ secrets.MAVEN_PUBLISH_PASSWORD }}
+          MAVEN_PUBLISH_URL: ${{ secrets.MAVEN_PUBLISH_SNAPSHOT_URL }}
         run: ./gradlew publish
       - name: "✍️ Generate Documentation"
         id: docs

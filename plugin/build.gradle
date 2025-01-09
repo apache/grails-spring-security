@@ -3,9 +3,8 @@ buildscript {
         maven { url = 'https://repo.grails.org/grails/core' }
     }
     dependencies {
-        classpath "org.grails:grails-bom:$grailsVersion"
+        classpath platform("org.grails:grails-bom:$grailsVersion")
         classpath 'com.bertramlabs.plugins:asset-pipeline-gradle'
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
     }
 }
 
@@ -14,17 +13,14 @@ group = 'org.grails.plugins'
 
 apply plugin: 'com.bertramlabs.asset-pipeline'
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
 apply plugin: 'org.grails.grails-gsp'
 apply plugin: 'org.grails.grails-plugin'
-apply plugin: 'org.grails.grails-publish'
-apply plugin: 'signing'
 
 repositories {
     maven { url = 'https://repo.grails.org/grails/core' }
     mavenCentral()
     if (System.getenv('GITHUB_MAVEN_PASSWORD') && !grailsVersion.endsWith('-SNAPSHOT')) {
-        logger.lifecycle('Adding Milestone Grails Core Repo for project {}', project.name)
+        logger.lifecycle('Adding Grails Core Staging Repo for project {}', project.name)
         maven {
             url = 'https://maven.pkg.github.com/grails/grails-core'
             credentials {
@@ -35,21 +31,10 @@ repositories {
     }
 }
 
-compileJava.options.release = javaVersion.toInteger()
-
-grailsPublish {
-    githubSlug = 'grails/grails-spring-security-ui'
-    license {
-        name = 'Apache-2.0'
-    }
-    title = 'Grails Spring Security UI'
-    desc = 'The Spring Security UI plugin provides CRUD screens and other user management workflows.'
-    developers = [burtbeckwith: 'Burt Beckwith']
-}
-
 dependencies {
 
-    // Needed to compile subclasses of AbstractS2UiDomainController in consuming applications
+    // Must be on the compileClasspath of consuming applications to
+    // enable compilation of AbstractS2UiDomainController subclasses.
     compileOnlyApi 'org.grails.plugins:converters'
 
     implementation 'org.grails:grails-plugin-controllers'
@@ -71,16 +56,20 @@ dependencies {
 }
 
 tasks.register('copyGspIntoTemplates', Copy) {
-    from "${layout.projectDirectory}/grails-app/views"
-    into "${layout.projectDirectory}/src/main/templates/views"
+    from layout.projectDirectory.dir('grails-app/views')
+    into layout.projectDirectory.dir('src/main/templates/views')
     dependsOn 'copyTemplates', 'processResources'
 }
 
 tasks.register('removeGspFromTemplates', Delete) {
-    delete "${layout.projectDirectory}/src/main/templates/views"
+    delete layout.projectDirectory.dir('src/main/templates/views')
+}
+
+tasks.named('compileAstJava') {
+    dependsOn 'copyGspIntoTemplates'
 }
 
 assets.packagePlugin = true
-compileAstJava.dependsOn('copyGspIntoTemplates')
 
-apply from: "${rootProject.projectDir}/gradle/testVerbose.gradle"
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')

@@ -1,27 +1,10 @@
-buildscript {
-    configurations.classpath {
-        resolutionStrategy.eachDependency {
-            if (requested.group == 'com.burgstaller' && requested.name == 'okhttp-digest' && requested.version == '1.10') {
-                useTarget('io.github.rburgst:okhttp-digest:1.21')
-                because('Dependency was on Bintray which is no longer available')
-            }
-        }
-    }
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id 'org.asciidoctor.jvm.convert' version '4.0.2'
-    id 'org.asciidoctor.jvm.gems' version '4.0.2'
+    id 'org.asciidoctor.jvm.convert' version '4.0.4'
+    id 'org.asciidoctor.jvm.gems' version '4.0.4'
 }
 
 repositories {
     mavenCentral()
-    ruby {
-        gems()
-    }
 }
 
 def asciidoctorAttributes = [
