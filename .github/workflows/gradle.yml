@@ -61,5 +61,5 @@ jobs:
           COMMIT_EMAIL: grails-build@users.noreply.github.com
           COMMIT_NAME: grails-build
           DOC_FOLDER: gh-pages
-          FOLDER: build/docs
+          FOLDER: docs/build/docs
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
