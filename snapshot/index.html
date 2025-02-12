@@ -629,9 +629,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     // ... other dependencies
-    implementation 'org.grails.plugins:spring-security-core:6.1.2'
-    // required for Grails 6, since spring-boot-dependencies:2.7.18 downgrades
-    implementation 'org.springframework.security:spring-security-core:5.8.16'
+    implementation 'org.grails.plugins:spring-security-core:7.0.-1'
 }</code></pre>
 </div>
 </div>
@@ -730,9 +728,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     implementation 'org.grails.plugins:cxf:3.1.1'
     // CXF above security.
-    implementation 'org.grails.plugins:spring-security-core:6.1.2'
-    // required for Grails 6, since spring-boot-dependencies:2.7.18 downgrades
-    implementation 'org.springframework.security:spring-security-core:5.8.16'
+    implementation 'org.grails.plugins:spring-security-core:7.0.-1'
 }</code></pre>
 </div>
 </div>
@@ -749,9 +745,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.grails.plugins:spring-security-core:6.1.2'
-// required for Grails 6, since spring-boot-dependencies:2.7.18 downgrades
-implementation 'org.springframework.security:spring-security-core:5.8.16'</code></pre>
+<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.grails.plugins:spring-security-core:7.0.-1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6207,9 +6201,7 @@ $ cd bookstore</pre>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
    ...
-   implementation 'org.grails.plugins:spring-security-core:{project-version}'
-   // required for Grails 6, since spring-boot-dependencies:2.7.18 downgrades
-   implementation 'org.springframework.security:spring-security-core:{springsecuritycoreversion}'
+   compile 'org.grails.plugins:spring-security-core:{project-version}'
    ...
 }</code></pre>
 </div>
@@ -7187,8 +7179,8 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 6.1.3-SNAPSHOT<br>
-Last updated 2025-01-02 22:37:04 UTC
+Version 7.0.0-SNAPSHOT<br>
+Last updated 2025-02-12 16:23:50 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
