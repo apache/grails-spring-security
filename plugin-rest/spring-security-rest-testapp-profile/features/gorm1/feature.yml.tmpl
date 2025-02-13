@@ -1,0 +1,13 @@
+description: First configuration of GORM
+dependencies:
+    build:
+        - "org.grails.plugins:hibernate5:7.0.0"
+    compile:
+        - "org.grails.plugins:hibernate5"
+        - "org.hibernate:hibernate-core:5.4.0.Final"
+        - "org.hibernate:hibernate-ehcache:5.4.0.Final"
+        - "org.grails.plugins:spring-security-rest-gorm:${pluginVersion}"
+    runtime:
+        - "com.h2database:h2"
+        - "org.apache.tomcat:tomcat-jdbc"
+        - "org.glassfish.web:el-impl:2.1.2-b03"

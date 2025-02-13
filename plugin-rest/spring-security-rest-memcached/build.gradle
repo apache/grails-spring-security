@@ -1,0 +1,6 @@
+dependencies {
+    api project(":spring-security-rest")
+    api "net.spy:spymemcached:2.12.3"
+
+    profile "org.grails.profiles:plugin:${grailsVersion}"
+}

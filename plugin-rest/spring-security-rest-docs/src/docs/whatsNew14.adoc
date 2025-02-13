@@ -1,0 +1,29 @@
+=== Full compatibility with Spring Security core.
+
+Up to previous releases, this plugin was overriding "stateful" Spring Security core beans, to ensure a stateless behaviour.
+After some users reported issues integrating this plugin with existing installations, version 1.4 now follows a more
+friendly approach.
+
+A new chapter has been created explaining how to configure the filter chains appropriately.
+
+=== RFC 6750 Bearer Token support by default
+
+Now, the token validation and rendering aligns with the http://tools.ietf.org/html/rfc6750[RFC 6750 Bearer Token] spec.
+If you want to keep the old behaviour, simply disable it by setting
+`grails.plugin.springsecurity.rest.token.validation.useBearerToken = false`
+
+=== Credentials are extracted from JSON by default
+
+It makes more sense in a REST application. The old behaviour can still be used by using the corresponding configuration
+property.
+
+=== Anonymous access is allowed
+
+In case you want to enable anonymous access (read: not authenticated) to certain URL patterns, you can do so. Take a
+look at the [new chapter in the documentation|guide:tokenValidation].
+
+=== Other minor changes
+
+* Upgraded dependencies:
+** `spring-security-core:2.0-RC3`.
+** `cors:1.1.6`.

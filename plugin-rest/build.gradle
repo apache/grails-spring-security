@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath 'com.adarshr:gradle-test-logger-plugin:4.0.0'
+        classpath 'io.spring.gradle:dependency-management-plugin'
+    }
+}
+
+plugins {
+    id 'idea'
+    id "com.github.ben-manes.versions" version "0.51.0"
+}
+
+allprojects {
+    apply plugin:"idea"
+}
+
+def pluginProjects = ['spring-security-rest', 'spring-security-rest-memcached', 'spring-security-rest-redis', 'spring-security-rest-grailscache', 'spring-security-rest-gorm']
+def profileProjects = ['spring-security-rest-testapp-profile']
+def publishedProjects = pluginProjects + profileProjects
+
+version projectVersion
+group "org.grails.plugins"
+
+subprojects { Project project ->
+    project.group "org.grails.plugins"
+    project.version projectVersion
+
+    ext.set('grailsVersion', project.grailsVersion)
+    ext.set('isProfile', project.name.endsWith('-profile'))
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    if (project.name != "spring-security-rest-docs" &&
+            project.name != "spring-security-rest-testapp-profile" &&
+            !project.name.startsWith("build") ) {
+        apply plugin: "org.grails.grails-plugin"
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+    }
+
+    if (project.name in pluginProjects) {
+
+        sourceCompatibility = targetCompatibility = JavaVersion.toVersion(17)
+
+        apply plugin: "java-library"
+
+        dependencies {
+            implementation platform("org.grails:grails-bom:$grailsVersion")
+
+            console "org.grails:grails-console"
+
+            api "org.springframework.boot:spring-boot-starter-logging"
+            api "org.springframework.boot:spring-boot-autoconfigure"
+            api "org.grails:grails-core"
+            api "org.grails.plugins:spring-security-core:$springSecurityCoreVersion"
+
+            api "org.grails:grails-plugin-services"
+            api "org.grails:grails-plugin-domain-class"
+
+            testImplementation "org.grails:grails-gorm-testing-support"
+            testImplementation "org.grails:grails-web-testing-support"
+            testImplementation('com.athaydes:spock-reports:2.5.1-groovy-4.0') {
+                transitive = false
+            }
+        }
+
+        apply plugin: 'com.adarshr.test-logger'
+
+        testlogger {
+            showFullStackTraces true
+            showStandardStreams true
+            showPassedStandardStreams false
+            showSkippedStandardStreams false
+            showFailedStandardStreams true
+        }
+
+        apply plugin: "org.grails.grails-publish"
+    }
+
+    if (project.name in profileProjects) {
+        apply plugin: "org.grails.grails-profile"
+        apply plugin: "io.spring.dependency-management"
+        apply plugin: "org.grails.grails-profile-publish"
+    }
+
+    if(project.name in publishedProjects) {
+        grailsPublish {
+            license {
+                name = 'Apache-2.0'
+            }
+            githubSlug = 'grails/grails-spring-security-rest'
+            title = "Spring Security REST plugin"
+            desc = "Grails plugin to implement token-based, RESTful authentication using Spring Security"
+            developers = [alvarosanchez:"Alvaro Sanchez-Mariscal", jameskleeh: "James Kleeh", jdaugherty: "James Daugherty"]
+        }
+    }
+}
+
+apply from: rootProject.file("gradle/docs.gradle")

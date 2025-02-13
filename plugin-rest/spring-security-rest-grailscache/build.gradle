@@ -1,0 +1,7 @@
+dependencies {
+    api project(":spring-security-rest")
+
+    api "org.grails.plugins:cache"
+
+    profile "org.grails.profiles:plugin:${grailsVersion}"
+}

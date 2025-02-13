@@ -1,0 +1,22 @@
+---
+grails:
+    profile: web-plugin
+    codegen:
+        defaultPackage: grails.plugin.springsecurity.rest
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+dataSource:
+    pooled: true
+    driverClassName: "org.h2.Driver"
+    username: sa
+    password:
+    dbCreate: update
+    url: jdbc:h2:mem:testDb
+hibernate:
+    cache:
+        use_second_level_cache: false
+        use_query_cache: false
+        region.factory_class: 'org.hibernate.cache.ehcache.EhCacheRegionFactory'

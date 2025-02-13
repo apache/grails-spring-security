@@ -1,0 +1,19 @@
+tasks.register('generateProfileConfig') {
+    copy {
+        from 'profile.yml.tmpl'
+        into '.'
+        rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
+        expand pluginVersion: project.version
+    }
+
+    file('features').eachDir { feature ->
+        copy {
+            from "features/${feature.name}/feature.yml.tmpl"
+            into "features/${feature.name}/"
+            rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
+            expand pluginVersion: project.version
+        }
+    }
+}
+
+compileProfile.dependsOn generateProfileConfig

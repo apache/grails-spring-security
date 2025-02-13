@@ -1,0 +1,22 @@
+description: Creates a test app for Spring Security REST plugin
+build:
+    plugins:
+        - org.gradle.test-retry
+        - com.adarshr.test-logger
+    excludes:
+        - org.grails.grails-core
+        - org.grails.grails-web
+dependencies:
+    build:
+        - "org.gradle:test-retry-gradle-plugin:1.1.1"
+    compile:
+        - "org.grails.plugins:spring-security-rest:${pluginVersion}"
+        - "org.springframework.security:spring-security-core:5.1.2.RELEASE"
+
+    testCompile:
+        - "org.grails:grails-datastore-rest-client:6.1.12.RELEASE"
+        - "org.grails.plugins:geb"
+        - "com.codeborne:phantomjsdriver:1.2.1"
+        - "org.seleniumhq.selenium:selenium-api:2.47.1"
+        - "org.seleniumhq.selenium:selenium-remote-driver:2.47.1"
+        - "org.seleniumhq.selenium:selenium-firefox-driver:2.47.1"

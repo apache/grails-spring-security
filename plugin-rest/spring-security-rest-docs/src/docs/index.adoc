@@ -1,0 +1,106 @@
+:includedir: src/docs/
+
+= Spring Security REST for Grails
+:author: Álvaro Sánchez-Mariscal Arnaiz
+:email: alvaro.sanchezmariscal@gmail.com
+:source-highlighter: coderay
+:numbered:
+
+Version: {version}
+
+== Introduction to the Spring Security REST plugin
+
+include::{includedir}introduction.adoc[]
+
+== What's new in 6.0?
+
+include:{includedir}whatsNew60.adoc[]
+
+== What's new in 5.0?
+
+include::{includedir}whatsNew50.adoc[]
+
+== What's new in 2.0?
+
+include::{includedir}whatsNew20.adoc[]
+
+== What's new in 1.5?
+
+include::{includedir}whatsNew15.adoc[]
+
+== What's new in 1.4?
+
+include::{includedir}whatsNew14.adoc[]
+
+== Articles and sample projects
+
+=== Articles
+
+* https://giri-tech.blogspot.com/2016/06/create-secured-restful-api-app-with.html[Create a Secured Restful API App with Grails 3, PostgreSQL and JMS - Step by Step: Part 2 of 5]. June 2016.
+* http://www.ibm.com/developerworks/library/mo-build-a-hybrid-mobile-app-ionic-grails-bluemix-trs/index.html[Build a hybrid mobile app with Ionic, Grails, and Bluemix]. May 2016.
+* https://www.inshikos.com/blogs/80/dev/cors-enabled-rest-api-on-grails-for-cordova-apps-using-jwt-auth-tokens[CORS Enabled REST API on Grails for Cordova Apps using JWT Auth Tokens]. February 2016.
+* http://sergiodelamo.es/how-to-secure-your-grails-3-api-with-spring-security-rest-for-grails/[How to secure your Grails 3 API with Spring Security REST for Grails?].
+* http://hantsy.blogspot.com.es/2014/10/the-final-mile-upgrade-to-grails-243.html[The final mile: Upgrade to Grails 2.4.3 and use Spring Security REST plugin]. October 2014.
+* http://www.oodlestechnologies.com/blogs/Spring-Security-Rest-configuration-to-create-anonymous-accessible-URI's[Spring Security Rest configuration to create anonymous accessible URI's]. September 2014
+* https://asoftwareguy.com/2014/03/17/using-grails-rest-for-authentication-in-an-angularjs-spa/[Using Grails REST for authentication in an AngularJS SPA]. March 2014.
+
+=== Sample projects
+
+* https://github.com/sdelamo/groovy-client-grails-spring-security-rest[Groovy client].
+* https://github.com/dmahapatro/grails-spring-security-rest-sample[Sample Grails 2.x app using plugin v1.3.0].
+
+
+[[configuration]]
+== Configuration
+
+include::{includedir}configuration.adoc[]
+
+[[events]]
+== Events
+
+include::{includedir}events.adoc[]
+
+[[authentication]]
+== Authentication Endpoint
+
+include::{includedir}authentication.adoc[]
+
+[[tokenGeneration]]
+== Token Generation
+
+include::{includedir}tokenGeneration.adoc[]
+
+[[tokenStorage]]
+== Token Storage
+
+include::{includedir}tokenStorage.adoc[]
+
+[[tokenRendering]]
+== Token Rendering
+
+include::{includedir}tokenRendering.adoc[]
+
+[[tokenValidation]]
+== Token Validation Filter
+
+include::{includedir}tokenValidation.adoc[]
+
+[[cors]]
+== CORS support
+
+include::{includedir}cors.adoc[]
+
+[[oauth]]
+== Delegating authentication to OAuth providers
+
+include::{includedir}oauth.adoc[]
+
+[[debugging]]
+== Debugging
+
+include::{includedir}debugging.adoc[]
+
+[[faq]]
+== Frequently Asked Questions
+
+include::{includedir}faq.adoc[]
