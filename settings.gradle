@@ -38,14 +38,14 @@ dependencyResolutionManagement {
 
 rootProject.name = 'grails-spring-security'
 
-include 'plugin-core'
-include 'examples-functional-test-app'
-include 'examples-integration-test-app'
-include 'examples-misc-group'
-include 'examples-misc-hierarchical-roles'
+include 'spring-security-core'
+include 'core-examples-functional-test-app'
+include 'core-examples-integration-test-app'
+include 'core-examples-misc-group'
+include 'core-examples-misc-hierarchical-roles'
 
-project(':plugin-core').name = 'spring-security-core'
-project(':examples-functional-test-app'    ).projectDir = [settingsDir, 'examples/functional-test-app'] as File
-project(':examples-integration-test-app'   ).projectDir = [settingsDir, 'examples/integration-test-app'] as File
-project(':examples-misc-group'             ).projectDir = [settingsDir, 'examples/misc-functional-test-app/grails-spring-security-group'] as File
-project(':examples-misc-hierarchical-roles').projectDir = [settingsDir, 'examples/misc-functional-test-app/grails-spring-security-hierarchical-roles'] as File
+project(':spring-security-core').projectDir = new File(settingsDir, 'plugin-core/plugin')
+project(':core-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/functional-test-app')
+project(':core-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/integration-test-app')
+project(':core-examples-misc-group').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-group')
+project(':core-examples-misc-hierarchical-roles').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-hierarchical-roles')

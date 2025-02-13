@@ -16,7 +16,6 @@ package grails.plugin.springsecurity
 
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.password.PasswordEncoder
 import test.TestRole
 import test.TestRoleGroup
 import test.TestRoleGroupRoles
