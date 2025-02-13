@@ -1,0 +1,160 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Gradle template
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+# gradle.properties
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+### Grails template
+# .gitignore for Grails 1.2 and 1.3
+# Although this should work for most versions of grails, it is
+# suggested that you use the "grails integrate-with --git" command
+# to generate your .gitignore file.
+
+# web application files
+/web-app/WEB-INF/classes
+
+# default HSQL database files for production mode
+/prodDb.*
+
+# general HSQL database files
+*Db.properties
+*Db.script
+
+# logs
+/stacktrace.log
+/test/reports
+/logs
+
+# project release file
+/*.war
+
+# plugin release files
+/*.zip
+/plugin.xml
+
+# older plugin install locations
+/plugins
+/web-app/plugins
+
+# "temporary" build files
+/target
+### Eclipse template
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# Eclipse Core
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+.idea
+# User-specific stuff:
+#.idea/workspace.xml
+#.idea/tasks.xml
+#.idea/dictionaries
+#.idea/vcs.xml
+#.idea/jsLibraryMappings.xml
+
+# Sensitive or high-churn files:
+#.idea/dataSources.ids
+#.idea/dataSources.xml
+#.idea/dataSources.local.xml
+#.idea/sqlDataSources.xml
+#.idea/dynamic.xml
+#.idea/uiDesigner.xml
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+### NetBeans template
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+.nb-gradle/
+/grails-spring-security-oauth2.iml
+/kindlegen/
+/spring-security-oauth2.iml
+classes/

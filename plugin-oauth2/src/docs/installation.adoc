@@ -1,0 +1,14 @@
+## Installation
+
+Add the following dependencies in build.gradle:
+
+_build.gradle_
+[source, groovy]
+----
+
+dependencies {
+    implementation "org.grails.plugins:spring-security-oauth2:{projectVersion}"
+}
+----
+
+You will also need at least one provider extension, i.e the `grails-spring-security-oauth2-google` plugin.

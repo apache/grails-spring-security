@@ -1,0 +1,14 @@
+= Spring Security Oauth2 Plugin - Documentation
+Johannes Brunswicker <johannes@matrixcrawler.net>
+:revnumber: {projectVersion}
+:encoding: utf-8
+:lang: en
+:numbered:
+
+include::introduction.adoc[]
+
+include::installation.adoc[]
+
+include::configuration.adoc[]
+
+include::extensions.adoc[]
