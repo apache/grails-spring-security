@@ -1,0 +1,27 @@
+import org.grails.gradle.plugin.publishing.GrailsPublishExtension
+
+buildscript {
+    repositories {
+        maven { url = 'https://repo.grails.org/grails/core' }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+    }
+}
+
+version = projectVersion
+
+subprojects {
+    if (name == 'spring-security-ui') {
+        // This has to be configured here in the rootProject build file: https://github.com/grails/grails-gradle-plugin/issues/364
+        version = projectVersion
+        apply plugin: 'org.grails.grails-publish'
+        extensions.getByType(GrailsPublishExtension).with {
+            githubSlug = 'grails/grails-spring-security-ui'
+            license.name = 'Apache-2.0'
+            title = 'Grails Spring Security UI'
+            desc = 'The Spring Security UI plugin provides CRUD screens and other user management workflows.'
+            developers = [burtbeckwith: 'Burt Beckwith']
+        }
+    }
+}

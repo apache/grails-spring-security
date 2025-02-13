@@ -1,0 +1,71 @@
+name: "Release"
+on:
+  release:
+    types: [published]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GIT_USER_NAME: grails-build
+      GIT_USER_EMAIL: grails-build@users.noreply.github.com
+    steps:
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: liberica
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ DEVELOCITY_ACCESS_KEY }}
+      - name: "📝 Store the current release version"
+        id: release_version
+        run: echo "value=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
+      - name: "⚙ Run pre-release"
+        uses: grails/github-actions/pre-release@main
+      - name: "🔐 Generate key file for artifact signing"
+        env:
+          SECRING_FILE: ${{ secrets.SECRING_FILE }}
+        run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
+      - name: "📤 Publish release artifacts to Sonatype"
+        id: publish
+        env:
+          GITHUB_MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GRAILS_PUBLISH_RELEASE: 'true'
+          NEXUS_PUBLISH_USERNAME: ${{ secrets.NEXUS_PUBLISH_USERNAME }}
+          NEXUS_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PUBLISH_PASSWORD }}
+          NEXUS_PUBLISH_URL: ${{ secrets.NEXUS_PUBLISH_RELEASE_URL }}
+          NEXUS_PUBLISH_STAGING_PROFILE_ID: ${{ secrets.NEXUS_PUBLISH_STAGING_PROFILE_ID }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
+        run: >
+          ./gradlew
+          -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg
+          publishToSonatype
+          closeAndReleaseSonatypeStagingRepository
+      - name: "✍️ Generate Documentation"
+        id: docs
+        if: steps.publish.outcome == 'success'
+        run: ./gradlew docs
+      - name: "Export Gradle Properties"
+        uses: grails/github-actions/export-gradle-properties@main
+      - name: "📤 Publish to Github Pages"
+        if: steps.docs.outcome == 'success'
+        uses: grails/github-pages-deploy-action@grails
+        env:
+          BETA: ${{ contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC') }}
+          BRANCH: gh-pages
+          COMMIT_EMAIL: ${{ env.GIT_USER_EMAIL }}
+          COMMIT_NAME: ${{ env.GIT_USER_NAME }}
+          DOC_FOLDER: gh-pages
+          FOLDER: docs/build/docs
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+          VERSION: ${{ steps.release_version.outputs.release_version }}
+      - name: "⚙️ Run post-release"
+        if: steps.publish.outcome == 'success' && steps.docs.outcome == 'success' && success()
+        uses: grails/github-actions/post-release@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

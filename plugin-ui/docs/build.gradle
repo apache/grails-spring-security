@@ -1,0 +1,62 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '4.0.4'
+    id 'org.asciidoctor.jvm.gems' version '4.0.4'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def asciidoctorAttributes = [
+    copyright            : 'Apache License, Version 2.0',
+    docinfo1             : 'true',
+    doctype              : 'book',
+    encoding             : 'utf-8',
+    'front-cover-image'  : 'image:cover.png[Front Cover,800,600]',
+    icons                : 'font',
+    id                   : "$rootProject.name:$projectVersion",
+    idprefix             : '',
+    idseparator          : '-',
+    lang                 : 'en',
+    linkattrs            : true,
+    numbered             : '',
+    producer             : 'Asciidoctor',
+    revnumber            : projectVersion,
+    setanchors           : true,
+    'source-highlighter' : 'prettify',
+    toc                  : 'left',
+    toc2                 : '',
+    toclevels            : '2',
+    projectVersion       : projectVersion
+]
+
+
+asciidoctor {
+    attributes = asciidoctorAttributes
+    baseDir = file('src/docs')
+    sourceDir = file('src/docs')
+    outputDir = file('build/docs')
+    sources {
+        include 'index.adoc'
+    }
+    jvm {
+        jvmArgs += [
+            '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.io=ALL-UNNAMED'
+        ]
+    }
+}
+
+tasks.register('docs') {
+    group = 'documentation'
+    dependsOn('asciidoctor')
+    doLast {
+        delete file('build/docs/ghpages.html')
+        file('build/docs/ghpages.html') << file('src/docs/index.tmpl').text.replaceAll('@VERSION@', projectVersion)
+        copy {
+            from 'src/docs'
+            into 'build/docs'
+            include '**/*.png'
+        }
+    }
+}

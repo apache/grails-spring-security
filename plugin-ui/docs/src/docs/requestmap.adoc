@@ -1,0 +1,32 @@
+[[requestmap]]
+== Requestmap Management
+
+The default approach to securing URLs is with annotations, so the Requestmaps menu is only shown if `grails.plugin.springsecurity.securityConfigType` has the value `"Requestmap"` or `SecurityConfigType.Requestmap` in `application.groovy`.
+
+=== Requestmap search
+
+The default action for the Requestmap controller is search. By default only the standard fields (`url` and `configAttribute`) are available but this is customizable with the <<s2ui-override>> script - see the <<customization>> section for details.
+
+You can search by any combination of fields, and the `url` and `configAttribute` fields have an Ajax autocomplete to assist in finding instances. Leave both fields empty to return all instances.
+
+image::requestmap_search_start.png[]
+
+Searching is case-insensitive and the search string can appear anywhere in the field. Results are shown paginated in groups of 10 and you can click on either header to sort by that field:
+
+image::requestmap_search_results.png[]
+
+=== Requestmap edit
+
+After clicking through to a Requestmap you get to the edit page (there are no view pages):
+
+image::requestmap_edit.png[]
+
+You can update any of the attributes or delete the Requestmap. Editing or deleting a Requestmap resets the cache of loaded instances, so your changes will take effect immediately.
+
+=== Requestmap creation
+
+You can create new Requestmaps by going to `/requestmap/create` or by clicking the `Create` action in the `Requestmaps` menu.
+
+image::requestmap_create.png[]
+
+Creating a Requestmap resets the cache of loaded instances, so your changes will take effect immediately.

@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.grails.org/grails/core' }
+    }
+    dependencies {
+        classpath platform("org.grails:grails-bom:$grailsVersion")
+        classpath 'com.bertramlabs.plugins:asset-pipeline-gradle'
+    }
+}
+
+version = projectVersion
+group = 'org.grails.plugins'
+
+apply plugin: 'com.bertramlabs.asset-pipeline'
+apply plugin: 'java-library'
+apply plugin: 'org.grails.grails-gsp'
+apply plugin: 'org.grails.grails-plugin'
+
+repositories {
+    maven { url = 'https://repo.grails.org/grails/core' }
+    mavenCentral()
+    if (System.getenv('GITHUB_MAVEN_PASSWORD') && !grailsVersion.endsWith('-SNAPSHOT')) {
+        logger.lifecycle('Adding Grails Core Staging Repo for project {}', project.name)
+        maven {
+            url = 'https://maven.pkg.github.com/grails/grails-core'
+            credentials {
+                username = 'DOES_NOT_MATTER'
+                password = System.getenv('GITHUB_MAVEN_PASSWORD')
+            }
+        }
+    }
+}
+
+dependencies {
+
+    // Must be on the compileClasspath of consuming applications to
+    // enable compilation of AbstractS2UiDomainController subclasses.
+    compileOnlyApi 'org.grails.plugins:converters'
+
+    implementation 'org.grails:grails-plugin-controllers'
+    implementation 'org.grails.plugins:converters'
+    implementation 'org.grails.plugins:gsp'
+    implementation "org.grails.plugins:spring-security-core:$grailsSpringSecurityCoreVersion"
+    implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.security:spring-security-web'
+
+    compileOnly 'org.grails:grails-core' // Provided, as this is a Grails plugin
+    compileOnly 'org.grails:grails-plugin-services'
+    compileOnly 'org.grails:grails-plugin-domain-class'
+
+    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails'
+    runtimeOnly 'org.grails:grails-plugin-i18n'
+
+    testImplementation 'org.grails:grails-web-testing-support'
+    testImplementation 'org.spockframework:spock-core'
+}
+
+tasks.register('copyGspIntoTemplates', Copy) {
+    from layout.projectDirectory.dir('grails-app/views')
+    into layout.projectDirectory.dir('src/main/templates/views')
+    dependsOn 'copyTemplates', 'processResources'
+}
+
+tasks.register('removeGspFromTemplates', Delete) {
+    delete layout.projectDirectory.dir('src/main/templates/views')
+}
+
+tasks.named('compileAstJava') {
+    dependsOn 'copyGspIntoTemplates'
+}
+
+assets.packagePlugin = true
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')

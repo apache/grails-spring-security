@@ -1,0 +1,28 @@
+[[aclClass]]
+=== AclClass Management
+
+The default action for the AclClass controller is search. By default only the standard fields are available but this is customizable with the <<s2ui-override>> script - see the <<customization>> section for details.
+
+The `className` field has an Ajax autocomplete to assist in finding instances. Leave the field empty to return all instances.
+
+image::acls/acl_class_search_start.png[]
+
+Searching is case-insensitive and the search string can appear anywhere in the field. Results are shown paginated in groups of 10 and you can click on the `className` column header to sort the results by that field:
+
+image::acls/acl_class_search_results.png[]
+
+==== AclClass Edit
+
+After clicking through an AclClass you get to the edit page (there are no view pages):
+
+image::acls/acl_class_edit.png[]
+
+You can update the name, and delete the instance if there aren't any associated `AclObjectIdentity` or `AclEntry` instances - by default there is no support for cascading.
+
+You can also see the associated `AclObjectIdentity` instances (OIDs) or `AclEntry` instances.
+
+==== AclClass Create
+
+You can create new instances by going to `/aclClass/create` or by clicking the `Create` action in the `Class` menu under `ACL`.
+
+image::acls/acl_class_create.png[]

@@ -1,0 +1,15 @@
+*.iml
+*.ipr
+*.iws
+*.log
+*.sublime-workspace
+.asscache
+.DS_Store
+.gradle
+.idea
+build
+classes
+cobertura.ser
+kindlegen
+/plugin/src/main/templates/views
+.java-version

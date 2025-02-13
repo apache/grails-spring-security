@@ -1,0 +1,28 @@
+[[aclSid]]
+=== AclSid Management
+
+The default action for the AclSid controller is search. By default only the standard fields are available but this is customizable with the <<s2ui-override>> script - see the <<customization>> section for details.
+
+The `sid` field has an Ajax autocomplete to assist in finding instances. Leave the field empty and `principal` set to Either to return all instances.
+
+image::acls/acl_sid_search_start.png[]
+
+Results are shown paginated in groups of 10. The column headers are clickable and will sort the results by that field:
+
+image::acls/acl_sid_search_results.png[]
+
+==== AclSid Edit
+
+After clicking through to a sid you get to the edit page (there are no view pages):
+
+image::acls/acl_sid_edit.png[]
+
+You can update the name and whether it's a Principal sid or a Role sid, and delete the instance if there aren't any associated `AclObjectIdentity` or `AclEntry` instances - by default there is no support for cascading.
+
+You can also see the associated `AclObjectIdentity` instances (OIDs) or `AclEntry` instances.
+
+==== AclSid Create
+
+You can create new instances by going to `/aclSid/create` or by clicking the `Create` action in the `SID` menu under `ACL`.
+
+image::acls/acl_sid_create.png[]
