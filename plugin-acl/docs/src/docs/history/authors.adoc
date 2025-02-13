@@ -1,0 +1,4 @@
+[[authors]]
+=== Authors
+
+Burt Beckwith

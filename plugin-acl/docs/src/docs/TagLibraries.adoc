@@ -1,0 +1,6 @@
+[[TagLibraries]]
+== Tag Libraries
+
+include::TagLibraries/permitted.adoc[]
+
+include::TagLibraries/notPermitted.adoc[]

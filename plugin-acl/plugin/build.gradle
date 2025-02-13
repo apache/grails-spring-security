@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.grails.org/grails/core" }
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+    }
+}
+
+plugins {
+    id 'groovy'
+    id 'java-library'
+}
+
+version projectVersion
+group "org.grails.plugins"
+
+apply plugin: 'org.grails.grails-plugin'
+apply plugin: 'org.grails.grails-gsp'
+apply plugin: 'org.grails.grails-publish'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.grails.org/grails/core" }
+}
+
+configurations {
+    all {
+        exclude group: 'javax.servlet'
+    }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.grails:grails-core"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
+    implementation "org.grails:grails-web-boot"
+    implementation "org.grails:grails-logging"
+    implementation "org.grails:grails-plugin-rest"
+    implementation "org.grails:grails-plugin-databinding"
+    implementation "org.grails:grails-plugin-i18n"
+    implementation "org.grails:grails-plugin-services"
+    implementation "org.grails:grails-plugin-url-mappings"
+    implementation "org.grails:grails-plugin-interceptors"
+    implementation "org.grails.plugins:gsp"
+    console "org.grails:grails-console"
+    profile "org.grails.profiles:web-plugin"
+    runtimeOnly "org.grails:grails-plugin-services"
+    runtimeOnly "org.grails:grails-plugin-domain-class"
+    testImplementation "org.grails:grails-gorm-testing-support"
+    testImplementation "org.grails:grails-web-testing-support"
+
+    implementation "org.ehcache:ehcache:$ehcacheVersion"
+    api "org.grails.plugins:spring-security-core:$springSecurityCoreVersion"
+    api "org.springframework.security:spring-security-acl:$springSecurityVersion"
+}
+
+grailsPublish {
+    license {
+        name = 'Apache-2.0'
+    }
+    githubSlug = 'grails/grails-spring-security-acl'
+    title = 'Grails Spring Security ACL Plugin'
+    desc = project.projectDesc
+    developers = ['burtbeckwith': 'Burt Beckwith']
+}

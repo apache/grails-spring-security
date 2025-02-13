@@ -1,0 +1,32 @@
+[[deletePermission]]
+=== deletePermission
+
+.Purpose
+
+Removes a granted permission.
+
+.Examples
+
+[source,groovy]
+----
+aclUtilService.deletePermission Report, 42, 'user123', BasePermission.WRITE
+
+aclUtilService.deletePermission reportInstance, 'user123', BasePermission.WRITE
+----
+
+.Description
+
+[source,groovy]
+----
+void deletePermission(domainObject, recipient, Permission permission)
+
+void deletePermission(Class<?> domainClass, long id, recipient, Permission permission)
+----
+
+.Parameters
+
+* `domainClass` - the domain class, used when specifying the class and id
+* `id` - the instance id, used when specifying the class and id
+* `domainObject` - the domain class instance, used when the instance is available
+* `recipient` - the grantee; can be a String (username or role name), or a `Sid`, or an `Authentication`
+* `permission` - the permission to remove
