@@ -69,7 +69,6 @@ dependencies {
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/groovy-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/grails-plugin-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/cleanBuild.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/docs.gradle')
