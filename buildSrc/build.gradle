@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation platform("org.grails:grails-bom:${versions.get('grailsVersion')}")
     implementation "org.asciidoctor:asciidoctor-gradle-jvm:${versions.get('asciidoctorGradlePluginVersion')}"
-    implementation "com.bertramlabs.plugins:asset-pipeline-gradle:${versions.get('assetPipelineGradlePluginVersion')}"
+    implementation 'com.bertramlabs.plugins:asset-pipeline-gradle'
     implementation 'org.grails:grails-gradle-plugin'
     testImplementation 'org.spockframework:spock-core'
 }
