@@ -4,7 +4,7 @@ import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 apply plugin: 'org.asciidoctor.jvm.convert'
 
-def softwareVersion = SoftwareVersion.build(version.toString())
+def softwareVersion = SoftwareVersion.build(projectVersion)
 
 def asciidoctorAttributes = [
         stableversion        : softwareVersion.stableVersion,
