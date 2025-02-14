@@ -5,6 +5,8 @@ if (customGroovyVersion) {
 
 subprojects {
 
+    version = projectVersion
+
     if (customGroovyVersion) {
         configurations.configureEach {
             resolutionStrategy.eachDependency { DependencyResolveDetails details ->
