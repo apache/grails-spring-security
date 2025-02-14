@@ -1,6 +1,4 @@
 plugins {
-    id 'application'
-    id 'groovy'
     id 'org.grails.grails-web'
 }
 

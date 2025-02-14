@@ -1,26 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.grails.org/grails/core" }
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath platform("org.grails:grails-bom:$grailsVersion")
-        classpath 'org.grails:grails-gradle-plugin'
-    }
-}
-
 plugins {
-    id 'groovy'
     id 'java-library'
+    id 'org.grails.grails-gsp'
+    id 'org.grails.grails-plugin'
 }
 
-version projectVersion
-group "org.grails.plugins"
-
-apply plugin: 'org.grails.grails-plugin'
-apply plugin: 'org.grails.grails-gsp'
-apply plugin: 'org.grails.grails-publish'
+group = 'org.grails.plugins'
 
 ext {
     publishArtifactId = 'spring-security-acl'
@@ -30,19 +14,10 @@ ext {
 
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://repo.grails.org/grails/core" }
-}
-
-configurations {
-    all {
-        exclude group: 'javax.servlet'
-    }
-}
-
 dependencies {
+
+    implementation platform("org.grails:grails-bom:$grailsVersion")
+
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.grails:grails-core"

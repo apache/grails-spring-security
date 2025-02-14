@@ -1,28 +1,11 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-    }
+plugins {
+    id 'org.grails.grails-web'
 }
 
-version "0.1"
-group "misc.functional.test.app"
-
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"war"
-apply plugin:"org.grails.grails-web"
-apply plugin:"org.grails.grails-gsp"
-
-repositories {
-    mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
-}
+group = 'misc.functional.test.app'
 
 dependencies {
+
     implementation platform("org.grails:grails-bom:$grailsVersion")
 
     implementation "org.springframework.boot:spring-boot-starter-logging"

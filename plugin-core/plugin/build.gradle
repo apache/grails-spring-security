@@ -1,5 +1,4 @@
 plugins {
-	id 'groovy'
 	id 'java-library'
 	id 'org.grails.grails-gsp'
 	id 'org.grails.grails-plugin'

@@ -1,9 +1,5 @@
 plugins {
-    id 'application'
-    id 'groovy'
-    id 'org.grails.grails-gsp'
     id 'org.grails.grails-web'
-    id 'com.bertramlabs.asset-pipeline'
 }
 
 group = 'examples.test'
