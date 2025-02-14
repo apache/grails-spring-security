@@ -1,3 +1,5 @@
+package spring
+
 import org.springframework.security.web.access.AccessDeniedHandlerImpl
 import com.testacl.UserPasswordEncoderListener
 

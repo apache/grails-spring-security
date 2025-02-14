@@ -45,8 +45,8 @@ include 'acl-examples-functional-test-app'
 include 'acl-examples-integration-test-app'
 project(':acl-plugin').projectDir = new File(settingsDir, 'plugin-acl/plugin')
 project(':acl-docs').projectDir = new File(settingsDir, 'plugin-acl/docs')
-project(':acl-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-acl/functional-test-app')
-project(':acl-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-acl/integration-test-app')
+project(':acl-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/functional-test-app')
+project(':acl-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/integration-test-app')
 
 include 'core-plugin'
 include 'core-docs'
