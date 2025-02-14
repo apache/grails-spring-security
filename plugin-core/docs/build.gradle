@@ -1,0 +1,1 @@
+apply from: rootProject.layout.projectDirectory.file('gradle/docs-config.gradle')
