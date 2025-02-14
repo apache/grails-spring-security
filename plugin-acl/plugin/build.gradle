@@ -5,7 +5,8 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath platform("org.grails:grails-bom:$grailsVersion")
+        classpath 'org.grails:grails-gradle-plugin'
     }
 }
 
@@ -20,6 +21,14 @@ group "org.grails.plugins"
 apply plugin: 'org.grails.grails-plugin'
 apply plugin: 'org.grails.grails-gsp'
 apply plugin: 'org.grails.grails-publish'
+
+ext {
+    publishArtifactId = 'spring-security-acl'
+    pomTitle = 'Grails Spring Security ACL Plugin'
+    pomDescription = 'Adds Spring Security ACL support to a Grails application.'
+    pomDevelopers = ['burtbeckwith': 'Burt Beckwith']
+
+}
 
 repositories {
     mavenLocal()
@@ -55,17 +64,13 @@ dependencies {
     testImplementation "org.grails:grails-gorm-testing-support"
     testImplementation "org.grails:grails-web-testing-support"
 
-    implementation "org.ehcache:ehcache:$ehcacheVersion"
-    api "org.grails.plugins:spring-security-core:$springSecurityCoreVersion"
-    api "org.springframework.security:spring-security-acl:$springSecurityVersion"
+    implementation 'org.ehcache:ehcache'
+
+    api project(':core-plugin')
+    api 'org.springframework.security:spring-security-acl'
 }
 
-grailsPublish {
-    license {
-        name = 'Apache-2.0'
-    }
-    githubSlug = 'grails/grails-spring-security-acl'
-    title = 'Grails Spring Security ACL Plugin'
-    desc = project.projectDesc
-    developers = ['burtbeckwith': 'Burt Beckwith']
-}
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/cleanBuild.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

@@ -2,7 +2,7 @@ package com.testacl
 
 import grails.gorm.DetachedCriteria
 import groovy.transform.ToString
-import org.apache.commons.lang3.builder.HashCodeBuilder
+import org.codehaus.groovy.util.HashCodeHelper
 import org.hibernate.ObjectNotFoundException
 
 @ToString(cache=true, includeNames=true, includePackage=false)
@@ -29,10 +29,14 @@ class UserRole implements Serializable {
 
 	@Override
 	int hashCode() {
-		def builder = new HashCodeBuilder()
-		if (user) builder.append(user.id)
-		if (role) builder.append(role.id)
-		builder.toHashCode()
+		int hashCode = HashCodeHelper.initHash()
+		if (user) {
+			hashCode = HashCodeHelper.updateHash(hashCode, user.id)
+		}
+		if (role) {
+			hashCode = HashCodeHelper.updateHash(hashCode, role.id)
+		}
+		hashCode
 	}
 
 	static UserRole get(long userId, long roleId) {

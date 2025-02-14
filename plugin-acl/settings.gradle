@@ -1,6 +1,0 @@
-include 'functional-test-app'
-include 'integration-test-app'
-include 'docs'
-include 'plugin'
-findProject(':plugin').name = 'spring-security-acl'
-rootProject.name = 'grails-spring-security-acl'
