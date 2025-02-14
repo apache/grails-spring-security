@@ -3,8 +3,6 @@ plugins {
 	id 'java-library'
 	id 'org.grails.grails-gsp'
 	id 'org.grails.grails-plugin'
-	id 'maven-publish'
-	id 'signing'
 }
 
 version = projectVersion
