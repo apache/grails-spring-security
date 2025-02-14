@@ -52,10 +52,6 @@ abstract class AbstractSecuritySpec extends ContainerGebSpec {
 		getContent 'hack/getSessionValue?name=' + name
 	}
 
-	protected String getPageSource() {
-		browser.driver.pageSource
-	}
-
 	protected void login(String user, String pwd = 'password', boolean remember = false) {
 		to LoginPage
 		username = user
