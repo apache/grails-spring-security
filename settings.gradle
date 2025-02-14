@@ -38,13 +38,12 @@ dependencyResolutionManagement {
 
 rootProject.name = 'grails-spring-security.ROOT'
 
-include 'spring-security-core'
+include 'core-plugin'
 include 'core-examples-functional-test-app'
 include 'core-examples-integration-test-app'
 include 'core-examples-misc-group'
 include 'core-examples-misc-hierarchical-roles'
-
-project(':spring-security-core').projectDir = new File(settingsDir, 'plugin-core/plugin')
+project(':core-plugin').projectDir = new File(settingsDir, 'plugin-core/plugin')
 project(':core-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/functional-test-app')
 project(':core-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/integration-test-app')
 project(':core-examples-misc-group').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-group')
