@@ -12,7 +12,7 @@ dependencies {
 
     implementation platform("org.grails:grails-bom:$grailsVersion")
 
-    implementation project(':spring-security-core')
+    implementation project(':core-plugin')
     implementation 'org.grails:grails-core'
     implementation 'org.grails:grails-datastore-core'
     implementation 'org.grails:grails-datastore-gorm'
