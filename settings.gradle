@@ -36,7 +36,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'grails-spring-security'
+rootProject.name = 'grails-spring-security.ROOT'
 
 include 'spring-security-core'
 include 'core-examples-functional-test-app'
