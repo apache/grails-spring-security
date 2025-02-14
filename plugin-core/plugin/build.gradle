@@ -7,7 +7,18 @@ plugins {
 	id 'signing'
 }
 
+version = projectVersion
 group = 'org.grails.plugins'
+
+ext {
+	publishArtifactId = 'spring-security-core'
+	pomTitle = 'Grails spring-security-core plugin'
+	pomDescription = 'The Spring Security plugin simplifies the integration of Spring Security into Grails® framework applications.'
+	pomDevelopers = [
+			'burtbeckwith': 'Burt Beckwith',
+			'puneetbehl': 'Puneet Behl'
+	]
+}
 
 dependencies {
 
@@ -61,5 +72,5 @@ apply from: rootProject.layout.projectDirectory.file('gradle/groovy-config.gradl
 apply from: rootProject.layout.projectDirectory.file('gradle/grails-plugin-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/cleanBuild.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/publishing.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/docs.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

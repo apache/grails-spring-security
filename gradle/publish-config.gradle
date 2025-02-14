@@ -1,0 +1,21 @@
+import org.grails.gradle.plugin.publishing.GrailsPublishExtension
+
+apply plugin: 'org.grails.grails-publish'
+
+extensions.configure(GrailsPublishExtension) {
+
+    def requiredProperties = ['publishArtifactId', 'pomTitle', 'pomDescription', 'pomDevelopers']
+    requiredProperties.each {
+        if (!project.hasProperty(it)) {
+            throw new GradleException("Required property '$it' is missing from project $project.name")
+        }
+    }
+
+    // Explicit `it` is required here
+    it.artifactId = project.property('publishArtifactId')
+    it.githubSlug = 'grails/grails-spring-security-core'
+    it.license.name = 'Apache-2.0'
+    it.title = project.property('pomTitle')
+    it.desc = project.property('pomDescription')
+    it.developers = project.property('pomDevelopers') as Map<String, String>
+}
