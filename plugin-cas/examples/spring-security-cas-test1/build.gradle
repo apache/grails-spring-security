@@ -1,30 +1,8 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:hibernate5:$gormVersion"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
-    }
+plugins {
+    id 'org.grails.grails-web'
 }
 
-version "0.1"
-group "spring.security.cas"
-
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"war"
-apply plugin:"org.grails.grails-web"
-apply plugin:"asset-pipeline"
-apply plugin:"org.grails.grails-gsp"
-apply plugin:"application"
-
-repositories {
-    mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
-}
+group = 'spring.security.cas'
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-logging"
@@ -56,14 +34,10 @@ dependencies {
     testRuntimeOnly "org.seleniumhq.selenium:htmlunit-driver:4.13.0"
     testRuntimeOnly "org.htmlunit:htmlunit:4.4.0"
 
-    implementation project(':spring-security-cas')
+    implementation project(':cas-plugin')
 }
 
-assets {
-    minifyJs = true
-    minifyCss = true
-}
-
-application {
-    mainClass = "spring.security.cas.test.Application"
-}
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/integrationTest.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')

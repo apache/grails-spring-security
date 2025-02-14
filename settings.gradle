@@ -48,6 +48,13 @@ project(':acl-docs').projectDir = new File(settingsDir, 'plugin-acl/docs')
 project(':acl-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/functional-test-app')
 project(':acl-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/integration-test-app')
 
+include 'cas-plugin'
+include 'cas-docs'
+include 'cas-examples-spring-security-cas-test1'
+project(':cas-plugin').projectDir = new File(settingsDir, 'plugin-cas/plugin')
+project(':cas-docs').projectDir = new File(settingsDir, 'plugin-cas/docs')
+project(':cas-examples-spring-security-cas-test1').projectDir = new File(settingsDir, 'plugin-cas/examples/spring-security-cas-test1')
+
 include 'core-plugin'
 include 'core-docs'
 include 'core-examples-functional-test-app'

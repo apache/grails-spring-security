@@ -35,12 +35,10 @@ def asciidoctorAttributes = [
         toc2                : '',
         toclevels           : '2',
         projectVersion      : project.projectVersion,
-        threeZeroXProjectVersion: project.threeZeroXProjectVersion
+        threeZeroXProjectVersion: '3.0.1'
 ]
 
 repositories {
-    mavenCentral()
-    maven { url 'https://repo.grails.org/grails/core' }
     ruby.gems()
 }
 
