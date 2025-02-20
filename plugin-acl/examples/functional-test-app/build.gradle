@@ -13,7 +13,7 @@ dependencies {
     implementation 'org.grails:grails-plugin-rest'
     implementation 'org.grails:grails-web-boot'
     implementation 'org.grails.plugins:gsp'
-    implementation 'org.hibernate:hibernate-core-jakarta'
+    implementation "org.hibernate:hibernate-core-jakarta:$hibernateVersion"
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.zaxxer:HikariCP'
