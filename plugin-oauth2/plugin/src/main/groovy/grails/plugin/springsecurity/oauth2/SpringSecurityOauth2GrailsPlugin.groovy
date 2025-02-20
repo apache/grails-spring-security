@@ -4,7 +4,6 @@ import grails.plugin.springsecurity.ReflectionUtils
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugins.Plugin
 import groovy.util.logging.Slf4j
-import org.slf4j.LoggerFactory
 
 @Slf4j
 class SpringSecurityOauth2GrailsPlugin extends Plugin {

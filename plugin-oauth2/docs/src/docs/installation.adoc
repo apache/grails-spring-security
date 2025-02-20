@@ -3,7 +3,7 @@
 Add the following dependencies in build.gradle:
 
 _build.gradle_
-[source, groovy]
+[source, groovy, subs="attributes+"]
 ----
 
 dependencies {

@@ -80,3 +80,8 @@ project(':ldap-examples-custom-user-details-context-mapper').projectDir = new Fi
 project(':ldap-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-ldap/examples/functional-test-app')
 project(':ldap-examples-retrieve-db-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-db-roles')
 project(':ldap-examples-retrieve-group-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-group-roles')
+
+include 'oauth2-plugin'
+include 'oauth2-docs'
+project(':oauth2-plugin').projectDir = new File(settingsDir, 'plugin-oauth2/plugin')
+project(':oauth2-docs').projectDir = new File(settingsDir, 'plugin-oauth2/docs')

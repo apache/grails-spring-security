@@ -1,0 +1,60 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert'
+}
+
+configurations.register('documentation')
+
+dependencies {
+    documentation platform("org.grails:grails-bom:$grailsVersion")
+    documentation 'com.github.javaparser:javaparser-core'
+}
+
+def asciidoctorAttributes = [
+        projectVersion  	: projectVersion,
+        copyright           : 'Apache License, Version 2.0',
+        docinfo1            : 'true',
+        doctype             : 'book',
+        encoding            : 'utf-8',
+        'front-cover-image'  : 'image:cover.png[Front Cover,800,600]',
+        icons               : 'font',
+        id                  : 'grails-spring-security-oauth2:' + projectVersion,
+        idprefix            : '',
+        idseparator         : '-',
+        lang                : 'en',
+        linkattrs           : true,
+        numbered            : '',
+        producer            : 'Asciidoctor',
+        revnumber           : projectVersion,
+        setanchors          : true,
+        'source-highlighter' : 'prettify',
+        toc                 : 'left',
+        toc2                : '',
+        toclevels           : '2'
+]
+
+asciidoctor {
+    attributes asciidoctorAttributes
+    baseDirFollowsSourceDir()
+    outputDir new File(layout.buildDirectory.asFile.get(), 'docs')
+    sourceDir = file('src/docs')
+    sources {
+        include 'index.adoc'
+    }
+    jvm {
+        jvmArgs('--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED')
+    }
+}
+
+tasks.register('docs') {
+    description = 'Generates documentation'
+    group = 'documentation'
+    dependsOn 'asciidoctor'
+    mustRunAfter 'build'
+    doLast {
+        new File(layout.buildDirectory.asFile.get(), 'docs/ghpages.html') << file('src/docs/index.tmpl').text.replaceAll('@VERSION@', projectVersion)
+    }
+}
+
+tasks.withType(Groovydoc).configureEach {
+    classpath += configurations.documentation
+}

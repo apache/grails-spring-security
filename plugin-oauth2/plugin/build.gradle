@@ -1,0 +1,89 @@
+plugins {
+	id 'java-library'
+	id 'org.grails.grails-plugin'
+	id 'org.grails.grails-gsp'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+	publishArtifactId = 'spring-security-oauth2'
+	pomTitle = 'Grails Spring Security OAuth2 Plugin'
+	pomDescription = 'This plugin provides the capability to authenticate via oauth and depends on grails-spring-security-core.'
+	pomDevelopers = [
+		MatrixCrawler: 'Johannes Brunswicker',
+		aitmanas: 'aitmanas',
+		rvanderwerf: 'Ryan Vanderwerf',
+		puneetbehl: 'Puneet Behl'
+	]
+}
+
+dependencies {
+
+	implementation platform("org.grails:grails-bom:$grailsVersion")
+
+	api project(':core-plugin'), {
+		// api: GrailsUserDetailsService, SpringSecurityService
+		// impl: GormUserDetailsService, GrailsUser, ReflectionUtils, @Secured(runtime), SecurityContextHolder,
+		//       SpringSecurityUtils
+	}
+	api 'com.github.scribejava:scribejava-core:8.3.3', {
+		// api: DefaultApi20, OAuth2AccessToken, OAuth20Service, Response
+		// impl: OAuthRequest, ServiceBuilder, Verb
+	}
+	api 'org.grails:grails-bootstrap', {
+		// api: ConsoleLogger
+		// impl: GrailsConsole, Model
+	}
+	api 'org.springframework.security:spring-security-core', {
+		// api: AbstractAuthenticationToken, AuthenticationManager, GrantedAuthority
+		// impl: AuthenticationException, UserDetails, UsernamePasswordAuthenticationToken
+	}
+	api 'org.grails:grails-taglib', {
+		// api: GrailsTagException
+	}
+
+	implementation 'commons-validator:commons-validator', {
+		// impl: UrlValidator
+	}
+	implementation "commons-lang:commons-lang:$commonsLangVersion", {
+		// impl: ExceptionUtils, StringUtils
+	}
+	implementation 'jline:jline', {
+		// comp: ConsoleReader
+	}
+	implementation 'org.grails:grails-datastore-gorm', {
+		// impl: @Transactional(runtime)
+	}
+	implementation 'org.grails:grails-plugin-controllers', {
+		// impl: ControllerTraitInjector
+	}
+	implementation 'org.grails.plugins:converters', {
+		// impl: JSON
+	}
+	implementation 'org.springframework:spring-webmvc', {
+		// impl: ModelAndView
+	}
+
+	runtimeOnly 'org.grails:grails-plugin-i18n'
+	runtimeOnly 'org.grails:grails-plugin-services'
+
+	compileOnly 'org.grails:grails-core', { // Provided as this is a Grails plugin
+		// api: GrailsApplication, GrailsApplicationCommand, GrailsAutoConfiguration, Plugin
+		// impl: Holders
+		// comp: @PluginSource(source)
+	}
+	compileOnly 'org.slf4j:slf4j-api', {
+		// impl: @Slf4j(source)
+	}
+	compileOnly 'org.apache.groovy:groovy' // Provided as this is a Grails plugin
+
+	integrationTestImplementation 'org.grails:grails-web-testing-support'
+	integrationTestImplementation 'org.spockframework:spock-core'
+
+	integrationTestRuntimeOnly 'net.bytebuddy:byte-buddy'
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
