@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class BootStrap {
 
-    def init = { servletContext ->
+    def init = {
         Role roleAdmin
         Role roleUser
         User user
@@ -17,20 +17,14 @@ class BootStrap {
             roleAdmin = new Role('ROLE_ADMIN').save()
             roleUser = new Role('ROLE_USER').save()
         }
-
-
         User.withTransaction {
             user = new User('user', 'user').save()
             admin = new User('admin', 'admin').save()
         }
-
         UserRole.withTransaction {
             UserRole.create user, roleUser
             UserRole.create admin, roleUser
             UserRole.create admin, roleAdmin, true
         }
-    }
-
-    def destroy = {
     }
 }

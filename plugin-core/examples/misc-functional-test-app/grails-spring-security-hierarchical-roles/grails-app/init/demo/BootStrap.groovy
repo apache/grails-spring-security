@@ -4,7 +4,7 @@ import grails.gorm.transactions.Transactional
 
 class BootStrap {
 
-    def init = { servletContext ->
+    def init = {
         populate()
     }
     def destroy = {
