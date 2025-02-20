@@ -1,19 +1,18 @@
 package test
 
-import geb.spock.GebReportingSpec
 import grails.gorm.transactions.Rollback
+import grails.plugin.geb.ContainerGebSpec
 import grails.testing.mixin.integration.Integration
 import pages.LoginPage
 import spock.lang.Shared
 
-@Integration
 @Rollback
-abstract class AbstractSecuritySpec extends GebReportingSpec {
+@Integration
+abstract class AbstractSecuritySpec extends ContainerGebSpec {
 
 	@Shared boolean reset = false
 
 	void setup() {
-		browser.baseUrl = "http://localhost:${serverPort}/"
 		if ( !reset ) {
 			go 'testData/reset'
 			reset = true

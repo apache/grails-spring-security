@@ -1,5 +1,6 @@
 package test
 
+import grails.testing.mixin.integration.Integration
 import org.springframework.security.acls.domain.BasePermission
 
 import pages.EditReportPage
@@ -7,10 +8,9 @@ import pages.ListReportPage
 import pages.ReportGrantPage
 import pages.ShowReportPage
 import spock.lang.Stepwise
-import spock.lang.IgnoreIf
 
-@IgnoreIf( { !System.getProperty('geb.env') })
 @Stepwise
+@Integration
 class User1FunctionalSpec extends AbstractSecuritySpec {
 
 	// user1 has admin on 11,12 and read on 1-67
