@@ -10,27 +10,35 @@ dependencies {
 
     implementation project(':core-plugin')
     implementation 'org.grails:grails-core'
-    implementation 'org.grails:grails-datastore-core'
-    implementation 'org.grails:grails-datastore-gorm'
-    implementation 'org.grails:grails-events-transform'
+    implementation 'org.grails:grails-datastore-core', {
+        // AbstractPersistenceEvent, PreInsertEvent, PreUpdateEvent
+    }
+    implementation 'org.grails:grails-datastore-gorm', {
+        // DetachedCriteria
+    }
+    implementation 'org.grails:grails-events-transform', {
+        // @Listener
+    }
     implementation 'org.grails:grails-plugin-rest'
-    implementation 'org.apache.groovy:groovy'
-    implementation 'org.springframework:spring-beans'
+    implementation 'org.grails.plugins:gsp'
+    implementation 'org.springframework:spring-beans', {
+        // @Autowired
+    }
 
-    runtimeOnly 'org.grails.plugins:hibernate5'
-    runtimeOnly 'org.grails.plugins:gsp'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.zaxxer:HikariCP'
     runtimeOnly 'org.grails:grails-plugin-i18n'
-    runtimeOnly 'org.grails:grails-plugin-interceptors'
-    runtimeOnly 'org.grails:grails-plugin-services'
     runtimeOnly 'org.grails:grails-plugin-url-mappings'
+    runtimeOnly 'org.grails.plugins:hibernate5'
     runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'org.apache.tomcat:tomcat-jdbc'
 
     integrationTestImplementation testFixtures('org.grails.plugins:geb')
     integrationTestImplementation 'org.grails:grails-web-testing-support'
+    integrationTestImplementation 'org.grails:grails-datastore-gorm', {
+        // @Rollback
+    }
     integrationTestImplementation 'org.spockframework:spock-core'
 }
 

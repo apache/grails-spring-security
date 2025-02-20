@@ -12,32 +12,29 @@ dependencies {
     implementation 'org.grails:grails-core'
     implementation 'org.grails:grails-datastore-gorm'
     implementation 'org.grails:grails-plugin-domain-class'
-    implementation 'org.apache.groovy:groovy'
-    implementation 'org.springframework.security:spring-security-core'
-    implementation 'org.springframework.security:spring-security-crypto'
-    implementation 'org.springframework.security:spring-security-web'
-    implementation 'org.springframework:spring-web'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.zaxxer:HikariCP'
     runtimeOnly 'org.grails.plugins:hibernate5'
     runtimeOnly 'org.grails:grails-plugin-i18n'
-    runtimeOnly 'org.grails:grails-plugin-interceptors'
     runtimeOnly 'org.grails:grails-plugin-services'
-    runtimeOnly 'org.grails:grails-plugin-url-mappings'
-    runtimeOnly 'org.grails:grails-web-common'
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
+    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-    runtimeOnly 'org.apache.tomcat:tomcat-jdbc'
 
-    compileOnly 'jakarta.servlet:jakarta.servlet-api'
-    compileOnly 'org.slf4j:slf4j-nop'
-
-    testImplementation 'org.spockframework:spock-core'
-    testImplementation 'org.springframework:spring-tx'
-    testImplementation 'org.grails:grails-gorm-testing-support'
-    testImplementation 'org.grails:grails-web-testing-support'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    integrationTestImplementation 'org.grails:grails-test', {
+        // GrailsMockHttpServletRequest, GrailsMockHttpServletResponse
+    }
+    integrationTestImplementation 'org.grails:grails-web-testing-support', {
+        // @Integration
+    }
+    integrationTestImplementation 'org.sitemesh:sitemesh', {
+        // SiteMeshFilter
+    }
+    integrationTestImplementation 'org.springframework:spring-test', {
+        // MockFilterChain, MockHttpServletRequest, MockHttpServletResponse
+    }
+    integrationTestImplementation 'org.spockframework:spock-core'
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')

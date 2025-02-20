@@ -20,13 +20,12 @@ dependencies {
 
 	implementation platform("org.grails:grails-bom:$grailsVersion")
 
-	api 'org.grails:grails-core'
+	compileOnly 'org.grails:grails-core' // Provided as this is a Grails Plugin
 	api 'org.grails:grails-datastore-core' // API because used in templates
 	api 'org.grails:grails-datastore-gorm' // API because used in templates
 	api 'org.grails:grails-events-transform' // API because used in templates
 	api 'org.grails:grails-plugin-mimetypes'
 	api 'org.grails.plugins:async' // AsyncGrailsWebRequest is used in public API
-	implementation 'org.grails.plugins:events' // Events Plugin is required to implement EventBus
 	api 'org.grails:grails-web-common'
 	api 'org.grails:grails-web-url-mappings'
 	api 'org.springframework:spring-beans'
@@ -39,18 +38,21 @@ dependencies {
 	implementation 'org.apache.commons:commons-text'
 	implementation "org.ehcache:ehcache"
 	implementation 'org.grails:grails-bootstrap'
-	implementation 'org.grails.plugins:converters'
 	implementation 'org.grails:grails-plugin-rest'
+	implementation 'org.grails.plugins:converters'
+	implementation 'org.grails.plugins:events' // Events Plugin is required to implement EventBus
 	implementation 'org.springframework.boot:spring-boot'
 	implementation 'org.springframework:spring-context-support'
 	implementation 'org.springframework:spring-core'
 	implementation 'org.springframework.security:spring-security-crypto'
 	implementation 'org.springframework:spring-tx'
-	compileOnly "jline:jline" // for shell commands
 
+	compileOnly "jline:jline" // for shell commands
 	compileOnly 'org.apache.groovy:groovy' // Compile-time annotations
 	compileOnly 'jakarta.servlet:jakarta.servlet-api' // Provided
 	compileOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during compilation
+
+	runtimeOnly 'org.grails:grails-plugin-services' // A service is defined in the plugin
 
 	testImplementation 'org.grails:grails-gorm-testing-support'
 	testImplementation 'org.grails:grails-web-testing-support'
