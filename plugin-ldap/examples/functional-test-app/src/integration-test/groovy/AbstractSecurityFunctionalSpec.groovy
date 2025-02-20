@@ -1,7 +1,9 @@
 import grails.plugin.geb.ContainerGebSpec
+import grails.testing.mixin.integration.Integration
 import pages.LoginPage
 import pages.LogoutPage
 
+@Integration
 abstract class AbstractSecurityFunctionalSpec extends ContainerGebSpec {
 
 	def setup() {

@@ -68,7 +68,6 @@ grails:
 ---
 ldapServers:
     d1:
-        baseWorkDir: 'build'
         base: 'dc=d1,dc=example,dc=com'
         port: 10389
         indexed:

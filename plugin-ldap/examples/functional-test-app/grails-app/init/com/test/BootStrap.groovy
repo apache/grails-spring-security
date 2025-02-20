@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class BootStrap {
+
 	UserService userService
 	RoleService roleService
 	UserRoleService userRoleService

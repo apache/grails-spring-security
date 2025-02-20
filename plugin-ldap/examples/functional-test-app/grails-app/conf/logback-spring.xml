@@ -17,6 +17,8 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <logger name="grails.ldap.server" level="TRACE" additivity="false" />
+
     <springProfile name="development">
         <logger name="StackTrace" level="ERROR" additivity="false" />
 
@@ -27,6 +29,10 @@
         <!--        <logger name="org.springframework.security" level="TRACE"/>-->
 
         <!--        <root level="WARN"/>-->
+    </springProfile>
+
+    <springProfile name="test">
+        <logger name="StackTrace" level="ERROR" additivity="false" />
     </springProfile>
 
     <!--    logging to a file-->

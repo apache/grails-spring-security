@@ -67,3 +67,16 @@ project(':core-examples-functional-test-app').projectDir = new File(settingsDir,
 project(':core-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/integration-test-app')
 project(':core-examples-misc-group').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-group')
 project(':core-examples-misc-hierarchical-roles').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-hierarchical-roles')
+
+include 'ldap-plugin'
+include 'ldap-docs'
+include 'ldap-examples-custom-user-details-context-mapper'
+include 'ldap-examples-functional-test-app'
+include 'ldap-examples-retrieve-db-roles'
+include 'ldap-examples-retrieve-group-roles'
+project(':ldap-plugin').projectDir = new File(settingsDir, 'plugin-ldap/plugin')
+project(':ldap-docs').projectDir = new File(settingsDir, 'plugin-ldap/docs')
+project(':ldap-examples-custom-user-details-context-mapper').projectDir = new File(settingsDir, 'plugin-ldap/examples/custom-user-details-context-mapper')
+project(':ldap-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-ldap/examples/functional-test-app')
+project(':ldap-examples-retrieve-db-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-db-roles')
+project(':ldap-examples-retrieve-group-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-group-roles')

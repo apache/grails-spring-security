@@ -1,50 +1,41 @@
-buildscript {
-	repositories {
-		mavenCentral()
-		gradlePluginPortal()
-		maven { url "https://repo.grails.org/grails/core" }
-	}
-	dependencies {
-		classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-	}
-}
-
 plugins {
-	id "java-library"
-	id "eclipse"
-	id "idea"
-	id "org.grails.grails-plugin"
-	id "com.adarshr.test-logger" version "4.0.0" apply false
+	id 'java-library'
+	id 'org.grails.grails-plugin'
 }
 
-group "org.grails.plugins"
+group = 'org.grails.plugins'
+
+ext {
+	publishArtifactId = 'spring-security-ldap'
+	pomTitle = 'Grails Spring Security LDAP Plugin'
+	pomDescription = 'Adds Spring Security LDAP support to a Grails application.'
+	pomDevelopers = [burtbeckwith: 'Burt Beckwith']
+}
 
 dependencies {
+
 	implementation platform("org.grails:grails-bom:$grailsVersion")
 
-	runtimeOnly 'org.grails:grails-web-boot'
-
-	api "org.grails.plugins:spring-security-core:$grailsSpringSecurityCoreVersion"
-
-	api "org.springframework.security:spring-security-ldap", {
+	api project(':core-plugin')
+	api 'org.springframework.security:spring-security-ldap', {
 		['apacheds-core', 'apacheds-core-entry', 'apacheds-protocol-ldap', 'apacheds-protocol-shared',
 		 'apacheds-server-jndi', 'commons-logging', 'fest-assert', 'jcl-over-slf4j', 'junit',
 		 'ldapsdk', 'logback-classic', 'mockito-core', 'shared-ldap', 'slf4j-api', 'spring-beans',
 		 'spring-context', 'spring-core', 'spring-ldap-core', 'spring-security-core',
 		 'spring-test', 'spring-tx'].each { exclude module: it }
 	}
-
-	api "org.springframework.ldap:spring-ldap-core", {
+	api 'org.springframework.ldap:spring-ldap-core', {
 		['commons-lang', 'gsbase', 'junit', 'mockito-core', 'powermock-api-mockito',
 		 'powermock-api-support', 'powermock-core', 'powermock-module-junit4',
 		 'powermock-module-junit4-common', 'powermock-reflect', 'slf4j-log4j12', 'spring-beans',
 		 'spring-core', 'spring-data-commons', 'spring-test', 'spring-tx'].each { exclude module: it }
 	}
 
-	console 'org.grails:grails-console'
-	testImplementation "org.grails:grails-web-testing-support"
+	runtimeOnly 'org.grails:grails-web-boot'
+
+	testImplementation 'org.grails:grails-web-testing-support'
 }
 
-bootJar.enabled = false
-
-apply from: rootProject.file("gradle/testing.gradle")
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
