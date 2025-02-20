@@ -31,7 +31,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
 import org.springframework.web.context.request.RequestContextHolder
-import spock.lang.Ignore
+import spock.lang.PendingFeature
 import spock.lang.Shared
 
 import jakarta.servlet.FilterChain
@@ -291,7 +291,7 @@ class SecurityTagLibSpec extends AbstractIntegrationSpec {
 				"""<sec:link controller="testController" action="testAction" expression="hasRole('role1')" fallback="true">$body</sec:link>"""
 	}
 
-	@Ignore
+	@PendingFeature(reason = 'Was previously ignored')
 	void '<sec:link fallback="true"> via url'() {
 		when:
 		String body = 'Test link'
@@ -310,7 +310,7 @@ class SecurityTagLibSpec extends AbstractIntegrationSpec {
 				"""<sec:link controller="testController" action="testAction" fallback="true">$body</sec:link>"""
 	}
 
-	@Ignore
+	@PendingFeature(reason = 'Was previously ignored')
 	void '<sec:link> via url'() {
 		when:
 		String body = 'Test link'
