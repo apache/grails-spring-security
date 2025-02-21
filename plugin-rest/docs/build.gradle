@@ -1,7 +1,7 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 plugins {
-    id 'org.asciidoctor.jvm.convert' version "4.0.3"
+    id 'org.asciidoctor.jvm.convert'
 }
 
 def asciidoctorAttributes = [

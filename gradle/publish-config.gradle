@@ -1,6 +1,8 @@
 import org.grails.gradle.plugin.publishing.GrailsPublishExtension
 
-apply plugin: 'org.grails.grails-publish'
+if (!plugins.hasPlugin('org.grails.grails-profile-publish')) {
+    apply plugin: 'org.grails.grails-publish'
+}
 
 extensions.configure(GrailsPublishExtension) {
 

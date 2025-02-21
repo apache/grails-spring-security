@@ -1,6 +1,25 @@
-dependencies {
-    api project(":spring-security-rest")
-    api "net.spy:spymemcached:2.12.3"
-
-    profile "org.grails.profiles:plugin:${grailsVersion}"
+plugins {
+    id 'java-library'
+    id 'org.grails.grails-plugin'
 }
+
+group = 'org.grails.plugins'
+
+ext {
+    publishArtifactId = project.name
+    pomTitle = 'Grails Spring Security REST Plugin'
+    pomDescription = 'Grails plugin to implement token-based, RESTful authentication using Spring Security'
+    pomDevelopers = [
+            alvarosanchez: 'Alvaro Sanchez-Mariscal',
+            jameskleeh: 'James Kleeh',
+            jdaugherty: 'James Daugherty'
+    ]
+}
+
+dependencies {
+    api project(':spring-security-rest')
+    api "net.spy:spymemcached:2.12.3"
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
