@@ -29,6 +29,8 @@ dependencies {
     integrationTestImplementation "io.micronaut:micronaut-http-client:$micronautVersion"
     integrationTestImplementation 'org.grails:grails-web-testing-support'
     integrationTestImplementation 'org.spockframework:spock-core'
+
+    integrationTestRuntimeOnly "io.micronaut:micronaut-jackson-databind:$micronautVersion"
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
