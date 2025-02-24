@@ -2,6 +2,7 @@ import grails.plugin.springsecurity.CreateReleaseDropDownTask
 import grails.plugin.springsecurity.SoftwareVersion
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
+apply plugin: 'groovy'
 apply plugin: 'org.asciidoctor.jvm.convert'
 
 def softwareVersion = SoftwareVersion.build(projectVersion)
