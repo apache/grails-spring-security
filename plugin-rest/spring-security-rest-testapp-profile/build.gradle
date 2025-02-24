@@ -4,7 +4,7 @@ plugins {
 }
 
 ext {
-    isProfile = true
+    snapshotPublishUrl = 'https://repo.grails.org/grails/libs-snapshots-local'
     publishArtifactId = project.name
     pomTitle = 'Grails Spring Security REST Plugin'
     pomDescription = 'Grails plugin to implement token-based, RESTful authentication using Spring Security'

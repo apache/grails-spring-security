@@ -4,6 +4,10 @@ if (!plugins.hasPlugin('org.grails.grails-profile-publish')) {
     apply plugin: 'org.grails.grails-publish'
 }
 
+ext {
+    mavenPublishUrl = findProperty('snapshotPublishUrl') ?: 'https://repo.grails.org/plugins3-snapshots-local'
+}
+
 extensions.configure(GrailsPublishExtension) {
 
     def requiredProperties = ['publishArtifactId', 'pomTitle', 'pomDescription', 'pomDevelopers']
