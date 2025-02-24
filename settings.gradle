@@ -107,3 +107,12 @@ project(':spring-security-rest-memcached').projectDir = new File(settingsDir, 'p
 project(':spring-security-rest-redis').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-redis')
 project(':spring-security-rest-testapp-profile').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-testapp-profile')
 project(':rest-docs').projectDir = new File(settingsDir, 'plugin-rest/docs')
+
+include 'ui-plugin'
+include 'ui-docs'
+include 'ui-examples-extended'
+include 'ui-examples-simple'
+project(':ui-plugin').projectDir = new File(settingsDir, 'plugin-ui/plugin')
+project(':ui-docs').projectDir = new File(settingsDir, 'plugin-ui/docs')
+project(':ui-examples-extended').projectDir = new File(settingsDir, 'plugin-ui/examples/extended')
+project(':ui-examples-simple').projectDir = new File(settingsDir, 'plugin-ui/examples/simple')

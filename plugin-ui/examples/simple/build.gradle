@@ -1,18 +1,10 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.grails.org/grails/core' }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-    }
+plugins {
+    id 'org.grails.grails-web'
+    id 'org.grails.grails-gsp'
+    id 'com.bertramlabs.asset-pipeline'
 }
 
-version = '0.1'
 group = 'functional.test'
-
-apply plugin: 'groovy'
-apply plugin: 'org.grails.grails-gsp'
-apply plugin: 'org.grails.grails-web'
 
 repositories {
     maven { url = 'https://repo.grails.org/grails/core' }
@@ -20,12 +12,11 @@ repositories {
 
 dependencies {
 
-    implementation project(':spring-security-ui')
-
+    implementation project(':core-plugin')
+    implementation project(':ui-plugin')
     implementation 'org.grails:grails-core'
     implementation 'org.grails:grails-plugin-interceptors'
     implementation 'org.grails:grails-plugin-databinding'
-    implementation "org.grails.plugins:spring-security-core:$grailsSpringSecurityCoreVersion"
 
     implementation "dumbster:dumbster:$dumbsterVersion", { transitive = false } // Uses javax
     implementation "org.grails.plugins:mail:$mailVersion"
@@ -39,13 +30,16 @@ dependencies {
     runtimeOnly 'org.grails:grails-plugin-services'
     runtimeOnly 'org.grails:grails-plugin-url-mappings'
     runtimeOnly 'org.grails.plugins:hibernate5'
+    runtimeOnly 'org.fusesource.jansi:jansi'
     runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 
-    integrationTestImplementation "org.hibernate:hibernate-core-jakarta:$hibernateCoreVersion" // Needed for access to SessionFactory
+    integrationTestImplementation "org.hibernate:hibernate-core-jakarta:$hibernateVersion" // Needed for access to SessionFactory
     integrationTestImplementation testFixtures('org.grails.plugins:geb')
 
+    // Workaround for asset-pipeline bug
+    integrationTestRuntimeOnly 'org.graalvm.js:js-community:24.1.2'
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')

@@ -1,34 +1,17 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.grails.org/grails/core' }
-    }
-    dependencies {
-        classpath platform("org.grails:grails-bom:$grailsVersion")
-        classpath 'com.bertramlabs.plugins:asset-pipeline-gradle'
-    }
+plugins {
+    id 'java-library'
+    id 'org.grails.grails-gsp'
+    id 'org.grails.grails-plugin'
+    id 'com.bertramlabs.asset-pipeline'
 }
 
-version = projectVersion
 group = 'org.grails.plugins'
 
-apply plugin: 'com.bertramlabs.asset-pipeline'
-apply plugin: 'java-library'
-apply plugin: 'org.grails.grails-gsp'
-apply plugin: 'org.grails.grails-plugin'
-
-repositories {
-    maven { url = 'https://repo.grails.org/grails/core' }
-    mavenCentral()
-    if (System.getenv('GITHUB_MAVEN_PASSWORD') && !grailsVersion.endsWith('-SNAPSHOT')) {
-        logger.lifecycle('Adding Grails Core Staging Repo for project {}', project.name)
-        maven {
-            url = 'https://maven.pkg.github.com/grails/grails-core'
-            credentials {
-                username = 'DOES_NOT_MATTER'
-                password = System.getenv('GITHUB_MAVEN_PASSWORD')
-            }
-        }
-    }
+ext {
+    publishArtifactId = 'spring-security-ui'
+    pomTitle = 'Grails Spring Security UI'
+    pomDescription = 'The Spring Security UI plugin provides CRUD screens and other user management workflows.'
+    pomDevelopers = [burtbeckwith: 'Burt Beckwith']
 }
 
 dependencies {
@@ -37,10 +20,10 @@ dependencies {
     // enable compilation of AbstractS2UiDomainController subclasses.
     compileOnlyApi 'org.grails.plugins:converters'
 
+    implementation project(':core-plugin')
     implementation 'org.grails:grails-plugin-controllers'
     implementation 'org.grails.plugins:converters'
     implementation 'org.grails.plugins:gsp'
-    implementation "org.grails.plugins:spring-security-core:$grailsSpringSecurityCoreVersion"
     implementation 'org.springframework.security:spring-security-core'
     implementation 'org.springframework.security:spring-security-web'
 
@@ -69,7 +52,10 @@ tasks.named('compileAstJava') {
     dependsOn 'copyGspIntoTemplates'
 }
 
-assets.packagePlugin = true
+assets {
+    packagePlugin = true
+}
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
