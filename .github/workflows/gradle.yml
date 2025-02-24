@@ -47,7 +47,7 @@ jobs:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
         with:
           arguments: |
-            examples-functional-test-app:check 
+            core-examples-functional-test-app:check 
             -DTESTCONFIG=${{ matrix.test-config }}
 
   build:
