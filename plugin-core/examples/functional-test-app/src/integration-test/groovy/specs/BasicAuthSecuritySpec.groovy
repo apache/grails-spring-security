@@ -324,7 +324,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 	}
 
 	private void getWithAuth(String path, String username, String password) {
-		String uri = new URI(baseUrlRequired).resolve(new URI(path))
+		String uri = new URI(browser.baseUrl).resolve(new URI(path))
 		go uri.replace('http://', 'http://' + username + ':' + password + '@')
 	}
 
