@@ -29,7 +29,7 @@ jobs:
         with:
           develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
       - name: "🏃‍♂️ Run Tests"
-        run: ./gradlew check --refresh-dependencies --continue
+        run: ./gradlew check --max-workers=2 --refresh-dependencies --continue
   functional-test:
     runs-on: ubuntu-24.04
     strategy:
