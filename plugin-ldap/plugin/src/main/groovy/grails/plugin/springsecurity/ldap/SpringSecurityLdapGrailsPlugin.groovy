@@ -1,4 +1,4 @@
-/* Copyright 2006-2024 the original author or authors.
+/* Copyright 2006-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,11 +45,11 @@ class SpringSecurityLdapGrailsPlugin extends Plugin {
 	String authorEmail = ''
 	String title = 'LDAP authentication support for the Spring Security plugin.'
 	String description = 'LDAP authentication support for the Spring Security plugin.'
-	String documentation = 'http://grails-plugins.github.io/grails-spring-security-ldap/'
+	String documentation = 'https://grails.github.io/grails-spring-security-core'
 	String license = 'APACHE'
-	def organization = [name: 'Grails', url: 'http://www.grails.org/']
-	def issueManagement = [url: 'https://github.com/grails-plugins/grails-spring-security-ldap/issues']
-	def scm = [url: 'https://github.com/grails-plugins/grails-spring-security-ldap']
+	def organization = [name: 'Grails', url: 'https://www.grails.org']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
 
 	Closure doWithSpring() {{ ->
 

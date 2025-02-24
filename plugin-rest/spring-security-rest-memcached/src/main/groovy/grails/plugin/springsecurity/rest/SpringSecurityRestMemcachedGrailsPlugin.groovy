@@ -12,28 +12,28 @@ import net.spy.memcached.spring.MemcachedClientFactoryBean
 class SpringSecurityRestMemcachedGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    String grailsVersion = "6.1.1 > *"
+    String grailsVersion = '7.0.0 > *'
     List loadAfter = ['springSecurityRest']
     List pluginExcludes = [
-        "grails-app/views/**"
+            'grails-app/views/**'
     ]
 
-    String title = "Spring Security REST Plugin - Memcached support"
-    String author = "Alvaro Sanchez-Mariscal"
-    String authorEmail = ""
+    String title = 'Spring Security REST Plugin - Memcached support'
+    String author = 'Alvaro Sanchez-Mariscal'
+    String authorEmail = ''
     String description = 'Implements authentication for REST APIs based on Spring Security. It uses a token-based workflow'
 
     def profiles = ['web']
 
     // URL to the plugin's documentation
-    String documentation = "https://grails-plugins.github.io/grails-spring-security-rest/"
+    String documentation = 'https://grails.github.io/grails-spring-security-core'
 
     // Extra (optional) plugin metadata
-    String license = "APACHE"
-    def organization = [name: 'Grails', url: 'https://www.grails.org/']
+    String license = 'APACHE'
+    def organization = [name: 'Grails', url: 'https://www.grails.org']
 
-    def issueManagement = [ system: "GitHub", url: "https://github.com/grails/grails-spring-security-rest/issues" ]
-    def scm = [ url: "https://github.com/grails/grails-spring-security-rest" ]
+    def issueManagement = [system: 'GitHub', url: 'https://github.com/grails/grails-spring-security-core/issues']
+    def scm = [ url: 'https://github.com/grails/grails-spring-security-rest']
 
     Closure doWithSpring() { {->
         def conf = SpringSecurityUtils.securityConfig
@@ -51,7 +51,7 @@ class SpringSecurityRestMemcachedGrailsPlugin extends Plugin {
         conf = SpringSecurityUtils.securityConfig
 
         Properties systemProperties = System.properties
-        systemProperties.put("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.SLF4JLogger")
+        systemProperties.put('net.spy.log.LoggerImpl', 'net.spy.memcached.compat.log.SLF4JLogger')
         System.setProperties(systemProperties)
 
         SpringSecurityUtils.registerFilter 'restLogoutFilter', SecurityFilterPosition.LOGOUT_FILTER.order - 1

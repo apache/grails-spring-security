@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 the original author or authors.
+/* Copyright 2009-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,21 +29,21 @@ import grails.plugins.Plugin
 import groovy.util.logging.Slf4j
 
 /**
- * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
+ * @author Burt Beckwith
  */
 @Slf4j
 class SpringSecurityUiGrailsPlugin extends Plugin {
 
 	String grailsVersion = '7.0.0-SNAPSHOT > *'
 	String author = 'Burt Beckwith'
-	String authorEmail = 'burt@burtbeckwith.com'
+	String authorEmail = ''
 	String title = 'Spring Security UI plugin'
 	String description = 'User interface extensions for the Spring Security plugin'
-	String documentation = 'http://grails-plugins.github.io/grails-spring-security-ui/'
+	String documentation = 'https://grails.github.io/grails-spring-security-core'
 	String license = 'APACHE'
-	def organization = [name: 'Grails', url: 'http://www.grails.org/']
-	def issueManagement = [url: 'https://github.com/grails-plugins/grails-spring-security-ui/issues']
-	def scm = [url: 'https://github.com/grails-plugins/grails-spring-security-ui/']
+	def organization = [name: 'Grails', url: 'https://www.grails.org']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
 	def loadAfter = ['springSecurityCore', 'springSecurityAcl']
 	def profiles = ['web']
 

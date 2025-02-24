@@ -1,4 +1,4 @@
-/* Copyright 2006-2016 the original author or authors.
+/* Copyright 2006-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,27 +139,27 @@ import jakarta.servlet.DispatcherType
 @Slf4j
 class SpringSecurityCoreGrailsPlugin extends Plugin {
 
-	public static final String ENCODING_ID_BCRYPT = "bcrypt"
-	public static final String ENCODING_ID_LDAP = "ldap"
-	public static final String ENCODING_ID_MD4 = "MD4"
-	public static final String ENCODING_ID_MD5 = "MD5"
-	public static final String ENCODING_ID_NOOP = "noop"
-	public static final String ENCODING_ID_PBKDF2 = "pbkdf2"
-	public static final String ENCODING_ID_SCRYPT = "scrypt"
-	public static final String ENCODING_ID_ARGON2 = "argon2"
-	public static final String ENCODING_ID_SHA1 = "SHA-1"
-	public static final String ENCODING_IDSHA256 = "SHA-256"
+	public static final String ENCODING_ID_BCRYPT = 'bcrypt'
+	public static final String ENCODING_ID_LDAP = 'ldap'
+	public static final String ENCODING_ID_MD4 = 'MD4'
+	public static final String ENCODING_ID_MD5 = 'MD5'
+	public static final String ENCODING_ID_NOOP = 'noop'
+	public static final String ENCODING_ID_PBKDF2 = 'pbkdf2'
+	public static final String ENCODING_ID_SCRYPT = 'scrypt'
+	public static final String ENCODING_ID_ARGON2 = 'argon2'
+	public static final String ENCODING_ID_SHA1 = 'SHA-1'
+	public static final String ENCODING_IDSHA256 = 'SHA-256'
 
-	String grailsVersion = '6.0.0 > *'
+	String grailsVersion = '7.0.0 > *'
 	List observe = ['controllers']
 	List loadAfter = ['controllers', 'hibernate', 'hibernate4', 'hibernate5', 'services']
 	String author = 'Burt Beckwith'
-	String authorEmail = 'burt@burtbeckwith.com'
+	String authorEmail = ''
 	String title = 'Spring Security Core Plugin'
 	String description = 'Spring Security Core plugin'
-	String documentation = 'https://grails.github.io/grails-spring-security-core/'
+	String documentation = 'https://grails.github.io/grails-spring-security-core'
 	String license = 'APACHE'
-	def organization = [name: 'Grails', url: 'https://www.grails.org/']
+	def organization = [name: 'Grails', url: 'https://www.grails.org']
 	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
 	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
 	def profiles = ['web']
@@ -964,7 +964,7 @@ to default to 'Annotation'; setting value to 'Annotation'
 	private configureIpFilter = { conf ->
 
 		if (conf.ipRestrictions instanceof Map) {
-			throw new IllegalArgumentException("ipRestrictions defined as a Map is not supported; must be specified as a " +
+			throw new IllegalArgumentException('ipRestrictions defined as a Map is not supported; must be specified as a ' +
 					"List of Maps as described in section 'IP Address Restrictions' of the reference documentation")
 		}
 
@@ -1119,6 +1119,6 @@ to default to 'Annotation'; setting value to 'Annotation'
 		 (ENCODING_ID_ARGON2): Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
 		 (ENCODING_ID_SHA1): messageDigestPasswordEncoderSHA1,
 		 (ENCODING_IDSHA256): messageDigestPasswordEncoderSHA256,
-		 "sha256": new StandardPasswordEncoder()]
+		 'sha256': new StandardPasswordEncoder()]
 	}
 }

@@ -1,4 +1,4 @@
-/* Copyright 2006-2015 the original author or authors.
+/* Copyright 2006-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,15 +39,15 @@ class SpringSecurityCasGrailsPlugin extends Plugin {
 
 	String grailsVersion = '7.0.0 > *'
 	String author = 'Burt Beckwith'
-	String authorEmail = 'burt@burtbeckwith.com'
+	String authorEmail = ''
 	String title = 'Jasig CAS support for the Spring Security plugin.'
 	String description = 'Jasig CAS support for the Spring Security plugin.'
-	String documentation = 'http://grails-plugins.github.io/grails-spring-security-cas/'
+	String documentation = 'https://grails.github.io/grails-spring-security-core'
 	String license = 'APACHE'
 	List loadAfter = ['springSecurityCore']
-	def organization = [name: 'Grails', url: 'http://www.grails.org/']
-	def issueManagement = [url: 'https://github.com/grails-plugins/grails-spring-security-cas/issues']
-	def scm = [url: 'https://github.com/grails-plugins/grails-spring-security-cas']
+	def organization = [name: 'Grails', url: 'https://www.grails.org']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
 	def profiles = ['web']
 
 	@CompileDynamic

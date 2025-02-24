@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 the original author or authors.
+/* Copyright 2009-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,27 +73,27 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
  */
 class SpringSecurityAclGrailsPlugin extends Plugin {
 
-	public static final String ENCODING_ID_BCRYPT = "bcrypt"
-	public static final String ENCODING_ID_LDAP = "ldap"
-	public static final String ENCODING_ID_MD4 = "MD4"
-	public static final String ENCODING_ID_MD5 = "MD5"
-	public static final String ENCODING_ID_NOOP = "noop"
-	public static final String ENCODING_ID_PBKDF2 = "pbkdf2"
-	public static final String ENCODING_ID_SCRYPT = "scrypt"
-	public static final String ENCODING_ID_SHA1 = "SHA-1"
-	public static final String ENCODING_IDSHA256 = "SHA-256"
+	public static final String ENCODING_ID_BCRYPT = 'bcrypt'
+	public static final String ENCODING_ID_LDAP = 'ldap'
+	public static final String ENCODING_ID_MD4 = 'MD4'
+	public static final String ENCODING_ID_MD5 = 'MD5'
+	public static final String ENCODING_ID_NOOP = 'noop'
+	public static final String ENCODING_ID_PBKDF2 = 'pbkdf2'
+	public static final String ENCODING_ID_SCRYPT = 'scrypt'
+	public static final String ENCODING_ID_SHA1 = 'SHA-1'
+	public static final String ENCODING_IDSHA256 = 'SHA-256'
 
 
 	String grailsVersion = '7.0.0 > *'
 	String author = 'Burt Beckwith'
-	String authorEmail = 'burt@burtbeckwith.com'
+	String authorEmail = ''
 	String title = 'Spring Security ACL plugin'
 	String description = 'ACL support for the Spring Security plugin'
-	String documentation = 'http://grails-plugins.github.io/grails-spring-security-acl/'
+	String documentation = 'https://grails.github.io/grails-spring-security-core'
 	String license = 'APACHE'
-	def organization = [name: 'Grails', url: 'http://www.grails.org/']
-	def issueManagement = [url: 'https://github.com/grails-plugins/grails-spring-security-acl/issues']
-	def scm = [url: 'https://github.com/grails-plugins/grails-spring-security-acl']
+	def organization = [name: 'Grails', url: 'https://www.grails.org']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
 	def loadAfter = ['springSecurityCore']
 	def profiles = ['web']
 

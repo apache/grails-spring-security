@@ -1,4 +1,4 @@
-/* Copyright 2024 the original author or authors.
+/* Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,28 +65,28 @@ import org.springframework.security.web.savedrequest.NullRequestCache
 class SpringSecurityRestGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    String grailsVersion = "6.1.1 > *"
+    String grailsVersion = '7.0.0 > *'
     List loadAfter = ['springSecurityCore']
     List pluginExcludes = [
-        "grails-app/views/**"
+            'grails-app/views/**'
     ]
 
-    String title = "Spring Security REST Plugin"
-    String author = "Alvaro Sanchez-Mariscal"
-    String authorEmail = ""
+    String title = 'Spring Security REST Plugin'
+    String author = 'Alvaro Sanchez-Mariscal'
+    String authorEmail = ''
     String description = 'Implements authentication for REST APIs based on Spring Security. It uses a token-based workflow'
 
     def profiles = ['web']
 
     // URL to the plugin's documentation
-    String documentation = "https://grails-plugins.github.io/grails-spring-security-rest/"
+    String documentation = 'https://grails.github.io/grails-spring-security-core'
 
     // Extra (optional) plugin metadata
-    String license = "APACHE"
-    def organization = [name: 'Grails', url: 'https://www.grails.org/']
+    String license = 'APACHE'
+    def organization = [name: 'Grails', url: 'https://www.grails.org']
 
-    def issueManagement = [ system: "GitHub", url: "https://github.com/grails/grails-spring-security-rest/issues" ]
-    def scm = [ url: "https://github.com/grails/grails-spring-security-rest" ]
+    def issueManagement = [system: 'GitHub', url: 'https://github.com/grails/grails-spring-security-core/issues']
+    def scm = [ url: 'https://github.com/grails/grails-spring-security-core']
     GrailsApplication grailsApplication
 
     Closure doWithSpring() { {->
@@ -309,7 +309,7 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
         def customClaimProvidersList = applicationContext.getBeanNamesForType(CustomClaimProvider).collect {
             applicationContext.getBean(it, CustomClaimProvider)
         }
-        log.debug "customClaimProvidersList = {}", customClaimProvidersList
+        log.debug 'customClaimProvidersList = {}', customClaimProvidersList
 
         TokenGenerator tokenGenerator = applicationContext.getBean('tokenGenerator') as TokenGenerator
 
@@ -325,23 +325,23 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
                 !pluginManager.hasGrailsPlugin('springSecurityRestGrailsCache') &&
                 !pluginManager.hasGrailsPlugin('springSecurityRestRedis') &&
                 !pluginManager.hasGrailsPlugin('springSecurityRestMemcached')) {
-            throw new Exception("A JWT secret must be defined. Please provide a value for the config property: grails.plugin.springsecurity.rest.token.storage.jwt.secret")
+            throw new Exception('A JWT secret must be defined. Please provide a value for the config property: grails.plugin.springsecurity.rest.token.storage.jwt.secret')
         }
     }
 
 
     Map<String, PasswordEncoder> idToPasswordEncoder(ConfigObject conf) {
 
-        final String ENCODING_ID_BCRYPT = "bcrypt"
-        final String ENCODING_ID_LDAP = "ldap"
-        final String ENCODING_ID_MD4 = "MD4"
-        final String ENCODING_ID_MD5 = "MD5"
-        final String ENCODING_ID_NOOP = "noop"
-        final String ENCODING_ID_PBKDF2 = "pbkdf2"
-        final String ENCODING_ID_SCRYPT = "scrypt"
-        final String ENCODING_ID_ARGON2 = "argon2"
-        final String ENCODING_ID_SHA1 = "SHA-1"
-        final String ENCODING_IDSHA256 = "SHA-256"
+        final String ENCODING_ID_BCRYPT = 'bcrypt'
+        final String ENCODING_ID_LDAP = 'ldap'
+        final String ENCODING_ID_MD4 = 'MD4'
+        final String ENCODING_ID_MD5 = 'MD5'
+        final String ENCODING_ID_NOOP = 'noop'
+        final String ENCODING_ID_PBKDF2 = 'pbkdf2'
+        final String ENCODING_ID_SCRYPT = 'scrypt'
+        final String ENCODING_ID_ARGON2 = 'argon2'
+        final String ENCODING_ID_SHA1 = 'SHA-1'
+        final String ENCODING_IDSHA256 = 'SHA-256'
 
         MessageDigestPasswordEncoder messageDigestPasswordEncoderMD5 = new MessageDigestPasswordEncoder(ENCODING_ID_MD5)
         messageDigestPasswordEncoderMD5.encodeHashAsBase64 = conf.password.encodeHashAsBase64 // false
@@ -366,7 +366,7 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
          (ENCODING_ID_ARGON2): Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
          (ENCODING_ID_SHA1): messsageDigestPasswordEncoderSHA1,
          (ENCODING_IDSHA256): messsageDigestPasswordEncoderSHA256,
-         "sha256": new StandardPasswordEncoder()]
+         'sha256': new StandardPasswordEncoder()]
     }
 
     private boolean springSecurityPluginsAreActive() {
