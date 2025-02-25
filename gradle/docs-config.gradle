@@ -35,6 +35,9 @@ tasks.named('asciidoctor', AsciidoctorTask) {
     sources { include 'index.adoc' }
     outputDir = layout.buildDirectory.file('docs')
     attributes asciidoctorAttributes
+    jvm {
+        jvmArgs '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED'
+    }
 }
 
 tasks.register('docs') {
