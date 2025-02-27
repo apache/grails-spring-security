@@ -1,8 +1,5 @@
-import org.asciidoctor.gradle.jvm.AsciidoctorTask
-
 plugins {
-    id 'java' // Only for the resolveBomVersions task
-    id 'org.asciidoctor.jvm.convert'
+    id 'groovy' // For groovydoc and resolveBomVersions tasks
 }
 
 dependencies {
@@ -17,7 +14,6 @@ String getGrailsDocumentationVersion(String version) {
     if (version.endsWith('-SNAPSHOT')) {
         return 'snapshot'
     }
-
     return version
 }
 
@@ -42,16 +38,14 @@ tasks.register('bomVersions') {
     logger.lifecycle('Resolved GORM version for Guide links: {}', gorm)
 }
 
-tasks.named('asciidoctor', AsciidoctorTask) { AsciidoctorTask it ->
-    it.jvm {
-        jvmArgs('--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED')
-    }
-    it.baseDirFollowsSourceDir()
-    it.sourceDir project.file('src/docs')
-    it.sources { include 'index.adoc' }
-    it.outputDir = project.buildDir.toPath().resolve('docs').toFile()
-    it.options doctype: 'book'
-    it.attributes([
+ext {
+    apiDocsProjects = [
+            'ldap-plugin': [
+                    docTitle: "Grails Spring Security LDAP Plugin - $projectVersion",
+                    windowTitle: "spring-security-ldap $projectVersion API"
+            ]
+    ]
+    asciidoctorAttributes = [
             'source-highlighter'              : 'coderay',
             toc                               : 'left',
             toclevels                         : '2',
@@ -72,5 +66,7 @@ tasks.named('asciidoctor', AsciidoctorTask) { AsciidoctorTask it ->
             grailsSpringSecurityCoreLink      : "https://grails.github.io/grails-spring-security-core/${getGrailsDocumentationVersion(projectVersion)}/index.html",
             springSecurityLdapLink            : "https://docs.spring.io/spring-security/reference/${bomVersions.springSecurity}/servlet/authentication/passwords/ldap.html",
             springSecurityLdapApiLink         : "https://docs.spring.io/spring-security/site/docs/${bomVersions.springSecurity}/api"
-    ])
+    ]
 }
+
+apply from: rootProject.layout.projectDirectory.file('gradle/docs-config.gradle')

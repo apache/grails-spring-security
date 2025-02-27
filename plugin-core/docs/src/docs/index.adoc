@@ -1,4 +1,3 @@
-:includedir: src/docs/
 :apidocs: https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/
 :apidocs_spring: https://docs.spring.io/spring/docs/4.1.x/javadoc-api/
 :htmlsingle: docs.spring.io/spring-security/site/docs/4.0.x/reference/htmlsingle/
@@ -7,56 +6,56 @@
 = Spring Security Core Plugin - Reference Documentation
 Burt Beckwith, Puneet Behl
 
-include::{includedir}introduction.adoc[]
+include::introduction.adoc[]
 
-include::{includedir}whatsNew.adoc[]
+include::whatsNew.adoc[]
 
-include::{includedir}domainClasses.adoc[]
+include::domainClasses.adoc[]
 
-include::{includedir}requestMappings.adoc[]
+include::requestMappings.adoc[]
 
-include::{includedir}helperClasses.adoc[]
+include::helperClasses.adoc[]
 
-include::{includedir}events.adoc[]
+include::events.adoc[]
 
-include::{includedir}domainClassProperties.adoc[]
+include::domainClassProperties.adoc[]
 
-include::{includedir}authentication.adoc[]
+include::authentication.adoc[]
 
-include::{includedir}authenticationProviders.adoc[]
+include::authenticationProviders.adoc[]
 
-include::{includedir}userDetailsService.adoc[]
+include::userDetailsService.adoc[]
 
-include::{includedir}passwords.adoc[]
+include::passwords.adoc[]
 
-include::{includedir}urlProperties.adoc[]
+include::urlProperties.adoc[]
 
-include::{includedir}hierarchicalRoles.adoc[]
+include::hierarchicalRoles.adoc[]
 
-include::{includedir}switchUser.adoc[]
+include::switchUser.adoc[]
 
-include::{includedir}filters.adoc[]
+include::filters.adoc[]
 
-include::{includedir}channelSecurity.adoc[]
+include::channelSecurity.adoc[]
 
-include::{includedir}ip.adoc[]
+include::ip.adoc[]
 
-include::{includedir}sessionFixation.adoc[]
+include::sessionFixation.adoc[]
 
-include::{includedir}logoutHandlers.adoc[]
+include::logoutHandlers.adoc[]
 
-include::{includedir}voters.adoc[]
+include::voters.adoc[]
 
-include::{includedir}miscProperties.adoc[]
+include::miscProperties.adoc[]
 
-include::{includedir}tutorials.adoc[]
+include::tutorials.adoc[]
 
-include::{includedir}examples.adoc[]
+include::examples.adoc[]
 
-include::{includedir}controllerMethods.adoc[]
+include::controllerMethods.adoc[]
 
-include::{includedir}i18n.adoc[]
+include::i18n.adoc[]
 
-include::{includedir}scripts.adoc[]
+include::scripts.adoc[]
 
-include::{includedir}debugging.adoc[]
+include::debugging.adoc[]

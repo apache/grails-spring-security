@@ -1,74 +1,111 @@
 import grails.plugin.springsecurity.CreateReleaseDropDownTask
-import grails.plugin.springsecurity.SoftwareVersion
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
-apply plugin: 'groovy'
 apply plugin: 'org.asciidoctor.jvm.convert'
 
-def softwareVersion = SoftwareVersion.build(projectVersion)
+configurations.register('documentation')
 
-def asciidoctorAttributes = [
-        stableversion        : softwareVersion.stableVersion,
-        snapshotversion      : softwareVersion.snapshotVersion,
-        copyright            : 'Apache License, Version 2.0',
-        docinfo1             : 'true',
-        doctype              : 'book',
-        encoding             : 'utf-8',
-        icons                : 'font',
-        id                   : name + ':' + version,
-        idprefix             : '',
-        idseparator          : '-',
-        lang                 : 'en',
-        linkattrs            : true,
-        numbered             : '',
-        producer             : 'Asciidoctor',
-        revnumber            : version,
-        setanchors           : true,
-        'source-highlighter' : 'prettify',
-        toc                  : 'left',
-        toc2                 : '',
-        toclevels            : '2'
-]
+dependencies {
+    add('documentation', platform("org.grails:grails-bom:$grailsVersion"))
+    add('documentation', 'com.github.javaparser:javaparser-core')
+    add('documentation', 'org.apache.groovy:groovy-groovydoc')
+}
+
+tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
+    group = 'documentation'
+    githubSlug = 'grails/grails-spring-security-core'
+    currentVersion = version
+    versions = docsVersionSelectorInclude.split(',').collect { it.strip() }
+    index = layout.buildDirectory.file('docs/index.html')
+}
+
+tasks.register('pluginName') {
+    ext.value = project.name - '-docs'
+}
+
+tasks.withType(Groovydoc).configureEach {
+    def firstDocTitle
+    def firstWindowTitle
+    def sources = []
+    rootProject.subprojects
+            .findAll { it.name in (project.findProperty('apiDocsProjects') ?: []) }
+            .each {
+                firstDocTitle = firstDocTitle ?: (project.findProperty('apiDocsProjects') as Map)[it.name]['docTitle']
+                firstWindowTitle = firstWindowTitle ?: (project.findProperty('apiDocsProjects') as Map)[it.name]['windowTitle']
+                sources += it.files('src/main/groovy')
+            }
+    docTitle = firstDocTitle
+    windowTitle = firstWindowTitle
+    source = sources
+    destinationDir = rootProject.layout.buildDirectory.dir("docs/${pluginName.value}-plugin/groovydoc").get().asFile
+    access = GroovydocAccess.PROTECTED
+    processScripts = false
+    includeMainForScripts = false
+    includeAuthor = false
+    classpath = configurations.documentation
+    groovyClasspath += configurations.documentation
+}
 
 tasks.named('asciidoctor', AsciidoctorTask) {
     sourceDir layout.projectDirectory.file('src/docs')
     sources { include 'index.adoc' }
     outputDir = layout.buildDirectory.file('docs')
-    attributes asciidoctorAttributes
+    attributes findProperty('asciidoctorAttributes') as Map ?: [:]
+    baseDirFollowsSourceDir()
     jvm {
         jvmArgs '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED'
     }
+    inputs.dir(sourceDir)
+    outputs.dir(outputDir)
 }
 
-tasks.register('docs') {
+tasks.register('guideDocs', Copy) {
     group = 'documentation'
-    dependsOn = ['groovydoc', 'asciidoctor']
-    finalizedBy 'copyImages', 'createReleaseDropDown', 'ghPagesRootIndexPage'
+    dependsOn 'asciidoctor'
+    def sourceDir = layout.projectDirectory.dir('src/docs')
+    def targetDir = layout.buildDirectory.dir('docs')
+    //inputs.files(tasks.named('asciidoctor').flatMap { it.outputs.files })
+    outputs.dir(targetDir)
+    from sourceDir
+    into targetDir
+    include '**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg'
+    finalizedBy findProperty('docsFinalizeTasks') as List ?: []
 }
 
-tasks.register('copyImages', Copy) {
+tasks.register('copyGhPages', Copy) {
     group = 'documentation'
-    dependsOn = ['docs']
-    from layout.projectDirectory.dir('src/docs')
-    into layout.buildDirectory.dir('docs')
-    include '**/*.png'
-    includeEmptyDirs = false
-}
-
-tasks.register('ghPagesRootIndexPage', Copy) {
-    group = 'documentation'
-    dependsOn = ['docs']
-    from layout.projectDirectory.file('src/docs/index.tmpl')
-    into layout.buildDirectory.dir('docs')
+    description = 'Copy the ghpages.html file to the root docs directory'
+    from findProject(':core-docs').layout.projectDirectory.file('src/docs/index.tmpl')
+    into rootProject.layout.buildDirectory.dir('docs')
     rename 'index.tmpl', 'ghpages.html'
 }
 
-tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
+tasks.register('copyGuide', Copy) {
+    def sourceDir = layout.buildDirectory.dir('docs')
+    def targetDir = rootProject.layout.buildDirectory.dir("docs/${pluginName.value}-plugin/guide")
+    from(sourceDir)
+    into(targetDir)
+    if ('core-docs' == project.name) {
+        finalizedBy('copyGhPages')
+    }
+    dependsOn('guideDocs')
+    dependsOn(findProperty('docsFinalizeTasks') as List ?: [])
+    //inputs.dir(tasks.named('guideDocs').flatMap { it.outputs.files.files })
+    outputs.dir(targetDir)
+}
+
+tasks.register('copyApiDocs', Copy) {
     group = 'documentation'
-    dependsOn = ['docs']
-    mustRunAfter = ['docs']
-    githubSlug = 'grails/grails-spring-security-core'
-    currentVersion = version
-    versions = docsVersionSelectorInclude.split(',').collect { it.strip() }
-    index = layout.buildDirectory.file('docs/index.html')
+    dependsOn('groovydoc')
+    for (String projectName : (findProperty('apiDocsProjects') as Map).keySet()) {
+        from(layout.buildDirectory.dir("docs/${projectName}/groovydoc")) {
+            into rootProject.layout.buildDirectory.dir("docs/${projectName}/groovydoc")
+        }
+    }
+}
+
+tasks.register('aggregateDocs') {
+    dependsOn('copyGuide', 'copyApiDocs')
+    group = 'documentation'
+    description = 'Aggregate all documentation from all subprojects into the root docs directory'
 }

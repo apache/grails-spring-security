@@ -1,5 +1,3 @@
-:includedir: src/docs/
-
 = Spring Security REST for Grails
 :author: Álvaro Sánchez-Mariscal Arnaiz
 :email: alvaro.sanchezmariscal@gmail.com
@@ -10,27 +8,27 @@ Version: {version}
 
 == Introduction to the Spring Security REST plugin
 
-include::{includedir}introduction.adoc[]
+include::introduction.adoc[]
 
 == What's new in 6.0?
 
-include:{includedir}whatsNew60.adoc[]
+include:whatsNew60.adoc[]
 
 == What's new in 5.0?
 
-include::{includedir}whatsNew50.adoc[]
+include::whatsNew50.adoc[]
 
 == What's new in 2.0?
 
-include::{includedir}whatsNew20.adoc[]
+include::whatsNew20.adoc[]
 
 == What's new in 1.5?
 
-include::{includedir}whatsNew15.adoc[]
+include::whatsNew15.adoc[]
 
 == What's new in 1.4?
 
-include::{includedir}whatsNew14.adoc[]
+include::whatsNew14.adoc[]
 
 == Articles and sample projects
 
@@ -53,54 +51,54 @@ include::{includedir}whatsNew14.adoc[]
 [[configuration]]
 == Configuration
 
-include::{includedir}configuration.adoc[]
+include::configuration.adoc[]
 
 [[events]]
 == Events
 
-include::{includedir}events.adoc[]
+include::events.adoc[]
 
 [[authentication]]
 == Authentication Endpoint
 
-include::{includedir}authentication.adoc[]
+include::authentication.adoc[]
 
 [[tokenGeneration]]
 == Token Generation
 
-include::{includedir}tokenGeneration.adoc[]
+include::tokenGeneration.adoc[]
 
 [[tokenStorage]]
 == Token Storage
 
-include::{includedir}tokenStorage.adoc[]
+include::tokenStorage.adoc[]
 
 [[tokenRendering]]
 == Token Rendering
 
-include::{includedir}tokenRendering.adoc[]
+include::tokenRendering.adoc[]
 
 [[tokenValidation]]
 == Token Validation Filter
 
-include::{includedir}tokenValidation.adoc[]
+include::tokenValidation.adoc[]
 
 [[cors]]
 == CORS support
 
-include::{includedir}cors.adoc[]
+include::cors.adoc[]
 
 [[oauth]]
 == Delegating authentication to OAuth providers
 
-include::{includedir}oauth.adoc[]
+include::oauth.adoc[]
 
 [[debugging]]
 == Debugging
 
-include::{includedir}debugging.adoc[]
+include::debugging.adoc[]
 
 [[faq]]
 == Frequently Asked Questions
 
-include::{includedir}faq.adoc[]
+include::faq.adoc[]

@@ -1,51 +1,36 @@
 plugins {
-    id 'org.asciidoctor.jvm.convert'
+    id 'groovy' // For groovydoc task
 }
 
-def asciidoctorAttributes = [
-        copyright           : 'Apache License, Version 2.0',
-        docinfo1            : 'true',
-        doctype             : 'book',
-        encoding            : 'utf-8',
-        icons               : 'font',
-        id                  : project.name + ':' + projectVersion,
-        idprefix            : '',
-        idseparator         : '-',
-        lang                : 'en',
-        linkattrs           : true,
-        numbered            : '',
-        producer            : 'Asciidoctor',
-        revnumber           : projectVersion,
-        setanchors          : true,
-        'source-highlighter' : 'prettify',
-        toc                 : 'left',
-        toc2                : '',
-        toclevels           : '2',
-        projectVersion      : project.projectVersion,
-        threeZeroXProjectVersion: '3.0.1'
-]
-
-asciidoctor {
-    sourceDir file('src/docs')
-    sources {
-        include 'index.adoc'
-    }
-    outputDir = new File(buildDir, 'docs')
-    attributes asciidoctorAttributes
-    jvm {
-        jvmArgs '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED'
-    }
+ext {
+    apiDocsProjects = [
+            'cas-plugin': [
+                    docTitle: "Grails Spring Security CAS Plugin - $projectVersion",
+                    windowTitle: "spring-security-cas $projectVersion API"
+            ]
+    ]
+    asciidoctorAttributes = [
+            copyright           : 'Apache License, Version 2.0',
+            docinfo1            : 'true',
+            doctype             : 'book',
+            encoding            : 'utf-8',
+            icons               : 'font',
+            id                  : project.name + ':' + projectVersion,
+            idprefix            : '',
+            idseparator         : '-',
+            lang                : 'en',
+            linkattrs           : true,
+            numbered            : '',
+            producer            : 'Asciidoctor',
+            revnumber           : projectVersion,
+            setanchors          : true,
+            'source-highlighter' : 'prettify',
+            toc                 : 'left',
+            toc2                : '',
+            toclevels           : '2',
+            projectVersion      : project.projectVersion,
+            threeZeroXProjectVersion: '3.0.1'
+    ]
 }
 
-tasks.register("docs") {
-    group = "documentation"
-    dependsOn = ["asciidoctor"]
-    doLast {
-        new File(buildDir, 'docs/ghpages.html') << file('src/docs/index.tmpl').text.replaceAll('@VERSION@', project.version)
-        copy {
-            from 'src/docs'
-            into new File(buildDir, 'docs').path
-            include '**/*.png'
-        }
-    }
-}
+apply from: rootProject.layout.projectDirectory.file('gradle/docs-config.gradle')
