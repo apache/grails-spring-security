@@ -1,5 +1,4 @@
 = Spring Security CAS Plugin - Reference Documentation
-Puneet Behl <behlp@unityfoundation.io>
 :revnumber: {projectVersion}
 :encoding: utf-8
 :lang: en
