@@ -17,6 +17,7 @@ dependencies {
     implementation 'org.grails:grails-core'
     implementation 'org.grails:grails-plugin-interceptors'
     implementation 'org.grails:grails-plugin-databinding'
+    implementation 'org.grails.plugins:hibernate5'
 
     implementation "dumbster:dumbster:$dumbsterVersion", { transitive = false } // Uses javax
     implementation "org.grails.plugins:mail:$mailVersion"
@@ -29,13 +30,11 @@ dependencies {
     runtimeOnly 'org.grails:grails-plugin-i18n'
     runtimeOnly 'org.grails:grails-plugin-services'
     runtimeOnly 'org.grails:grails-plugin-url-mappings'
-    runtimeOnly 'org.grails.plugins:hibernate5'
     runtimeOnly 'org.fusesource.jansi:jansi'
     runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 
-    integrationTestImplementation "org.hibernate:hibernate-core-jakarta:$hibernateVersion" // Needed for access to SessionFactory
     integrationTestImplementation testFixtures('org.grails.plugins:geb')
 
     // Workaround for asset-pipeline bug

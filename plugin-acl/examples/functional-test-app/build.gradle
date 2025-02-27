@@ -13,7 +13,7 @@ dependencies {
     implementation 'org.grails:grails-plugin-rest'
     implementation 'org.grails:grails-web-boot'
     implementation 'org.grails.plugins:gsp'
-    implementation "org.hibernate:hibernate-core-jakarta:$hibernateVersion"
+    implementation 'org.grails.plugins:hibernate5'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.zaxxer:HikariCP'
@@ -21,7 +21,6 @@ dependencies {
     runtimeOnly 'org.grails:grails-plugin-i18n'
     runtimeOnly 'org.grails:grails-plugin-services'
     runtimeOnly 'org.grails:grails-plugin-url-mappings'
-    runtimeOnly 'org.grails.plugins:hibernate5'
     runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
