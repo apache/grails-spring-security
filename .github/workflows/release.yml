@@ -1,68 +1,60 @@
-name: Release
+name: "Release"
 on:
   release:
     types: [published]
 env:
-  GIT_USER_NAME: 'grails-build'
-  GIT_USER_EMAIL: 'grails-build@users.noreply.github.com'
+  GIT_USER_NAME: grails-build
+  GIT_USER_EMAIL: grails-build@users.noreply.github.com
 jobs:
   release:
-    runs-on: ubuntu-latest
-    env:
-      GIT_USER_NAME: 'grails-build'
-      GIT_USER_EMAIL: 'grails-build@users.noreply.github.com'
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: liberica
           java-version: 17
+          distribution: liberica
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
       - name: "📝 Store the current release version"
         id: release_version
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
-      - name: Run pre-release
-        uses: grails/github-actions/pre-release@main
-      - name: Generate secring file
+      - name: "⚙️ Run pre-release"
+        uses: grails/github-actions/pre-release@v3
+      - name: "🔐 Generate key file for artifact signing"
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
-      - name: Publish to Sonatype
-        id: publish_to_sonatype
-        uses: gradle/actions/setup-gradle@v3
+      - name: "📤 Publish to Sonatype - close and release staging repository"
         env:
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-          ORG_GRADLE_PROJECT_sonatypeStagingProfileId: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-          ORG_GRADLE_PROJECT_sonatypeNexusUrl: ${{ secrets.SONATYPE_NEXUS_URL }}
+          GITHUB_MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GRAILS_PUBLISH_RELEASE: 'true'
+          NEXUS_PUBLISH_USERNAME: ${{ secrets.NEXUS_PUBLISH_USERNAME }}
+          NEXUS_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PUBLISH_PASSWORD }}
+          NEXUS_PUBLISH_URL: ${{ secrets.NEXUS_PUBLISH_RELEASE_URL }}
+          NEXUS_PUBLISH_STAGING_PROFILE_ID: ${{ secrets.NEXUS_PUBLISH_STAGING_PROFILE_ID }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
-          SECRING_FILE: ${{ secrets.SECRING_FILE }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-        with:
-          arguments: |
-            -U 
-            -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg 
-            publishToSonatype 
-            closeAndReleaseSonatypeStagingRepository
-      - name: Generate Documentation
-        if: success()
-        uses: gradle/actions/setup-gradle@v3
-        env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-        with:
-          arguments: docs
-      - name: Publish Documentation to Github Pages
-        if: success()
-        uses: grails/github-pages-deploy-action@grails
+        run: >
+          ./gradlew --refresh-dependencies
+          -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg
+          publishToSonatype
+          closeAndReleaseSonatypeStagingRepository
+      - name: "🔨 Build Documentation"
+        run: ./gradlew aggregateDocs
+      - name: "📤 Publish Documentation to Github Pages"
+        uses: grails/github-pages-deploy-action@v3
         env:
           BRANCH: gh-pages
           COMMIT_EMAIL: ${{ env.GIT_USER_EMAIL }}
           COMMIT_NAME: ${{ env.GIT_USER_NAME }}
-          FOLDER: plugin/build/docs
+          FOLDER: build/docs
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          SKIP_SNAPSHOT: ${{ contains(steps.release_version.outputs.release_version, 'M') }}
+          SKIP_SNAPSHOT: ${{ contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC') }}
           VERSION: ${{ steps.release_version.outputs.release_version }}
-      - name: Run post-release
-        if: steps.publish_to_sonatype.outcome == 'success'
-        uses: grails/github-actions/post-release@main
+      - name: "⚙️ Run post-release"
+        uses: grails/github-actions/post-release@v3
