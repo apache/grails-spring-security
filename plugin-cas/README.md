@@ -1,5 +1,5 @@
 Grails Spring Security CAS Plugin
 ==================================
 
-See [documentation](https://grails-plugins.github.io/grails-spring-security-cas/) for further information.
+See [documentation](https://grails.github.io/grails-spring-security-core/latest/cas-plugin/guide) for further information.
 

@@ -3,7 +3,7 @@
 Grails Spring Security Core Plugin
 ==================================
 
-See [documentation](https://grails-plugins.github.io/grails-spring-security-core/) for further information.
+See [documentation](https://grails.github.io/grails-spring-security-core/latest/guide) for further information.
 
 ### Branch structure 
 

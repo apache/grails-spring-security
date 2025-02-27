@@ -1,6 +1,5 @@
 Spring Security OAuth2 Plugin
 =======
-[![Java CI](https://github.com/grails/grails-spring-security-oauth2/actions/workflows/gradle.yml/badge.svg)](https://github.com/grails/grails-spring-security-oauth2/actions/workflows/gradle.yml)
 
 Main differences with the Grails 2 plugin:
 
@@ -11,7 +10,7 @@ Main differences with the Grails 2 plugin:
 
 Documentation
 ------------
-[User Guide](https://grails.github.io/grails-spring-security-oauth2/)
+[User Guide](https://grails.github.io/grails-spring-security-core/latest/oauth2-plugin/guide)
 
 Installation
 ------------
