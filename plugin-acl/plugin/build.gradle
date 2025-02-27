@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+    id 'org.grails.grails-gsp'
+    id 'org.grails.grails-plugin'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+    publishArtifactId = 'spring-security-acl'
+    pomTitle = 'Grails Spring Security ACL Plugin'
+    pomDescription = 'Adds Spring Security ACL support to a Grails application.'
+    pomDevelopers = ['burtbeckwith': 'Burt Beckwith']
+
+}
+
+dependencies {
+
+    implementation platform("org.grails:grails-bom:$grailsVersion")
+
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.grails:grails-core"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
+    implementation "org.grails:grails-web-boot"
+    implementation "org.grails:grails-logging"
+    implementation "org.grails:grails-plugin-rest"
+    implementation "org.grails:grails-plugin-databinding"
+    implementation "org.grails:grails-plugin-i18n"
+    implementation "org.grails:grails-plugin-services"
+    implementation "org.grails:grails-plugin-url-mappings"
+    implementation "org.grails:grails-plugin-interceptors"
+    implementation "org.grails.plugins:gsp"
+    console "org.grails:grails-console"
+    profile "org.grails.profiles:web-plugin"
+    runtimeOnly "org.grails:grails-plugin-services"
+    runtimeOnly "org.grails:grails-plugin-domain-class"
+    testImplementation "org.grails:grails-gorm-testing-support"
+    testImplementation "org.grails:grails-web-testing-support"
+
+    implementation 'org.ehcache:ehcache'
+
+    api project(':core-plugin')
+    api 'org.springframework.security:spring-security-acl'
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

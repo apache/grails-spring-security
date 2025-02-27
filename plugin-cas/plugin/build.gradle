@@ -1,0 +1,32 @@
+plugins {
+	id 'java-library'
+	id 'org.grails.grails-plugin'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+	publishArtifactId = 'spring-security-cas'
+	pomTitle = 'Grails Spring Security CAS Plugin'
+	pomDescription = 'The CAS plugin adds CAS single sign-on support to a Grails application that uses Spring Security.'
+	pomDevelopers = ['burtbeckwith': 'Burt Beckwith']
+}
+
+dependencies {
+	compileOnly "jakarta.servlet:jakarta.servlet-api"
+	compileOnly "org.springframework.boot:spring-boot-starter-logging"
+	compileOnly "org.grails:grails-web-boot"
+
+	profile "org.grails.profiles:web-plugin"
+	api project(':core-plugin')
+
+	api "org.apereo.cas.client:cas-client-core:$casClientCoreVersion"
+	api 'org.springframework.security:spring-security-cas', {
+		['spring-beans', 'spring-context', 'spring-core', 'spring-security-core',
+		 'spring-security-web', 'spring-web'].each { exclude module: it }
+	}
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

@@ -1,0 +1,9 @@
+If you need debug information, you can specify the following entries in `logback.groovy`:
+
+[source,groovy]
+.Listing {counter:listing}. Logging setup
+----
+logger("org.springframework.security", DEBUG, ['STDOUT'], false)
+logger("grails.plugin.springsecurity", DEBUG, ['STDOUT'], false)
+logger("org.pac4j", DEBUG, ['STDOUT'], false)
+----

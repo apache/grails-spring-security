@@ -1,0 +1,44 @@
+plugins {
+    id 'java-library'
+    id 'org.grails.grails-plugin'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+    publishArtifactId = project.name
+    pomTitle = 'Grails Spring Security REST Plugin'
+    pomDescription = 'Grails plugin to implement token-based, RESTful authentication using Spring Security'
+    pomDevelopers = [
+            alvarosanchez: 'Alvaro Sanchez-Mariscal',
+            jameskleeh: 'James Kleeh',
+            jdaugherty: 'James Daugherty'
+    ]
+}
+
+dependencies {
+
+    implementation "org.grails:grails-bom:$grailsVersion"
+
+    api project(':spring-security-rest'), {
+        // api: TokenNotFoundException, TokenStorageService
+        // impl: SecureRandomTokenGenerator
+    }
+    api "net.spy:spymemcached:$spyMemcachedVersion", {
+        // api: MemcachedClient, SerializingTranscoder
+        // impl: CASValue, DefaultHashAlgorithm, MemcachedClientFactoryBean
+    }
+    api 'org.springframework.security:spring-security-core', {
+        // api: UserDetails
+    }
+
+    implementation project(':core-plugin'), {
+        // impl: SecurityFilterPosition, SpringSecurityUtils
+    }
+
+    compileOnly 'org.apache.groovy:groovy' // Provided as this is a Grails plugin
+    compileOnly 'org.grails:grails-core' // Provided as this is a Grails plugin
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

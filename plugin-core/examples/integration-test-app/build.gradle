@@ -1,0 +1,42 @@
+plugins {
+    id 'org.grails.grails-web'
+}
+
+group = 'misc.integration.test.app'
+
+dependencies {
+
+    implementation platform("org.grails:grails-bom:$grailsVersion")
+
+    implementation project(':core-plugin')
+    implementation 'org.grails:grails-core'
+    implementation 'org.grails:grails-datastore-gorm'
+    implementation 'org.grails:grails-plugin-domain-class'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.zaxxer:HikariCP'
+    runtimeOnly 'org.grails.plugins:hibernate5'
+    runtimeOnly 'org.grails:grails-plugin-i18n'
+    runtimeOnly 'org.grails:grails-plugin-services'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
+    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    integrationTestImplementation 'org.grails:grails-test', {
+        // GrailsMockHttpServletRequest, GrailsMockHttpServletResponse
+    }
+    integrationTestImplementation 'org.grails:grails-web-testing-support', {
+        // @Integration
+    }
+    integrationTestImplementation 'org.sitemesh:sitemesh', {
+        // SiteMeshFilter
+    }
+    integrationTestImplementation 'org.springframework:spring-test', {
+        // MockFilterChain, MockHttpServletRequest, MockHttpServletResponse
+    }
+    integrationTestImplementation 'org.spockframework:spock-core'
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')

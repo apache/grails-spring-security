@@ -1,0 +1,42 @@
+plugins {
+    id 'org.grails.grails-profile'
+    id 'org.grails.grails-profile-publish'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+    snapshotPublishUrl = 'https://repo.grails.org/grails/libs-snapshots-local'
+    publishArtifactId = project.name
+    pomTitle = 'Grails Spring Security REST Plugin'
+    pomDescription = 'Grails plugin to implement token-based, RESTful authentication using Spring Security'
+    pomDevelopers = [
+            alvarosanchez: 'Alvaro Sanchez-Mariscal',
+            jameskleeh: 'James Kleeh',
+            jdaugherty: 'James Daugherty'
+    ]
+}
+
+tasks.register('generateProfileConfig') {
+    copy {
+        from 'profile.yml.tmpl'
+        into '.'
+        rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
+        expand pluginVersion: project.version
+    }
+
+    file('features').eachDir { feature ->
+        copy {
+            from "features/${feature.name}/feature.yml.tmpl"
+            into "features/${feature.name}/"
+            rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
+            expand pluginVersion: project.version
+        }
+    }
+}
+
+tasks.named('compileProfile') {
+    dependsOn('generateProfileConfig')
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

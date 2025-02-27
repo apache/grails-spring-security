@@ -1,0 +1,16 @@
+[[s2-create-acl-domains]]
+=== s2-create-acl-domains
+
+.Purpose
+
+Creates the domain classes that manage ACL data.
+
+.Example
+
+....
+grails s2-create-acl-domains
+....
+
+.Description
+
+The plugin includes the required ACL domain classes, but if you want to customize them (for example to configure 2^nd^-level caching) you can use this script to generate the same domain classes in your application's `grails-app/domain` folder to allow minor customization.

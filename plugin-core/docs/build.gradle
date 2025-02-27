@@ -1,0 +1,39 @@
+import grails.plugin.springsecurity.SoftwareVersion
+
+plugins {
+    id 'groovy' // For groovydoc task
+}
+
+ext {
+    apiDocsProjects = [
+            'core-plugin': [
+                docTitle: 'Grails Spring Security Core Plugin - ' + projectVersion,
+                windowTitle: 'spring-security-core ' + projectVersion + ' API'
+            ]
+    ]
+    asciidoctorAttributes = [
+            stableversion        : SoftwareVersion.build(projectVersion).stableVersion,
+            snapshotversion      : SoftwareVersion.build(projectVersion).snapshotVersion,
+            copyright            : 'Apache License, Version 2.0',
+            docinfo1             : 'true',
+            doctype              : 'book',
+            encoding             : 'utf-8',
+            icons                : 'font',
+            id                   : name + ':' + version,
+            idprefix             : '',
+            idseparator          : '-',
+            lang                 : 'en',
+            linkattrs            : true,
+            numbered             : '',
+            producer             : 'Asciidoctor',
+            revnumber            : version,
+            setanchors           : true,
+            'source-highlighter' : 'prettify',
+            toc                  : 'left',
+            toc2                 : '',
+            toclevels            : '2'
+    ]
+    docsFinalizeTasks = ['createReleaseDropDown']
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/docs-config.gradle')

@@ -1,0 +1,38 @@
+plugins {
+    id 'org.grails.grails-web'
+    id 'com.bertramlabs.asset-pipeline'
+}
+
+group = 'examples.test'
+
+dependencies {
+
+    implementation platform("org.grails:grails-bom:$grailsVersion")
+
+    implementation project(':core-plugin')
+    implementation 'org.grails:grails-core'
+    implementation 'org.grails.plugins:gsp'
+    implementation 'org.grails:grails-plugin-rest'
+
+    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.zaxxer:HikariCP'
+    runtimeOnly 'org.grails.plugins:hibernate5'
+    runtimeOnly 'org.grails:grails-plugin-i18n'
+    runtimeOnly 'org.grails:grails-plugin-services'
+    runtimeOnly 'org.grails:grails-plugin-url-mappings'
+    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    integrationTestImplementation testFixtures('org.grails.plugins:geb')
+    integrationTestImplementation "io.micronaut:micronaut-http-client:$micronautVersion"
+    integrationTestImplementation 'org.grails:grails-web-testing-support'
+    integrationTestImplementation 'org.spockframework:spock-core'
+
+    integrationTestRuntimeOnly "io.micronaut:micronaut-jackson-databind:$micronautVersion"
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')

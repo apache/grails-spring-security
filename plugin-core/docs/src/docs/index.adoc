@@ -1,0 +1,61 @@
+:apidocs: https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/
+:apidocs_spring: https://docs.spring.io/spring/docs/4.1.x/javadoc-api/
+:htmlsingle: docs.spring.io/spring-security/site/docs/4.0.x/reference/htmlsingle/
+:spring_framework_reference: https://docs.spring.io/spring/docs/4.1.x/spring-framework-reference/html/
+
+= Spring Security Core Plugin - Reference Documentation
+Burt Beckwith, Puneet Behl
+
+include::introduction.adoc[]
+
+include::whatsNew.adoc[]
+
+include::domainClasses.adoc[]
+
+include::requestMappings.adoc[]
+
+include::helperClasses.adoc[]
+
+include::events.adoc[]
+
+include::domainClassProperties.adoc[]
+
+include::authentication.adoc[]
+
+include::authenticationProviders.adoc[]
+
+include::userDetailsService.adoc[]
+
+include::passwords.adoc[]
+
+include::urlProperties.adoc[]
+
+include::hierarchicalRoles.adoc[]
+
+include::switchUser.adoc[]
+
+include::filters.adoc[]
+
+include::channelSecurity.adoc[]
+
+include::ip.adoc[]
+
+include::sessionFixation.adoc[]
+
+include::logoutHandlers.adoc[]
+
+include::voters.adoc[]
+
+include::miscProperties.adoc[]
+
+include::tutorials.adoc[]
+
+include::examples.adoc[]
+
+include::controllerMethods.adoc[]
+
+include::i18n.adoc[]
+
+include::scripts.adoc[]
+
+include::debugging.adoc[]

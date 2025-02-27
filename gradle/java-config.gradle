@@ -1,4 +1,4 @@
-compileJava.options.release = 17
+compileJava.options.release = javaVersion.toInteger()
 
 java {
     withJavadocJar()

@@ -1,45 +1,40 @@
-import io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
-plugins {
-    id 'io.github.gradle-nexus.publish-plugin'
+String customGroovyVersion = findProperty('groovyVersion') ?: System.getenv('GROOVY_VERSION')
+if (customGroovyVersion) {
+    logger.lifecycle("Using custom Groovy version: $customGroovyVersion")
 }
 
-version = projectVersion
-ext.set('isSnapshot', projectVersion.endsWith('-SNAPSHOT'))
-ext.set('isReleaseVersion', !isSnapshot)
-
-if (isReleaseVersion) {
-    nexusPublishing {
-        String nexusUser = findProperty('sonatypeUsername')
-        String nexusPass = findProperty('sonatypePassword')
-        String nexusStagingProfileId = findProperty('sonatypeStagingProfileId')
-        repositories {
-            sonatype {
-                nexusUrl = uri('https://s01.oss.sonatype.org/service/local/')
-                username = nexusUser
-                password = nexusPass
-                stagingProfileId = nexusStagingProfileId
-            }
-        }
-    }
-}
 subprojects {
-    apply plugin: 'groovy'
 
-    version = rootProject.version
+    version = projectVersion
+
+    if (customGroovyVersion) {
+        configurations.configureEach {
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                if (details.requested.group == 'org.apache.groovy') {
+                    details.useVersion(customGroovyVersion)
+                }
+            }
+        }
+    }
+
     repositories {
-        mavenCentral()
         maven { url = 'https://repo.grails.org/grails/core' }
-        if (groovyVersion.endsWith('-SNAPSHOT')) {
+        mavenCentral()
+        if (customGroovyVersion?.endsWith('-SNAPSHOT')) {
+            // Used for testing locally against the latest snapshot of Groovy
+            // Usage: ./gradlew build -P"groovyVersion=X.X.X-SNAPSHOT"
+            logger.lifecycle('Adding Groovy Snapshot Repo for project: {}, Using Groovy {}', name, customGroovyVersion)
             maven {
-                name = 'JFrog Groovy snapshot repo'
-                url = 'https://groovy.jfrog.io/artifactory/libs-snapshot-local'
+                name = 'ASF Snapshot repo'
+                url = 'https://repository.apache.org/content/repositories/snapshots'
             }
         }
     }
 }
 
-// Do not generate extra load on Nexus with new staging repository if signing fails
-tasks.withType(InitializeNexusStagingRepository).configureEach {
-    shouldRunAfter tasks.withType(Sign)
+tasks.register('clean', Delete) {
+    group = 'build'
+    delete layout.buildDirectory
 }

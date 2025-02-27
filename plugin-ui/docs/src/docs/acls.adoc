@@ -1,0 +1,14 @@
+[[acls]]
+== ACL Management
+
+ACL management should be done using the API exposed by `AclService` and `AclUtilService`. Both services have a much more intuitive and convenient high-level approach to managing ACLs, ACEs, etc. The functionality in this plugin is to provide a CRUD interface for fine-grained ACL management.
+
+The ACL menu is only available if the http://grails.org/plugin/spring-security-acl[ACL plugin] is installed.
+
+include::acls/aclClass.adoc[]
+
+include::acls/aclSid.adoc[]
+
+include::acls/aclObjectIdentity.adoc[]
+
+include::acls/aclEntry.adoc[]

@@ -1,0 +1,70 @@
+plugins {
+	id 'java-library'
+	id 'org.grails.grails-gsp'
+	id 'org.grails.grails-plugin'
+}
+
+group = 'org.grails.plugins'
+
+ext {
+	publishArtifactId = 'spring-security-core'
+	pomTitle = 'Grails spring-security-core plugin'
+	pomDescription = 'The Spring Security plugin simplifies the integration of Spring Security into Grails® framework applications.'
+	pomDevelopers = [
+			'burtbeckwith': 'Burt Beckwith',
+			'puneetbehl': 'Puneet Behl'
+	]
+}
+
+dependencies {
+
+	implementation platform("org.grails:grails-bom:$grailsVersion")
+
+	compileOnly 'org.grails:grails-core' // Provided as this is a Grails Plugin
+	api 'org.grails:grails-datastore-core' // API because used in templates
+	api 'org.grails:grails-datastore-gorm' // API because used in templates
+	api 'org.grails:grails-events-transform' // API because used in templates
+	api 'org.grails:grails-plugin-mimetypes'
+	api 'org.grails.plugins:async' // AsyncGrailsWebRequest is used in public API
+	api 'org.grails:grails-web-common'
+	api 'org.grails:grails-web-url-mappings'
+	api 'org.springframework:spring-beans'
+	api 'org.springframework:spring-context'
+	api 'org.springframework:spring-context'
+	api 'org.springframework.security:spring-security-core'
+	api 'org.springframework.security:spring-security-web'
+	api 'org.springframework:spring-web'
+
+	implementation 'org.apache.commons:commons-text'
+	implementation "org.ehcache:ehcache"
+	implementation 'org.grails:grails-bootstrap'
+	implementation 'org.grails:grails-plugin-rest'
+	implementation 'org.grails.plugins:converters'
+	implementation 'org.grails.plugins:events' // Events Plugin is required to implement EventBus
+	implementation 'org.springframework.boot:spring-boot'
+	implementation 'org.springframework:spring-context-support'
+	implementation 'org.springframework:spring-core'
+	implementation 'org.springframework.security:spring-security-crypto'
+	implementation 'org.springframework:spring-tx'
+
+	compileOnly "jline:jline" // for shell commands
+	compileOnly 'org.apache.groovy:groovy' // Compile-time annotations
+	compileOnly 'jakarta.servlet:jakarta.servlet-api' // Provided
+	compileOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during compilation
+
+	runtimeOnly 'org.grails:grails-plugin-services' // A service is defined in the plugin
+
+	testImplementation 'org.grails:grails-gorm-testing-support'
+	testImplementation 'org.grails:grails-web-testing-support'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.spockframework:spock-core'
+	testImplementation 'org.springframework:spring-test'
+	testImplementation 'org.springframework.security:spring-security-config'
+
+	testRuntimeOnly 'net.bytebuddy:byte-buddy'
+	testRuntimeOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during tests
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')

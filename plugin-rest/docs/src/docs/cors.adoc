@@ -1,0 +1,7 @@
+Since Grails 3.2.1, CORS support is built-in into the framework. Check the
+http://docs.grails.org/latest/guide/theWebLayer.html#cors[documentation on the Grails guide] for more information.
+
+If you are using any Grails 3 version prior to 3.2.1, you can define your own filter, as described in
+https://github.com/davidtinker/grails-cors#grails-3[].
+
+Alternatively, you can also use https://github.com/appcela/grails3-cors-interceptor[this plugin].

@@ -1,0 +1,17 @@
+[[runAs]]
+=== Run-As Authentication Replacement
+
+Although not strictly related to ACLs, the plugin implements https://docs.spring.io/spring-security/reference/servlet/authentication/runas.html[Run-As Authentication Replacement] since it's related to method security in general. This feature is similar to the Switch User feature of the Spring Security Core plugin, but instead of running as another user until you choose to revert to your original `Authentication`, the temporary authentication switch only lasts for one method invocation.
+
+For example, in this service `someMethod()` requires that the authenticated user have `ROLE_ADMIN` and will also be granted `ROLE_RUN_AS_SUPERUSER` for the duration of the method only:
+
+[source,groovy]
+----
+class SecureService {
+
+   @Secured(['ROLE_ADMIN', 'RUN_AS_SUPERUSER'])
+   def someMethod() {
+      ...
+   }
+}
+----

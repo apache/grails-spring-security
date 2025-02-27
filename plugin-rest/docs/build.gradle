@@ -1,0 +1,27 @@
+plugins {
+    id 'groovy' // For groovydoc task
+}
+
+ext {
+    apiDocsProjects = [
+            'spring-security-rest': [
+                    docTitle: "Grails Spring Security REST Plugins - $projectVersion",
+                    windowTitle: "spring-security-rest $projectVersion API"
+            ],
+            'spring-security-rest-gorm': [:],
+            'spring-security-rest-grailscache': [:],
+            'spring-security-rest-memcached': [:],
+            'spring-security-rest-redis': [:]
+    ]
+    asciidoctorAttributes = [
+            'experimental'    : 'true',
+            'compat-mode'     : 'true',
+            'toc'             : 'left',
+            'icons'           : 'font',
+            'version'         : projectVersion,
+            'sourcedir'       : "${rootProject.allprojects.find { it.name == 'spring-security-rest' }.projectDir}/src/main/groovy",
+            'baseGroovyApiUrl': "https://grails.github.io/grails-spring-security-core/rest-plugin/${projectVersion}/docs/gapi/"
+    ]
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/docs-config.gradle')

@@ -1,0 +1,30 @@
+[[hasPermission]]
+=== hasPermission
+
+.Purpose
+
+Check if the authentication has grants for the specified permission(s) on the domain class instance.
+
+.Examples
+
+[source,groovy]
+----
+if (aclUtilService.hasPermission(auth, reportInstance, BasePermission.WRITE)) {
+   ...
+}
+----
+
+.Description
+
+[source,groovy]
+----
+boolean hasPermission(Authentication authentication, domainObject, Permission... permissions)
+
+boolean hasPermission(Authentication authentication, domainObject, List<Permission> permissions)
+----
+
+.Parameters
+
+* `authentication` - an authentication representing a user and associated roles
+* `domainObject` - the domain class instance
+* `permissions` - one or more permissions to check

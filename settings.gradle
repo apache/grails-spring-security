@@ -1,25 +1,26 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.16.2'
-    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.13'
+    id 'com.gradle.develocity' version '3.19.2'
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '2.1'
 }
 
-gradleEnterprise {
+def isCI = System.getenv('CI') != null
+def isLocal = !isCI
+def isAuthenticated = System.getenv('DEVELOCITY_ACCESS_KEY') != null
+
+develocity {
     server = 'https://ge.grails.org'
     buildScan {
-        publishAlwaysIf(System.getenv('CI') == 'true')
-        publishIfAuthenticated()
-        uploadInBackground = System.getenv('CI') == null
-        capture {
-            taskInputFiles = true
-        }
+        tag('grails')
+        tag('grails-spring-security')
+        publishing.onlyIf { isAuthenticated }
+        uploadInBackground = isLocal
     }
 }
 
 buildCache {
-    local { enabled = System.getenv('CI') != 'true' }
-    remote(gradleEnterprise.buildCache) {
-        def isAuthenticated = System.getenv('GRADLE_ENTERPRISE_ACCESS_KEY')
-        push = System.getenv('CI') == 'true' && isAuthenticated
+    local { enabled = isLocal }
+    remote(develocity.buildCache) {
+        push = isCI && isAuthenticated
         enabled = true
     }
 }
@@ -36,16 +37,83 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'grails-spring-security-core'
+gradle.beforeProject {
+    // LDAP examples cannot run in parallel,
+    // because they are connecting to live LDAP server (presumably with rate limiting)
+    if (it.name.startsWith('ldap-examples-')) {
+        gradle.startParameter.parallelProjectExecutionEnabled = false
+    }
+}
 
-include 'plugin'
-include 'examples-functional-test-app'
-include 'examples-integration-test-app'
-include 'examples-misc-group'
-include 'examples-misc-hierarchical-roles'
+rootProject.name = 'grails-spring-security.ROOT'
 
-project(':plugin').name = 'spring-security-core'
-project(':examples-functional-test-app'    ).projectDir = [settingsDir, 'examples/functional-test-app'] as File
-project(':examples-integration-test-app'   ).projectDir = [settingsDir, 'examples/integration-test-app'] as File
-project(':examples-misc-group'             ).projectDir = [settingsDir, 'examples/misc-functional-test-app/grails-spring-security-group'] as File
-project(':examples-misc-hierarchical-roles').projectDir = [settingsDir, 'examples/misc-functional-test-app/grails-spring-security-hierarchical-roles'] as File
+include 'acl-plugin'
+include 'acl-docs'
+include 'acl-examples-functional-test-app'
+include 'acl-examples-integration-test-app'
+project(':acl-plugin').projectDir = new File(settingsDir, 'plugin-acl/plugin')
+project(':acl-docs').projectDir = new File(settingsDir, 'plugin-acl/docs')
+project(':acl-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/functional-test-app')
+project(':acl-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-acl/examples/integration-test-app')
+
+include 'cas-plugin'
+include 'cas-docs'
+include 'cas-examples-spring-security-cas-test1'
+project(':cas-plugin').projectDir = new File(settingsDir, 'plugin-cas/plugin')
+project(':cas-docs').projectDir = new File(settingsDir, 'plugin-cas/docs')
+project(':cas-examples-spring-security-cas-test1').projectDir = new File(settingsDir, 'plugin-cas/examples/spring-security-cas-test1')
+
+include 'core-plugin'
+include 'core-docs'
+include 'core-examples-functional-test-app'
+include 'core-examples-integration-test-app'
+include 'core-examples-misc-group'
+include 'core-examples-misc-hierarchical-roles'
+project(':core-plugin').projectDir = new File(settingsDir, 'plugin-core/plugin')
+project(':core-docs').projectDir = new File(settingsDir, 'plugin-core/docs')
+project(':core-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/functional-test-app')
+project(':core-examples-integration-test-app').projectDir = new File(settingsDir, 'plugin-core/examples/integration-test-app')
+project(':core-examples-misc-group').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-group')
+project(':core-examples-misc-hierarchical-roles').projectDir = new File(settingsDir, 'plugin-core/examples/misc-functional-test-app/grails-spring-security-hierarchical-roles')
+
+include 'ldap-plugin'
+include 'ldap-docs'
+include 'ldap-examples-custom-user-details-context-mapper'
+include 'ldap-examples-functional-test-app'
+include 'ldap-examples-retrieve-db-roles'
+include 'ldap-examples-retrieve-group-roles'
+project(':ldap-plugin').projectDir = new File(settingsDir, 'plugin-ldap/plugin')
+project(':ldap-docs').projectDir = new File(settingsDir, 'plugin-ldap/docs')
+project(':ldap-examples-custom-user-details-context-mapper').projectDir = new File(settingsDir, 'plugin-ldap/examples/custom-user-details-context-mapper')
+project(':ldap-examples-functional-test-app').projectDir = new File(settingsDir, 'plugin-ldap/examples/functional-test-app')
+project(':ldap-examples-retrieve-db-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-db-roles')
+project(':ldap-examples-retrieve-group-roles').projectDir = new File(settingsDir, 'plugin-ldap/examples/retrieve-group-roles')
+
+include 'oauth2-plugin'
+include 'oauth2-docs'
+project(':oauth2-plugin').projectDir = new File(settingsDir, 'plugin-oauth2/plugin')
+project(':oauth2-docs').projectDir = new File(settingsDir, 'plugin-oauth2/docs')
+
+include 'spring-security-rest'
+include 'spring-security-rest-gorm'
+include 'spring-security-rest-grailscache'
+include 'spring-security-rest-memcached'
+include 'spring-security-rest-redis'
+include 'spring-security-rest-testapp-profile'
+include 'rest-docs'
+project(':spring-security-rest').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest')
+project(':spring-security-rest-gorm').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-gorm')
+project(':spring-security-rest-grailscache').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-grailscache')
+project(':spring-security-rest-memcached').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-memcached')
+project(':spring-security-rest-redis').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-redis')
+project(':spring-security-rest-testapp-profile').projectDir = new File(settingsDir, 'plugin-rest/spring-security-rest-testapp-profile')
+project(':rest-docs').projectDir = new File(settingsDir, 'plugin-rest/docs')
+
+include 'ui-plugin'
+include 'ui-docs'
+include 'ui-examples-extended'
+include 'ui-examples-simple'
+project(':ui-plugin').projectDir = new File(settingsDir, 'plugin-ui/plugin')
+project(':ui-docs').projectDir = new File(settingsDir, 'plugin-ui/docs')
+project(':ui-examples-extended').projectDir = new File(settingsDir, 'plugin-ui/examples/extended')
+project(':ui-examples-simple').projectDir = new File(settingsDir, 'plugin-ui/examples/simple')

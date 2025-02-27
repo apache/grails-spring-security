@@ -1,0 +1,25 @@
+[[changeOwner]]
+=== changeOwner
+
+.Purpose
+
+Change the ACL owner for a domain class instance.
+
+.Examples
+
+[source,groovy]
+----
+aclUtilService.changeOwner reportInstance, 'user123'
+----
+
+.Description
+
+[source,groovy]
+----
+void changeOwner(domainObject, String newUsername)
+----
+
+.Parameters
+
+* `domainObject` - the domain class instance
+* `newUsername` - the username of the new owner

@@ -1,0 +1,30 @@
+[[readAcl]]
+=== readAcl
+
+.Purpose
+
+Retrieves the ACL for a domain class instance.
+
+.Examples
+
+[source,groovy]
+----
+def acl = aclUtilService.readAcl(reportInstance)
+
+def acl = aclUtilService.readAcl(Report, 42)
+----
+
+.Description
+
+[source,groovy]
+----
+Acl readAcl(domainObject)
+
+Acl readAcl(Class<?> domainClass, id)
+----
+
+.Parameters
+
+* `domainClass` - the domain class, used when specifying the class and id
+* `id` - the instance id, used when specifying the class and id
+* `domainObject` - the domain class instance, used when the instance is available

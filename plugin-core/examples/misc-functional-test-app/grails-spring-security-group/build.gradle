@@ -1,0 +1,47 @@
+plugins {
+    id 'org.grails.grails-web'
+}
+
+group = 'grails.spring.security.group'
+
+dependencies {
+
+    implementation platform("org.grails:grails-bom:$grailsVersion")
+
+    implementation project(':core-plugin')
+    implementation 'org.grails:grails-core'
+    implementation 'org.grails:grails-datastore-core', {
+        // AbstractPersistenceEvent, PreInsertEvent, PreUpdateEvent
+    }
+    implementation 'org.grails:grails-datastore-gorm', {
+        // DetachedCriteria
+    }
+    implementation 'org.grails:grails-events-transform', {
+        // @Listener
+    }
+    implementation 'org.grails:grails-plugin-rest'
+    implementation 'org.grails.plugins:gsp'
+    implementation 'org.springframework:spring-beans', {
+        // @Autowired
+    }
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.zaxxer:HikariCP'
+    runtimeOnly 'org.grails:grails-plugin-i18n'
+    runtimeOnly 'org.grails:grails-plugin-url-mappings'
+    runtimeOnly 'org.grails.plugins:hibernate5'
+    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    integrationTestImplementation testFixtures('org.grails.plugins:geb')
+    integrationTestImplementation 'org.grails:grails-web-testing-support'
+    integrationTestImplementation 'org.grails:grails-datastore-gorm', {
+        // @Rollback
+    }
+    integrationTestImplementation 'org.spockframework:spock-core'
+}
+
+apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')

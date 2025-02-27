@@ -1,0 +1,4 @@
+[[Scripts]]
+== Scripts
+
+include::Scripts/s2-create-acl-domains.adoc[]

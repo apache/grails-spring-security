@@ -1,0 +1,13 @@
+= Spring Security CAS Plugin - Reference Documentation
+:revnumber: {projectVersion}
+:encoding: utf-8
+:lang: en
+:numbered:
+
+include::introduction.adoc[]
+
+include::usage.adoc[]
+
+include::configuration.adoc[]
+
+include::history.adoc[]

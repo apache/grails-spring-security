@@ -1,0 +1,8 @@
+memcached:
+  image: memcached
+  ports:
+    - 11211:11211
+redis:
+  image: redis
+  ports:
+    - 6379:6379

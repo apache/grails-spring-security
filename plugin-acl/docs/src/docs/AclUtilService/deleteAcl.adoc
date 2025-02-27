@@ -1,0 +1,24 @@
+[[deleteAcl]]
+=== deleteAcl
+
+.Purpose
+
+Deletes the ACL for a domain class instance.
+
+.Examples
+
+[source,groovy]
+----
+aclUtilService.deleteAcl reportInstance
+----
+
+.Description
+
+[source,groovy]
+----
+void deleteAcl(domainObject)
+----
+
+.Parameters
+
+* `domainObject` - the domain class instance
