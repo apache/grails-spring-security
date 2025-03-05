@@ -1,0 +1,3 @@
+grails.plugin.springsecurity.ldap
+grails.plugin.springsecurity.ldap.core
+grails.plugin.springsecurity.ldap.userdetails
