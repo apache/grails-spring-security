@@ -1,9 +1,5 @@
 import org.grails.gradle.plugin.publishing.GrailsPublishExtension
 
-if (!plugins.hasPlugin('org.grails.grails-profile-publish')) {
-    apply plugin: 'org.grails.grails-publish'
-}
-
 ext {
     mavenPublishUrl = findProperty('snapshotPublishUrl') ?: 'https://repo.grails.org/plugins3-snapshots-local'
 }

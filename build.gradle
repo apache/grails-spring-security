@@ -38,3 +38,32 @@ tasks.register('clean', Delete) {
     group = 'build'
     delete layout.buildDirectory
 }
+
+// Workaround needed for nexus publishing bug
+// version and group must be specified in the root project
+// https://github.com/gradle-nexus/publish-plugin/issues/310
+version = projectVersion
+group = 'this.will.be.overridden'
+
+def publishedProjects = [
+        'acl-plugin',
+        'cas-plugin',
+        'core-plugin',
+        'ldap-plugin',
+        'oauth2-plugin',
+        'spring-security-rest',
+        'spring-security-rest-gorm',
+        'spring-security-rest-grailscache',
+        'spring-security-rest-memcached',
+        'spring-security-rest-redis',
+        'ui-plugin'
+]
+subprojects {
+    if (name in publishedProjects) {
+        // This has to be applied here
+        apply plugin: 'org.grails.grails-publish'
+    }
+    else if(name == 'spring-security-rest-testapp-profile') {
+        apply plugin: 'org.grails.grails-profile-publish'
+    }
+}

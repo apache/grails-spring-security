@@ -1,6 +1,5 @@
 plugins {
     id 'org.grails.grails-profile'
-    id 'org.grails.grails-profile-publish'
 }
 
 group = 'org.grails.plugins'
