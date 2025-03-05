@@ -8,6 +8,10 @@ env:
 jobs:
   release:
     runs-on: ubuntu-24.04
+    permissions:
+      packages: read  #  pre-release workflow
+      contents: write  #  to create release
+      issues: write  #  to modify milestones
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
