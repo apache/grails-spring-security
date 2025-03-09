@@ -20,7 +20,7 @@ ext {
             'icons'           : 'font',
             'version'         : projectVersion,
             'sourcedir'       : "${rootProject.allprojects.find { it.name == 'spring-security-rest' }.projectDir}/src/main/groovy",
-            'baseGroovyApiUrl': "https://grails.github.io/grails-spring-security-core/rest-plugin/${projectVersion}/docs/gapi/"
+            'baseGroovyApiUrl': "https://grails.github.io/grails-spring-security/rest-plugin/${projectVersion}/docs/gapi/"
     ]
 }
 

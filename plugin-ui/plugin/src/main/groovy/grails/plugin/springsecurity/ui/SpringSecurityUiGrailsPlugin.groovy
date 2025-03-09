@@ -39,11 +39,11 @@ class SpringSecurityUiGrailsPlugin extends Plugin {
 	String authorEmail = ''
 	String title = 'Spring Security UI plugin'
 	String description = 'User interface extensions for the Spring Security plugin'
-	String documentation = 'https://grails.github.io/grails-spring-security-core'
+	String documentation = 'https://grails.github.io/grails-spring-security'
 	String license = 'APACHE'
 	def organization = [name: 'Grails', url: 'https://www.grails.org']
-	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
-	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security']
 	def loadAfter = ['springSecurityCore', 'springSecurityAcl']
 	def profiles = ['web']
 

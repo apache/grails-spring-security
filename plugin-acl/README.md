@@ -1,7 +1,7 @@
 Grails Spring Security ACL Plugin
 ==================================
 
-See [documentation](https://grails.github.io/grails-spring-security-core/latest/acl-plugin/guide) for further information.
+See [documentation](https://grails.github.io/grails-spring-security/latest/acl-plugin/guide) for further information.
 
 ## v5.0.0 changes
 
