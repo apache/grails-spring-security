@@ -13,7 +13,7 @@ dependencies {
 
 tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
     group = 'documentation'
-    githubSlug = 'grails/grails-spring-security-core'
+    githubSlug = 'grails/grails-spring-security'
     currentVersion = version
     versions = docsVersionSelectorInclude.split(',').collect { it.strip() }
     index = layout.buildDirectory.file('docs/index.html')

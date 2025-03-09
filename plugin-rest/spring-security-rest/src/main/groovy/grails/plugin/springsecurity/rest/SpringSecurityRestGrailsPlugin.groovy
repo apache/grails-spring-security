@@ -79,14 +79,14 @@ class SpringSecurityRestGrailsPlugin extends Plugin {
     def profiles = ['web']
 
     // URL to the plugin's documentation
-    String documentation = 'https://grails.github.io/grails-spring-security-core'
+    String documentation = 'https://grails.github.io/grails-spring-security'
 
     // Extra (optional) plugin metadata
     String license = 'APACHE'
     def organization = [name: 'Grails', url: 'https://www.grails.org']
 
-    def issueManagement = [system: 'GitHub', url: 'https://github.com/grails/grails-spring-security-core/issues']
-    def scm = [ url: 'https://github.com/grails/grails-spring-security-core']
+    def issueManagement = [system: 'GitHub', url: 'https://github.com/grails/grails-spring-security/issues']
+    def scm = [ url: 'https://github.com/grails/grails-spring-security']
     GrailsApplication grailsApplication
 
     Closure doWithSpring() { {->

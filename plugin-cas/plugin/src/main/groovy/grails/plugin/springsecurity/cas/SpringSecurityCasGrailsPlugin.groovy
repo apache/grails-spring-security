@@ -42,12 +42,12 @@ class SpringSecurityCasGrailsPlugin extends Plugin {
 	String authorEmail = ''
 	String title = 'Jasig CAS support for the Spring Security plugin.'
 	String description = 'Jasig CAS support for the Spring Security plugin.'
-	String documentation = 'https://grails.github.io/grails-spring-security-core'
+	String documentation = 'https://grails.github.io/grails-spring-security'
 	String license = 'APACHE'
 	List loadAfter = ['springSecurityCore']
 	def organization = [name: 'Grails', url: 'https://www.grails.org']
-	def issueManagement = [url: 'https://github.com/grails/grails-spring-security-core/issues']
-	def scm = [url: 'https://github.com/grails/grails-spring-security-core']
+	def issueManagement = [url: 'https://github.com/grails/grails-spring-security/issues']
+	def scm = [url: 'https://github.com/grails/grails-spring-security']
 	def profiles = ['web']
 
 	@CompileDynamic

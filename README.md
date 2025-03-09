@@ -1,9 +1,9 @@
-[![Java CI](https://github.com/grails/grails-spring-security-core/actions/workflows/gradle.yml/badge.svg)](https://github.com/grails/grails-spring-security-core/actions/workflows/gradle.yml)
+[![Java CI](https://github.com/grails/grails-spring-security/actions/workflows/gradle.yml/badge.svg)](https://github.com/grails/grails-spring-security/actions/workflows/gradle.yml)
 
-Grails Spring Security Core Plugin
-==================================
+Grails Spring Security
+======================
 
-See [documentation](https://grails.github.io/grails-spring-security-core/latest/guide) for further information.
+See [documentation](https://grails.github.io/grails-spring-security/latest) for further information.
 
 ### Branch structure 
 

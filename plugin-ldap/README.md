@@ -1,7 +1,7 @@
 Grails Spring Security LDAP Plugin
 ==================================
 
-See [documentation](https://grails.github.io/grails-spring-security-core/latest/ldap-plugin/guide) for further information.
+See [documentation](https://grails.github.io/grails-spring-security/latest/ldap-plugin/guide) for further information.
 
 
 ## What is LDAP?

@@ -1,4 +1,4 @@
-Thanks for reporting an issue for grails-spring-security-core. Please review the task list below before submitting the 
+Thanks for reporting an issue for grails-spring-security. Please review the task list below before submitting the 
 issue.
 
 

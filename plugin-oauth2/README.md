@@ -10,7 +10,7 @@ Main differences with the Grails 2 plugin:
 
 Documentation
 ------------
-[User Guide](https://grails.github.io/grails-spring-security-core/latest/oauth2-plugin/guide)
+[User Guide](https://grails.github.io/grails-spring-security/latest/oauth2-plugin/guide)
 
 Installation
 ------------
