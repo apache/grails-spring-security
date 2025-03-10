@@ -9,10 +9,6 @@ on:
       - '[4-9]+.[0-9]+.x'
       - '[3-9]+.[3-9]+.x'      
   workflow_dispatch:
-env:
-  GIT_USER_NAME: grails-build
-  GIT_USER_EMAIL: grails-build@users.noreply.github.com
-
 jobs:
   core-tests:
     runs-on: ubuntu-24.04
@@ -53,6 +49,8 @@ jobs:
   build:
     if: github.event_name == 'push'
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -74,11 +72,10 @@ jobs:
         run: ./gradlew --no-build-cache publish
       - name: "🔨 Generate Snapshot Documentation"
         run: ./gradlew aggregateDocs
-      - name: "📤 Publish Snapshot Documentation to Github Pages"
-        uses: grails/github-pages-deploy-action@v3
+      - name: "🚀 Publish to Github Pages"
+        if: success()
+        uses: grails/grails-github-actions/deploy-github-pages@main
         env:
-          BRANCH: gh-pages
-          COMMIT_EMAIL: ${{ env.GIT_USER_EMAIL }}
-          COMMIT_NAME: ${{ env.GIT_USER_NAME }}
-          FOLDER: build/docs
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GRADLE_PUBLISH_RELEASE: 'false'
+          SOURCE_FOLDER: build/docs
