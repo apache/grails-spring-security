@@ -95,7 +95,7 @@ class SpringSecurityUtilsIntegrationSpec extends AbstractIntegrationSpec {
         map[SecurityFilterPosition.REMEMBER_ME_FILTER.order] instanceof GrailsRememberMeAuthenticationFilter
         map[SecurityFilterPosition.ANONYMOUS_FILTER.order] instanceof GrailsAnonymousAuthenticationFilter
         map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-10] instanceof FormContentFilter
-        map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-5] instanceof SiteMeshFilter
+        map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-4] instanceof SiteMeshFilter
         map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order] instanceof ExceptionTranslationFilter
         map[SecurityFilterPosition.FILTER_SECURITY_INTERCEPTOR.order] instanceof FilterSecurityInterceptor
 
