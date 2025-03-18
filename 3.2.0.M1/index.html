@@ -1134,10 +1134,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>Note that the 2.x.x plugin was written primarily in Java, with Groovy used only for dynamic calls, but in version 3 all Java classes were converted to Groovy with the <code>@CompileStatic</code> annotation. Java was used because Spring Security is configured as a chain of servlet filters that fire for every request (including static resources) and the cumulative cost of many small Groovy performance hits can be non-trivial. But with <code>@CompileStatic</code> we get the best of both worlds - Java performance, and Groovy compactness. If you&#8217;re curious you can see these changes <a href="https://github.com/grails-plugins/grails-spring-security-core/commit/da06fa44d8bbea0ff374dd31b1c6b28426bdf7b4">in this GitHub commit</a>.</p>
+<p>Note that the 2.x.x plugin was written primarily in Java, with Groovy used only for dynamic calls, but in version 3 all Java classes were converted to Groovy with the <code>@CompileStatic</code> annotation. Java was used because Spring Security is configured as a chain of servlet filters that fire for every request (including static resources) and the cumulative cost of many small Groovy performance hits can be non-trivial. But with <code>@CompileStatic</code> we get the best of both worlds - Java performance, and Groovy compactness. If you&#8217;re curious you can see these changes <a href="https://github.com/apache/grails-spring-security/commit/da06fa44d8bbea0ff374dd31b1c6b28426bdf7b4">in this GitHub commit</a>.</p>
 </div>
 <div class="paragraph">
-<p>Also, since Grails 3 no longer supports Gant scripts, the plugin&#8217;s scripts were converted to the newer approach. This should have no effect on usage as the calling syntax and results are the same as before, although the console output looks somewhat different. You can see these changes <a href="https://github.com/grails-plugins/grails-spring-security-core/commit/16484f44fe25a6f1c8687b8e27db6f08ed871436">in this GitHub commit</a>.</p>
+<p>Also, since Grails 3 no longer supports Gant scripts, the plugin&#8217;s scripts were converted to the newer approach. This should have no effect on usage as the calling syntax and results are the same as before, although the console output looks somewhat different. You can see these changes <a href="https://github.com/apache/grails-spring-security/commit/16484f44fe25a6f1c8687b8e27db6f08ed871436">in this GitHub commit</a>.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
