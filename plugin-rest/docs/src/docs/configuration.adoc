@@ -76,7 +76,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 ----
 
 To understand this syntax, please read the
-https://grails-plugins.github.io/grails-spring-security-core/v3/index.html#filters[Spring Security Core documentation].
+https://apache.github.io/grails-spring-security/latest/index.html#filters[Spring Security Core documentation].
 Long story short: `JOINED_FILTERS` refers to all the configured filters. The minus (`-`) notation means all the previous values
 but the neglected one.
 

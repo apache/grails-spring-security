@@ -146,7 +146,7 @@ class RegisterControllerSpec extends Specification implements ControllerUnitTest
 	void "verify generateLink for ('#action', #linkParams, '#shouldUseServerUrl') is #expectedUrl"() {
         given: "the grails.serverUrl is set"
         if (isConfigured) {
-			controller.serverURL = 'http://grails.org'
+			controller.serverURL = 'https://grails.org'
         }
 
 		and: "the email subject exist in i18 messages"
@@ -162,7 +162,7 @@ class RegisterControllerSpec extends Specification implements ControllerUnitTest
         isConfigured | shouldUseServerUrl | action   | linkParams               | expectedUrl
         false        | false              | 'shipit' | [foo: 'foo', bar: 'bar'] | 'http://localhost:80/register/shipit?foo=foo&bar=bar'
         false        | true               | 'shipit' | [foo: 'foo', bar: 'bar'] | 'http://localhost:80/register/shipit?foo=foo&bar=bar'
-        true         | true               | 'shipit' | [foo: 'foo', bar: 'bar'] | 'http://grails.org/register/shipit?foo=foo&bar=bar'
+        true         | true               | 'shipit' | [foo: 'foo', bar: 'bar'] | 'https://grails.org/register/shipit?foo=foo&bar=bar'
     }
 
 	void "register email subject is loaded from config if config exists"() {

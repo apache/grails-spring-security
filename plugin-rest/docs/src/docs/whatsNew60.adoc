@@ -8,7 +8,7 @@ which in turn uses newer Spring Security versions, so make sure you read careful
 
 | 6.x
 | `7.0.0-SNAPSHOT`
-| https://grails-plugins.github.io/grails-spring-security-core/7.0.x/index.html#whatsNew[]
+| https://apache.github.io/grails-spring-security/7.0.x/index.html#whatsNew[]
 
 |===
 

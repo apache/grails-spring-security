@@ -8,11 +8,11 @@ which in turn uses newer Spring Security versions, so make sure you read careful
 
 | 3.x
 | `2.0.0.RC1`
-| https://grails-plugins.github.io/grails-spring-security-core/3.2.x/index.html#newInV3[]
+| https://apache.github.io/grails-spring-security/3.2.x/index.html#newInV3[]
 
 | 4.x
 | `3.0.0.RC1` or later
-| https://grails-plugins.github.io/grails-spring-security-core/4.0.x/index.html#newInV3[]
+| https://apache.github.io/grails-spring-security/4.0.x/index.html#newInV3[]
 
 |===
 

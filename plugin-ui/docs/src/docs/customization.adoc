@@ -147,7 +147,7 @@ The role name required to be able to run as another user defaults to `ROLE_SWITC
 
 === CSS and JavaScript
 
-The plugin uses the http://grails.org/plugin/asset-pipeline[Asset Pipeline] plugin to manage its resources. This makes it very easy to provide your own version of some or all of the static resources since asset-pipeline will always use a file in the application's `assets` directory instead of a plugin's if it exists.
+The plugin uses the https://github.com/bertramdev/asset-pipeline[Asset Pipeline] plugin to manage its resources. This makes it very easy to provide your own version of some or all of the static resources since asset-pipeline will always use a file in the application's `assets` directory instead of a plugin's if it exists.
 
 Instead of depending on either the jQuery or jQuery UI plugins, this plugin includes its own copy of jquery.js, jquery-ui.js, and jquery-ui.css. Note that the versions are not hard-coded, but instead they take advantage of the feature in asset-pipeline where you can embed Groovy code in a file to specify the name and path.
 

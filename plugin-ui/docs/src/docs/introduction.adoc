@@ -10,7 +10,7 @@ https://docs.grails.org/latest/guide[Grails Core documentation].
 
 Non-default functionality is available only if the feature is available. This includes:
 
-* ACL Controllers and Views, which are enabled if the https://github.com/grails/grails-spring-security-acl[ACL Plugin] is installed.
+* ACL Controllers and Views, which are enabled if the https://github.com/apache/grails-spring-security[ACL Plugin] is installed.
 * Requestmaps support, which is available if `grails.plugin.springsecurity.securityConfigType` is set to `"Requestmap"` or `SecurityConfigType.Requestmap` in `application.groovy`.
 * Persistent cookies support, which is enabled if it has been configured with the `s2-create-persistent-token` script.
 
@@ -29,7 +29,7 @@ Also be sure to update the version when new releases are available.
 
 === Release History
 
-For later releases - see the https://github.com/grails/grails-spring-security-ui/releases[GitHub release page].
+For later releases - see the https://github.com/apache/grails-spring-security/releases[GitHub release page].
 
 * Apr 9, 2019
 ** 4.0.0.M1 release
@@ -53,13 +53,13 @@ For later releases - see the https://github.com/grails/grails-spring-security-ui
 ** 1.0-RC2 release
 * November 11, 2013
 ** 1.0-RC1 release
-** http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=13069[JIRA Issues]
+** https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=13069[JIRA Issues]
 * February 12, 2012
 ** 0.2 release
-** http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=12709[JIRA Issues]
+** https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=12709[JIRA Issues]
 * September 14, 2010
 ** 0.1.2 release
-** http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=11921[JIRA Issues]
+** https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=11921[JIRA Issues]
 * July 27, 2010
 ** 0.1.1 release
 * July 26, 2010

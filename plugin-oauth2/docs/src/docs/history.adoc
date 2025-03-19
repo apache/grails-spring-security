@@ -1,6 +1,6 @@
 === Release History
 
-Please read release notes at https://github.com/grails/grails-spring-security-oauth2/releases for checking release information in the future.
+Please read release notes at https://github.com/apache/grails-spring-security/releases for checking release information in the future.
 
 * Version 3.0.0
 ** Upgraded to Spring Security Core 6.1.0

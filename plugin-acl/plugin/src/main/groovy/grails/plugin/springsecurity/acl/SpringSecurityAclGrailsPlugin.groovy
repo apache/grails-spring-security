@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,11 +89,11 @@ class SpringSecurityAclGrailsPlugin extends Plugin {
 	String authorEmail = ''
 	String title = 'Spring Security ACL plugin'
 	String description = 'ACL support for the Spring Security plugin'
-	String documentation = 'https://grails.github.io/grails-spring-security'
+	String documentation = 'https://apache.github.io/grails-spring-security'
 	String license = 'APACHE'
 	def organization = [name: 'Grails', url: 'https://www.grails.org']
-	def issueManagement = [url: 'https://github.com/grails/grails-spring-security/issues']
-	def scm = [url: 'https://github.com/grails/grails-spring-security']
+	def issueManagement = [url: 'https://github.com/apache/grails-spring-security/issues']
+	def scm = [url: 'https://github.com/apache/grails-spring-security']
 	def loadAfter = ['springSecurityCore']
 	def profiles = ['web']
 

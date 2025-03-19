@@ -17,7 +17,7 @@ class SpringSecurityOauth2GrailsPlugin extends Plugin {
     def author = 'Johannes Brunswicker'
     def authorEmail = ''
     def description = '''\
-This plugin provides the capability to authenticate via oauth. Depends on grails-spring-security-core.
+This plugin provides the capability to authenticate via oauth. Depends on grails-spring-security.
 '''
     def profiles = ['web']
     def license = 'APACHE'

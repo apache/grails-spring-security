@@ -8,7 +8,7 @@ import spock.lang.IgnoreIf
 import spock.lang.Issue
 
 @IgnoreIf({ System.getProperty('TESTCONFIG') != 'issue503' })
-@Issue('https://github.com/grails/grails-spring-security/issues/503')
+@Issue('https://github.com/apache/grails-spring-security/issues/503')
 @Integration(applicationClass = functional.test.app.Application)
 class CustomFilterRegistrationSpec extends HttpClientSpec {
 
