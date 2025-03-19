@@ -73,7 +73,6 @@ jobs:
       - name: "🔨 Generate Snapshot Documentation"
         run: ./gradlew aggregateDocs
       - name: "🚀 Publish to Github Pages"
-        if: success()
         uses: apache/grails-github-actions/deploy-github-pages@asf
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
