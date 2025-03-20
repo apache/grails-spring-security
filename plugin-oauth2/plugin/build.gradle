@@ -9,7 +9,7 @@ group = 'org.grails.plugins'
 ext {
 	publishArtifactId = 'spring-security-oauth2'
 	pomTitle = 'Grails Spring Security OAuth2 Plugin'
-	pomDescription = 'This plugin provides the capability to authenticate via oauth and depends on grails-spring-security-core.'
+	pomDescription = 'This plugin provides the capability to authenticate via oauth and depends on grails-spring-security.'
 	pomDevelopers = [
 		MatrixCrawler: 'Johannes Brunswicker',
 		aitmanas: 'aitmanas',

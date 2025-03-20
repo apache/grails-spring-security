@@ -75,16 +75,16 @@ abstract class CreateReleaseDropDownTask extends DefaultTask {
     private String createVersionSelectDropDownHtml(List<SoftwareVersion> softwareVersions) {
         def repo = githubSlug.get().split('/')[1]
         def selectHtml = '<select onChange="window.document.location.href=this.options[this.selectedIndex].value;">'
-        def snapshotHref = "https://grails.github.io/$repo/snapshot/index.html"
+        def snapshotHref = "https://apache.github.io/$repo/snapshot/index.html"
         if (currentVersion.get().endsWith('-SNAPSHOT')) {
             selectHtml += "<option selected=\"selected\" value=\"$snapshotHref\">SNAPSHOT</option>"
         } else {
             selectHtml += "<option value=\"$snapshotHref\">SNAPSHOT</option>"
-            selectHtml += "<option selected=\"selected\" value=\"https://grails.github.io/$repo/${currentVersion.get()}/index.html\">${currentVersion.get()}</option>"
+            selectHtml += "<option selected=\"selected\" value=\"https://apache.github.io/$repo/${currentVersion.get()}/index.html\">${currentVersion.get()}</option>"
         }
         softwareVersions.forEach {softwareVersion ->
             def versionName = softwareVersion.versionText
-            def href = "https://grails.github.io/$repo/$versionName/index.html"
+            def href = "https://apache.github.io/$repo/$versionName/index.html"
             if (currentVersion.get() == versionName) {
                 selectHtml += "<option selected=\"selected\" value=\"$href\">$versionName</option>"
             } else {

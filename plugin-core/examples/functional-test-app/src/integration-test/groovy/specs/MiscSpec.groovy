@@ -344,7 +344,7 @@ class MiscSpec extends AbstractHyphenatedSecuritySpec {
 		assertContentContains 'barFoo'
 	}
 
-	@Issue('https://github.com/grails/grails-spring-security/issues/414')
+	@Issue('https://github.com/apache/grails-spring-security/issues/414')
 	void 'test Servlet API methods unauthenticated'() {
 		when:
 		go 'misc-test/test-servlet-api-methods'
@@ -358,7 +358,7 @@ class MiscSpec extends AbstractHyphenatedSecuritySpec {
 		assertContentContains 'request.remoteUser: null'
 	}
 
-	@Issue('https://github.com/grails/grails-spring-security/issues/414')
+	@Issue('https://github.com/apache/grails-spring-security/issues/414')
 	void 'test Servlet API methods authenticated'() {
 		when:
 		login 'admin'
@@ -378,7 +378,7 @@ class MiscSpec extends AbstractHyphenatedSecuritySpec {
 		assertContentContains 'request.remoteUser: admin'
 	}
 
-	@Issue('https://github.com/grails/grails-spring-security/issues/403')
+	@Issue('https://github.com/apache/grails-spring-security/issues/403')
 	void 'test controller with annotated index action, unauthenticated'() {
 		when:
 		go 'index-annotated'
@@ -405,7 +405,7 @@ class MiscSpec extends AbstractHyphenatedSecuritySpec {
 		assertContentContains 'Please Login'
 	}
 
-	@Issue('https://github.com/grails/grails-spring-security/issues/403')
+	@Issue('https://github.com/apache/grails-spring-security/issues/403')
 	void 'test controller with annotated index action, authenticated'() {
 		when:
 		login 'admin'

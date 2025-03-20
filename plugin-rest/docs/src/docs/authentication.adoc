@@ -1,6 +1,6 @@
 The {baseGroovyApiUrl}grails/plugin/springsecurity/rest/RestAuthenticationFilter.html[authentication filter]
 uses the default `authenticationManager` bean, which in turn uses all the registered authentication
-providers. See the https://grails-plugins.github.io/grails-spring-security-core/v3/index.html#authenticationProviders[Spring Security Core guide]
+providers. See the https://apache.github.io/grails-spring-security/latest/index.html#authenticationProviders[Spring Security Core guide]
 for more information about how to define your own providers. Note that you can easily plug any Spring Security sub-plugin
 (like the LDAP one) to use a different authentication strategy.
 
@@ -15,7 +15,7 @@ for token creation is followed. In the rest of the cases, the request will conti
 Core filters. Bear in mind that, by default, Spring Security Core 2.x locks down all URL's unless a explicit securiy rule has been
 specified for each of them.
 
-See https://grails-plugins.github.io/grails-spring-security-core/v3/index.html#requestMappings[Spring Security Core documentation]
+See https://apache.github.io/grails-spring-security/latest/index.html#requestMappings[Spring Security Core documentation]
 for more information.
 ====
 

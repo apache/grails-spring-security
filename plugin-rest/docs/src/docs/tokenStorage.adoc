@@ -355,7 +355,7 @@ To use Redis as a token store simply you just have to enable it in you configura
 (see table below).
 
 You have to have the `redis` plugin installed in order to be able to use Redis as your token store. Refer to the
-https://github.com/grails-plugins/grails-redis[Redis plugin documentation] for more details about how to configure it.
+https://github.com/apache/grails-redis[Redis plugin documentation] for more details about how to configure it.
 
 Configuration options for Redis:
 

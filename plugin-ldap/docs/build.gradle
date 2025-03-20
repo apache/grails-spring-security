@@ -55,7 +55,7 @@ ext {
             idprefix                          : '',
             idseparator                       : '-',
             version                           : projectVersion,
-            projectUrl                        : 'https://github.com/grails/grails-spring-security',
+            projectUrl                        : 'https://github.com/apache/grails-spring-security',
             sourcedir                         : "${rootProject.findProject(':ldap-plugin').projectDir}/src/main/groovy",
             gormDetailedLink                  : "https://gorm.grails.org/${getGrailsDocumentationVersion(bomVersions.gorm)}/hibernate/manual/index.html",
             gormSummaryLink                   : "https://docs.grails.org/${getGrailsDocumentationVersion(grailsVersion)}/guide/GORM.html",
@@ -63,7 +63,7 @@ ext {
             functionalTestAppPath             : "${rootProject.findProject(':ldap-examples-functional-test-app').projectDir}",
             customUserDetailsContextMapperPath: "${rootProject.findProject(':ldap-examples-custom-user-details-context-mapper').projectDir}",
             grailsSpringSecurityCoreVersion   : projectVersion,
-            grailsSpringSecurityCoreLink      : "https://grails.github.io/grails-spring-security/${getGrailsDocumentationVersion(projectVersion)}/index.html",
+            grailsSpringSecurityCoreLink      : "https://apache.github.io/grails-spring-security/${getGrailsDocumentationVersion(projectVersion)}/index.html",
             springSecurityLdapLink            : "https://docs.spring.io/spring-security/reference/${bomVersions.springSecurity}/servlet/authentication/passwords/ldap.html",
             springSecurityLdapApiLink         : "https://docs.spring.io/spring-security/site/docs/${bomVersions.springSecurity}/api"
     ]
