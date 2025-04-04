@@ -18,8 +18,7 @@ ext {
 
 dependencies {
 
-    api "org.apache.grails:grails-cache:$grailsCacheVersion", {
-        // TODO: For some reason, this version is not being resolved via grails-bom
+    api 'org.apache.grails:grails-cache', {
         // api: GrailsCacheManager
     }
     api 'org.springframework:spring-context', {
