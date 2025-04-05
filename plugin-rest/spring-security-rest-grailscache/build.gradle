@@ -18,6 +18,8 @@ ext {
 
 dependencies {
 
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
     api 'org.apache.grails:grails-cache', {
         // api: GrailsCacheManager
     }

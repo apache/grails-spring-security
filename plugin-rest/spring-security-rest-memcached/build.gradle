@@ -18,6 +18,8 @@ ext {
 
 dependencies {
 
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
     api project(':spring-security-rest'), {
         // api: TokenNotFoundException, TokenStorageService
         // impl: SecureRandomTokenGenerator

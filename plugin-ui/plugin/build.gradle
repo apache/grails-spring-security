@@ -16,6 +16,8 @@ ext {
 
 dependencies {
 
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
     // Must be on the compileClasspath of consuming applications to
     // enable compilation of AbstractS2UiDomainController subclasses.
     compileOnlyApi 'org.apache.grails:grails-converters'

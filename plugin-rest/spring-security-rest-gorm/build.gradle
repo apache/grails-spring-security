@@ -18,6 +18,8 @@ ext {
 
 dependencies {
 
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
     api 'org.springframework.security:spring-security-core', {
         // api: UserDetails, UserDetailsService
     }
