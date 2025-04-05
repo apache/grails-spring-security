@@ -20,6 +20,8 @@ ext {
 
 dependencies {
 
+	implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
 	api project(':core-plugin'), {
 		// api: GrailsUserDetailsService, SpringSecurityService
 		// impl: GormUserDetailsService, GrailsUser, ReflectionUtils, @Secured(runtime), SecurityContextHolder,

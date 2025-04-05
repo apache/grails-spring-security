@@ -13,6 +13,9 @@ ext {
 }
 
 dependencies {
+
+	implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
 	compileOnly "jakarta.servlet:jakarta.servlet-api"
 	compileOnly "org.springframework.boot:spring-boot-starter-logging"
 	compileOnly "org.apache.grails.web:grails-web-boot"

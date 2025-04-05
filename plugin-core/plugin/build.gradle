@@ -18,6 +18,8 @@ ext {
 
 dependencies {
 
+	implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
 	compileOnly 'org.apache.grails:grails-core' // Provided as this is a Grails Plugin
 	api 'org.apache.grails.data:grails-datastore-core' // API because used in templates
 	api 'org.apache.grails.data:grails-datamapping-core' // API because used in templates

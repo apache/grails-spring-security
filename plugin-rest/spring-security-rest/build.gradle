@@ -18,6 +18,8 @@ ext {
 
 dependencies {
 
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+
     api project(':core-plugin'), {
         // api: NullAuthenticationEventPublisher, SecurityEventListener
         // impl: BeanTypeResolver, @Secured(runtime), SecurityFilterPosition, SpringSecurityUtils
