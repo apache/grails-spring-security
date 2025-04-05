@@ -3790,7 +3790,7 @@ grails.plugin.springsecurity.digest.realmName = "Ralph's Bait and Tackle"</code>
 <div class="sect2">
 <h3 id="ajax">8.4. Ajax Authentication</h3>
 <div class="paragraph">
-<p>The typical pattern of using web site authentication to access restricted pages involves intercepting access requests for secure pages, redirecting to a login page (possibly off-site, for example when using a Single Sign-on implementation such as <a href="http://grails.org/plugin/spring-security-cas">CAS</a>), and redirecting back to the originally-requested page after a successful login. Each page can also have a login link to allow explicit logins at any time.</p>
+<p>The typical pattern of using web site authentication to access restricted pages involves intercepting access requests for secure pages, redirecting to a login page (possibly off-site, for example when using a Single Sign-on implementation such as <a href="https://github.com/apache/grails-spring-security">CAS</a>), and redirecting back to the originally-requested page after a successful login. Each page can also have a login link to allow explicit logins at any time.</p>
 </div>
 <div class="paragraph">
 <p>Another option is to also have a login link on each page and to use JavaScript to present a login form within the current page in a popup. The JavaScript code submits the authentication request and displays success or error messages as appropriate.</p>
@@ -3802,7 +3802,7 @@ grails.plugin.springsecurity.digest.realmName = "Ralph's Bait and Tackle"</code>
 <p>The approach here involves editing your template page(s) to show &#8220;You&#8217;re logged in as &#8230;&#8203;&#8221; text if logged in and a login link if not, along with a hidden login form that is shown using JavaScript.</p>
 </div>
 <div class="paragraph">
-<p>This example uses <a href="https://jquery.com/">jQuery</a> and <a href="http://jquery.iceburg.net/jqModal/">jqModal</a>, a jQuery plugin that creates and manages dialogs and popups. Download <code>jqModal.js</code> and copy it to <code>grails-app/assets/javascripts</code>, and download <code>jqModal.css</code> and copy it to <code>grails-app/assets/stylesheets</code>.</p>
+<p>This example uses <a href="https://jquery.com/">jQuery</a> and <a href="https://jquery.iceburg.net/jqModal/">jqModal</a>, a jQuery plugin that creates and manages dialogs and popups. Download <code>jqModal.js</code> and copy it to <code>grails-app/assets/javascripts</code>, and download <code>jqModal.css</code> and copy it to <code>grails-app/assets/stylesheets</code>.</p>
 </div>
 <div class="paragraph">
 <p>Create <code>grails-app/assets/javascripts/ajaxLogin.js</code> and add this JavaScript code:</p>
@@ -6411,7 +6411,7 @@ class User implements Serializable {
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Service injection in GORM entities is disabled by default since Grails 3.2.8. Read documentation about <a href="http://docs.grails.org/latest/ref/Domain%20Classes/Usage.html#_spring_autowiring_of_domain_instances">Spring Autowiring of Domain Instances</a> to learn how to turn autowire on.
+Service injection in GORM entities is disabled by default since Grails 3.2.8. Read documentation about <a href="https://docs.grails.org/latest/ref/Domain%20Classes/Usage.html#_spring_autowiring_of_domain_instances">Spring Autowiring of Domain Instances</a> to learn how to turn autowire on.
 </td>
 </tr>
 </table>
@@ -7180,7 +7180,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-03-09 21:17:25 UTC
+Last updated 2025-04-05 05:53:06 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

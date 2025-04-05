@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"grails.plugin.springsecurity","l":"SecurityFilterPosition"}]

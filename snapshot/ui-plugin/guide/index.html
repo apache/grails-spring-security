@@ -567,7 +567,7 @@ in forms. For more details, refer to the
 <div class="ulist">
 <ul>
 <li>
-<p>ACL Controllers and Views, which are enabled if the <a href="https://github.com/grails/grails-spring-security-acl">ACL Plugin</a> is installed.</p>
+<p>ACL Controllers and Views, which are enabled if the <a href="https://github.com/apache/grails-spring-security">ACL Plugin</a> is installed.</p>
 </li>
 <li>
 <p>Requestmaps support, which is available if <code>grails.plugin.springsecurity.securityConfigType</code> is set to <code>"Requestmap"</code> or <code>SecurityConfigType.Requestmap</code> in <code>application.groovy</code>.</p>
@@ -595,7 +595,7 @@ in forms. For more details, refer to the
 <div class="sect2">
 <h3 id="release-history">1.2. Release History</h3>
 <div class="paragraph">
-<p>For later releases - see the <a href="https://github.com/grails/grails-spring-security-ui/releases">GitHub release page</a>.</p>
+<p>For later releases - see the <a href="https://github.com/apache/grails-spring-security/releases">GitHub release page</a>.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -707,7 +707,7 @@ in forms. For more details, refer to the
 <p>1.0-RC1 release</p>
 </li>
 <li>
-<p><a href="http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=13069">JIRA Issues</a></p>
+<p><a href="https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=13069">JIRA Issues</a></p>
 </li>
 </ul>
 </div>
@@ -720,7 +720,7 @@ in forms. For more details, refer to the
 <p>0.2 release</p>
 </li>
 <li>
-<p><a href="http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=12709">JIRA Issues</a></p>
+<p><a href="https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=12709">JIRA Issues</a></p>
 </li>
 </ul>
 </div>
@@ -733,7 +733,7 @@ in forms. For more details, refer to the
 <p>0.1.2 release</p>
 </li>
 <li>
-<p><a href="http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=11921">JIRA Issues</a></p>
+<p><a href="https://jira.grails.org/secure/ReleaseNote.jspa?projectId=10233&amp;version=11921">JIRA Issues</a></p>
 </li>
 </ul>
 </div>
@@ -1030,7 +1030,7 @@ can be set in <code>grails-app/conf/application.groovy</code> or <code>grails-ap
 <div class="sect2">
 <h3 id="mail-configuration">6.1. Mail configuration</h3>
 <div class="paragraph">
-<p>By default the plugin uses the <a href="http://grails.org/plugin/mail">Mail</a> plugin to send emails, but only if it is installed. This is configurable by registering your own <code>MailStrategy</code> implementation - see the section on <a href="#configuration">Configuration</a> for more information. The plugin assumes that the Mail plugin and an SMTP server are already configured.</p>
+<p>By default the plugin uses the <a href="https://github.com/gpc/grails-mail">Mail</a> plugin to send emails, but only if it is installed. This is configurable by registering your own <code>MailStrategy</code> implementation - see the section on <a href="#configuration">Configuration</a> for more information. The plugin assumes that the Mail plugin and an SMTP server are already configured.</p>
 </div>
 <div class="paragraph">
 <p>You can customize the subject, body, and from address of the registration email by overriding the default values in <code>grails-app/conf/application.groovy</code>, for example:</p>
@@ -1320,7 +1320,7 @@ user.</p>
 <div class="sect2">
 <h3 id="mail-configuration-2">7.5. Mail configuration</h3>
 <div class="paragraph">
-<p>By default the plugin uses the <a href="http://grails.org/plugin/mail">Mail</a> plugin to send emails, but only if it is installed. This is configurable by registering your own <code>MailStrategy</code> implementation - see the section on <a href="#configuration">Configuration</a> for more information. The plugin assumes that the Mail plugin and an SMTP server are already configured.</p>
+<p>By default the plugin uses the <a href="https://github.com/gpc/grails-mail">Mail</a> plugin to send emails, but only if it is installed. This is configurable by registering your own <code>MailStrategy</code> implementation - see the section on <a href="#configuration">Configuration</a> for more information. The plugin assumes that the Mail plugin and an SMTP server are already configured.</p>
 </div>
 <div class="paragraph">
 <p>You can customize the subject, body, and from address of the reset email by overriding the default values in <code>grails-app/conf/application.groovy</code>, for example:</p>
@@ -1365,7 +1365,7 @@ grails.plugin.springsecurity.ui.forgotPassword.emailSubject = '...'</code></pre>
 <p>ACL management should be done using the API exposed by <code>AclService</code> and <code>AclUtilService</code>. Both services have a much more intuitive and convenient high-level approach to managing ACLs, ACEs, etc. The functionality in this plugin is to provide a CRUD interface for fine-grained ACL management.</p>
 </div>
 <div class="paragraph">
-<p>The ACL menu is only available if the <a href="http://grails.org/plugin/spring-security-acl">ACL plugin</a> is installed.</p>
+<p>The ACL menu is only available if the <a href="https://github.com/apache/grails-spring-security">ACL plugin</a> is installed.</p>
 </div>
 <div class="sect2">
 <h3 id="aclClass">8.1. AclClass Management</h3>
@@ -2107,7 +2107,7 @@ grails.plugin.springsecurity.ui.forgotPassword.emailSubject = '...'</code></pre>
 <div class="sect2">
 <h3 id="css-and-javascript">11.4. CSS and JavaScript</h3>
 <div class="paragraph">
-<p>The plugin uses the <a href="http://grails.org/plugin/asset-pipeline">Asset Pipeline</a> plugin to manage its resources. This makes it very easy to provide your own version of some or all of the static resources since asset-pipeline will always use a file in the application&#8217;s <code>assets</code> directory instead of a plugin&#8217;s if it exists.</p>
+<p>The plugin uses the <a href="https://github.com/bertramdev/asset-pipeline">Asset Pipeline</a> plugin to manage its resources. This makes it very easy to provide your own version of some or all of the static resources since asset-pipeline will always use a file in the application&#8217;s <code>assets</code> directory instead of a plugin&#8217;s if it exists.</p>
 </div>
 <div class="paragraph">
 <p>Instead of depending on either the jQuery or jQuery UI plugins, this plugin includes its own copy of jquery.js, jquery-ui.js, and jquery-ui.css. Note that the versions are not hard-coded, but instead they take advantage of the feature in asset-pipeline where you can embed Groovy code in a file to specify the name and path.</p>
@@ -2499,7 +2499,7 @@ The second service is a listener service which ensures that anytime an answer is
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-03-09 21:17:25 UTC
+Last updated 2025-04-05 05:53:06 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
