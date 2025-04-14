@@ -24,18 +24,6 @@ buildCache {
     }
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        libs {
-            def groovyVersion = System.getenv('GROOVY_VERSION')
-            if (groovyVersion) {
-                logger.warn "Using custom version $groovyVersion of Groovy due to GROOVY_VERSION being set."
-                version('groovy', groovyVersion)
-            }
-        }
-    }
-}
-
 gradle.beforeProject {
     // LDAP examples cannot run in parallel,
     // because they are connecting to live LDAP server (presumably with rate limiting)
