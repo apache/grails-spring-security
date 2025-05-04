@@ -33,7 +33,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile "org.apache.grails:grails-dependencies"
-    compile "org.apache.grails.web:grails-web-boot"
+    compile "org.apache.grails:grails-web-boot"
     compile "org.apache.grails:grails-cache"
     compile "org.apache.grails:grails-scaffolding"
     compile "org.apache.grails:grails-data-hibernate5"

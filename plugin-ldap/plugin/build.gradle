@@ -31,7 +31,7 @@ dependencies {
 		 'spring-core', 'spring-data-commons', 'spring-test', 'spring-tx'].each { exclude module: it }
 	}
 
-	runtimeOnly 'org.apache.grails.web:grails-web-boot'
+	runtimeOnly 'org.apache.grails:grails-web-boot'
 
 	testImplementation 'org.apache.grails:grails-testing-support-web'
 }
