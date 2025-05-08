@@ -1,36 +1,10 @@
-String customGroovyVersion = findProperty('groovyVersion') ?: System.getenv('GROOVY_VERSION')
-if (customGroovyVersion) {
-    logger.lifecycle("Using custom Groovy version: $customGroovyVersion")
-}
-
-subprojects {
-
-    version = projectVersion
-
-    if (customGroovyVersion) {
-        configurations.configureEach {
-            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-                if (details.requested.group == 'org.apache.groovy') {
-                    details.useVersion(customGroovyVersion)
-                }
-            }
-        }
-    }
-
+allprojects {
     repositories {
-        maven { url = 'https://repo.grails.org/grails/core' }
-        maven { url = 'https://repository.apache.org/content/repositories/snapshots' }
         mavenCentral()
-        if (customGroovyVersion?.endsWith('-SNAPSHOT')) {
-            // Used for testing locally against the latest snapshot of Groovy
-            // Usage: ./gradlew build -P"groovyVersion=X.X.X-SNAPSHOT"
-            logger.lifecycle('Adding Groovy Snapshot Repo for project: {}, Using Groovy {}', name, customGroovyVersion)
-            maven {
-                name = 'ASF Snapshot repo'
-                url = 'https://repository.apache.org/content/repositories/snapshots'
-            }
-        }
+        maven { url = 'https://repo.grails.org/grails/core' }
+        maven { url = 'https://repository.apache.org/content/groups/snapshots' }
     }
+
 }
 
 tasks.register('clean', Delete) {
@@ -58,6 +32,7 @@ def publishedProjects = [
         'ui-plugin'
 ]
 subprojects {
+    version = projectVersion
     if (name in publishedProjects) {
         // This has to be applied here
         apply plugin: 'org.apache.grails.gradle.grails-publish'
@@ -65,4 +40,8 @@ subprojects {
     else if (name == 'spring-security-rest-testapp-profile') {
         apply plugin: 'org.apache.grails.gradle.grails-publish-profile'
     }
+}
+
+apply {
+    from layout.projectDirectory.file('gradle/rat-root-config.gradle')
 }
