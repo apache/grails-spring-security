@@ -35,7 +35,29 @@ Assuming you choose `com.mycompany.myapp` as your package, and `Role` as your cl
 [source, groovy]
 .`Role.groovy`
 ----
-include::../code/s2-quickstart/grails-app/domain/com/mycompany/myapp//Role.groovy[]
+package com.mycompany.myapp
+
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
+@EqualsAndHashCode(includes='authority')
+@ToString(includes='authority', includeNames=true, includePackage=false)
+class Role implements Serializable {
+
+    private static final long serialVersionUID = 1
+
+    String authority
+
+    static constraints = {
+        authority blank: false, unique: true
+    }
+
+    static mapping = {
+        cache true
+    }
+}
 ----
 
 The class and property names are configurable using these configuration attributes:
