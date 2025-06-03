@@ -20,15 +20,15 @@
 allprojects {
     repositories {
         mavenCentral()
-        maven { url = 'https://repo.grails.org/grails/core' }
+        maven { url = 'https://repo.grails.org/grails/restricted' }
         maven { url = 'https://repository.apache.org/content/groups/snapshots' }
+        maven { url = 'https://repo.spring.io/milestone' }
     }
-
 }
 
 tasks.register('clean', Delete) {
     group = 'build'
-    delete layout.buildDirectory
+    delete(layout.buildDirectory)
 }
 
 // Workaround needed for nexus publishing bug

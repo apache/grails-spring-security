@@ -63,6 +63,10 @@ dependencies {
     integrationTestImplementation testFixtures('org.apache.grails:grails-geb')
 }
 
-apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+assets.excludes = ['webjars/**']
+
+apply {
+    from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+}

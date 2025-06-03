@@ -39,7 +39,7 @@ tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
 }
 
 tasks.register('pluginName') {
-    ext.value = project.name - '-docs'
+    ext.value = name - '-docs'
 }
 
 tasks.withType(Groovydoc).configureEach {
@@ -56,7 +56,7 @@ tasks.withType(Groovydoc).configureEach {
     docTitle = firstDocTitle
     windowTitle = firstWindowTitle
     source = sources
-    destinationDir = rootProject.layout.buildDirectory.dir("docs/${pluginName.value}-plugin/groovydoc").get().asFile
+    destinationDir = rootProject.layout.buildDirectory.dir("docs/$pluginName.value-plugin/groovydoc").get().asFile
     access = GroovydocAccess.PROTECTED
     processScripts = false
     includeMainForScripts = false
@@ -66,13 +66,13 @@ tasks.withType(Groovydoc).configureEach {
 }
 
 tasks.named('asciidoctor', AsciidoctorTask) {
-    sourceDir layout.projectDirectory.file('src/docs')
-    sources { include 'index.adoc' }
+    sourceDir(layout.projectDirectory.file('src/docs'))
+    sources { include('index.adoc') }
     outputDir = layout.buildDirectory.file('docs')
-    attributes findProperty('asciidoctorAttributes') as Map ?: [:]
+    attributes(findProperty('asciidoctorAttributes') as Map ?: [:])
     baseDirFollowsSourceDir()
     jvm {
-        jvmArgs '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED'
+        jvmArgs('--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED')
     }
     inputs.dir(sourceDir)
     outputs.dir(outputDir)
@@ -80,22 +80,22 @@ tasks.named('asciidoctor', AsciidoctorTask) {
 
 tasks.register('guideDocs', Copy) {
     group = 'documentation'
-    dependsOn 'asciidoctor'
+    dependsOn('asciidoctor')
     def sourceDir = layout.projectDirectory.dir('src/docs')
     def targetDir = layout.buildDirectory.dir('docs')
     outputs.dir(targetDir)
-    from sourceDir
-    into targetDir
-    include '**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg'
-    finalizedBy findProperty('docsFinalizeTasks') as List ?: []
+    from(sourceDir)
+    into(targetDir)
+    include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    finalizedBy(findProperty('docsFinalizeTasks') as List ?: [])
 }
 
 tasks.register('copyGhPages', Copy) {
     group = 'documentation'
     description = 'Copy the ghpages.html file to the root docs directory'
-    from findProject(':core-docs').layout.projectDirectory.file('src/docs/index.tmpl')
-    into rootProject.layout.buildDirectory.dir('docs')
-    rename 'index.tmpl', 'ghpages.html'
+    from(findProject(':core-docs').layout.projectDirectory.file('src/docs/index.tmpl'))
+    into(rootProject.layout.buildDirectory.dir('docs'))
+    rename('index.tmpl', 'ghpages.html')
 }
 
 tasks.register('copyGuide', Copy) {
@@ -115,8 +115,8 @@ tasks.register('copyApiDocs', Copy) {
     group = 'documentation'
     dependsOn('groovydoc')
     for (String projectName : (findProperty('apiDocsProjects') as Map).keySet()) {
-        from(layout.buildDirectory.dir("docs/${projectName}/groovydoc")) {
-            into rootProject.layout.buildDirectory.dir("docs/${projectName}/groovydoc")
+        from(layout.buildDirectory.dir("docs/$projectName/groovydoc")) {
+            into(rootProject.layout.buildDirectory.dir("docs/$projectName/groovydoc"))
         }
     }
 }

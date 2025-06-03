@@ -39,6 +39,7 @@ dependencies {
     runtimeOnly 'org.apache.grails:grails-i18n'
     runtimeOnly 'org.apache.grails:grails-url-mappings'
     runtimeOnly 'org.apache.grails:grails-data-hibernate5'
+    runtimeOnly 'org.fusesource.jansi:jansi'
     runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -47,3 +48,9 @@ dependencies {
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
 // apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle') // No, tests defined in this project
 apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+
+apply {
+    from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+    //from rootProject.layout.projectDirectory.file('gradle/test-config.gradle') // No, tests defined in this project
+    from rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+}

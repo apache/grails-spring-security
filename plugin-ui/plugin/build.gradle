@@ -60,23 +60,26 @@ dependencies {
 }
 
 tasks.register('copyGspIntoTemplates', Copy) {
-    from layout.projectDirectory.dir('grails-app/views')
-    into layout.projectDirectory.dir('src/main/templates/views')
-    dependsOn 'copyTemplates', 'processResources'
+    from(layout.projectDirectory.dir('grails-app/views'))
+    into(layout.projectDirectory.dir('src/main/templates/views'))
+    dependsOn('copyTemplates', 'processResources')
 }
 
 tasks.register('removeGspFromTemplates', Delete) {
-    delete layout.projectDirectory.dir('src/main/templates/views')
+    delete(layout.projectDirectory.dir('src/main/templates/views'))
 }
 
 tasks.named('compileAstJava') {
-    dependsOn 'copyGspIntoTemplates'
+    dependsOn('copyGspIntoTemplates')
 }
 
 assets {
     packagePlugin = true
 }
 
-apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
+apply {
+    from rootProject.layout.projectDirectory.file('gradle/plugin-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
+}

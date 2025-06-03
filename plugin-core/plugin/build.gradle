@@ -66,7 +66,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-crypto'
 	implementation 'org.springframework:spring-tx'
 
-	compileOnly "jline:jline" // for shell commands
+	compileOnly 'jline:jline' // for shell commands
 	compileOnly 'org.apache.groovy:groovy' // Compile-time annotations
 	compileOnly 'jakarta.servlet:jakarta.servlet-api' // Provided
 	compileOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during compilation
@@ -84,6 +84,9 @@ dependencies {
 	testRuntimeOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during tests
 }
 
-apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
+apply {
+	from rootProject.layout.projectDirectory.file('gradle/plugin-config.gradle')
+	from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+	from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+	from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
+}
