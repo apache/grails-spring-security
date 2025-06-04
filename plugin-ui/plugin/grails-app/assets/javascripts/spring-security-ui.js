@@ -1,6 +1,3 @@
-//= require jquery.js
-//= require jquery-ui.js
-//= require jquery/jquery.jgrowl.js
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -20,8 +17,11 @@
  *  under the License.
  */
 
+//= require webjars/jquery/2.1.4/jquery.min.js
+//= require webjars/jquery-ui/1.10.3/ui/minified/jquery-ui.min.js
+//= require webjars/jgrowl/1.4.6/jquery.jgrowl.min.js
 //= require jquery/jquery.positionBy.js
-//= require jquery/jquery.bgiframe.js
+//= require webjars/bgiframe/3.0.1/jquery.bgiframe.js
+//= require webjars/jquery-form/3.51/jquery.form.js
 //= require jquery/jquery.jdMenu.js
-//= require jquery/jquery.form.js
 //= require spring-security-ui-ajaxLogin.js

@@ -1,5 +1,4 @@
 /*
- *= require smoothness/jquery-ui-1.10.3.custom.css
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -18,4 +17,6 @@
  *  under the License.
  */
 
+/*
+ *= require webjars/jquery-ui-themes/1.10.3/smoothness/jquery-ui
  */
