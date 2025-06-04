@@ -24,6 +24,14 @@ dependencies {
 }
 
 tasks.withType(Test).configureEach {
+    onlyIf {
+        ![
+                'skipTests'
+        ].find {
+            project.hasProperty(it)
+        }
+    }
+
     useJUnitPlatform()
     testLogging {
         exceptionFormat = 'full'
@@ -33,6 +41,14 @@ tasks.withType(Test).configureEach {
 }
 
 tasks.named('integrationTest', Test) {
+    onlyIf {
+        ![
+                'skipTests'
+        ].find {
+            project.hasProperty(it)
+        }
+    }
+
     systemProperty 'geb.build.reportsDir', reporting.file("$project.projectDir/build/geb-reports")
     systemProperties System.properties
     doFirst {

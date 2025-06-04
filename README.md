@@ -56,3 +56,7 @@ To build this project from source, first bootstrap gradle:
 After bootstrap the project, you can build it with the command: 
 
      ./gradlew build
+
+To run the build only, and skip the tests, run:
+    
+     ./gradlew build -PskipTests
