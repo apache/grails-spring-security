@@ -34,6 +34,16 @@ tasks.named('rat') {
             '**/*.png', '**/*.svg', '**/*.ico', '**/*.eps', '**/*.icns', '**/*.jpg', '**/*.jpeg', '**/*.gif', // Image files
             '**/*.db', // H2 database test files
             '**/*.gitkeep', // Empty Gitkeep file
+            'plugin-rest/spring-security-rest-testapp-profile/skeleton/**', // template files that people are expected to use in the end application
+            'plugin-rest/spring-security-rest-testapp-profile/features/**', // template files that people are expected to use in the end application
+            'plugin-rest/spring-security-rest-testapp-profile/commands/**', // template files that people are expected to use in the end application
+            'plugin-rest/spring-security-rest-testapp-profile/templates/**', // template files that people are expected to use in the end application
+            'plugin-core/plugin/src/main/templates/**', // template files that people are expected to use in the end application
+            'plugin-ui/plugin/src/main/templates/**', // template files that people are expected to use in the end application
+            'plugin-oauth2/plugin/src/main/templates/**', // template files that people are expected to use in the end application
+            'plugin-rest/spring-security-rest-testapp-profile/profile.yml', // generated file
+            'plugin-rest/spring-security-rest-testapp-profile/profile.yml.tmpl', // template that will be included in an end application
+            'plugin-ldap/examples/functional-test-app/grails-app/ldap-servers/d1/data/users.ldif', // test database that does not support comments
     ]
     // never cache license audits
     outputs.upToDateWhen { false }
