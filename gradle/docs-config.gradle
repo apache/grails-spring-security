@@ -22,7 +22,15 @@ import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 apply plugin: 'org.asciidoctor.jvm.convert'
 
-configurations.register('documentation')
+configurations.register('documentation') {
+    canBeConsumed = false
+    canBeResolved = true
+    attributes {
+        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.LIBRARY))
+        attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.EXTERNAL))
+        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    }
+}
 
 dependencies {
     add('documentation', platform("org.apache.grails:grails-bom:$grailsVersion"))
@@ -61,6 +69,8 @@ tasks.withType(Groovydoc).configureEach {
     processScripts = false
     includeMainForScripts = false
     includeAuthor = false
+    noTimestamp = true
+    noVersionStamp = false
     classpath = configurations.documentation
     groovyClasspath += configurations.documentation
 }
