@@ -44,3 +44,15 @@ spring:
       - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 ```
+
+### Building
+
+To build this project from source, first bootstrap gradle:
+
+     cd gradle-bootstrap
+     gradle
+     cd -
+
+After bootstrap the project, you can build it with the command: 
+
+     ./gradlew build
