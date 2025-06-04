@@ -29,7 +29,10 @@ public enum SecurityFilterPosition {
 
 	FORCE_EAGER_SESSION_FILTER,
 
+	@Deprecated
 	CHANNEL_FILTER,
+
+	HTTPS_REDIRECT_FILTER,
 
 	SECURITY_CONTEXT_FILTER,
 
