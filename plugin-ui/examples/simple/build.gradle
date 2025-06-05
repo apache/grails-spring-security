@@ -58,6 +58,17 @@ dependencies {
     integrationTestImplementation testFixtures('org.apache.grails:grails-geb')
 }
 
+assets {
+    minifyJs = false
+    minifyCss = true
+    skipNonDigests = true
+    enableSourceMaps = false
+
+    minifyOptions = [
+            optimizationLevel: "SIMPLE", // SIMPLE (default) or ADVANCED or WHITESPACE_ONLY
+    ]
+}
+
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
