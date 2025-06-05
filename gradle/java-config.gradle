@@ -39,17 +39,3 @@ tasks.withType(GroovyCompile).configureEach {
     options.fork = true
     options.forkOptions.jvmArgs = ['-Xms128M', '-Xmx2G']
 }
-
-// Any jar, zip, or archive should be reproducible
-// No longer needed after https://github.com/gradle/gradle/issues/30871
-tasks.withType(AbstractArchiveTask).configureEach {
-    preserveFileTimestamps = false // to prevent timestamp mismatches
-    reproducibleFileOrder = true // to keep the same ordering
-    // to avoid platform specific defaults, set the permissions consistently
-    filePermissions { permissions ->
-        permissions.unix(0644)
-    }
-    dirPermissions { permissions ->
-        permissions.unix(0755)
-    }
-}

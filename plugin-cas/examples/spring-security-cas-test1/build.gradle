@@ -53,4 +53,5 @@ apply {
     from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
     //from rootProject.layout.projectDirectory.file('gradle/test-config.gradle') // No, tests defined in this project
     from rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
 }

@@ -55,6 +55,9 @@ dependencies {
     integrationTestImplementation 'org.spockframework:spock-core'
 }
 
-apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+apply {
+    from rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+    from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
+}

@@ -73,7 +73,7 @@ Files.walk(scanRoot)
 
 artifacts.findAll {
     !it.toString().contains("${File.separator}buildSrc${File.separator}" as String) // build src jars aren't published
-    !it.toString().contains("${File.separator}grails-test-examples${File.separator}" as String) // test examples aren't published
+    !it.toString().contains("${File.separator}examples${File.separator}" as String) // test examples aren't published
 }.sort { a, b -> a.toString() <=> b.toString()
 }.collect { Path jar ->
     String hash = sha512(jar)

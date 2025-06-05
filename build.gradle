@@ -30,6 +30,7 @@ ext {
             .orElseGet(Instant::now)
     formattedBuildDate = DateTimeFormatter.ISO_INSTANT.format(buildInstant)
     buildDate = (buildInstant as Instant).atZone(ZoneOffset.UTC) // for reproducible builds
+    isCiBuild = System.getenv().get('CI') as Boolean
 }
 
 allprojects {
@@ -37,7 +38,22 @@ allprojects {
         mavenCentral()
         maven { url = 'https://repo.grails.org/grails/restricted' }
         maven { url = 'https://repository.apache.org/content/groups/snapshots' }
-        maven { url = 'https://repo.spring.io/milestone' }
+        maven {
+            url = 'https://repository.apache.org/content/groups/staging'
+            content {
+                includeGroupByRegex 'org[.]apache[.]grails.*'
+            }
+        }
+    }
+}
+
+subprojects {
+    configurations.configureEach {
+        resolutionStrategy {
+            def cacheHours = isCiBuild || isReproducibleBuild ? 0 : 24
+            cacheDynamicVersionsFor(cacheHours, 'hours')
+            cacheChangingModulesFor(cacheHours, 'hours')
+        }
     }
 }
 

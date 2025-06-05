@@ -57,3 +57,4 @@ dependencies {
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 apply from: rootProject.layout.projectDirectory.file('gradle/examples-config.gradle')
+apply from: rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')

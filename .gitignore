@@ -13,3 +13,5 @@ kindlegen
 out
 atlassian-ide-plugin.xml
 plugin-ui/plugin/src/main/templates/views/*
+!etc/bin
+etc/bin/results

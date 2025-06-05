@@ -22,22 +22,6 @@ import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 apply plugin: 'org.asciidoctor.jvm.convert'
 
-configurations.register('documentation') {
-    canBeConsumed = false
-    canBeResolved = true
-    attributes {
-        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.LIBRARY))
-        attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.EXTERNAL))
-        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
-    }
-}
-
-dependencies {
-    add('documentation', platform("org.apache.grails:grails-bom:$grailsVersion"))
-    add('documentation', 'com.github.javaparser:javaparser-core')
-    add('documentation', 'org.apache.groovy:groovy-groovydoc')
-}
-
 tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
     group = 'documentation'
     githubSlug = 'apache/grails-spring-security'
@@ -50,6 +34,7 @@ tasks.register('pluginName') {
     ext.value = name - '-docs'
 }
 
+apply from: rootProject.layout.projectDirectory.file('gradle/groovydoc-config.gradle')
 tasks.withType(Groovydoc).configureEach {
     def firstDocTitle
     def firstWindowTitle
@@ -65,14 +50,6 @@ tasks.withType(Groovydoc).configureEach {
     windowTitle = firstWindowTitle
     source = sources
     destinationDir = rootProject.layout.buildDirectory.dir("docs/$pluginName.value-plugin/groovydoc").get().asFile
-    access = GroovydocAccess.PROTECTED
-    processScripts = false
-    includeMainForScripts = false
-    includeAuthor = false
-    noTimestamp = true
-    noVersionStamp = false
-    classpath = configurations.documentation
-    groovyClasspath += configurations.documentation
 }
 
 tasks.named('asciidoctor', AsciidoctorTask) {
