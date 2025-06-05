@@ -30,7 +30,6 @@ mkdir -p "${SCRIPT_DIR}/results"
 
 git clean -xdf --exclude='etc/bin' --exclude='.idea' --exclude='.gradle'
 killall -e java || true
-cd ..
 ./gradlew build --rerun-tasks -PskipTests --no-build-cache
 "${SCRIPT_DIR}/generate-build-artifact-hashes.groovy" > "${SCRIPT_DIR}/results/first.txt"
 mkdir -p "${SCRIPT_DIR}/results/first"
@@ -38,7 +37,6 @@ find . -path ./etc -prune -o -type f -path '*/build/libs/*.jar' -print0 | xargs 
 
 git clean -xdf --exclude='etc/bin' --exclude='.idea' --exclude='.gradle'
 killall -e java || true
-cd ..
 ./gradlew build --rerun-tasks -PskipTests --no-build-cache
 "${SCRIPT_DIR}/generate-build-artifact-hashes.groovy" > "${SCRIPT_DIR}/results/second.txt"
 mkdir -p "${SCRIPT_DIR}/results/second"
