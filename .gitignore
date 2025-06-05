@@ -3,7 +3,7 @@
 *.iws
 *.log
 *.sublime-workspace
-.asscache
+.assetcache
 .DS_Store
 .gradle
 .idea
