@@ -29,6 +29,7 @@ tasks.named('rat') {
             'LICENSE',
             'licenses/**', // licenses directory excluded
             'NOTICE',
+            'CODE_OF_CONDUCT.md',
             '**/.sdkmanrc', // tool selection files aren't code
             '**/.gitignore', // git configuration isn't code
             '**/.gitkeep', // git configuration isn't code
