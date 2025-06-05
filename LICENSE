@@ -205,8 +205,8 @@
 
 The following files are licensed under the MIT:
 
-    plugin-ui/plugin/grails-app/assets/javascript/jquery/jquery.jdMenu.js
-    plugin-ui/plugin/grails-app/assets/javascript/jquery/jquery.positionBy.js
+    plugin-ui/plugin/grails-app/assets/javascripts/jquery/jquery.jdMenu.js
+    plugin-ui/plugin/grails-app/assets/javascripts/jquery/jquery.positionBy.js
     plugin-ui/plugin/grails-app/assets/stylesheets/jquery.jdMenu.slate.css
     plugin-ui/plugin/grails-app/assets/stylesheets/jquery.jdMenu.css
 
