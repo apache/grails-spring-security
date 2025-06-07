@@ -19,12 +19,14 @@
 
 package com.test
 
+import grails.plugin.geb.ContainerGebConfiguration
 import grails.testing.mixin.integration.Integration
 import pages.IndexPage
 import pages.SecureSuperuserPage
 import pages.SecureUserPage
 
 @Integration
+@ContainerGebConfiguration(reporting = true)
 class CustomUserDetailsContextMapperFunctionalSpec extends AbstractSecurityFunctionalSpec {
 
 	void 'secured urls are not visible without auth'() {
@@ -49,13 +51,15 @@ class CustomUserDetailsContextMapperFunctionalSpec extends AbstractSecurityFunct
 		assertContentContains 'Please Login'
 
 		when:
-		login 'galileo', 'password'
+		report("At Login")
+		login 'jane', 'password'
 
 		then:
 		at SecureUserPage
+		report("At secured")
 
 		and:
-		assertContentContains('galileo@ldap.forumsys.com')
+		assertContentContains('jane@example.com')
 
 		when:
 		logout()
