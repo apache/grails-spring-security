@@ -27,6 +27,7 @@ class AclObjectIdentitySearchPage extends SearchPage {
 
 	static url = 'aclObjectIdentity/search'
 	static typeName = { 'AclObjectIdentity' }
+	static at = { waitFor { title == 'AclObjectIdentity Search' } }
 	static content = {
 		aclClass { $(name: 'aclClass.id').module(Select) }
 		objectId { $(name: 'objectId').module(TextInput) }

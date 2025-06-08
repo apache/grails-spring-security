@@ -27,6 +27,7 @@ class AclObjectIdentityCreatePage extends CreatePage {
 
 	static url = 'aclObjectIdentity/create'
 	static typeName = { 'AclObjectIdentity' }
+	static at = { waitFor { title == 'Create AclObjectIdentity' } }
 	static content = {
 		aclClass { $(name: 'aclClass.id').module(Select) }
 		objectId { $(name: 'objectId').module(TextInput) }

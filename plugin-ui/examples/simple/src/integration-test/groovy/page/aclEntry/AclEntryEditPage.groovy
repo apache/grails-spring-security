@@ -28,6 +28,7 @@ class AclEntryEditPage extends EditPage {
 
 	static url = 'aclEntry/edit'
 	static typeName = { 'AclEntry' }
+	static at = { waitFor { title == 'Edit AclEntry' } }
 	static content = {
 		aclObjectIdentityId { $(name: 'aclObjectIdentity.id').module(TextInput) }
 		aceOrder { $(name: 'aceOrder').module(TextInput) }

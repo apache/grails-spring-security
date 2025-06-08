@@ -25,7 +25,7 @@ import page.AbstractSecurityPage
 class ResetPasswordPage extends AbstractSecurityPage {
 
     static url = 'register/resetPassword'
-    static at = { title == 'Reset Password' }
+    static at = { waitFor { title == 'Reset Password' } }
     static content = {
         form { $('resetPasswordForm') }
         password { $('#password').module(PasswordInput) }

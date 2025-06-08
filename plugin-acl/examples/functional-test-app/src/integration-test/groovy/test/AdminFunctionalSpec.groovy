@@ -69,6 +69,7 @@ class AdminFunctionalSpec extends AbstractSecuritySpec {
 	void 'view all'() {
 		when:
 		go "report/show?number=$i"
+		waitFor { title == 'Show Report' }
 
 		then:
 		assertContentContains "report$i"

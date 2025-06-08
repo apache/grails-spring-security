@@ -38,7 +38,7 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 
 		then:
 		browser.at(RegistrationCodeSearchPage)
-		registrationCodeSearchPage.assertResults(1, 10, 15)
+		registrationCodeSearchPage.assertResults(1, 10, 14)
 		assertContentContains('registration_test_2')
 		assertContentContains('0a154624f36d42e4aa68991a9477bd04')
 	}
