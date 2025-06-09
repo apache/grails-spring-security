@@ -26,7 +26,6 @@ import pages.SecureSuperuserPage
 import pages.SecureUserPage
 
 @Integration
-@ContainerGebConfiguration(reporting = true)
 class CustomUserDetailsContextMapperFunctionalSpec extends AbstractSecurityFunctionalSpec {
 
 	void 'secured urls are not visible without auth'() {
@@ -51,12 +50,10 @@ class CustomUserDetailsContextMapperFunctionalSpec extends AbstractSecurityFunct
 		assertContentContains 'Please Login'
 
 		when:
-		report("At Login")
 		login 'jane', 'password'
 
 		then:
 		at SecureUserPage
-		report("At secured")
 
 		and:
 		assertContentContains('jane@example.com')
