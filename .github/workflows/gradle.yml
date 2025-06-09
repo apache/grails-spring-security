@@ -68,7 +68,7 @@ jobs:
         run: ./gradlew core-examples-functional-test-app:check -DTESTCONFIG=${{ matrix.test-config }}
   publish:
     needs: [ coreTests, functionalTests ]
-    if: ${{ always() && github.repository_owner == 'apache' && github.event_name == 'push' && (needs.coreTests.result == 'success' || needs.coreTests.result == 'skipped') && (needs.functionalTests.result == 'success' || needs.functionalTests.result == 'skipped') }}
+    if: ${{ always() && github.repository_owner == 'apache' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.coreTests.result == 'success' || needs.coreTests.result == 'skipped') && (needs.functionalTests.result == 'success' || needs.functionalTests.result == 'skipped') }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write
