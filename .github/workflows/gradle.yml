@@ -29,7 +29,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   coreTests:
-    if: ${{ contains(github.event.head_commit.message, '[skip tests]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
     runs-on: ubuntu-24.04
     steps:
       - name: "📥 Checkout repository"
@@ -46,7 +46,7 @@ jobs:
       - name: "🏃‍♂️ Run Tests"
         run: ./gradlew check --max-workers=2 --refresh-dependencies --continue
   functionalTests:
-    if: ${{ contains(github.event.head_commit.message, '[skip tests]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
