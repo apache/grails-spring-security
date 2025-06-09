@@ -19,6 +19,7 @@
 
 package com.test
 
+import grails.plugin.geb.ContainerGebConfiguration
 import grails.testing.mixin.integration.Integration
 import pages.IndexPage
 import pages.SecureSuperuserPage
@@ -49,13 +50,13 @@ class CustomUserDetailsContextMapperFunctionalSpec extends AbstractSecurityFunct
 		assertContentContains 'Please Login'
 
 		when:
-		login 'galileo', 'password'
+		login 'jane', 'password'
 
 		then:
 		at SecureUserPage
 
 		and:
-		assertContentContains('galileo@ldap.forumsys.com')
+		assertContentContains('jane@example.com')
 
 		when:
 		logout()

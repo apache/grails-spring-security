@@ -26,6 +26,7 @@ class AclClassSearchPage extends SearchPage {
 
 	static url = 'aclClass/search'
 	static typeName = { 'AclClass' }
+	static at = { waitFor { title == 'AclClass Search' } }
 	static content = {
 		className { $(name: 'className').module(TextInput) }
 	}

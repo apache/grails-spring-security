@@ -21,7 +21,7 @@ package page
 
 abstract class EditPage extends AbstractSecurityPage {
 
-	static at = { title == "Edit ${typeName()}" }
+	static at = { waitFor { title == "Edit ${typeName()}" } }
 	static content = {
 		form { $('editForm') }
 		submitBtn { $('a', id: 'update') }

@@ -19,6 +19,11 @@
 
 package com.test
 
+import com.unboundid.ldap.listener.InMemoryDirectoryServer
+import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig
+import com.unboundid.ldap.listener.InMemoryListenerConfig
+import com.unboundid.ldap.sdk.Attribute
+import com.unboundid.ldap.sdk.Entry
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
 
@@ -26,7 +31,58 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class Application extends GrailsAutoConfiguration {
+    static InMemoryDirectoryServer directoryServer
     static void main(String[] args) {
+        InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig('dc=example,dc=com')
+        config.addAdditionalBindCredentials('cn=admin,dc=example,dc=com', 'secret')
+        config.setListenerConfigs(
+                InMemoryListenerConfig.createLDAPConfig(
+                        'default',
+                        null,
+                        0,
+                        null,
+                        false,
+                        false
+                )
+        )
+
+        directoryServer = new InMemoryDirectoryServer(config)
+        Entry base = new Entry(
+                "dc=example,dc=com",
+                new Attribute("objectClass", "top", "domain"),
+                new Attribute("dc", "example"))
+        directoryServer.add(base)
+
+        Entry people = new Entry(
+                "ou=people,dc=example,dc=com",
+                new Attribute("objectClass", "top", "organizationalUnit"),
+                new Attribute("ou", "people"));
+        directoryServer.add(people)
+
+        Entry jane = new Entry(
+                "uid=jane,ou=people,dc=example,dc=com",
+                new Attribute("objectClass", "inetOrgPerson"),
+                new Attribute("uid", "jane"),
+                new Attribute("cn", "Jane Doe"),
+                new Attribute("sn", "Doe"),
+                new Attribute("mail", "jane@example.com"),
+                new Attribute("telephoneNumber", "+1 555 111 2222"),
+                new Attribute("userPassword", "password")
+        )
+        directoryServer.add(jane)
+
+        directoryServer.startListening()
+
+        System.setProperty('grails.test.ldap.url', "ldap://localhost:${directoryServer.getListenPort()}" as String)
+
         GrailsApp.run(Application, args)
+    }
+
+    @Override
+    void onShutdown(Map<String, Object> event) {
+        if(directoryServer) {
+            directoryServer.close()
+            directoryServer = null
+        }
     }
 }

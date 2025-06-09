@@ -28,6 +28,7 @@ class UserCreatePage extends CreatePage {
 
 	static url = 'user/create'
 	static typeName = { 'User' }
+	static at = { waitFor { title == 'Create User' } }
 	static content = {
 		username { $('#username').module(TextInput) }
 		password { $('#password').module(PasswordInput) }

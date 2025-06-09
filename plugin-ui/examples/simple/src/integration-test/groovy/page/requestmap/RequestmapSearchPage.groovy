@@ -26,6 +26,7 @@ class RequestmapSearchPage extends SearchPage {
 
 	static url = 'requestmap/search'
 	static typeName = { 'Requestmap' }
+	static at = { waitFor { title == 'Requestmap Search' } }
 	static content = {
 		configAttribute { $(name: 'configAttribute').module(TextInput) }
 		urlPattern { $(name: 'url').module(TextInput) }

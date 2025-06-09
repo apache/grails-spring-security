@@ -26,6 +26,7 @@ class AclClassEditPage extends EditPage {
 
 	static url = 'aclClass/edit'
 	static typeName = { 'AclClass' }
+	static at = { waitFor { title == 'Edit AclClass' } }
 	static content = {
 		className { $(name: 'className').module(TextInput) }
 	}

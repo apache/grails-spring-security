@@ -43,8 +43,7 @@ dependencies {
         // api: TokenNotFoundException, TokenStorageService
         // impl: SecureRandomTokenGenerator
     }
-    api "org.grails.plugins:grails-redis:$grailsRedisVersion", {
-        // TODO: Not yet converted to apache coords
+    api "org.apache.grails:grails-redis:$grailsRedisVersion", {
         // api: RedisService
     }
     api 'org.springframework:spring-core', {

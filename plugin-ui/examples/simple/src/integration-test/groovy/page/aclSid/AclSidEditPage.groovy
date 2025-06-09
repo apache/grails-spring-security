@@ -27,6 +27,7 @@ class AclSidEditPage extends EditPage {
 
 	static url = 'aclSid/edit'
 	static typeName = { 'AclSid' }
+	static at = { waitFor { title == 'Edit AclSid' } }
 	static content = {
 		sid { $(name: 'sid').module(TextInput) }
 		principal { $(name: 'principal').module(Checkbox) }

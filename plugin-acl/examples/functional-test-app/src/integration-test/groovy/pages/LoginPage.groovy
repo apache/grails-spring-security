@@ -25,7 +25,7 @@ class LoginPage extends Page {
 
 	static url = 'login/auth'
 
-	static at = { title == 'Login' }
+	static at = { waitFor { title == 'Login' } }
 
 	static content = {
 		loginForm { $('form') }

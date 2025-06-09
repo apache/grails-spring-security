@@ -26,6 +26,7 @@ class AclClassCreatePage extends CreatePage {
 
 	static url = 'aclClass/create'
 	static typeName = { 'AclClass' }
+	static at = { waitFor { title == 'Create AclClass' } }
 	static content = {
 		className { $(name: 'className').module(TextInput) }
 	}

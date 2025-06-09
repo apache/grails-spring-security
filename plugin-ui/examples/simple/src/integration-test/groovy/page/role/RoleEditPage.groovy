@@ -26,6 +26,7 @@ class RoleEditPage extends EditPage {
 
 	static url = 'role/edit'
 	static typeName = { 'Role' }
+	static at = { waitFor { title == 'Edit Role' } }
 	static content = {
 		authority { $(name: 'authority').module(TextInput) }
 	}
