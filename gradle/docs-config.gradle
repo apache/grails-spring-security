@@ -75,10 +75,14 @@ tasks.register('guideDocs', Copy) {
 
 tasks.register('copyGhPages', Copy) {
     group = 'documentation'
-    description = 'Copy the ghpages.html file to the root docs directory'
-    from(findProject(':core-docs').layout.projectDirectory.file('src/docs/index.tmpl'))
+    description = 'Copy the ghpages.html file to the plugin docs directory'
+
+    from(findProject(':core-docs').layout.projectDirectory.dir('src/docs')) {
+        include 'index.tmpl'
+        rename('index.tmpl', 'ghpages.html')
+    }
+
     into(rootProject.layout.buildDirectory.dir('docs'))
-    rename('index.tmpl', 'ghpages.html')
 }
 
 tasks.register('copyGuide', Copy) {
