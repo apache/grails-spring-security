@@ -89,7 +89,7 @@ cd "${DOWNLOAD_LOCATION}/${PROJECT_NAME}/etc/bin/results"
 
 echo "Checking for differences in checksums"
 # diff -u CHECKSUMS second.txt
-DIFF_RESULTS=$(comm -3 <(sort ../../../CHECKSUMS) <(sort second.txt) | cut -d' ' -f1 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | uniq | sort)
+DIFF_RESULTS=$(comm -3 <(sort ../../../CHECKSUMS) <(sort second.txt) | cut -d' ' -f1 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -v '^$' | uniq | sort)
 echo "$DIFF_RESULTS" > diff.txt
 
 if [ -s diff.txt ]; then
