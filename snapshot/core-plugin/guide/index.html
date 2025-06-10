@@ -865,8 +865,8 @@ import groovy.transform.ToString
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-@EqualsAndHashCode(includes='username')
-@ToString(includes='username', includeNames=true, includePackage=false)
+@EqualsAndHashCode(includes = 'username')
+@ToString(includes = 'username', includeNames = true, includePackage = false)
 class User implements Serializable {
 
 	private static final long serialVersionUID = 1
@@ -1063,17 +1063,17 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Role implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	String authority
+    String authority
 
-	static constraints = {
-		authority blank: false, unique: true
-	}
+    static constraints = {
+        authority blank: false, unique: true
+    }
 
-	static mapping = {
-		cache true
-	}
+    static mapping = {
+        cache true
+    }
 }</code></pre>
 </div>
 </div>
@@ -1148,81 +1148,81 @@ import grails.compiler.GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class UserRole implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	User user
-	Role role
-
-	@Override
-	boolean equals(other) {
-		if (other instanceof UserRole) {
-			other.userId == user?.id &amp;&amp; other.roleId == role?.id
-		}
-	}
+    User user
+    Role role
 
     @Override
-	int hashCode() {
-	    int hashCode = HashCodeHelper.initHash()
+    boolean equals(other) {
+        if (other instanceof UserRole) {
+            other.userId == user?.id &amp;&amp; other.roleId == role?.id
+        }
+    }
+
+    @Override
+    int hashCode() {
+        int hashCode = HashCodeHelper.initHash()
         if (user) {
             hashCode = HashCodeHelper.updateHash(hashCode, user.id)
-		}
-		if (role) {
-		    hashCode = HashCodeHelper.updateHash(hashCode, role.id)
-		}
-		hashCode
-	}
+        }
+        if (role) {
+            hashCode = HashCodeHelper.updateHash(hashCode, role.id)
+        }
+        hashCode
+    }
 
-	static UserRole get(long userId, long roleId) {
-		criteriaFor(userId, roleId).get()
-	}
+    static UserRole get(long userId, long roleId) {
+        criteriaFor(userId, roleId).get()
+    }
 
-	static boolean exists(long userId, long roleId) {
-		criteriaFor(userId, roleId).count()
-	}
+    static boolean exists(long userId, long roleId) {
+        criteriaFor(userId, roleId).count()
+    }
 
-	private static DetachedCriteria criteriaFor(long userId, long roleId) {
-		UserRole.where {
-			user == User.load(userId) &amp;&amp;
-			role == Role.load(roleId)
-		}
-	}
+    private static DetachedCriteria criteriaFor(long userId, long roleId) {
+        UserRole.where {
+            user == User.load(userId) &amp;&amp;
+                    role == Role.load(roleId)
+        }
+    }
 
-	static UserRole create(User user, Role role, boolean flush = false) {
-		def instance = new UserRole(user: user, role: role)
-		instance.save(flush: flush)
-		instance
-	}
+    static UserRole create(User user, Role role, boolean flush = false) {
+        def instance = new UserRole(user: user, role: role)
+        instance.save(flush: flush)
+        instance
+    }
 
-	static boolean remove(User u, Role r) {
-		if (u != null &amp;&amp; r != null) {
-			UserRole.where { user == u &amp;&amp; role == r }.deleteAll()
-		}
-	}
+    static boolean remove(User u, Role r) {
+        if (u != null &amp;&amp; r != null) {
+            UserRole.where { user == u &amp;&amp; role == r }.deleteAll()
+        }
+    }
 
-	static int removeAll(User u) {
-		u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
-	}
+    static int removeAll(User u) {
+        u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
+    }
 
-	static int removeAll(Role r) {
-		r == null ? 0 : UserRole.where { role == r }.deleteAll() as int
-	}
+    static int removeAll(Role r) {
+        r == null ? 0 : UserRole.where { role == r }.deleteAll() as int
+    }
 
-	static constraints = {
-		role validator: { Role r, UserRole ur -&gt;
-			if (ur.user?.id) {
-				UserRole.withNewSession {
-					if (UserRole.exists(ur.user.id, r.id)) {
-						return ['userRole.exists']
-					}
-				}
-			}
-		}
-	}
+    static constraints = {
+        role validator: { Role r, UserRole ur -&gt;
+            if (ur.user?.id) {
+                UserRole.withNewSession {
+                    if (UserRole.exists(ur.user.id, r.id)) {
+                        return ['userRole.exists']
+                    }
+                }
+            }
+        }
+    }
 
-	static mapping = {
-		id composite: ['user', 'role']
-		version false
-	}
+    static mapping = {
+        id composite: ['user', 'role']
+        version false
+    }
 }</code></pre>
 </div>
 </div>
@@ -1287,30 +1287,91 @@ UserRole.remove user, role</code></pre>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">package com.mycompany.myapp
 
-import groovy.transform.EqualsAndHashCode
+import grails.gorm.DetachedCriteria
 import groovy.transform.ToString
+
+import org.codehaus.groovy.util.HashCodeHelper
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-@EqualsAndHashCode(includes='name')
-@ToString(includes='name', includeNames=true, includePackage=false)
-class RoleGroup implements Serializable {
+@ToString(cache=true, includeNames=true, includePackage=false)
+class RoleGroupRole implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	String name
+    RoleGroup roleGroup
+    Role role
 
-	Set&lt;Role&gt; getAuthorities() {
-		(RoleGroupRole.findAllByRoleGroup(this) as List&lt;RoleGroupRole&gt;)*.role as Set&lt;Role&gt;
-	}
+    @Override
+    boolean equals(other) {
+        if (other instanceof RoleGroupRole) {
+            other.roleId == role?.id &amp;&amp; other.roleGroupId == roleGroup?.id
+        }
+    }
 
-	static constraints = {
-		name blank: false, unique: true
-	}
+    @Override
+    int hashCode() {
+        int hashCode = HashCodeHelper.initHash()
+        if (roleGroup) {
+            hashCode = HashCodeHelper.updateHash(hashCode, roleGroup.id)
+        }
+        if (role) {
+            hashCode = HashCodeHelper.updateHash(hashCode, role.id)
+        }
+        hashCode
+    }
 
-	static mapping = {
-		cache true
-	}
+    static RoleGroupRole get(long roleGroupId, long roleId) {
+        criteriaFor(roleGroupId, roleId).get()
+    }
+
+    static boolean exists(long roleGroupId, long roleId) {
+        criteriaFor(roleGroupId, roleId).count()
+    }
+
+    private static DetachedCriteria criteriaFor(long roleGroupId, long roleId) {
+        RoleGroupRole.where {
+            roleGroup == RoleGroup.load(roleGroupId) &amp;&amp;
+                    role == Role.load(roleId)
+        }
+    }
+
+    static RoleGroupRole create(RoleGroup roleGroup, Role role, boolean flush = false) {
+        def instance = new RoleGroupRole(roleGroup: roleGroup, role: role)
+        instance.save(flush: flush)
+        instance
+    }
+
+    static boolean remove(RoleGroup rg, Role r) {
+        if (rg != null &amp;&amp; r != null) {
+            RoleGroupRole.where { roleGroup == rg &amp;&amp; role == r }.deleteAll()
+        }
+    }
+
+    static int removeAll(Role r) {
+        r == null ? 0 : RoleGroupRole.where { role == r }.deleteAll() as int
+    }
+
+    static int removeAll(RoleGroup rg) {
+        rg == null ? 0 : RoleGroupRole.where { roleGroup == rg }.deleteAll() as int
+    }
+
+    static constraints = {
+        role validator: { Role r, RoleGroupRole rg -&gt;
+            if (rg.roleGroup?.id) {
+                RoleGroupRole.withNewSession {
+                    if (RoleGroupRole.exists(rg.roleGroup.id, r.id)) {
+                        return ['roleGroup.exists']
+                    }
+                }
+            }
+        }
+    }
+
+    static mapping = {
+        id composite: ['roleGroup', 'role']
+        version false
+    }
 }</code></pre>
 </div>
 </div>
@@ -1321,7 +1382,7 @@ class RoleGroup implements Serializable {
 <div class="title">Listing 3. The generated <code>getAuthorities()</code> method when using role groups</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">Set&lt;RoleGroup&gt; getAuthorities() {
-	(UserRoleGroup.findAllByUser(this) as List&lt;UserRoleGroup&gt;)*.roleGroup as Set&lt;RoleGroup&gt;
+    (UserRoleGroup.findAllByUser(this) as List&lt;UserRoleGroup&gt;)*.roleGroup as Set&lt;RoleGroup&gt;
 }</code></pre>
 </div>
 </div>
@@ -1375,84 +1436,85 @@ import org.codehaus.groovy.util.HashCodeHelper
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-@ToString(cache=true, includeNames=true, includePackage=false)
+@ToString(cache = true, includeNames = true, includePackage = false)
 class UserRoleGroup implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	User user
-	RoleGroup roleGroup
-
-	@Override
-	boolean equals(other) {
-		if (other instanceof UserRoleGroup) {
-			other.userId == user?.id &amp;&amp; other.roleGroupId == roleGroup?.id
-		}
-	}
+    User user
+    RoleGroup roleGroup
 
     @Override
-	int hashCode() {
-	    int hashCode = HashCodeHelper.initHash()
+    boolean equals(other) {
+        if (other instanceof UserRoleGroup) {
+            other.userId == user?.id &amp;&amp; other.roleGroupId == roleGroup?.id
+        }
+        false
+    }
+
+    @Override
+    int hashCode() {
+        int hashCode = HashCodeHelper.initHash()
         if (user) {
             hashCode = HashCodeHelper.updateHash(hashCode, user.id)
-		}
-		if (roleGroup) {
-		    hashCode = HashCodeHelper.updateHash(hashCode, roleGroup.id)
-		}
-		hashCode
-	}
-	
-	static UserRoleGroup get(long userId, long roleGroupId) {
-		criteriaFor(userId, roleGroupId).get()
-	}
+        }
+        if (roleGroup) {
+            hashCode = HashCodeHelper.updateHash(hashCode, roleGroup.id)
+        }
+        hashCode
+    }
 
-	static boolean exists(long userId, long roleGroupId) {
-		criteriaFor(userId, roleGroupId).count()
-	}
+    static UserRoleGroup get(long userId, long roleGroupId) {
+        criteriaFor(userId, roleGroupId).get()
+    }
 
-	private static DetachedCriteria criteriaFor(long userId, long roleGroupId) {
-		UserRoleGroup.where {
-			user == User.load(userId) &amp;&amp;
-			roleGroup == RoleGroup.load(roleGroupId)
-		}
-	}
+    static boolean exists(long userId, long roleGroupId) {
+        criteriaFor(userId, roleGroupId).count()
+    }
 
-	static UserRoleGroup create(User user, RoleGroup roleGroup, boolean flush = false) {
-		def instance = new UserRoleGroup(user: user, roleGroup: roleGroup)
-		instance.save(flush: flush)
-		instance
-	}
+    private static DetachedCriteria criteriaFor(long userId, long roleGroupId) {
+        UserRoleGroup.where {
+            user == User.load(userId) &amp;&amp;
+            roleGroup == RoleGroup.load(roleGroupId)
+        }
+    }
 
-	static boolean remove(User u, RoleGroup rg) {
-		if (u != null &amp;&amp; rg != null) {
-			UserRoleGroup.where { user == u &amp;&amp; roleGroup == rg }.deleteAll()
-		}
-	}
+    static UserRoleGroup create(User user, RoleGroup roleGroup, boolean flush = false) {
+        def instance = new UserRoleGroup(user: user, roleGroup: roleGroup)
+        instance.save(flush: flush)
+        instance
+    }
 
-	static int removeAll(User u) {
-		u == null ? 0 : UserRoleGroup.where { user == u }.deleteAll() as int
-	}
+    static boolean remove(User u, RoleGroup rg) {
+        if (u != null &amp;&amp; rg != null) {
+            UserRoleGroup.where { user == u &amp;&amp; roleGroup == rg }.deleteAll()
+        }
+    }
 
-	static int removeAll(RoleGroup rg) {
-		rg == null ? 0 : UserRoleGroup.where { roleGroup == rg }.deleteAll() as int
-	}
+    static int removeAll(User u) {
+        u == null ? 0 : UserRoleGroup.where { user == u }.deleteAll() as int
+    }
 
-	static constraints = {
-		user validator: { User u, UserRoleGroup ug -&gt;
-			if (ug.roleGroup?.id) {
-				UserRoleGroup.withNewSession {
-					if (UserRoleGroup.exists(u.id, ug.roleGroup.id)) {
-						return ['userGroup.exists']
-					}
-				}
-			}
-		}
-	}
+    static int removeAll(RoleGroup rg) {
+        rg == null ? 0 : UserRoleGroup.where { roleGroup == rg }.deleteAll() as int
+    }
 
-	static mapping = {
-		id composite: ['roleGroup', 'user']
-		version false
-	}
+    static constraints = {
+        user validator: { User u, UserRoleGroup ug -&gt;
+            if (ug.roleGroup?.id) {
+                UserRoleGroup.withNewSession {
+                    if (UserRoleGroup.exists(u.id, ug.roleGroup.id)) {
+                        return ['userGroup.exists']
+                    }
+                }
+            }
+        }
+    }
+
+    static mapping = {
+        id composite: ['roleGroup', 'user']
+        version false
+    }
 }</code></pre>
 </div>
 </div>
@@ -1480,81 +1542,81 @@ import grails.compiler.GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class RoleGroupRole implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	RoleGroup roleGroup
-	Role role
+    RoleGroup roleGroup
+    Role role
 
-	@Override
-	boolean equals(other) {
-		if (other instanceof RoleGroupRole) {
-			other.roleId == role?.id &amp;&amp; other.roleGroupId == roleGroup?.id
-		}
-	}
+    @Override
+    boolean equals(other) {
+        if (other instanceof RoleGroupRole) {
+            other.roleId == role?.id &amp;&amp; other.roleGroupId == roleGroup?.id
+        }
+    }
 
-	@Override
-	int hashCode() {
-	    int hashCode = HashCodeHelper.initHash()
+    @Override
+    int hashCode() {
+        int hashCode = HashCodeHelper.initHash()
         if (roleGroup) {
             hashCode = HashCodeHelper.updateHash(hashCode, roleGroup.id)
-		}
-		if (role) {
-		    hashCode = HashCodeHelper.updateHash(hashCode, role.id)
-		}
-		hashCode
-	}
+        }
+        if (role) {
+            hashCode = HashCodeHelper.updateHash(hashCode, role.id)
+        }
+        hashCode
+    }
 
-	static RoleGroupRole get(long roleGroupId, long roleId) {
-		criteriaFor(roleGroupId, roleId).get()
-	}
+    static RoleGroupRole get(long roleGroupId, long roleId) {
+        criteriaFor(roleGroupId, roleId).get()
+    }
 
-	static boolean exists(long roleGroupId, long roleId) {
-		criteriaFor(roleGroupId, roleId).count()
-	}
+    static boolean exists(long roleGroupId, long roleId) {
+        criteriaFor(roleGroupId, roleId).count()
+    }
 
-	private static DetachedCriteria criteriaFor(long roleGroupId, long roleId) {
-		RoleGroupRole.where {
-			roleGroup == RoleGroup.load(roleGroupId) &amp;&amp;
-			role == Role.load(roleId)
-		}
-	}
+    private static DetachedCriteria criteriaFor(long roleGroupId, long roleId) {
+        RoleGroupRole.where {
+            roleGroup == RoleGroup.load(roleGroupId) &amp;&amp;
+                    role == Role.load(roleId)
+        }
+    }
 
-	static RoleGroupRole create(RoleGroup roleGroup, Role role, boolean flush = false) {
-		def instance = new RoleGroupRole(roleGroup: roleGroup, role: role)
-		instance.save(flush: flush)
-		instance
-	}
+    static RoleGroupRole create(RoleGroup roleGroup, Role role, boolean flush = false) {
+        def instance = new RoleGroupRole(roleGroup: roleGroup, role: role)
+        instance.save(flush: flush)
+        instance
+    }
 
-	static boolean remove(RoleGroup rg, Role r) {
-		if (rg != null &amp;&amp; r != null) {
-			RoleGroupRole.where { roleGroup == rg &amp;&amp; role == r }.deleteAll()
-		}
-	}
+    static boolean remove(RoleGroup rg, Role r) {
+        if (rg != null &amp;&amp; r != null) {
+            RoleGroupRole.where { roleGroup == rg &amp;&amp; role == r }.deleteAll()
+        }
+    }
 
-	static int removeAll(Role r) {
-		r == null ? 0 : RoleGroupRole.where { role == r }.deleteAll() as int
-	}
+    static int removeAll(Role r) {
+        r == null ? 0 : RoleGroupRole.where { role == r }.deleteAll() as int
+    }
 
-	static int removeAll(RoleGroup rg) {
-		rg == null ? 0 : RoleGroupRole.where { roleGroup == rg }.deleteAll() as int
-	}
+    static int removeAll(RoleGroup rg) {
+        rg == null ? 0 : RoleGroupRole.where { roleGroup == rg }.deleteAll() as int
+    }
 
-	static constraints = {
-		role validator: { Role r, RoleGroupRole rg -&gt;
-			if (rg.roleGroup?.id) {
-				RoleGroupRole.withNewSession {
-					if (RoleGroupRole.exists(rg.roleGroup.id, r.id)) {
-						return ['roleGroup.exists']
-					}
-				}
-			}
-		}
-	}
+    static constraints = {
+        role validator: { Role r, RoleGroupRole rg -&gt;
+            if (rg.roleGroup?.id) {
+                RoleGroupRole.withNewSession {
+                    if (RoleGroupRole.exists(rg.roleGroup.id, r.id)) {
+                        return ['roleGroup.exists']
+                    }
+                }
+            }
+        }
+    }
 
-	static mapping = {
-		id composite: ['roleGroup', 'role']
-		version false
-	}
+    static mapping = {
+        id composite: ['roleGroup', 'role']
+        version false
+    }
 }</code></pre>
 </div>
 </div>
@@ -6263,27 +6325,27 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='username', includeNames=true, includePackage=false)
 class User implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	String username
-	String password
-	boolean enabled = true
-	boolean accountExpired
-	boolean accountLocked
-	boolean passwordExpired
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
 
-	Set&lt;Role&gt; getAuthorities() {
-		(UserRole.findAllByUser(this) as List&lt;UserRole&gt;)*.role as Set&lt;Role&gt;
-	}
+    Set&lt;Role&gt; getAuthorities() {
+        (UserRole.findAllByUser(this) as List&lt;UserRole&gt;)*.role as Set&lt;Role&gt;
+    }
 
-	static constraints = {
-		password blank: false, password: true
-		username blank: false, unique: true
-	}
+    static constraints = {
+        password blank: false, password: true
+        username blank: false, unique: true
+    }
 
-	static mapping = {
-		password column: '`password`'
-	}
+    static mapping = {
+        password column: '`password`'
+    }
 }</code></pre>
 </div>
 </div>
@@ -6362,45 +6424,45 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='username', includeNames=true, includePackage=false)
 class User implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	SpringSecurityService springSecurityService
+    SpringSecurityService springSecurityService
 
-	String username
-	String password
-	boolean enabled = true
-	boolean accountExpired
-	boolean accountLocked
-	boolean passwordExpired
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
 
-	Set&lt;Role&gt; getAuthorities() {
-		(UserRole.findAllByUser(this) as List&lt;UserRole&gt;)*.role as Set&lt;Role&gt;
-	}
+    Set&lt;Role&gt; getAuthorities() {
+        (UserRole.findAllByUser(this) as List&lt;UserRole&gt;)*.role as Set&lt;Role&gt;
+    }
 
-	def beforeInsert() {
-		encodePassword()
-	}
+    def beforeInsert() {
+        encodePassword()
+    }
 
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
+    def beforeUpdate() {
+        if (isDirty('password')) {
+            encodePassword()
+        }
+    }
 
-	protected void encodePassword() {
-		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
-	}
+    protected void encodePassword() {
+        password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+    }
 
-	static transients = ['springSecurityService']
+    static transients = ['springSecurityService']
 
-	static constraints = {
-		password blank: false, password: true
-		username blank: false, unique: true
-	}
+    static constraints = {
+        password blank: false, password: true
+        username blank: false, unique: true
+    }
 
-	static mapping = {
-		password column: '`password`'
-	}
+    static mapping = {
+        password column: '`password`'
+    }
 }</code></pre>
 </div>
 </div>
@@ -6433,17 +6495,17 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Role implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	String authority
+    String authority
 
-	static constraints = {
-		authority blank: false, unique: true
-	}
+    static constraints = {
+        authority blank: false, unique: true
+    }
 
-	static mapping = {
-		cache true
-	}
+    static mapping = {
+        cache true
+    }
 }</code></pre>
 </div>
 </div>
@@ -6465,81 +6527,81 @@ import grails.compiler.GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class UserRole implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	User user
-	Role role
-
-	@Override
-	boolean equals(other) {
-		if (other instanceof UserRole) {
-			other.userId == user?.id &amp;&amp; other.roleId == role?.id
-		}
-	}
+    User user
+    Role role
 
     @Override
-	int hashCode() {
-	    int hashCode = HashCodeHelper.initHash()
+    boolean equals(other) {
+        if (other instanceof UserRole) {
+            other.userId == user?.id &amp;&amp; other.roleId == role?.id
+        }
+    }
+
+    @Override
+    int hashCode() {
+        int hashCode = HashCodeHelper.initHash()
         if (user) {
             hashCode = HashCodeHelper.updateHash(hashCode, user.id)
-		}
-		if (role) {
-		    hashCode = HashCodeHelper.updateHash(hashCode, role.id)
-		}
-		hashCode
-	}
+        }
+        if (role) {
+            hashCode = HashCodeHelper.updateHash(hashCode, role.id)
+        }
+        hashCode
+    }
 
-	static UserRole get(long userId, long roleId) {
-		criteriaFor(userId, roleId).get()
-	}
+    static UserRole get(long userId, long roleId) {
+        criteriaFor(userId, roleId).get()
+    }
 
-	static boolean exists(long userId, long roleId) {
-		criteriaFor(userId, roleId).count()
-	}
+    static boolean exists(long userId, long roleId) {
+        criteriaFor(userId, roleId).count()
+    }
 
-	private static DetachedCriteria criteriaFor(long userId, long roleId) {
-		UserRole.where {
-			user == User.load(userId) &amp;&amp;
-			role == Role.load(roleId)
-		}
-	}
+    private static DetachedCriteria criteriaFor(long userId, long roleId) {
+        UserRole.where {
+            user == User.load(userId) &amp;&amp;
+                    role == Role.load(roleId)
+        }
+    }
 
-	static UserRole create(User user, Role role, boolean flush = false) {
-		def instance = new UserRole(user: user, role: role)
-		instance.save(flush: flush)
-		instance
-	}
+    static UserRole create(User user, Role role, boolean flush = false) {
+        def instance = new UserRole(user: user, role: role)
+        instance.save(flush: flush)
+        instance
+    }
 
-	static boolean remove(User u, Role r) {
-		if (u != null &amp;&amp; r != null) {
-			UserRole.where { user == u &amp;&amp; role == r }.deleteAll()
-		}
-	}
+    static boolean remove(User u, Role r) {
+        if (u != null &amp;&amp; r != null) {
+            UserRole.where { user == u &amp;&amp; role == r }.deleteAll()
+        }
+    }
 
-	static int removeAll(User u) {
-		u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
-	}
+    static int removeAll(User u) {
+        u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
+    }
 
-	static int removeAll(Role r) {
-		r == null ? 0 : UserRole.where { role == r }.deleteAll() as int
-	}
+    static int removeAll(Role r) {
+        r == null ? 0 : UserRole.where { role == r }.deleteAll() as int
+    }
 
-	static constraints = {
-		role validator: { Role r, UserRole ur -&gt;
-			if (ur.user?.id) {
-				UserRole.withNewSession {
-					if (UserRole.exists(ur.user.id, r.id)) {
-						return ['userRole.exists']
-					}
-				}
-			}
-		}
-	}
+    static constraints = {
+        role validator: { Role r, UserRole ur -&gt;
+            if (ur.user?.id) {
+                UserRole.withNewSession {
+                    if (UserRole.exists(ur.user.id, r.id)) {
+                        return ['userRole.exists']
+                    }
+                }
+            }
+        }
+    }
 
-	static mapping = {
-		id composite: ['user', 'role']
-		version false
-	}
+    static mapping = {
+        id composite: ['user', 'role']
+        version false
+    }
 }</code></pre>
 </div>
 </div>
@@ -6605,6 +6667,7 @@ They contain the minimum needed for the plugin&#8217;s default implementation of
 <pre class="prettyprint highlight"><code data-lang="groovy">package com.mycompany.myapp
 
 class SecureController {
+
    def index() {
       render 'Secure access only'
    }
@@ -6695,6 +6758,7 @@ class BootStrap {
 import grails.plugin.springsecurity.annotation.Secured
 
 class SecureController {
+
    @Secured('ROLE_ADMIN')
    def index() {
       render 'Secure access only'
@@ -6714,6 +6778,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('ROLE_ADMIN')
 class SecureController {
+
    def index() {
       render 'Secure access only'
    }
@@ -7180,7 +7245,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-05-04 17:49:51 UTC
+Last updated 2025-06-10 01:41:54 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

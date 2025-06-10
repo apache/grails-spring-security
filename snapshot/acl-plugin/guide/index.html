@@ -951,25 +951,25 @@ class AclSid {
 
 class AclObjectIdentity extends AbstractAclObjectIdentity {
 
-	Long objectId
+    Long objectId
 
-	@Override
-	String toString() {
-		"AclObjectIdentity id $id, aclClass $aclClass.className, " +
-		"objectId $objectId, entriesInheriting $entriesInheriting"
-	}
+    @Override
+    String toString() {
+        "AclObjectIdentity id $id, aclClass $aclClass.className, " +
+        "objectId $objectId, entriesInheriting $entriesInheriting"
+    }
 
-	static mapping = {
-		version false
-		aclClass column: 'object_id_class'
-		owner column: 'owner_sid'
-		parent column: 'parent_object'
-		objectId column: 'object_id_identity'
-	}
+    static mapping = {
+        version false
+        aclClass column: 'object_id_class'
+        owner column: 'owner_sid'
+        parent column: 'parent_object'
+        objectId column: 'object_id_identity'
+    }
 
-	static constraints = {
-		objectId unique: 'aclClass'
-	}
+    static constraints = {
+        objectId unique: 'aclClass'
+    }
 }</code></pre>
 </div>
 </div>
@@ -2534,7 +2534,7 @@ the body content
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-05-04 17:49:51 UTC
+Last updated 2025-06-10 01:41:54 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

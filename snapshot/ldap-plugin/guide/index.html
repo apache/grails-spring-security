@@ -562,7 +562,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <p>Once you have configured your Grails application as an LDAP client you can delegate authentication to LDAP and not have to manage users' authentication information in your application. By default, roles are inferred from LDAP group membership and you can store additional application-specific roles in your database.</p>
 </div>
 <div class="paragraph">
-<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.4.5/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
+<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.0/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
 </div>
 </div>
 </div>
@@ -722,14 +722,33 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="sect2">
 <h3 id="custom-userdetailscontextmapper">2.3. Custom UserDetailsContextMapper</h3>
 <div class="paragraph">
-<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.4.5/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
+<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.0/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
 </div>
 <div class="paragraph">
-<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.4.5/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
+<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.0/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">package</span> spring
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  &quot;License&quot;); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */</span>
+
+<span class="keyword">package</span> spring
 
 <span class="keyword">import</span> <span class="include">com.mycompany.myapp.MyUserDetailsContextMapper</span>
 
@@ -745,7 +764,26 @@ beans = {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">package</span> com.mycompany.myapp
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  &quot;License&quot;); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */</span>
+
+<span class="keyword">package</span> com.mycompany.myapp
 
 <span class="keyword">import</span> <span class="include">groovy.transform.CompileStatic</span>
 
@@ -786,7 +824,26 @@ beans = {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">package</span> com.mycompany.myapp
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  &quot;License&quot;); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */</span>
+
+<span class="keyword">package</span> com.mycompany.myapp
 
 <span class="keyword">import</span> <span class="include">groovy.transform.CompileStatic</span>
 <span class="keyword">import</span> <span class="include">org.springframework.security.core.GrantedAuthority</span>
@@ -1136,7 +1193,7 @@ beans = {
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-05-04 17:49:51 UTC
+Last updated 2025-06-10 01:41:54 UTC
 </div>
 </div>
 </body>
