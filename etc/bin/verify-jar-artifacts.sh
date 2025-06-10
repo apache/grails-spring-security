@@ -35,6 +35,7 @@ VERSION=${RELEASE_TAG#v}
 ARTIFACTS_FILE="${DOWNLOAD_LOCATION}/${PROJECT_NAME}/PUBLISHED_ARTIFACTS"
 CHECKSUMS_FILE="${DOWNLOAD_LOCATION}/${PROJECT_NAME}/CHECKSUMS"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+CWD=$(pwd)
 
 if [ ! -f "${ARTIFACTS_FILE}" ]; then
   echo "Required file ${ARTIFACTS_FILE} not found."
@@ -49,12 +50,14 @@ fi
 export GRAILS_GPG_HOME=$(mktemp -d)
 cleanup() {
   rm -rf "${GRAILS_GPG_HOME}"
+  cd "$CWD"
 }
 trap cleanup EXIT
 error() {
   echo "❌ JAR Verification failed ❌"
 }
 trap error ERR
+cd "${DOWNLOAD_LOCATION}"
 
 echo "Importing GPG key to independent GPG home ..."
 gpg --homedir "${GRAILS_GPG_HOME}" --import "${SCRIPT_DIR}/../../KEYS"
