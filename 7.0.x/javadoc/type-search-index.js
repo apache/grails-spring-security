@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"grails.plugin.springsecurity","l":"SecurityFilterPosition"}];updateSearchResults();
