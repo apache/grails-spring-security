@@ -21,7 +21,7 @@ plugins {
     id 'java-library'
     id 'org.apache.grails.gradle.grails-gsp'
     id 'org.apache.grails.gradle.grails-plugin'
-    id 'com.bertramlabs.asset-pipeline'
+    id 'cloud.wondrify.asset-pipeline'
 }
 
 group = 'org.apache.grails'
@@ -61,7 +61,7 @@ dependencies {
     compileOnly 'org.apache.grails:grails-services'
     compileOnly 'org.apache.grails:grails-domain-class'
 
-    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails'
+    runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
     runtimeOnly 'org.apache.grails:grails-i18n'
 
     testImplementation 'org.apache.grails:grails-testing-support-web'
