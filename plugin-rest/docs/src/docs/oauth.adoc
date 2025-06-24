@@ -121,7 +121,7 @@ OauthUser loadUserByUserProfile(OAuth20Profile userProfile, Collection<GrantedAu
     if (userProfile.email.endsWith('example.org')) {
         return new OauthUser(userProfile.id, 'N/A', defaultRoles, userProfile)
     } else {
-        throw new UsernameNotFoundException("User with email ${userProfile.email} now allowed. Only `example.org accounts are allowed.")
+        throw new UsernameNotFoundException("User with email ${userProfile.email} is not allowed. Only `example.org` accounts are allowed.")
     }
 }
 ----
