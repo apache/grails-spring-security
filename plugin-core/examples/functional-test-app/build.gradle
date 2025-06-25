@@ -19,7 +19,7 @@
 
 plugins {
     id 'org.apache.grails.gradle.grails-web'
-    id 'com.bertramlabs.asset-pipeline'
+    id 'cloud.wondrify.asset-pipeline'
 }
 
 group = 'examples.test'
@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.apache.grails:grails-gsp'
     implementation 'org.apache.grails:grails-rest-transforms'
 
-    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails'
+    runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.zaxxer:HikariCP'
     runtimeOnly 'org.apache.grails:grails-data-hibernate5'
