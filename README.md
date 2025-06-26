@@ -21,7 +21,6 @@ Grails Spring Security
 
 See [documentation](https://apache.github.io/grails-spring-security/latest/ghpages.html) for detailed information.
 
-
 [core-plugin](https://apache.github.io/grails-spring-security/latest/core-plugin/guide/)
 
 [rest-plugin](https://apache.github.io/grails-spring-security/latest/rest-plugin/guide/)
