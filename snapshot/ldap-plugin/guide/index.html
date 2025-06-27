@@ -562,7 +562,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <p>Once you have configured your Grails application as an LDAP client you can delegate authentication to LDAP and not have to manage users' authentication information in your application. By default, roles are inferred from LDAP group membership and you can store additional application-specific roles in your database.</p>
 </div>
 <div class="paragraph">
-<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.0/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
+<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.1/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
 </div>
 </div>
 </div>
@@ -722,10 +722,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="sect2">
 <h3 id="custom-userdetailscontextmapper">2.3. Custom UserDetailsContextMapper</h3>
 <div class="paragraph">
-<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.0/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
+<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.1/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
 </div>
 <div class="paragraph">
-<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.0/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
+<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.1/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1193,7 +1193,7 @@ beans = {
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-06-10 01:41:54 UTC
+Last updated 2025-06-27 02:50:47 UTC
 </div>
 </div>
 </body>

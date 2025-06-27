@@ -3399,7 +3399,7 @@ account. In this case, you should decide based on OAuth20Profile.getEmail(), for
     <span class="keyword">if</span> (userProfile.email.endsWith(<span class="string"><span class="delimiter">'</span><span class="content">example.org</span><span class="delimiter">'</span></span>)) {
         <span class="keyword">return</span> <span class="keyword">new</span> OauthUser(userProfile.id, <span class="string"><span class="delimiter">'</span><span class="content">N/A</span><span class="delimiter">'</span></span>, defaultRoles, userProfile)
     } <span class="keyword">else</span> {
-        <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string"><span class="delimiter">&quot;</span><span class="content">User with email </span><span class="inline"><span class="inline-delimiter">${</span>userProfile.email<span class="inline-delimiter">}</span></span><span class="content"> now allowed. Only `example.org accounts are allowed.</span><span class="delimiter">&quot;</span></span>)
+        <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string"><span class="delimiter">&quot;</span><span class="content">User with email </span><span class="inline"><span class="inline-delimiter">${</span>userProfile.email<span class="inline-delimiter">}</span></span><span class="content"> is not allowed. Only `example.org` accounts are allowed.</span><span class="delimiter">&quot;</span></span>)
     }
 }</code></pre>
 </div>
@@ -3704,7 +3704,7 @@ way of using HTTP sessions. So not acceptable.</p>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-06-10 01:41:54 UTC
+Last updated 2025-06-27 02:50:47 UTC
 </div>
 </div>
 </body>
