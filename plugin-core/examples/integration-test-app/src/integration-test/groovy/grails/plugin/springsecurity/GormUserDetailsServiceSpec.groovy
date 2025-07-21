@@ -20,6 +20,7 @@ package grails.plugin.springsecurity
 
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import test.TestRole
 import test.TestRoleGroup
 import test.TestRoleGroupRoles
@@ -44,7 +45,7 @@ class GormUserDetailsServiceSpec extends AbstractIntegrationSpec {
 	                                            'authority.groupAuthorityNameField', 'userLookup.authoritiesPropertyName']
 	private securityConfigGroupPropertyValues
 
-	def passwordEncoder
+    PasswordEncoder passwordEncoder
 	UserDetailsService userDetailsService
 
 	void setup() {
@@ -127,7 +128,7 @@ class GormUserDetailsServiceSpec extends AbstractIntegrationSpec {
 		then:
 		details
 
-		passwordEncoder.matches password, "{noop}$details.password"
+		passwordEncoder.matches password, details.password
 		loginName == details.username
 		details.enabled
 		details.accountNonExpired
@@ -241,7 +242,7 @@ class GormUserDetailsServiceSpec extends AbstractIntegrationSpec {
 		then:
 		details
 
-		passwordEncoder.matches password, "{noop}$details.password"
+		passwordEncoder.matches password, details.password
 		loginName == details.username
 		details.enabled
 		details.accountNonExpired

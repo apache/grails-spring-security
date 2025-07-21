@@ -18,7 +18,7 @@
  */
 package grails.plugin.springsecurity
 
-import org.sitemesh.webapp.SiteMeshFilter
+import org.springframework.util.ClassUtils
 import org.springframework.web.filter.FormContentFilter
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE
@@ -90,7 +90,7 @@ class SpringSecurityUtilsIntegrationSpec extends AbstractIntegrationSpec {
         def map = SpringSecurityUtils.configuredOrderedFilters
 
         expect:
-        11 == map.size()
+        map.size() == ClassUtils.isPresent('org.sitemesh.webapp.SiteMeshFilter') ? 11 : 10
         map[Integer.MIN_VALUE + 10] instanceof SecurityRequestHolderFilter
         map[SecurityFilterPosition.SECURITY_CONTEXT_FILTER.order] instanceof SecurityContextPersistenceFilter
         map[SecurityFilterPosition.LOGOUT_FILTER.order] instanceof MutableLogoutFilter
@@ -99,7 +99,11 @@ class SpringSecurityUtilsIntegrationSpec extends AbstractIntegrationSpec {
         map[SecurityFilterPosition.REMEMBER_ME_FILTER.order] instanceof GrailsRememberMeAuthenticationFilter
         map[SecurityFilterPosition.ANONYMOUS_FILTER.order] instanceof GrailsAnonymousAuthenticationFilter
         map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-10] instanceof FormContentFilter
-        map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order-4] instanceof SiteMeshFilter
+        if(ClassUtils.isPresent('org.sitemesh.webapp.SiteMeshFilter')) {
+            // sitemesh 3 uses a filter
+            def siteMeshFilter = map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order - 4]
+            siteMeshFilter.class.name == 'org.sitemesh.webapp.SiteMeshFilter'
+        }
         map[SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order] instanceof ExceptionTranslationFilter
         map[SecurityFilterPosition.FILTER_SECURITY_INTERCEPTOR.order] instanceof FilterSecurityInterceptor
 
@@ -144,9 +148,14 @@ class SpringSecurityUtilsIntegrationSpec extends AbstractIntegrationSpec {
         filters[6] instanceof GrailsRememberMeAuthenticationFilter
         filters[7] instanceof GrailsAnonymousAuthenticationFilter
         filters[8] instanceof FormContentFilter
-        filters[9] instanceof SiteMeshFilter
-        filters[10] instanceof ExceptionTranslationFilter
-        filters[11] instanceof FilterSecurityInterceptor
+        int i = 9
+        if(ClassUtils.isPresent('org.sitemesh.webapp.SiteMeshFilter')) {
+            // sitemesh 3 uses a filter
+            def siteMeshFilter = filters[i++]
+            siteMeshFilter.class.name == 'org.sitemesh.webapp.SiteMeshFilter'
+        }
+        filters[i++] instanceof ExceptionTranslationFilter
+        filters[i] instanceof FilterSecurityInterceptor
     }
 
     void 'reauthenticate'() {
