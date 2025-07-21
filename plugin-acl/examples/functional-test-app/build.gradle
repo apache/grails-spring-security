@@ -17,42 +17,11 @@
  *  under the License.
  */
 
-plugins {
-    id 'org.apache.grails.gradle.grails-web'
-}
-
 group = 'misc.functional.test.app'
 
+apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
 dependencies {
-
-    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation project(':acl-plugin')
-    implementation 'org.apache.grails:grails-core'
-    implementation 'org.apache.grails:grails-rest-transforms'
-    implementation 'org.apache.grails:grails-web-boot'
-    implementation 'org.apache.grails:grails-gsp'
-    implementation 'org.apache.grails:grails-data-hibernate5'
-
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.zaxxer:HikariCP'
-    runtimeOnly 'org.fusesource.jansi:jansi'
-    runtimeOnly 'org.apache.grails:grails-databinding'
-    runtimeOnly 'org.apache.grails:grails-i18n'
-    runtimeOnly 'org.apache.grails:grails-services'
-    runtimeOnly 'org.apache.grails:grails-url-mappings'
-    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-
-    integrationTestImplementation testFixtures('org.apache.grails:grails-geb')
-    integrationTestImplementation 'org.apache.grails:grails-testing-support-web'
-    integrationTestImplementation 'org.apache.grails.data:grails-datamapping-core', {
-        // @Rollback
-    }
-    integrationTestImplementation 'org.springframework.security:spring-security-acl', {
-        // BasePermission
-    }
-    integrationTestImplementation 'org.spockframework:spock-core'
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/java-config.gradle')

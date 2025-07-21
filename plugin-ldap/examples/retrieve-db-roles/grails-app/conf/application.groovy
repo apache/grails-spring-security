@@ -47,13 +47,12 @@ grails {
 				authorityJoinClassName = 'com.test.UserRole'
 			}
 
-			// http://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/
 			ldap {
-				context {
-					managerDn = 'cn=read-only-admin,dc=example,dc=com'
-					managerPassword = 'password'
-					server = 'ldap://ldap.forumsys.com:389/' //'ldap://[ip]:[port]/'
-				}
+                context {
+                    managerDn = 'cn=admin,dc=example,dc=com'
+                    managerPassword = 'secret'
+                    server = System.getProperty('grails.test.ldap.url')
+                }
 				authorities {
 					ignorePartialResultException = true
 					retrieveGroupRoles = false

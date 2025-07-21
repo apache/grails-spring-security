@@ -17,37 +17,11 @@
  *  under the License.
  */
 
-plugins {
-    id 'org.apache.grails.gradle.grails-web'
-    id 'cloud.wondrify.asset-pipeline'
-}
-
 group = 'spring.security.cas'
 
+apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
 dependencies {
-
-    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation project(':cas-plugin')
-    implementation 'org.apache.grails:grails-core'
-    implementation 'org.apache.grails:grails-rest-transforms'
-    implementation 'org.apache.grails:grails-web-boot'
-    implementation 'org.apache.grails:grails-gsp'
-
-    // 3rd party client-side assets bundled in webjars
-    implementation 'org.webjars:bootstrap:3.3.6'
-    implementation 'org.webjars:jquery:2.2.0'
-
-    runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.zaxxer:HikariCP'
-    runtimeOnly 'org.apache.grails:grails-databinding'
-    runtimeOnly 'org.apache.grails:grails-i18n'
-    runtimeOnly 'org.apache.grails:grails-url-mappings'
-    runtimeOnly 'org.apache.grails:grails-data-hibernate5'
-    runtimeOnly 'org.fusesource.jansi:jansi'
-    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 apply {

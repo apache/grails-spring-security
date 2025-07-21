@@ -17,41 +17,17 @@
  *  under the License.
  */
 
-plugins {
-    id 'org.apache.grails.gradle.grails-web'
-    id 'org.apache.grails.gradle.grails-gsp'
-    id 'cloud.wondrify.asset-pipeline'
-}
-
 group = 'functional.test'
 
+apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
 dependencies {
-
-    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation project(':core-plugin')
     implementation project(':ui-plugin')
-    implementation 'org.apache.grails:grails-core'
-    implementation 'org.apache.grails:grails-interceptors'
-    implementation 'org.apache.grails:grails-databinding'
-    implementation 'org.apache.grails:grails-data-hibernate5'
 
     implementation "dumbster:dumbster:$dumbsterVersion", { transitive = false } // Uses javax
     implementation "org.grails.plugins:grails-mail:$mailVersion"
 
-    compileOnly 'org.slf4j:slf4j-nop' // Remove warning about missing slf4j implementation during gsp compilation
-
-    runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.zaxxer:HikariCP'
-    runtimeOnly 'org.apache.grails:grails-i18n'
-    runtimeOnly 'org.apache.grails:grails-services'
-    runtimeOnly 'org.apache.grails:grails-url-mappings'
-    runtimeOnly 'org.fusesource.jansi:jansi'
-    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-
-    integrationTestImplementation testFixtures('org.apache.grails:grails-geb')
+    //compileOnly 'org.slf4j:slf4j-nop' // Remove warning about missing slf4j implementation during gsp compilation // TODO
 }
 
 assets {

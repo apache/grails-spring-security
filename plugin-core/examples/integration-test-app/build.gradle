@@ -17,42 +17,11 @@
  *  under the License.
  */
 
-plugins {
-    id 'org.apache.grails.gradle.grails-web'
-}
-
 group = 'misc.integration.test.app'
 
+apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
 dependencies {
-
-    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation project(':core-plugin')
-    implementation 'org.apache.grails:grails-core'
-    implementation 'org.apache.grails.data:grails-datamapping-core'
-    implementation 'org.apache.grails:grails-domain-class'
-
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.zaxxer:HikariCP'
-    runtimeOnly 'org.apache.grails:grails-data-hibernate5'
-    runtimeOnly 'org.apache.grails:grails-i18n'
-    runtimeOnly 'org.apache.grails:grails-services'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-logging'
-    runtimeOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-
-    integrationTestImplementation 'org.apache.grails.testing:grails-test-core', {
-        // GrailsMockHttpServletRequest, GrailsMockHttpServletResponse
-    }
-    integrationTestImplementation 'org.apache.grails:grails-testing-support-web', {
-        // @Integration
-    }
-    integrationTestImplementation 'org.sitemesh:sitemesh', {
-        // SiteMeshFilter
-    }
-    integrationTestImplementation 'org.springframework:spring-test', {
-        // MockFilterChain, MockHttpServletRequest, MockHttpServletResponse
-    }
-    integrationTestImplementation 'org.spockframework:spock-core'
 }
 
 apply {
