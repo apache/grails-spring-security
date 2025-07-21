@@ -55,7 +55,7 @@ dependencies {
 	api 'org.springframework:spring-web'
 
 	implementation 'org.apache.commons:commons-text'
-	implementation "org.ehcache:ehcache"
+	implementation 'org.ehcache:ehcache' // required because of spring caching usage
 	implementation 'org.apache.grails.bootstrap:grails-bootstrap'
 	implementation 'org.apache.grails:grails-rest-transforms'
 	implementation 'org.apache.grails:grails-converters'
@@ -73,6 +73,7 @@ dependencies {
 
 	runtimeOnly 'org.apache.grails:grails-services' // A service is defined in the plugin
 
+	testImplementation platform("org.apache.grails:grails-bom:$grailsVersion")
 	testImplementation 'org.apache.grails:grails-testing-support-datamapping'
 	testImplementation 'org.apache.grails:grails-testing-support-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -91,4 +92,8 @@ apply {
 	from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 	from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
 	from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
+}
+
+grails {
+    springDependencyManagement = false
 }

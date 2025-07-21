@@ -57,3 +57,7 @@ apply {
 	from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
 	from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
 }
+
+grails {
+    springDependencyManagement = false
+}

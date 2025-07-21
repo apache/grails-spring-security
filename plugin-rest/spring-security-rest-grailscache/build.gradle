@@ -62,6 +62,7 @@ dependencies {
     compileOnly 'org.apache.grails:grails-core' // Provided as this is a Grails plugin
     compileOnly 'org.apache.groovy:groovy' // Provided as this is a Grails plugin
 
+    testImplementation platform("org.apache.grails:grails-bom:$grailsVersion")
     testImplementation 'org.spockframework:spock-core'
 }
 
@@ -72,4 +73,8 @@ apply {
     from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
     from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
     from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
+}
+
+grails {
+    springDependencyManagement = false
 }

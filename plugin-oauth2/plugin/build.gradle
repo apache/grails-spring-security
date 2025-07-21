@@ -100,10 +100,11 @@ dependencies {
 	}
 	compileOnly 'org.apache.groovy:groovy' // Provided as this is a Grails plugin
 
-	integrationTestImplementation 'org.apache.grails:grails-testing-support-web'
-	integrationTestImplementation 'org.spockframework:spock-core'
+	testImplementation platform("org.apache.grails:grails-bom:$grailsVersion")
+	testImplementation 'org.apache.grails:grails-testing-support-web'
+    testImplementation 'org.spockframework:spock-core'
 
-	integrationTestRuntimeOnly 'net.bytebuddy:byte-buddy'
+	testRuntimeOnly 'net.bytebuddy:byte-buddy'
 }
 
 apply {
@@ -113,4 +114,8 @@ apply {
 	from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
 	from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
 	from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
+}
+
+grails {
+    springDependencyManagement = false
 }

@@ -118,6 +118,7 @@ dependencies {
         // api: FilterChain, HttpServletResponse, HttpServletRequest, ServletException, ServletRequest, ServletResponse
     }
 
+    testImplementation platform("org.apache.grails:grails-bom:$grailsVersion")
     testImplementation "org.pac4j:pac4j-oauth:$pac4jVersion", {
         // impl: CasOAuthWrapperClient
     }
@@ -136,4 +137,8 @@ apply {
     from rootProject.layout.projectDirectory.file('gradle/test-config.gradle')
     from rootProject.layout.projectDirectory.file('gradle/publish-config.gradle')
     from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
+}
+
+grails {
+    springDependencyManagement = false
 }
