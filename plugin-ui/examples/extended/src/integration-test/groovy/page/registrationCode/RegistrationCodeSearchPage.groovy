@@ -26,7 +26,7 @@ class RegistrationCodeSearchPage extends SearchPage {
 
 	static url = 'registrationCode/search'
 	static typeName = { 'Registration Code' }
-	static at = { waitFor { title == 'Registration Code Search' } }
+	static at = { title == 'Registration Code Search' }
 	static content = {
 		token { $(name: 'token').module(TextInput) }
 		username { $('#username').module(TextInput) }

@@ -26,7 +26,7 @@ class RoleCreatePage extends CreatePage {
 
 	static url = 'role/create'
 	static typeName = { 'Role' }
-	static at = { waitFor { title == 'Create Role' } }
+	static at = { title == 'Create Role' }
 	static content = {
 		authority { $(name: 'authority').module(TextInput) }
 	}

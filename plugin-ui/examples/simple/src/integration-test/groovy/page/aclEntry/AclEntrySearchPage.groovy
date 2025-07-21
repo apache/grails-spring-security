@@ -26,7 +26,7 @@ class AclEntrySearchPage extends SearchPage {
 
 	static url = 'aclEntry/search'
 	static typeName = { 'AclEntry' }
-	static at = { waitFor { title == 'AclEntry Search' } }
+	static at = { title == 'AclEntry Search' }
 	static content = {
 		aclObjectIdentity { $(name: 'aclObjectIdentity.id').module(TextInput) }
 		aceOrder { $(name: 'aceOrder').module(TextInput) }

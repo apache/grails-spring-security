@@ -27,7 +27,7 @@ class AclSidCreatePage extends CreatePage {
 
 	static url = 'aclSid/create'
 	static typeName = { 'AclSid' }
-	static at = { waitFor { title == 'Create AclSid' } }
+	static at = { title == 'Create AclSid' }
 	static content = {
 		sid { $(name: 'sid').module(TextInput) }
 		principal { $(name: 'principal').module(Checkbox) }

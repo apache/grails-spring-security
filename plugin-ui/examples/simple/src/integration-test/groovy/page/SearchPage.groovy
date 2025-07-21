@@ -21,7 +21,7 @@ package page
 
 abstract class SearchPage extends AbstractSecurityPage {
 
-    static at = { waitFor { title == "${typeName()} Search" } }
+    static at = { title == "${typeName()} Search" }
     static atCheckWaiting = true
     static content = {
         form { $('search') }

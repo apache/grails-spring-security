@@ -26,7 +26,7 @@ class RoleSearchPage extends SearchPage {
 
 	static url = 'role/search'
 	static typeName = { 'Role' }
-	static at = { waitFor { title == 'Role Search' } }
+	static at = { title == 'Role Search' }
 	static content = {
 		authority { $(name: 'authority').module(TextInput) }
 	}

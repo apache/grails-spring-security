@@ -25,7 +25,7 @@ import page.AbstractSecurityPage
 class SecurityQuestionsPage extends AbstractSecurityPage {
 
 	static url = 'register/securityQuestions'
-	static at = {  waitFor { title == 'Security Questions' } }
+	static at = { title == 'Security Questions' }
 	static content = {
 		form { $('securityQuestionsForm') }
 		question1 { $('#myAnswer1').module(TextInput) }
