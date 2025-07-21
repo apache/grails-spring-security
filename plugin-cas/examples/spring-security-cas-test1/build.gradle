@@ -17,11 +17,19 @@
  *  under the License.
  */
 
+plugins {
+    id 'cloud.wondrify.asset-pipeline'
+}
+
 group = 'spring.security.cas'
 
 apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
 dependencies {
     implementation project(':cas-plugin')
+
+    // TODO: Switch to the same version of bootstrap across all security projects
+    implementation 'org.webjars:bootstrap:3.3.6'
+    implementation 'org.webjars:jquery:2.2.0'
 }
 
 apply {

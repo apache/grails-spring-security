@@ -17,6 +17,10 @@
  *  under the License.
  */
 
+plugins {
+    id 'cloud.wondrify.asset-pipeline'
+}
+
 group = 'functional.test'
 
 apply from: rootProject.layout.projectDirectory.file('gradle/grails-web-app-config.gradle')
@@ -26,8 +30,6 @@ dependencies {
 
     implementation "dumbster:dumbster:$dumbsterVersion", { transitive = false } // Uses javax
     implementation "org.grails.plugins:grails-mail:$mailVersion"
-
-    //compileOnly 'org.slf4j:slf4j-nop' // Remove warning about missing slf4j implementation during gsp compilation // TODO
 }
 
 assets {

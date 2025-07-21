@@ -19,14 +19,9 @@
 
 apply plugin: 'org.apache.grails.gradle.grails-web'
 apply plugin: 'org.apache.grails.gradle.grails-gsp'
-apply plugin: 'cloud.wondrify.asset-pipeline'
 
 dependencies {
     profile 'org.apache.grails.profiles:web'
-    testAndDevelopmentOnly platform("org.apache.grails:grails-bom:$grailsVersion")
-    testAndDevelopmentOnly 'org.webjars.npm:bootstrap'
-    testAndDevelopmentOnly 'org.webjars.npm:bootstrap-icons'
-    testAndDevelopmentOnly 'org.webjars.npm:jquery'
     implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation 'org.apache.grails:grails-core'
     implementation 'org.apache.grails:grails-data-hibernate5'
@@ -57,16 +52,17 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
 }
 
-assets.excludes = ['webjars/**']
-
-def createAssetsDir = tasks.register('assetCreation')
-createAssetsDir.configure {
-    def dir = project.layout.projectDirectory.dir('grails-app/assets')
-    doFirst {
-        dir.asFile.mkdirs()
+if(tasks.names.contains('assetCompile')) {
+    assets.excludes = ['webjars/**']
+    def createAssetsDir = tasks.register('assetCreation')
+    createAssetsDir.configure {
+        def dir = project.layout.projectDirectory.dir('grails-app/assets')
+        doFirst {
+            dir.asFile.mkdirs()
+        }
     }
-}
 
-tasks.named('assetCompile').configure {
-    it.dependsOn(createAssetsDir)
+    tasks.named('assetCompile').configure {
+        it.dependsOn(createAssetsDir)
+    }
 }
