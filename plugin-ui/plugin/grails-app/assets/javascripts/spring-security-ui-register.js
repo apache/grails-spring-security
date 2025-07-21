@@ -17,6 +17,6 @@
  *  under the License.
  */
 
-//= require webjars/jquery/3.7.1/dist/jquery.js
-//= require webjars/jquery-ui/1.14.1/dist/jquery-ui.min.js
+//= require webjars/jquery/2.1.4/jquery.min.js
+//= require webjars/jquery-ui/1.10.3/ui/minified/jquery-ui.min.js
 //= require webjars/jgrowl/1.4.6/jquery.jgrowl.min.js

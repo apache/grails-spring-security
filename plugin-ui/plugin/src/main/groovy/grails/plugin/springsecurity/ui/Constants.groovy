@@ -27,6 +27,6 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 final class Constants {
-	public static final String JQUERY_VERSION = '3.7.1'
-	public static final String JQUERY_UI_VERSION = '1.14.1'
+	public static final String JQUERY_VERSION = '2.1.4'
+	public static final String JQUERY_UI_VERSION = '1.10.3.custom'
 }
