@@ -183,7 +183,7 @@ Likewise for jQuery UI, the JavaScript file is `grails-app/assets/javascripts/jq
 
 [source,javascript]
 ----
-//=require jquery-ui/jquery-ui-${grails.plugin.springsecurity.ui.Constants.JQUERY_UI_VERSION}.js
+//= require webjars/jquery-ui/${grails.plugin.springsecurity.ui.Constants.JQUERY_UI_VERSION}/ui/minified/jquery-ui.min.js
 ----
 
 and the CSS file `grails-app/assets/stylesheets/jquery-ui.css`, which contains
@@ -191,7 +191,7 @@ and the CSS file `grails-app/assets/stylesheets/jquery-ui.css`, which contains
 [source,css]
 ----
 /*
- *= require smoothness/jquery-ui-${grails.plugin.springsecurity.ui.Constants.JQUERY_UI_VERSION}.css
+ *= require webjars/jquery-ui/${grails.plugin.springsecurity.ui.Constants.JQUERY_UI_VERSION}/themes/smoothness/jquery-ui.min.js
  */
 ----
 
@@ -219,13 +219,13 @@ and `grails-app/assets/javascripts/spring-security-ui.js` which has no JavaScrip
 
 [source,javascript]
 ----
-//= require jquery.js
-//= require jquery-ui.js
-//= require jquery/jquery.jgrowl.js
+//= require webjars/jquery/3.7.1/dist/jquery.js
+//= require webjars/jquery-ui/1.14.1/dist/jquery-ui.js
+//= require webjars/jgrowl/1.4.6/jquery.jgrowl.min.js
 //= require jquery/jquery.positionBy.js
-//= require jquery/jquery.bgiframe.js
+//= require webjars/bgiframe/3.0.1/jquery.bgiframe.js
+//= require webjars/jquery-form/4.3.0/dist/jquery.form.min.js
 //= require jquery/jquery.jdMenu.js
-//= require jquery/jquery.form.js
 //= require spring-security-ui-ajaxLogin.js
 ----
 
