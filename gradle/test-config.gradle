@@ -50,7 +50,9 @@ tasks.named('integrationTest', Test) {
     }
 
     systemProperty 'geb.build.reportsDir', reporting.file("$project.projectDir/build/geb-reports")
+    systemProperty 'grails.geb.reporting.directory', reporting.file("$project.projectDir/build/geb-reports").canonicalFile.absolutePath
     systemProperty 'grails.geb.timeouts.implicitlyWait', '30'
+    // systemProperty 'grails.geb.recording.mode', 'RECORD_ALL'
     systemProperties System.properties
     doFirst {
         logger.quiet(
