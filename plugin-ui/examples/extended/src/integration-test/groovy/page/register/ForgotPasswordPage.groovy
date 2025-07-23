@@ -25,7 +25,7 @@ import page.AbstractSecurityPage
 class ForgotPasswordPage extends AbstractSecurityPage {
 
 	static url = 'register/forgotPassword'
-	static at = { waitFor { title == 'Forgot Password' } }
+	static at = { title == 'Forgot Password' }
 	static content = {
 		form { $('forgotPasswordForm') }
 		username { $(name: 'username').module(TextInput) }

@@ -57,16 +57,18 @@ dependencies {
     implementation "org.nosphere.apache.rat:org.nosphere.apache.rat.gradle.plugin:${versions.get('ratVersion')}"
     implementation "org.gradle.crypto.checksum:org.gradle.crypto.checksum.gradle.plugin:${versions.get('gradleCryptoChecksumVersion')}"
 
-    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'org.spockframework:spock-core', {
+        exclude(group: 'org.codehaus.groovy') // Use Gradle provided version because: Could not resolve org.codehaus.groovy:groovy:3.0.12
+    }
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher', {
+        // In Gradle 9, this needs to be declared
+        // https://docs.gradle.org/8.3/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+    }
 }
 
 tasks.withType(Test).configureEach {
     onlyIf {
-        ![
-                'skipTests'
-        ].find {
-            project.hasProperty(it)
-        }
+        !project.hasProperty('skipTests')
     }
 
     useJUnitPlatform()

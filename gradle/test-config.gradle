@@ -17,6 +17,8 @@
  *  under the License.
  */
 
+import org.grails.gradle.plugin.core.GrailsExtension
+
 dependencies {
     // In Gradle 9, this needs to be declared
     // https://docs.gradle.org/8.3/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
@@ -25,11 +27,7 @@ dependencies {
 
 tasks.withType(Test).configureEach {
     onlyIf {
-        ![
-                'skipTests'
-        ].find {
-            project.hasProperty(it)
-        }
+        !project.hasProperty('skipTests')
     }
 
     useJUnitPlatform()
@@ -42,15 +40,14 @@ tasks.withType(Test).configureEach {
 
 tasks.named('integrationTest', Test) {
     onlyIf {
-        ![
-                'skipTests'
-        ].find {
-            project.hasProperty(it)
-        }
+        !project.hasProperty('skipTests')
     }
 
-    systemProperty 'geb.build.reportsDir', reporting.file("$project.projectDir/build/geb-reports")
-    systemProperties System.properties
+    systemProperty('geb.build.reportsDir', reporting.file("$projectDir/build/geb-reports"))
+    systemProperty('grails.geb.reporting.directory', reporting.file("$projectDir/build/geb-reports").canonicalFile.absolutePath)
+    // systemProperty('grails.geb.recording.mode', 'RECORD_ALL')
+    systemProperties(System.properties)
+
     doFirst {
         logger.quiet(
                 '\n - Running tests for configuration: {} and Grails: {}',
@@ -58,4 +55,12 @@ tasks.named('integrationTest', Test) {
                 grailsVersion
         )
     }
+}
+
+extensions.configure(GrailsExtension) {
+    // Explicit `it` is required in extension configuration blocks
+
+    // turn off dependency management so we *know* we're testing with the right
+    // versions and not from a remote repository
+    it.springDependencyManagement = false
 }

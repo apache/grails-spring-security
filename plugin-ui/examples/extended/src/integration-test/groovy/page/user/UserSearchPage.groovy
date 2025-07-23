@@ -27,7 +27,7 @@ class UserSearchPage extends SearchPage {
 
 	static url = 'user/search'
 	static typeName = { 'User' }
-	static at = { waitFor { title == 'User Search' } }
+	static at = { title == 'User Search' }
 	static content = {
 		username { $('#username').module(TextInput) }
 		enabled { $(name: 'enabled').module(RadioButtons) }

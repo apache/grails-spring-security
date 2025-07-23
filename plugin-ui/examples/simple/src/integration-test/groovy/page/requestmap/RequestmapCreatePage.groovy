@@ -26,7 +26,7 @@ class RequestmapCreatePage extends CreatePage {
 
 	static url = 'requestmap/create'
 	static typeName = { 'Requestmap' }
-	static at = { waitFor { title == 'Create Requestmap' } }
+	static at = { title == 'Create Requestmap' }
 	static content = {
 		configAttribute { $(name: 'configAttribute').module(TextInput) }
 		urlPattern { $(name: 'url').module(TextInput) }
