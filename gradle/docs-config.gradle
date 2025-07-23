@@ -17,17 +17,29 @@
  *  under the License.
  */
 
-import grails.plugin.springsecurity.CreateReleaseDropDownTask
+
+import grails.doc.dropdown.SoftwareVersion
+import grails.doc.git.FetchTagsTask
+import grails.doc.dropdown.CreateReleaseDropDownTask
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 apply plugin: 'org.asciidoctor.jvm.convert'
 
-tasks.register('createReleaseDropDown', CreateReleaseDropDownTask) {
-    group = 'documentation'
-    githubSlug = 'apache/grails-spring-security'
-    currentVersion = version
-    versions = docsVersionSelectorInclude.split(',').collect { it.strip() }
-    index = layout.buildDirectory.file('docs/index.html')
+def createReleaseDropdownTask = tasks.register('createReleaseDropdown', CreateReleaseDropDownTask)
+createReleaseDropdownTask.configure { CreateReleaseDropDownTask it ->
+    it.filesToAddDropdowns = project.layout.buildDirectory.files('docs-modified/index.html')
+    it.sourceDocsDirectory = project.layout.buildDirectory.dir('docs')
+    it.modifiedPagesDirectory = project.layout.buildDirectory.dir('docs-modified')
+
+    it.docBaseUrl = "https://apache.github.io/grails-spring-security"
+    it.versionHtml = '<span id="revnumber">version ' + project.version + '</span>'
+    it.additionalPath = "${project.name - '-docs'}-plugin/guide/"
+    it.minimumVersion = SoftwareVersion.build('7.0.0-SNAPSHOT') // The combination of plugins & docs occurred for 7.0.x
+}
+
+def fetchTagsTask = project.tasks.register('fetchTags', FetchTagsTask)
+createReleaseDropdownTask.configure {
+    dependsOn(fetchTagsTask)
 }
 
 apply from: rootProject.layout.projectDirectory.file('gradle/groovydoc-config.gradle')
@@ -61,16 +73,17 @@ tasks.named('asciidoctor', AsciidoctorTask) {
     outputs.dir(outputDir)
 }
 
-tasks.register('guideDocs', Copy) {
-    group = 'documentation'
-    dependsOn('asciidoctor')
+def guideDocsTask = project.tasks.register('guideDocs', Copy)
+guideDocsTask.configure { Copy it ->
+    it.group = 'documentation'
+    it.dependsOn('asciidoctor')
     def sourceDir = layout.projectDirectory.dir('src/docs')
     def targetDir = layout.buildDirectory.dir('docs')
-    outputs.dir(targetDir)
-    from(sourceDir)
-    into(targetDir)
-    include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
-    finalizedBy(findProperty('docsFinalizeTasks') as List ?: [])
+    it.outputs.dir(targetDir)
+    it.from(sourceDir)
+    it.into(targetDir)
+    it.include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    it.finalizedBy(createReleaseDropdownTask)
 }
 
 tasks.register('copyGhPages', Copy) {
@@ -86,7 +99,7 @@ tasks.register('copyGhPages', Copy) {
 }
 
 tasks.register('copyGuide', Copy) {
-    def sourceDir = layout.buildDirectory.dir('docs')
+    def sourceDir = layout.buildDirectory.dir('docs-modified')
     def targetDir = rootProject.layout.buildDirectory.dir("docs/${project.name - '-docs'}-plugin/guide")
     from(sourceDir)
     into(targetDir)
@@ -94,7 +107,7 @@ tasks.register('copyGuide', Copy) {
         finalizedBy('copyGhPages')
     }
     dependsOn('guideDocs')
-    dependsOn(findProperty('docsFinalizeTasks') as List ?: [])
+    dependsOn(createReleaseDropdownTask)
     outputs.dir(targetDir)
 }
 

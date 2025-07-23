@@ -23,8 +23,6 @@ under the License.
 :source-highlighter: coderay
 :numbered:
 
-Version: {version}
-
 == Introduction to the Spring Security REST plugin
 
 include::introduction.adoc[]
