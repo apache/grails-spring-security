@@ -19,6 +19,12 @@
 
 package com.test
 
+import com.unboundid.ldap.listener.InMemoryDirectoryServer
+import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig
+import com.unboundid.ldap.listener.InMemoryListenerConfig
+import com.unboundid.ldap.sdk.Attribute
+import com.unboundid.ldap.sdk.Entry
+
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
 
@@ -26,7 +32,122 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class Application extends GrailsAutoConfiguration {
+
+    static InMemoryDirectoryServer directoryServer
+    static private Entry scientistsUnit
+
     static void main(String[] args) {
+        def config = new InMemoryDirectoryServerConfig('dc=example,dc=com')
+        config.addAdditionalBindCredentials('cn=admin,dc=example,dc=com', 'secret')
+        config.setListenerConfigs(
+                InMemoryListenerConfig.createLDAPConfig(
+                        'default',
+                        null,
+                        0,
+                        null,
+                        false,
+                        false
+                )
+        )
+
+        directoryServer = new InMemoryDirectoryServer(config)
+        def base = new Entry(
+                'dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'domain'),
+                new Attribute('dc', 'example')
+        )
+        directoryServer.add(base)
+
+        def people = new Entry(
+                'ou=people,dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'organizationalUnit'),
+                new Attribute('ou', 'people')
+        )
+        directoryServer.add(people)
+
+        def mathematiciansUnit = new Entry(
+                'ou=mathematicians,dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'organizationalUnit'),
+                new Attribute('ou', 'mathematicians')
+        )
+        directoryServer.add(mathematiciansUnit)
+
+        scientistsUnit = new Entry(
+                'ou=scientists,dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'organizationalUnit'),
+                new Attribute('ou', 'scientists')
+        )
+        directoryServer.add(scientistsUnit)
+
+        def jane = new Entry(
+                'uid=jane,ou=people,dc=example,dc=com',
+                new Attribute('objectClass', 'inetOrgPerson'),
+                new Attribute('uid', 'jane'),
+                new Attribute('cn', 'Jane Doe'),
+                new Attribute('sn', 'Doe'),
+                new Attribute('mail', 'jane@example.com'),
+                new Attribute('telephoneNumber', '+1 555 111 2222'),
+                new Attribute('userPassword', 'password')
+        )
+        directoryServer.add(jane)
+
+        ['riemann', 'gauss', 'euler', 'euclid'].each { uid ->
+            directoryServer.add(new Entry(
+                    "uid=$uid,ou=mathematicians,dc=example,dc=com" as String,
+                    new Attribute('objectClass', 'inetOrgPerson'),
+                    new Attribute('uid', uid),
+                    new Attribute('cn', uid.capitalize()),
+                    new Attribute('sn', uid.capitalize()),
+                    new Attribute('userPassword', 'password')
+            ))
+        }
+
+        def mathGroup = new Entry(
+                'cn=mathematicians,ou=mathematicians,dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'groupOfUniqueNames'),
+                new Attribute('cn', 'mathematicians'),
+                new Attribute('uniqueMember',
+                        'uid=riemann,ou=mathematicians,dc=example,dc=com',
+                        'uid=gauss,ou=mathematicians,dc=example,dc=com',
+                        'uid=euler,ou=mathematicians,dc=example,dc=com',
+                        'uid=euclid,ou=mathematicians,dc=example,dc=com'
+                )
+        )
+        directoryServer.add(mathGroup)
+
+        ['einstein', 'newton', 'galieleo', 'tesla'].each { uid ->
+            directoryServer.add(new Entry(
+                    "uid=$uid,ou=scientists,dc=example,dc=com" as String,
+                    new Attribute('objectClass', 'inetOrgPerson'),
+                    new Attribute('uid', uid),
+                    new Attribute('cn', uid.capitalize()),
+                    new Attribute('sn', uid.capitalize()),
+                    new Attribute('userPassword', 'password')
+            ))
+        }
+        def scientistGroup = new Entry(
+                'cn=scientists,ou=scientists,dc=example,dc=com',
+                new Attribute('objectClass', 'top', 'groupOfUniqueNames'),
+                new Attribute('cn', 'scientists'),
+                new Attribute('uniqueMember',
+                        'uid=einstein,ou=scientists,dc=example,dc=com',
+                        'uid=newton,ou=scientists,dc=example,dc=com',
+                        'uid=galieleo,ou=scientists,dc=example,dc=com',
+                        'uid=tesla,ou=scientists,dc=example,dc=com'
+                )
+        )
+        directoryServer.add(scientistGroup)
+        directoryServer.startListening()
+        System.setProperty('grails.test.ldap.url', "ldap://localhost:$directoryServer.listenPort")
+
         GrailsApp.run(Application, args)
+    }
+
+    @Override
+    void onShutdown(Map<String, Object> event) {
+        if (directoryServer) {
+            directoryServer.close()
+            directoryServer = null
+        }
     }
 }
