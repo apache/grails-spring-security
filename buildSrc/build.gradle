@@ -58,15 +58,3 @@ dependencies {
     implementation "org.gradle.crypto.checksum:org.gradle.crypto.checksum.gradle.plugin:${versions.get('gradleCryptoChecksumVersion')}"
     implementation 'org.apache.grails:grails-docs-core'
 }
-
-tasks.withType(Test).configureEach {
-    onlyIf {
-        ![
-                'skipTests'
-        ].find {
-            project.hasProperty(it)
-        }
-    }
-
-    useJUnitPlatform()
-}

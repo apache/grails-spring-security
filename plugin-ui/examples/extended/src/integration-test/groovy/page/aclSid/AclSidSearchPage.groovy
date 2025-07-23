@@ -27,7 +27,7 @@ class AclSidSearchPage extends SearchPage {
 
 	static url = 'aclSid/search'
 	static typeName = { 'AclSid' }
-	static at = { waitFor { title == 'AclSid Search' } }
+	static at = { title == 'AclSid Search' }
 	static content = {
 		sid { $(name: 'sid').module(TextInput) }
 		principal { $(name: 'principal').module(RadioButtons) }

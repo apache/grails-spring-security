@@ -28,7 +28,7 @@ class UserEditPage extends EditPage {
 
 	static url = 'user/edit'
 	static typeName = { 'User' }
-	static at = { waitFor { title == 'Edit User' } }
+	static at = { title == 'Edit User' }
 	static content = {
 		username { $('#username').module(TextInput) }
 		enabled { $(name: 'enabled').module(Checkbox) }

@@ -26,7 +26,7 @@ class RegistrationCodeEditPage extends EditPage {
 
 	static url = 'registrationCode/edit'
 	static typeName = { 'RegistrationCode' }
-	static at = { waitFor { title == 'Edit RegistrationCode' } }
+	static at = { title == 'Edit RegistrationCode' }
 	static content = {
 		token { $(name: 'token').module(TextInput) }
 		username { $('#username').module(TextInput) }
