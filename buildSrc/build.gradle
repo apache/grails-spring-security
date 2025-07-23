@@ -60,6 +60,10 @@ dependencies {
     testImplementation 'org.spockframework:spock-core', {
         exclude(group: 'org.codehaus.groovy') // Use Gradle provided version because: Could not resolve org.codehaus.groovy:groovy:3.0.12
     }
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher', {
+        // In Gradle 9, this needs to be declared
+        // https://docs.gradle.org/8.3/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+    }
 }
 
 tasks.withType(Test).configureEach {
