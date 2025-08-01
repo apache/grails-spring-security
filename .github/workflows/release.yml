@@ -255,6 +255,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: v${{ needs.publish.outputs.release_version }}
+          fetch-tags: true
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
