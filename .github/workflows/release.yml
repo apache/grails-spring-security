@@ -218,6 +218,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: v${{ needs.publish.outputs.release_version }}
+          fetch-depth: 1
+          fetch-tags: true
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
@@ -247,6 +249,7 @@ jobs:
       contents: write # required for gradle.properties revert
       issues: write # required for milestone closing
       pull-requests: write # to open PR
+      actions: write
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4

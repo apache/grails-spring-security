@@ -75,6 +75,8 @@ jobs:
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
