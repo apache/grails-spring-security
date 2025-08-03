@@ -39,6 +39,7 @@ dependencies {
     }
     implementation 'org.apache.grails:grails-rest-transforms'
     implementation 'org.apache.grails:grails-gsp'
+    implementation 'org.apache.grails:grails-layout'
     implementation 'org.springframework:spring-beans', {
         // @Autowired
     }

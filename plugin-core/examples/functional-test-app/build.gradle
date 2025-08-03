@@ -30,6 +30,7 @@ dependencies {
     implementation project(':core-plugin')
     implementation 'org.apache.grails:grails-core'
     implementation 'org.apache.grails:grails-gsp'
+    implementation 'org.apache.grails:grails-layout'
     implementation 'org.apache.grails:grails-rest-transforms'
 
     runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
