@@ -31,6 +31,7 @@ dependencies {
     implementation 'org.apache.grails:grails-rest-transforms'
     implementation 'org.apache.grails:grails-web-boot'
     implementation 'org.apache.grails:grails-gsp'
+    implementation 'org.apache.grails:grails-layout'
 
     // 3rd party client-side assets bundled in webjars
     implementation 'org.webjars:bootstrap:4.1.3'
