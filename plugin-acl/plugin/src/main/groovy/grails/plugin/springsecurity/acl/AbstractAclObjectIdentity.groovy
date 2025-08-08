@@ -18,6 +18,7 @@
  */
 package grails.plugin.springsecurity.acl
 
+import grails.gorm.dirty.checking.DirtyCheck
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -29,6 +30,7 @@ import groovy.transform.ToString
  */
 @EqualsAndHashCode(includes=['aclClass', 'parent', 'owner', 'entriesInheriting'])
 @ToString(includeNames=true)
+@DirtyCheck
 abstract class AbstractAclObjectIdentity implements Serializable {
 
 	AclClass aclClass
