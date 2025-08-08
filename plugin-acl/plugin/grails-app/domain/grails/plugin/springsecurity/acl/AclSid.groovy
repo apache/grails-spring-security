@@ -20,6 +20,9 @@ package grails.plugin.springsecurity.acl
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.springframework.security.acls.domain.GrantedAuthoritySid
+import org.springframework.security.acls.domain.PrincipalSid
+import org.springframework.security.acls.model.Sid
 
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
@@ -40,5 +43,9 @@ class AclSid implements Serializable {
 	static constraints = {
 		principal unique: 'sid'
 		sid blank: false, size: 1..255
+	}
+
+	Sid toSid() {
+		return principal ? new PrincipalSid(sid) : new GrantedAuthoritySid(sid)
 	}
 }
