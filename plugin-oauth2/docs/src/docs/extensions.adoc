@@ -35,8 +35,8 @@ List of known extensions
 ----
 dependencies {
     // ...
-    api 'org.grails.plugins:spring-security-core'
-    api 'org.grails.plugins:spring-security-oauth2'
+    api 'org.apache.grails:grails-spring-security:{version}'
+    api 'org.apache.grails:grails-spring-security-oauth2:{version}'
 }
 ----
 [start=3]

@@ -239,7 +239,7 @@ If your application includes a dependency for `org.hibernate:hibernate-ehcache` 
 
 [source,groovy]
 ----
-compile 'org.hibernate:hibernate-ehcache', {
+implementation 'org.hibernate:hibernate-ehcache', {
    exclude module: 'ehcache-core'
 }
 ----
