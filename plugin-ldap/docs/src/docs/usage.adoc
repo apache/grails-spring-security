@@ -45,7 +45,7 @@ Grails Spring Security LDAP plugin has a transitive dependency to Grails Spring 
 ----
 dependencies {
     ...
-    implementation "org.apache.grails:grails-spring-security-core:{version}"
+    implementation "org.apache.grails:grails-spring-security:{version}"
     implementation "org.apache.grails:grails-spring-security-ldap:{version}"
 }
 ----
