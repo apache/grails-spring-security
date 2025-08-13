@@ -594,7 +594,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
    ...
-   compile 'org.grails.plugins:spring-security-ldap:7.0.0-SNAPSHOT'
+   implementation 'org.apache.grails:grails-spring-security-ldap:7.0.0-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -605,10 +605,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
     ...
-    compile "org.grails.plugins:spring-security-core:7.0.0-SNAPSHOT"
-    compile ("org.grails.plugins:spring-security-ldap:7.0.0-SNAPSHOT") {
-        exclude group: 'org.grails.plugins', module:'spring-security-core'
-    }
+    implementation "org.apache.grails:grails-spring-security:7.0.0-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security-ldap:7.0.0-SNAPSHOT"
 }</code></pre>
 </div>
 </div>
@@ -1193,7 +1191,7 @@ beans = {
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-08-12 16:13:04 UTC
+Last updated 2025-08-13 18:49:49 UTC
 </div>
 </div>
 </body>

@@ -629,7 +629,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     // ... other dependencies
-    implementation 'org.grails.plugins:spring-security-core:7.0.0-SNAPSHOT'
+    implementation 'org.apache.grails:grails-spring-security:7.0.0-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -728,7 +728,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     implementation 'org.grails.plugins:cxf:3.1.1'
     // CXF above security.
-    implementation 'org.grails.plugins:spring-security-core:7.0.0-SNAPSHOT'
+    implementation 'org.apache.grails:grails-spring-security:7.0.0-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -745,7 +745,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.grails.plugins:spring-security-core:7.0.0-SNAPSHOT'</code></pre>
+<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.apache.grails:grails-spring-security:7.0.0-SNAPSHOT'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4975,7 +4975,7 @@ class ExpirePasswordsJob {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">compile 'org.hibernate:hibernate-ehcache', {
+<pre class="prettyprint highlight"><code data-lang="groovy">implementation 'org.hibernate:hibernate-ehcache', {
    exclude module: 'ehcache-core'
 }</code></pre>
 </div>
@@ -6263,7 +6263,7 @@ $ cd bookstore</pre>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
    ...
-   compile 'org.grails.plugins:spring-security-core:{project-version}'
+   implementation 'org.apache.grails:grails-spring-security:{project-version}'
    ...
 }</code></pre>
 </div>
@@ -6836,7 +6836,7 @@ class SecureController {
 <h2 id="examples">23. Example Applications</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Sometimes the best way to learn is by example. We have an ever-expanding list of example apps created to do just that&#8230;&#8203; help you learn how to utilize the grails-spring-security-core plugin in your current application.</p>
+<p>Sometimes the best way to learn is by example. We have an ever-expanding list of example apps created to do just that&#8230;&#8203; help you learn how to utilize the grails-spring-security plugin in your current application.</p>
 </div>
 <div class="sect2">
 <h3 id="the-repos">23.1. The Repos</h3>
@@ -7245,7 +7245,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-08-12 16:13:04 UTC
+Last updated 2025-08-13 18:49:49 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

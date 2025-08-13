@@ -563,7 +563,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
-    implementation "org.grails.plugins:spring-security-oauth2:7.0.0-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security-oauth2:7.0.0-SNAPSHOT"
 }</code></pre>
 </div>
 </div>
@@ -701,8 +701,8 @@ class User {
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     // ...
-    api 'org.grails.plugins:spring-security-core'
-    api 'org.grails.plugins:spring-security-oauth2'
+    api 'org.apache.grails:grails-spring-security:{version}'
+    api 'org.apache.grails:grails-spring-security-oauth2:{version}'
 }</code></pre>
 </div>
 </div>
@@ -915,7 +915,7 @@ protected void authenticateAndRedirect(OAuth2SpringToken oAuthToken, redirectUrl
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-08-12 16:13:04 UTC
+Last updated 2025-08-13 18:49:49 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
