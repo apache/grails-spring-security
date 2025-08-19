@@ -46,6 +46,6 @@ class AclSid implements Serializable {
 	}
 
 	Sid toSid() {
-		return principal ? new PrincipalSid(sid) : new GrantedAuthoritySid(sid)
+		principal ? new PrincipalSid(sid) : new GrantedAuthoritySid(sid)
 	}
 }

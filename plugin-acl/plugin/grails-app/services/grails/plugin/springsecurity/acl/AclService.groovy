@@ -22,8 +22,8 @@ import grails.gorm.transactions.ReadOnly
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.grails.datastore.gorm.GormEntity
 import org.springframework.context.MessageSource
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.acls.domain.AccessControlEntryImpl
 import org.springframework.security.acls.domain.GrantedAuthoritySid
 import org.springframework.security.acls.domain.ObjectIdentityImpl
@@ -99,7 +99,6 @@ class AclService implements MutableAclService, WarnErros {
 				owner: ownerSid,
 				entriesInheriting: true)
 		save(aclObjectIdentity)
-		aclObjectIdentity
 	}
 
 	@Transactional
@@ -332,21 +331,13 @@ class AclService implements MutableAclService, WarnErros {
 		return result
 	}
 
-	@CompileDynamic
-	protected save(bean) {
-		if (!bean.save(flush: true)) {
-			if (log.warnEnabled) {
-				def message = new StringBuilder("problem creating ${bean.getClass().simpleName}: $bean")
-				def locale = LocaleContextHolder.getLocale()
-				for (fieldErrors in bean.errors) {
-					for (error in fieldErrors.allErrors) {
-						message << '\n\t' << messageSource.getMessage(error, locale)
-					}
-				}
-				log.warn message.toString()
-			}
+    @Transactional
+	protected <T extends GormEntity<T>> T save(T bean) {
+		if (!bean.save()) {
+            if (log.warnEnabled) {
+                log.warn errorsBeanBeingSaved(messageSource, bean)
+            }
 		}
-
 		bean
 	}
 }
