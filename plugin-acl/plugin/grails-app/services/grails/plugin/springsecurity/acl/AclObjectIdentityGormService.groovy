@@ -43,7 +43,7 @@ class AclObjectIdentityGormService {
 
     @ReadOnly
     List<AclObjectIdentity> findAllByParentObjectIdAndParentAclClassName(Long objectId, String aclClassName) {
-        return findQueryByParentObjectIdAndParentAclClassName(objectId, aclClassName).list()
+        findQueryByParentObjectIdAndParentAclClassName(objectId, aclClassName).list()
     }
 
     @ReadOnly
