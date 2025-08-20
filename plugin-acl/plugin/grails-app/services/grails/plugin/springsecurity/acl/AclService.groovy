@@ -22,6 +22,7 @@ import grails.gorm.transactions.ReadOnly
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.grails.datastore.gorm.GormEntity
 import org.springframework.context.MessageSource
 import org.springframework.security.acls.domain.AccessControlEntryImpl
 import org.springframework.security.acls.domain.GrantedAuthoritySid
@@ -97,10 +98,7 @@ class AclService implements MutableAclService, WarnErros {
 				objectId: object.identifier as Long,
 				owner: ownerSid,
 				entriesInheriting: true)
-		if ( !aclObjectIdentity.save() ) {
-			log.error '{}', errorsBeanBeingSaved(messageSource, aclObjectIdentity)
-		}
-		aclObjectIdentity
+		save(aclObjectIdentity)
 	}
 
 	@Transactional
@@ -124,9 +122,7 @@ class AclService implements MutableAclService, WarnErros {
 		AclSid aclSid = aclSidGormService.findBySidAndPrincipal(sidName, principal)
 		if (!aclSid && allowCreate) {
 			aclSid = new AclSid(sid: sidName, principal: principal)
-			if ( !aclSid.save() ) {
-				log.error '{}', errorsBeanBeingSaved(messageSource, aclSid)
-			}
+			save(aclSid)
 		}
 		aclSid
 	}
@@ -136,9 +132,7 @@ class AclService implements MutableAclService, WarnErros {
 		AclClass aclClass = aclClassGormService.findByClassName(className)
 		if (!aclClass && allowCreate) {
 			aclClass = new AclClass(className: className)
-			if ( !aclClass.save() ) {
-				log.error '{}', errorsBeanBeingSaved(messageSource, aclClass)
-			}
+			save(aclClass)
 		}
 		aclClass
 	}
@@ -209,7 +203,7 @@ class AclService implements MutableAclService, WarnErros {
 			log.trace 'Checking ace for delete: {}', ace
 			!acl.entries.find { AccessControlEntry entry ->
 				log.trace 'Checking entry for delete: {}', entry
-				entry.permission.mask == ace.mask && entry.sid == ace.sid.sid
+				entryEqual(ace, entry)
 			}
 		}
 
@@ -217,15 +211,17 @@ class AclService implements MutableAclService, WarnErros {
 			log.trace 'Checking entry for create: {}', entry
 			!existingAces.find { AclEntry ace ->
 				log.trace 'Checking ace for create: {}', ace
-				entry.permission.mask == ace.mask && entry.sid == ace.sid.sid
+				entryEqual(ace, entry)
 			}
 		}
+
+		Integer maxAceOrder = existingAces.max { it.aceOrder }?.aceOrder
 
 		// Delete this ACL's ACEs in the acl_entry table
 		deleteEntries toDelete
 
 		// Create this ACL's ACEs in the acl_entry table
-		createEntries(acl, toCreate as List<AuditableAccessControlEntry>)
+		createEntries(acl, maxAceOrder, toCreate as List<AuditableAccessControlEntry>)
 
 		// Change the mutable columns in acl_object_identity
 		updateObjectIdentity acl
@@ -237,10 +233,9 @@ class AclService implements MutableAclService, WarnErros {
 	}
 
 	@Transactional
-	protected void createEntries(MutableAcl acl, List<AuditableAccessControlEntry> entries = null) {
-		List<AuditableAccessControlEntry> entryList = entries ?: acl.entries as List<AuditableAccessControlEntry>
-		int i = 0
-		for (AuditableAccessControlEntry entry in entryList) {
+	protected void createEntries(MutableAcl acl, Integer maxOrder, List<AuditableAccessControlEntry> entries) {
+		int i = maxOrder != null ? maxOrder + 1 : 0
+		for (AuditableAccessControlEntry entry in entries) {
 			Assert.isInstanceOf AccessControlEntryImpl, entry, 'Unknown ACE class'
 			AclEntry aclEntryInstance = new AclEntry(
 					aclObjectIdentity: AclObjectIdentity.load(acl.id),
@@ -250,9 +245,7 @@ class AclService implements MutableAclService, WarnErros {
 					granting: entry.isGranting(),
 					auditSuccess: entry.isAuditSuccess(),
 					auditFailure: entry.isAuditFailure())
-			if ( !aclEntryInstance.save() ) {
-				log.error "{}", errorsBeanBeingSaved(messageSource, aclEntryInstance)
-			}
+			save(aclEntryInstance)
 		}
 	}
 
@@ -272,9 +265,7 @@ class AclService implements MutableAclService, WarnErros {
 		aclObjectIdentity.parent = parent
 		aclObjectIdentity.owner = createOrRetrieveSid(acl.owner, true)
 		aclObjectIdentity.entriesInheriting = acl.isEntriesInheriting()
-		if ( !aclObjectIdentity.save() ) {
-			log.error "{}", errorsBeanBeingSaved(messageSource, aclObjectIdentity)
-		}
+		save(aclObjectIdentity)
 		AclObjectIdentity.withSession { it.flush() }
 	}
 
@@ -335,4 +326,17 @@ class AclService implements MutableAclService, WarnErros {
 		}
 		return result
 	}
+
+    @Transactional
+	protected <T extends GormEntity<T>> T save(T bean) {
+		if (!bean.save()) {
+            log.warn errorsBeanBeingSaved(messageSource, bean)
+		}
+		bean
+	}
+
+    private static boolean entryEqual(AclEntry ace, AccessControlEntry entry) {
+        Sid sid = ace.sid.principal ? new PrincipalSid(ace.sid.sid) : new GrantedAuthoritySid(ace.sid.sid)
+        return entry.permission.mask == ace.mask && entry.sid == sid && entry.granting == ace.granting
+    }
 }

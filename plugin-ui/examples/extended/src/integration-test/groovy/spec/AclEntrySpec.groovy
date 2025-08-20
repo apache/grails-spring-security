@@ -54,9 +54,9 @@ class AclEntrySpec extends AbstractSecuritySpec {
 		aclEntrySearchPage.assertResults(1, 3, 3)
 
 		assertContentContains('60')
-		assertContentContains('398')
-		assertContentContains('399')
-		assertContentContains('400')
+		assertContentContains('62')
+		assertContentContains('194')
+		assertContentContains('195')
 		assertContentContains('user1')
 		assertContentContains('admin')
 		assertContentDoesNotContain('>user2</a>')
@@ -74,7 +74,7 @@ class AclEntrySpec extends AbstractSecuritySpec {
 		then:
 		browser.at(AclEntrySearchPage)
 		aclEntrySearchPage.assertResults(1, 10, 67)
-		['104', '111', '119', '126', '131', '136', '141', '146', '152', '159'].each {
+		['75', '76', '78', '80', '82', '87', '89', '91', '93', '95'].each {
 			assertContentContains it
 		}
 	}
