@@ -203,9 +203,7 @@ class AclService implements MutableAclService, WarnErros {
 			log.trace 'Checking ace for delete: {}', ace
 			!acl.entries.find { AccessControlEntry entry ->
 				log.trace 'Checking entry for delete: {}', entry
-				entry.permission.mask == ace.mask &&
-				entry.sid == ace.sid.toSid() &&
-				entry.granting == ace.granting
+				entryEqual(ace, entry)
 			}
 		}
 
@@ -213,9 +211,7 @@ class AclService implements MutableAclService, WarnErros {
 			log.trace 'Checking entry for create: {}', entry
 			!existingAces.find { AclEntry ace ->
 				log.trace 'Checking ace for create: {}', ace
-				entry.permission.mask == ace.mask &&
-				entry.sid == ace.sid.toSid() &&
-				entry.granting == ace.granting
+				entryEqual(ace, entry)
 			}
 		}
 
@@ -340,4 +336,9 @@ class AclService implements MutableAclService, WarnErros {
 		}
 		bean
 	}
+
+    private static boolean entryEqual(AclEntry ace, AccessControlEntry entry) {
+        Sid sid = ace.sid.principal ? new PrincipalSid(ace.sid.sid) : new GrantedAuthoritySid(ace.sid.sid)
+        return entry.permission.mask == ace.mask && entry.sid == sid && entry.granting == ace.granting
+    }
 }

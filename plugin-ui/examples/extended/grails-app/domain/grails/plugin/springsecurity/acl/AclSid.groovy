@@ -19,9 +19,6 @@
 package grails.plugin.springsecurity.acl
 
 import groovy.transform.ToString
-import org.springframework.security.acls.domain.GrantedAuthoritySid
-import org.springframework.security.acls.domain.PrincipalSid
-import org.springframework.security.acls.model.Sid
 
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
@@ -42,8 +39,4 @@ class AclSid implements Serializable {
 		principal unique: 'sid'
 		sid size: 1..255
 	}
-
-    Sid toSid() {
-        principal ? new PrincipalSid(sid) : new GrantedAuthoritySid(sid)
-    }
 }
