@@ -330,9 +330,7 @@ class AclService implements MutableAclService, WarnErros {
     @Transactional
 	protected <T extends GormEntity<T>> T save(T bean) {
 		if (!bean.save()) {
-            if (log.warnEnabled) {
-                log.warn errorsBeanBeingSaved(messageSource, bean)
-            }
+            log.warn errorsBeanBeingSaved(messageSource, bean)
 		}
 		bean
 	}
