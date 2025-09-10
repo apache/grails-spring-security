@@ -18,12 +18,14 @@
  */
 package grails.plugin.springsecurity.acl
 
+import grails.gorm.dirty.checking.DirtyCheck
 import groovy.transform.ToString
 
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
 @ToString(excludes='version', includeNames=true)
+@DirtyCheck
 class AclObjectIdentity {
 
 	private static final long serialVersionUID = 1

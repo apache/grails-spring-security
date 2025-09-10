@@ -19,15 +19,7 @@ limitations under the License.
 Grails Spring Security
 ======================
 
-See [documentation](https://apache.github.io/grails-spring-security/latest/ghpages.html) for detailed information.
-
-- [CORE](https://apache.github.io/grails-spring-security/latest/core-plugin/guide/)
-  - [ACL](https://apache.github.io/grails-spring-security/latest/acl-plugin/guide/)
-  - [CAS](https://apache.github.io/grails-spring-security/latest/cas-plugin/guide/)
-  - [LDAP](https://apache.github.io/grails-spring-security/latest/ldap-plugin/guide/)
-  - [OAuth2](https://apache.github.io/grails-spring-security/latest/oauth2-plugin/guide/)
-  - [REST](https://apache.github.io/grails-spring-security/latest/rest-plugin/guide/)
-  - [UI](https://apache.github.io/grails-spring-security/latest/ui-plugin/guide/)
+See [documentation](https://apache.github.io/grails-spring-security/) for detailed information.
 
 ### Building
 

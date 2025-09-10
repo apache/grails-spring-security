@@ -21,7 +21,6 @@ package grails.plugin.springsecurity.acl
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.transactions.ReadOnly
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.springframework.security.acls.model.ObjectIdentity
 
@@ -42,14 +41,9 @@ class AclObjectIdentityGormService {
         AclObjectIdentity.get(id)
     }
 
-    @CompileDynamic
     @ReadOnly
     List<AclObjectIdentity> findAllByParentObjectIdAndParentAclClassName(Long objectId, String aclClassName) {
-        //findQueryByParentObjectIdAndParentAclClassName(objectId, aclClassName).list()
-        List<AclObjectIdentity> aclObjectIdentityList = findAll()
-        aclObjectIdentityList.findAll { AclObjectIdentity oid ->
-            (oid?.parent?.aclClass?.className == aclClassName) &&  ( oid?.parent?.objectId == objectId)
-        }
+        findQueryByParentObjectIdAndParentAclClassName(objectId, aclClassName).list()
     }
 
     @ReadOnly
