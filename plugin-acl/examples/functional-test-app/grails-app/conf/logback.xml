@@ -37,7 +37,7 @@
     </root>
 
     <logger name="grails.plugin.springsecurity.acl" level="INFO" />
-    <logger name="org.springframework.security" level="trace" additivity="false">
+    <!-- logger name="org.springframework.security" level="trace" additivity="false">
         <appender-ref ref="STDOUT" />
-    </logger>
+    </logger -->
 </configuration>
