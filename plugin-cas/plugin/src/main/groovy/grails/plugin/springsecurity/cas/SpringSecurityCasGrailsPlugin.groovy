@@ -76,6 +76,12 @@ class SpringSecurityCasGrailsPlugin extends Plugin {
 			println '\nConfiguring Spring Security CAS ...'
 		}
 
+		['serverUrlPrefix', 'loginUri', 'serviceUrl'].each { requiredConfigKey ->
+			if (!conf.cas[requiredConfigKey]) {
+				throw new IllegalStateException("cas.${requiredConfigKey} is not set: this is a required configuration value when cas.active is true")
+			}
+		}
+
 		if (conf.cas.useSingleSignout) {
 
 			// session fixation prevention breaks single signout because
