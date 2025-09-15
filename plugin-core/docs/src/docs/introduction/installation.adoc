@@ -60,7 +60,7 @@ dependencies {
 ----
 +
 
-8. The Spring Security Core Plugin 6.0.0 is now installed and integrated into your Grails project.
+8. The Spring Security Core Plugin {revnumber} is now installed and integrated into your Grails project.
 
 9. You can start using the plugin's features and commands in your application.
 
