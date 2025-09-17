@@ -32,10 +32,12 @@ import org.apache.commons.codec.binary.Base64
 import org.grails.plugins.codecs.URLCodec
 import org.pac4j.core.client.IndirectClient
 import org.pac4j.core.context.CallContext
-import org.pac4j.core.context.WebContext
+import org.pac4j.core.context.session.SessionStore
+import org.pac4j.core.exception.http.FoundAction
 import org.pac4j.core.exception.http.RedirectionAction
 import org.pac4j.jee.context.JEEContext
 import org.pac4j.jee.context.session.JEESessionStore
+import org.pac4j.jee.context.session.JEESessionStoreFactory
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.userdetails.User
 
@@ -46,7 +48,7 @@ import java.nio.charset.StandardCharsets
 class RestOauthController {
 
     static allowedMethods = [accessToken: 'POST']
-
+    private static final SessionStore SESSION_STORE = JEESessionStoreFactory.INSTANCE.newSessionStore(null)
     final String CALLBACK_ATTR = "spring-security-rest-callback"
 
     CallbackErrorHandler callbackErrorHandler
@@ -64,8 +66,7 @@ class RestOauthController {
      */
     def authenticate(String provider, String callback) {
         IndirectClient client = restOauthService.getClient(provider)
-        WebContext context = new JEEContext(request, response)
-
+        
         if (callback) {
             try {
                 if (Base64.isBase64(callback.getBytes())){
@@ -78,9 +79,14 @@ class RestOauthController {
             }
         }
 
-        RedirectionAction redirectAction = client.getRedirectionAction(context, JEESessionStore.INSTANCE).get()
-        log.debug "Redirecting to ${redirectAction.location}"
-        redirect url: redirectAction.location
+        CallContext callContext = new CallContext(new JEEContext(request, response), SESSION_STORE)
+        RedirectionAction redirectAction = client.getRedirectionAction(callContext).get()
+        if(redirectAction instanceof FoundAction) {
+            log.debug "Redirecting to ${redirectAction.location}"
+            redirect url: redirectAction.location
+        } else {
+            response.status = redirectAction.code
+        }
     }
 
     /**
@@ -89,7 +95,7 @@ class RestOauthController {
      * frontend application can store the REST API token locally for subsequent API calls.
      */
     def callback(String provider) {
-        CallContext context = new CallContext(new JEEContext(request, response), null)
+        CallContext context = new CallContext(new JEEContext(request, response), SESSION_STORE)
         def frontendCallbackUrl
         if (session[CALLBACK_ATTR]) {
             log.debug "Found callback URL in the HTTP session"
