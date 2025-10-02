@@ -661,7 +661,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Run the <a href="#s2-quickstart">s2-quickstart</a> script to generate domain classes and add the initial configuration settings in <code>application.groovy</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code>./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 </li>
@@ -808,7 +808,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="shell">./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5316,7 +5316,7 @@ class SomeController {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6281,7 +6281,7 @@ $ cd bookstore</pre>
 <h4 id="3-create-the-user-and-role-domain-classes">22.1.3. 3. Create the User and Role domain classes.</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.mycompany.myapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.mycompany.myapp User Role</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7147,28 +7147,28 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart DOMAIN_CLASS_PACKAGE USER_CLASS_NAME ROLE_CLASS_NAME [REQUESTMAP_CLASS_NAME] [--groupClassName=GROUP_CLASS_NAME]"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart DOMAIN_CLASS_PACKAGE USER_CLASS_NAME ROLE_CLASS_NAME [REQUESTMAP_CLASS_NAME] [--groupClassName=GROUP_CLASS_NAME]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Examples</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role --groupClassName=RoleGroup"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.yourapp User Role --groupClassName=RoleGroup</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp Person Authority Requestmap"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.yourapp Person Authority Requestmap</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart --uiOnly"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart --uiOnly</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -7188,13 +7188,13 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-persistent-token &lt;classname&gt;"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-persistent-token &lt;classname&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-persistent-token com.yourapp.PersistentLogin"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-persistent-token com.yourapp.PersistentLogin</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7210,13 +7210,13 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry &lt;classname&gt;"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry &lt;classname&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7245,7 +7245,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-09-15 23:15:40 UTC
+Last updated 2025-10-02 14:12:20 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
