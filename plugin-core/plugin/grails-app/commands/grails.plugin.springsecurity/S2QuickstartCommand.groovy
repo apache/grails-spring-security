@@ -315,7 +315,7 @@ Example: ./grailsw s2-quickstart --uiOnly
         if (pluginClassFile.exists()) {
             pluginClassFile.eachLine { line, nb ->
                 lines << line
-                if(line.contains('package')) {
+                if(line.trim().startsWith('package ')) {
                      beans.forEach(bean -> lines.add(bean.import))
                 }
                 if (line.contains('doWithSpring()')) {
