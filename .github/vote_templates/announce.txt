@@ -1,4 +1,4 @@
-The Apache Grails (incubating) community is pleased to announce the release of Apache Grails (incubating) Spring Security Plugin ${VERSION}.
+The Apache Grails community is pleased to announce the release of Apache Grails Spring Security Plugin ${VERSION}.
 
 Grails is a powerful Groovy-based web application framework for the JVM built on top of Spring Boot that has many plugins to further extend its functionality.
 
@@ -17,4 +17,4 @@ Grails Resources:
 - Mailing lists: https://grails.apache.org/community.html
 
 Happy Coding,
-The Apache Grails (incubating) Team
+The Apache Grails Team
