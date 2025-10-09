@@ -50,7 +50,7 @@ dependencies {
 		// impl: GormUserDetailsService, GrailsUser, ReflectionUtils, @Secured(runtime), SecurityContextHolder,
 		//       SpringSecurityUtils
 	}
-	api 'com.github.scribejava:scribejava-core:8.3.3', {
+	api "com.github.scribejava:scribejava-core:$scribejavaVersion", {
 		// api: DefaultApi20, OAuth2AccessToken, OAuth20Service, Response
 		// impl: OAuthRequest, ServiceBuilder, Verb
 	}
