@@ -31,6 +31,10 @@ ext {
 	pomDevelopers = ['burtbeckwith': 'Burt Beckwith']
 }
 
+grails {
+    springDependencyManagement = false
+}
+
 dependencies {
 
 	implementation platform("org.apache.grails:grails-bom:$grailsVersion")
