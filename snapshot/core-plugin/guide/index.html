@@ -2325,9 +2325,9 @@ new Requestmap(url: "/secure/someOtherAction",
 <p>and the corresponding static mappings would be</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 22. Adding mappings in <code>grails.plugin.springsecurity.interceptUrlMap</code></div>
+<div class="title">Listing 22. Adding mappings in <code>grails.plugin.springsecurity.controllerAnnotations.staticRules</code></div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.interceptUrlMap = [
+<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.controllerAnnotations.staticRules = [
    [pattern: '/secure/someAction',      access: ["hasRole('ROLE_ADMIN')"]],
    [pattern: '/secure/someOtherAction', access: ["authentication.name == 'ralph'"]]
 ]</code></pre>
@@ -7245,7 +7245,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-10-14 15:19:23 UTC
+Last updated 2025-10-14 16:55:51 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
