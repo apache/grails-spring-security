@@ -35,6 +35,10 @@ ext {
     ]
 }
 
+grails {
+    springDependencyManagement = false
+}
+
 dependencies {
 
     implementation platform("org.apache.grails:grails-bom:$grailsVersion")
@@ -43,7 +47,7 @@ dependencies {
         // api: NullAuthenticationEventPublisher, SecurityEventListener
         // impl: BeanTypeResolver, @Secured(runtime), SecurityFilterPosition, SpringSecurityUtils
     }
-    api 'com.nimbusds:nimbus-jose-jwt:9.42', {
+    api "com.nimbusds:nimbus-jose-jwt:$nimbusVersion", {
         // api: EncryptionMethod, JOSEException, JWEAlgorithm, JWSAlgorithm, JWSSigner, JWT, JWTClaimsSet
         // impl: EncryptedJWT, EncryptionMethod, JWEHeader, JWSHeader, JWTParser, MACSigner, MACVerifier, PlainJWT, RSADecrypter, RSAEncrypter, SignedJWT
     }
@@ -86,7 +90,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3", {
         // impl: RandomStringUtils
     }
-    implementation 'com.google.guava:guava:33.3.1-jre', {
+    implementation "com.google.guava:guava:$guavaVersion", {
         // impl: CacheBuilder, LoadingCache
     }
     implementation 'commons-codec:commons-codec', {
@@ -121,7 +125,7 @@ dependencies {
     testImplementation "org.pac4j:pac4j-oauth:$pac4jVersion", {
         // impl: CasOAuthWrapperClient
     }
-    testImplementation 'org.gperfutils:gbench:0.4.3-groovy-2.4'
+    testImplementation "org.gperfutils:gbench:$gbenchVersion"
     testImplementation 'org.apache.grails:grails-testing-support-datamapping'
     testImplementation 'org.apache.grails:grails-testing-support-web'
     testImplementation 'org.spockframework:spock-core'

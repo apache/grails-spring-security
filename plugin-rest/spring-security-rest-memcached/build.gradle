@@ -35,6 +35,10 @@ ext {
     ]
 }
 
+grails {
+    springDependencyManagement = false
+}
+
 dependencies {
 
     implementation platform("org.apache.grails:grails-bom:$grailsVersion")
