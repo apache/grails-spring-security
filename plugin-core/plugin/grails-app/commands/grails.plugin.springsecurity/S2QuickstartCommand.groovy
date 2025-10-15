@@ -77,8 +77,12 @@ Example: ./grailsw s2-quickstart --uiOnly
             initializeTemplateAttributes()
             createDomains(userModel, roleModel, requestmapModel, roleGroupModel)
         }
-
-        updateConfig(userModel?.simpleName, roleModel?.simpleName, requestmapModel?.simpleName, userModel?.packageName, roleGroupModel != null)
+        if (new File('grails-app/conf/application.yml').exists()) {
+            consoleLogger.addStatus('\nConfiguring Spring Security; Updating YAML Application Config')
+            updateYmlConfig(userModel?.simpleName, roleModel?.simpleName, requestmapModel?.simpleName, userModel?.packageName, roleGroupModel != null)
+        } else {
+            updateConfig(userModel?.simpleName, roleModel?.simpleName, requestmapModel?.simpleName, userModel?.packageName, roleGroupModel != null)
+        }
         logStatus()
         return SUCCESS
     }
@@ -205,7 +209,16 @@ Example: ./grailsw s2-quickstart --uiOnly
         List<Map<String, String>> beans = []
         beans.add([import    : "import ${userModel.packageName}.${userModel.simpleName}PasswordEncoderListener".toString(),
                    definition: "${userModel.propertyName}PasswordEncoderListener(${userModel.simpleName}PasswordEncoderListener)".toString()])
-        addBeans(beans, 'grails-app/conf/spring/resources.groovy')
+
+        if(new File('grails-app/conf/spring/resources.groovy').exists()) {
+            addBeans(beans, 'grails-app/conf/spring/resources.groovy')
+        } else {
+            //we could be generating this in a plugin... we should look for a Plugin class
+            File pluginClassFile = findPluginClass()
+            if(pluginClassFile  != null) {
+                 addBeansToPlugin(beans, pluginClassFile)
+            }
+          }
 
 
         generateFile('Authority', roleModel.packagePath, roleModel.simpleName)
@@ -267,6 +280,79 @@ Example: ./grailsw s2-quickstart --uiOnly
         }
     }
 
+    private void updateYmlConfig(String userClassName, String roleClassName, String requestmapClassName, String packageName, boolean useRoleGroups) {
+        //I mean, we could use SNAKE YAML TO GENERATE THIS BUT I DIGRESS
+        file('grails-app/conf/application.yml').withWriterAppend { BufferedWriter writer ->
+            writer.newLine()
+            writer.writeLine('---')
+            writer.writeLine('# Added by the Spring Security Core plugin:')
+            writer.writeLine('grails:')
+            writer.writeLine('    plugin:')
+            writer.writeLine('        springsecurity:')
+            if (!uiOnly) {
+                writer.writeLine('            userLookup:')
+                writer.writeLine("                userDomainClassName: '${packageName}.$userClassName'")
+                writer.writeLine("                authorityJoinClassName: '${packageName}.$userClassName$roleClassName'")
+            }
+            if(!uiOnly || useRoleGroups) {
+                writer.writeLine('        authority:')
+                if(!uiOnly) {
+                    writer.writeLine("            className: '${packageName}.$roleClassName'")
+                }
+                if(useRoleGroups) {
+                    writer.writeLine("            groupAuthorityNameField: authorities")
+                }
+            }
+
+            if (useRoleGroups) {
+                writer.writeLine('        useRoleGroups: true')
+            }
+            if (requestmapClassName) {
+                writer.writeLine("            requestMap.className: '${packageName}.$requestmapClassName'")
+                writer.writeLine("            securityConfigType: Requestmap")
+            }
+            writer.writeLine('            controllerAnnotations:')
+            writer.writeLine('                staticRules:')
+            writer.writeLine('                    - pattern: /')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /error')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /index')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /index.gsp')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /shutdown')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /assets/**')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /**/js/**')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /**/css/**')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /**/images/**')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.writeLine('                    - pattern: /**/favicon.ico')
+            writer.writeLine('                      access: [\'permitAll\']')
+            writer.newLine()
+
+            writer.writeLine('            filterChain:')
+            writer.writeLine('                chainMap:')
+            writer.writeLine('                    - pattern: /assets/**')
+            writer.writeLine('                      filters: none')
+            writer.writeLine('                    - pattern: /**/js/**')
+            writer.writeLine('                      filters: none')
+            writer.writeLine('                    - pattern: /**/css/**')
+            writer.writeLine('                      filters: none')
+            writer.writeLine('                    - pattern: /**/images/**')
+            writer.writeLine('                      filters: none')
+            writer.writeLine('                    - pattern: /**/favicon.ico')
+            writer.writeLine('                      filters: none')
+            writer.writeLine('                    - pattern: /**')
+            writer.writeLine('                      filters: JOINED_FILTERS')
+            writer.newLine()
+        }
+    }
+
     private void generateFile(String templateName, String packagePath, String className, String fileName = null, String folder = 'grails-app/domain') {
         render template(templateName + '.groovy.template'),
                 file("${folder}/$packagePath/${fileName ?: className}.groovy"),
@@ -299,6 +385,40 @@ Example: ./grailsw s2-quickstart --uiOnly
                 writer.write "${line}${System.lineSeparator()}"
             }
         }
+    }
+
+    private void addBeansToPlugin(List<Map<String, String>> beans, File pluginClassFile) {
+        List<String> lines = []
+        if (pluginClassFile.exists()) {
+            pluginClassFile.eachLine { line, nb ->
+                lines << line
+                if(line.trim().startsWith('package ')) {
+                     beans.forEach(bean -> lines.add(bean.import))
+                }
+                if (line.contains('doWithSpring()')) {
+                    beans.each { Map bean ->
+                        lines << '        ' + bean.definition
+                    }
+                }
+            }
+        } 
+
+        pluginClassFile.withWriter('UTF-8') { writer ->
+            lines.each { String line ->
+                writer.write "${line}${System.lineSeparator()}"
+            }
+        }
+    }
+
+
+    private File findPluginClass() {
+        File pluginClass = null
+        new File("src/main/groovy").eachFileRecurse { fl ->
+            if (fl.isFile() && fl.name.endsWith("GrailsPlugin.groovy")) {
+                pluginClass = fl
+            }
+        }
+        return pluginClass
     }
 
 }
