@@ -757,6 +757,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand -Pargs="s2-quickstart com.yourapp User Role"</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>If you are installing into a Grails plugin instead of an application, you must make sure you are using  the <code>web-plugin</code> profile. Otherwise dependencies will not be met.
+Running the same command will inject the spring beans into your <code>GrailsPlugin</code> classes <code>doWithSpring</code> method.</p>
+</div>
 <div class="sect3">
 <h4 id="plugin-configuration-and-setup">1.3.1. Plugin Configuration and Setup</h4>
 <div class="paragraph">
@@ -7245,7 +7249,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.0-SNAPSHOT<br>
-Last updated 2025-10-14 16:55:51 UTC
+Last updated 2025-10-15 14:02:27 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
