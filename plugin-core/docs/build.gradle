@@ -17,9 +17,6 @@
  *  under the License.
  */
 
-import grails.doc.dropdown.CreateReleaseDropDownTask
-import grails.doc.dropdown.SoftwareVersion
-
 plugins {
     id 'groovy' // For groovydoc task
 }
