@@ -35,6 +35,10 @@ extensions.configure(GrailsPublishExtension) {
     it.license.name = 'Apache-2.0'
     it.title = project.property('pomTitle')
     it.desc = project.property('pomDescription')
+    it.organization {
+        name = 'Apache Software Foundation'
+        url = 'https://apache.org/'
+    }
     it.developers = project.property('pomDevelopers') as Map<String, String>
 }
 
