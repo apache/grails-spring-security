@@ -57,5 +57,4 @@ dependencies {
     implementation 'org.apache.grails:grails-gradle-plugins'
     implementation "org.nosphere.apache.rat:org.nosphere.apache.rat.gradle.plugin:${versions.get('ratVersion')}"
     implementation "org.gradle.crypto.checksum:org.gradle.crypto.checksum.gradle.plugin:${versions.get('gradleCryptoChecksumVersion')}"
-    implementation 'org.apache.grails:grails-docs-core'
 }
