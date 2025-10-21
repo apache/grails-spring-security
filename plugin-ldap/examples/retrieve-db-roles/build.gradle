@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.webjars:jquery:3.3.1'
 
     // in-memory ldap server for testing
-    implementation "com.unboundid:unboundid-ldapsdk:$unboundidLdapSdk"
+    implementation "com.unboundid:unboundid-ldapsdk:$unboundidLdapSdkVersion"
 
     runtimeOnly 'cloud.wondrify:asset-pipeline-grails'
     runtimeOnly 'com.h2database:h2'
