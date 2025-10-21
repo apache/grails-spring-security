@@ -28,6 +28,6 @@ abstract class CreatePage extends AbstractSecurityPage {
 	}
 
 	boolean assertNotUnique() {
-		assertContentContains 'must be unique'
+		driver.pageSource.contains('must be unique')
 	}
 }

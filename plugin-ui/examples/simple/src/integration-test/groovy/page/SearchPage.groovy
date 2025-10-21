@@ -29,20 +29,17 @@ abstract class SearchPage extends AbstractSecurityPage {
     }
 
     boolean assertNoResults() {
-        assertContentContains('No results')
-        assertContentDoesNotContain('Showing')
-        true
+        driver.pageSource.contains('No results') &&
+        !driver.pageSource.contains('Showing')
     }
 
     boolean assertNotSearched() {
-        assertContentContains('Search')
-        assertContentDoesNotContain('No results')
-        assertContentDoesNotContain('Showing')
-        true
+        driver.pageSource.contains('Search') &&
+        !driver.pageSource.contains('No results') &&
+        !driver.pageSource.contains('Showing')
     }
 
     boolean assertResults(int start, int end, int total) {
-        assertContentContains("Showing $start through $end out of ${total}.")
-        true
+        driver.pageSource.contains("Showing $start through $end out of $total.")
     }
 }

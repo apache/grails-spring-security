@@ -50,6 +50,7 @@ jobs:
           --max-workers=2
           --refresh-dependencies
           --continue
+          -PgebAtCheckWaiting
   functionalTests:
     if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
     runs-on: ubuntu-24.04
