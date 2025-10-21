@@ -30,7 +30,7 @@ createReleaseDropdownTask.configure { CreateReleaseDropDownTask it ->
     it.filesToAddDropdowns = project.layout.buildDirectory.files('docs-modified/index.html')
     it.sourceDocsDirectory = project.layout.buildDirectory.dir('docs')
     it.modifiedPagesDirectory = project.layout.buildDirectory.dir('docs-modified')
-
+    it.githubSlug = 'apache/grails-spring-security'
     it.docBaseUrl = "https://apache.github.io/grails-spring-security"
     it.versionHtml = '<span id="revnumber">version ' + project.version + '</span>'
     it.additionalPath = "${project.name - '-docs'}-plugin/guide/"
