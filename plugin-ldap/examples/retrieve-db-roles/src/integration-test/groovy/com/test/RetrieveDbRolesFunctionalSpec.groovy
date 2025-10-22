@@ -19,6 +19,8 @@
 
 package com.test
 
+import pages.LoginPage
+
 import grails.testing.mixin.integration.Integration
 import pages.IndexPage
 import pages.SecureSuperuserPage
@@ -29,76 +31,76 @@ class RetrieveDbRolesFunctionalSpec extends AbstractSecurityFunctionalSpec {
 
 	void 'secured urls are not visible without auth'() {
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 
 		when:
-		go SecureSuperuserPage.url
+		via(SecureSuperuserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 	}
 
-	def "login with a user present in the database"() {
+	def 'login with a user present in the database'() {
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 
 		when:
-		login 'gauss', 'password'
+		login('gauss', 'password')
 
 		then:
-		at SecureUserPage
+		at(SecureUserPage)
 
 		and:
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_SUPERUSER')
 
 		when:
-		to SecureSuperuserPage
+		to(SecureSuperuserPage)
 
 		then:
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_SUPERUSER')
 
 		when:
 		logout()
 
 		then:
-		at IndexPage
+		at(IndexPage)
 	}
 
-	def "login with a user NOT in the database"() {
+	def 'login with a user NOT in the database'() {
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
-
-		when:
-		login 'euler', 'password'
-
-		then:
-		at SecureUserPage
-
-		then:
-		assertContentContains 'ROLE_USER'
-		assertContentDoesNotContain 'ROLE_SUPERUSER'
+		at(LoginPage)
 
 		when:
-		go SecureSuperuserPage.url
+		login('euler', 'password')
 
 		then:
-		assertContentContains "Sorry, you're not authorized to view this page."
+		at(SecureUserPage)
+
+		then:
+		pageSource.contains('ROLE_USER')
+		!pageSource.contains('ROLE_SUPERUSER')
+
+		when:
+		via(SecureSuperuserPage)
+
+		then:
+		pageSource.contains('Sorry, you\'re not authorized to view this page.')
 
 		when:
 		logout()
 
 		then:
-		at IndexPage
+		at(IndexPage)
 	}
 }

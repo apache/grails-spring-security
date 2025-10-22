@@ -31,94 +31,97 @@ class RetrieveGroupRolesFunctionalSpec extends AbstractSecurityFunctionalSpec {
 
 	void 'secured urls are not visible without auth'() {
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 
 		when:
-		go SecureSuperuserPage.url
+		via(SecureSuperuserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 	}
 
 	void 'secured urls are visible when authenticated'() {
 		when:
-		login 'euler', 'password1'
+		login('euler', 'password1')
 
 		then:
-		at LoginPage
-
-		Environment.current
+		at(LoginPage)
 
 		when:
-		go SecureUserPage.url
-		login 'euler', 'password'
+		via(SecureUserPage)
 
 		then:
-		at SecureUserPage
-		assertContentContains 'ROLE_MATHEMATICIANS'
-		assertContentContains 'ROLE_USER'
-		assertContentDoesNotContain 'ROLE_SUPERUSER'
+		at(LoginPage)
 
 		when:
-		go SecureSuperuserPage.url
+		login('euler', 'password')
 
 		then:
-		assertContentContains "Sorry, you're not authorized to view this page."
+		at(SecureUserPage)
+		pageSource.contains('ROLE_MATHEMATICIANS')
+		pageSource.contains('ROLE_USER')
+		!pageSource.contains('ROLE_SUPERUSER')
+
+		when:
+		via(SecureSuperuserPage)
+
+		then:
+		pageSource.contains('Sorry, you\'re not authorized to view this page.')
 
 		when:
 		logout()
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 
-		when: 'logging with a scientist'
-		login 'tesla', 'password'
+		when: 'logging in with a scientist'
+		login('tesla', 'password')
 
 		then:
-		at SecureUserPage
+		at(SecureUserPage)
 
 		and: 'it does not belong to group mathematicians, thus it does not have the role mathematician'
-		assertContentDoesNotContain 'ROLE_MATHEMATICIANS'
-		assertContentContains 'ROLE_USER'
-		assertContentDoesNotContain 'ROLE_SUPERUSER'
+		!pageSource.contains('ROLE_MATHEMATICIANS')
+		pageSource.contains('ROLE_USER')
+		!pageSource.contains('ROLE_SUPERUSER')
 
 		when:
 		logout()
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go SecureUserPage.url
+		via(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		at(LoginPage)
 
 		when:
-		login 'gauss', 'password'
+		login('gauss', 'password')
 
 		then:
-		at SecureUserPage
+		at(SecureUserPage)
 
 		and:
-		assertContentContains 'ROLE_MATHEMATICIANS'
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_MATHEMATICIANS')
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_SUPERUSER')
 
 		when:
-		to SecureSuperuserPage
+		to(SecureSuperuserPage)
 
 		then:
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_SUPERUSER')
 	}
 }

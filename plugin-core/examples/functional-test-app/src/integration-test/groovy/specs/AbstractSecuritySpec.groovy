@@ -83,8 +83,8 @@ abstract class AbstractSecuritySpec extends ContainerGebSpec {
 
 	protected void logout() {
 		go(SpringSecurityUtils.securityConfig.logout.filterProcessesUrl)
-		browser.clearCookies()
-		browser.go('/')
+		clearCookies()
+		go('/')
 	}
 
 	protected MessageDigestPasswordEncoder createSha256Encoder() {

@@ -22,21 +22,26 @@ package page
 abstract class SearchPage extends AbstractSecurityPage {
 
     static at = { title == "${typeName()} Search" }
-    static atCheckWaiting = true
     static content = {
         form { $('search') }
         submitBtn { $('a', id: 'searchButton') }
     }
 
     boolean assertNoResults() {
-        driver.pageSource.contains('No results') &&
-        !driver.pageSource.contains('Showing')
+        driver.pageSource.with {
+            assert contains('No results')
+            assert !contains('Showing')
+        }
+        true
     }
 
     boolean assertNotSearched() {
-        driver.pageSource.contains('Search') &&
-        !driver.pageSource.contains('No results') &&
-        !driver.pageSource.contains('Showing')
+        driver.pageSource.with {
+            assert contains('Search')
+            assert !contains('No results')
+            assert !contains('Showing')
+        }
+        true
     }
 
     boolean assertResults(int start, int end, int total) {

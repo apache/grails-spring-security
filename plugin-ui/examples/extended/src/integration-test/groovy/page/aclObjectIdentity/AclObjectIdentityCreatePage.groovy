@@ -25,6 +25,7 @@ import page.CreatePage
 
 class AclObjectIdentityCreatePage extends CreatePage {
 
+	static at = { title == 'Create AclObjectIdentity' }
 	static url = 'aclObjectIdentity/create'
 	static typeName = { 'AclObjectIdentity' }
 	static content = {

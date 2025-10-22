@@ -29,71 +29,77 @@ class AclEntrySpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def aclEntrySearchPage = browser.to(AclEntrySearchPage)
+		def searchPage = to(AclEntrySearchPage)
 
 		then:
-		aclEntrySearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		aclEntrySearchPage.submit()
+		searchPage.submit()
+		searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertResults(1, 10, 275)
+		searchPage.assertResults(1, 10, 275)
 	}
 
 	void testFindByOid() {
 		when:
-		def aclEntrySearchPage = browser.to(AclEntrySearchPage).tap {
+		to(AclEntrySearchPage).with {
 			aclObjectIdentity = '60'
 			submit()
 		}
+		def searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertResults(1, 3, 3)
-
-		assertContentContains('60')
-		assertContentContains('62')
-		assertContentContains('194')
-		assertContentContains('195')
-		assertContentContains('user1')
-		assertContentContains('admin')
-		assertContentDoesNotContain('>user2</a>')
-		assertContentContains('BasePermission[...............................R=1]')
-		assertContentContains('BasePermission[...........................A....=16]')
+		searchPage.assertResults(1, 3, 3)
+		pageSource.contains('60')
+		pageSource.contains('62')
+		pageSource.contains('194')
+		pageSource.contains('195')
+		pageSource.contains('user1')
+		pageSource.contains('admin')
+		pageSource.contains('BasePermission[...............................R=1]')
+		pageSource.contains('BasePermission[...........................A....=16]')
+		!pageSource.contains('>user2</a>')
 	}
 
 	void testFindByAceOrder() {
 		when:
-		def aclEntrySearchPage = browser.to(AclEntrySearchPage).tap {
+		to(AclEntrySearchPage).with {
 			aceOrder = '2'
 			submit()
 		}
+		def searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertResults(1, 10, 67)
-		['75', '76', '78', '80', '82', '87', '89', '91', '93', '95'].each {
-			assertContentContains it
-		}
+		searchPage.assertResults(1, 10, 67)
+		pageSource.contains('75')
+		pageSource.contains('76')
+		pageSource.contains('78')
+		pageSource.contains('80')
+		pageSource.contains('82')
+		pageSource.contains('87')
+		pageSource.contains('89')
+		pageSource.contains('91')
+		pageSource.contains('93')
+		pageSource.contains('95')
 	}
 
 	void testFindByMask() {
 		when:
-		def aclEntrySearchPage = browser.to(AclEntrySearchPage).tap {
+		to(AclEntrySearchPage).with {
 			mask = '1'
 			submit()
 		}
+		def searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertResults(1, 10, 172)
+		searchPage.assertResults(1, 10, 172)
 	}
 
 	void testUniqueOrder() {
 		when:
-		def aclEntryCreatePage = browser.to(AclEntryCreatePage).tap {
+		to(AclEntryCreatePage).with {
 			aclObjectIdentityId = '3'
 			aceOrder = '1'
 			sid.selected = '1'
@@ -102,8 +108,8 @@ class AclEntrySpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		browser.at(AclEntryCreatePage)
-		aclEntryCreatePage.assertNotUnique()
+		at(AclEntryCreatePage)
+		pageSource.contains('must be unique')
 	}
 
 	void testCreateAndEdit() {
@@ -112,52 +118,49 @@ class AclEntrySpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def aclEntrySearchPage = browser.to(AclEntrySearchPage).tap {
+		to(AclEntrySearchPage).with {
 			aclObjectIdentity = '10'
 			aceOrder = newOrder
 			submit()
 		}
+		def searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		def aclEntryCreatePage = browser.to(AclEntryCreatePage).tap {
+		to(AclEntryCreatePage).with {
 			aclObjectIdentityId = '10'
 			aceOrder = newOrder
 			sid.selected = '2'
 			mask = '2'
 			submit()
 		}
+		def editPage = at(AclEntryEditPage)
 
 		then:
-		def aclEntryEditPage = browser.at(AclEntryEditPage)
-		aclEntryEditPage.aceOrder.text == newOrder
+		editPage.aceOrder.text == newOrder
 
 		// edit
 		when:
-		aclEntryEditPage.aceOrder = ((newOrder as int) + 1) as String
-		aclEntryEditPage.submit()
+		editPage.aceOrder = ((newOrder as int) + 1) as String
+		editPage.submit()
+		editPage = at(AclEntryEditPage)
 
 		then:
-		browser.at(AclEntryEditPage)
-		aclEntryEditPage.aceOrder.text == ((newOrder as int) + 1) as String
+		editPage.aceOrder.text == ((newOrder as int) + 1) as String
 
 		// delete
 		when:
-		aclEntryEditPage.delete()
+		editPage.delete()
+		at(AclEntrySearchPage).with {
+			aceOrder = ((newOrder as int) + 1) as String
+			submit()
+		}
+		searchPage = at(AclEntrySearchPage)
 
 		then:
-		browser.at(AclEntrySearchPage)
-
-		when:
-		aclEntrySearchPage.aceOrder = ((newOrder as int) + 1) as String
-		aclEntrySearchPage.submit()
-
-		then:
-		browser.at(AclEntrySearchPage)
-		aclEntrySearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

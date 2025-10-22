@@ -27,66 +27,64 @@ class PersistentLoginSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def persistentLoginSearchPage = browser.to(PersistentLoginSearchPage)
+		def searchPage = to(PersistentLoginSearchPage)
 
 		then:
-		persistentLoginSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		persistentLoginSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(PersistentLoginSearchPage)
 
 		then:
-		browser.at(PersistentLoginSearchPage)
-		persistentLoginSearchPage.assertResults(1, 10, 20)
+		searchPage.assertResults(1, 10, 20)
 	}
 
 	void testFindByUsername() {
 		when:
-		def persistentLoginSearchPage = browser.to(PersistentLoginSearchPage).tap {
+		to(PersistentLoginSearchPage).with {
 			username = '3'
 			submit()
 		}
+		def searchPage = at(PersistentLoginSearchPage)
 
 		then:
-		browser.at(PersistentLoginSearchPage)
-		persistentLoginSearchPage.assertResults(1, 2, 2)
+		searchPage.assertResults(1, 2, 2)
 
-		assertContentContains('persistent_login_test_3')
-		assertContentContains('persistent_login_test_13')
-
-		assertContentContains('series3')
-		assertContentContains('series13')
+		pageSource.contains('persistent_login_test_3')
+		pageSource.contains('persistent_login_test_13')
+		pageSource.contains('series3')
+		pageSource.contains('series13')
 	}
 
 	void testFindByToken() {
 		when:
-		def persistenLoginSearchPage = browser.to(PersistentLoginSearchPage).tap {
+		to(PersistentLoginSearchPage).with {
 			token = '3'
 			submit()
 		}
+		def searchPage = at(PersistentLoginSearchPage)
 
 		then:
-		browser.at(PersistentLoginSearchPage)
-		persistenLoginSearchPage.assertResults(1, 2, 2)
-
-		assertContentContains('token13')
-		assertContentContains('token3')
+		searchPage.assertResults(1, 2, 2)
+		pageSource.contains('token13')
+		pageSource.contains('token3')
 	}
 
 	void testFindBySeries() {
 		when:
-		def persistentLoginSearchPage = browser.to(PersistentLoginSearchPage).tap {
+		to(PersistentLoginSearchPage).with {
 			series = '4'
 			submit()
 		}
+		def searchPage = at(PersistentLoginSearchPage)
 
 		then:
-		browser.at(PersistentLoginSearchPage)
-		persistentLoginSearchPage.assertResults(1, 2, 2)
+		searchPage.assertResults(1, 2, 2)
 
-		assertContentContains('series4')
-		assertContentContains('series14')
-		assertContentContains('persistent_login_test_4')
-		assertContentContains('persistent_login_test_14')
+		pageSource.contains('series4')
+		pageSource.contains('series14')
+		pageSource.contains('persistent_login_test_4')
+		pageSource.contains('persistent_login_test_14')
 	}
 }

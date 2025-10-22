@@ -29,64 +29,64 @@ class RequestmapSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def requestmapSearchPage = browser.to(RequestmapSearchPage)
+		def searchPage = to(RequestmapSearchPage)
 
 		then:
-		requestmapSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		requestmapSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(RequestmapSearchPage)
 
 		then:
-		browser.at(RequestmapSearchPage)
-		requestmapSearchPage.assertResults(1, 3, 3)
-		assertContentContains('/secure/**')
-		assertContentContains('ROLE_ADMIN')
-		assertContentContains('/j_spring_security_switch_user')
-		assertContentContains('ROLE_RUN_AS')
-		assertContentContains('/**')
-		assertContentContains('permitAll')
+		searchPage.assertResults(1, 3, 3)
+		pageSource.contains('/secure/**')
+		pageSource.contains('ROLE_ADMIN')
+		pageSource.contains('/j_spring_security_switch_user')
+		pageSource.contains('ROLE_RUN_AS')
+		pageSource.contains('/**')
+		pageSource.contains('permitAll')
 	}
 
 	void testFindByConfigAttribute() {
 		when:
-		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+		to(RequestmapSearchPage).with {
 			configAttribute = 'run'
 			submit()
 		}
+		def searchPage = at(RequestmapSearchPage)
 
 		then:
-		browser.at(RequestmapSearchPage)
-		requestmapSearchPage.assertResults(1, 1, 1)
-		assertContentContains('/j_spring_security_switch_user')
-		assertContentContains('ROLE_RUN_AS')
+		searchPage.assertResults(1, 1, 1)
+		pageSource.contains('/j_spring_security_switch_user')
+		pageSource.contains('ROLE_RUN_AS')
 	}
 
 	void testFindByUrl() {
 		when:
-		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+		to(RequestmapSearchPage).with {
 			urlPattern = 'secure'
 			submit()
 		}
+		def searchPage = at(RequestmapSearchPage)
 
 		then:
-		browser.at(RequestmapSearchPage)
-		requestmapSearchPage.assertResults(1, 1, 1)
-		assertContentContains('/secure/**')
-		assertContentContains('ROLE_ADMIN')
+		searchPage.assertResults(1, 1, 1)
+		pageSource.contains('/secure/**')
+		pageSource.contains('ROLE_ADMIN')
 	}
 
 	void testUniqueUrl() {
 		when:
-		def requestmapCreatePage = browser.to(RequestmapCreatePage).tap {
+		to(RequestmapCreatePage).with {
 			urlPattern = '/secure/**'
 			configAttribute = 'ROLE_FOO'
 			submit()
 		}
 
 		then:
-		browser.at(RequestmapCreatePage)
-		requestmapCreatePage.assertNotUnique()
+		at(RequestmapCreatePage)
+		pageSource.contains('must be unique')
 	}
 
 	void testCreateAndEdit() {
@@ -95,48 +95,47 @@ class RequestmapSpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def requestmapSearchPage = browser.to(RequestmapSearchPage).tap {
+		to(RequestmapSearchPage).with {
 			urlPattern = newPattern
 			submit()
 		}
+		def searchPage = at(RequestmapSearchPage)
 
 		then:
-		requestmapSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		browser.to(RequestmapCreatePage).with {
+		to(RequestmapCreatePage).with {
 			urlPattern = newPattern
 			configAttribute = 'ROLE_FOO'
 			submit()
 		}
+		def editPage = at(RequestmapEditPage)
 
 		then:
-		def requestmapEditPage = browser.at(RequestmapEditPage)
-		requestmapSearchPage.urlPattern.text == newPattern
+		editPage.urlPattern.text == newPattern
 
 		// edit
 		when:
-		requestmapEditPage.urlPattern = "${newPattern}/new"
-		requestmapEditPage.submit()
+		editPage.urlPattern = "${newPattern}/new"
+		editPage.submit()
+		editPage = at(RequestmapEditPage)
 
 		then:
-		browser.at(RequestmapEditPage)
-		requestmapEditPage.urlPattern.text == "${newPattern}/new"
+		editPage.urlPattern.text == "${newPattern}/new"
 
 		// delete
 		when:
-		requestmapEditPage.delete()
+		editPage.delete()
+		searchPage = at(RequestmapSearchPage)
+
+		and:
+		searchPage.urlPattern = "${newPattern}/new"
+		searchPage.submit()
+		searchPage = at(RequestmapSearchPage)
 
 		then:
-		browser.at(RequestmapSearchPage)
-
-		when:
-		requestmapSearchPage.urlPattern = "${newPattern}/new"
-		requestmapSearchPage.submit()
-
-		then:
-		browser.at(RequestmapSearchPage)
-		requestmapSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

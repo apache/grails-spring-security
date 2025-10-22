@@ -26,8 +26,4 @@ abstract class CreatePage extends AbstractSecurityPage {
 		form { $('createForm') }
 		submitBtn { $('a', id: 'create') }
 	}
-
-	boolean assertNotUnique() {
-		assertContentContains('must be unique')
-	}
 }

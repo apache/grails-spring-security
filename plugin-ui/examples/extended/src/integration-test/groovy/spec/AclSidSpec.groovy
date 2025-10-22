@@ -29,57 +29,56 @@ class AclSidSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def aclSidSearchPage = browser.to(AclSidSearchPage)
+		def searchPage = to(AclSidSearchPage)
 
 		then:
-		aclSidSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		aclSidSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(AclSidSearchPage)
 
 		then:
-		browser.at(AclSidSearchPage)
-		aclSidSearchPage.assertResults(1, 3, 3)
+		searchPage.assertResults(1, 3, 3)
 	}
 
 	void testFindBySid() {
 		when:
-		def aclSidSearchPage = browser.to(AclSidSearchPage).tap {
+		to(AclSidSearchPage).with {
 			search('user')
 		}
+		def searchPage = at(AclSidSearchPage)
 
 		then:
-		browser.at(AclSidSearchPage)
-		aclSidSearchPage.assertResults(1, 2, 2)
-
-		assertContentContains('user1')
-		assertContentContains('user2')
+		searchPage.assertResults(1, 2, 2)
+		pageSource.contains('user1')
+		pageSource.contains('user2')
 	}
 
 	void testFindByPrincipal() {
 		when:
-		def aclSidSearchPage = browser.to(AclSidSearchPage)
+		def searchPage = to(AclSidSearchPage)
 		// Temporary workaround for problem with Geb RadioButtons module
-		//aclSidSearchPage.principal.checked = '1'
-		browser.$('input', type: 'radio', name: 'principal', value: '1').click()
-		aclSidSearchPage.submit()
+		//searchPage.principal.checked = '1'
+		$('input', type: 'radio', name: 'principal', value: '1').click()
+		searchPage.submit()
 
 		then:
-		browser.at(AclSidSearchPage)
-		assertContentContains('user1')
-		assertContentContains('user2')
-		assertContentContains('admin')
+		at(AclSidSearchPage)
+		pageSource.contains('user1')
+		pageSource.contains('user2')
+		pageSource.contains('admin')
 	}
 
 	void testUniqueName() {
 		when:
-		def aclSidCreatePage = browser.to(AclSidCreatePage).tap {
+		to(AclSidCreatePage).with {
 			create('user1', true)
 		}
 
 		then:
-		browser.at(AclSidCreatePage)
-		assertContentContains('must be unique')
+		at(AclSidCreatePage)
+		pageSource.contains('must be unique')
 	}
 
 	void testCreateAndEdit() {
@@ -88,47 +87,46 @@ class AclSidSpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def aclSidSearchPage = browser.to(AclSidSearchPage).tap {
+		to(AclSidSearchPage).with {
 			sid = newName
 			submit()
 		}
+		def searchPage = at(AclSidSearchPage)
 
 		then:
-		aclSidSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		def aclSidCreatePage = browser.to(AclSidCreatePage).tap {
+		to(AclSidCreatePage).tap {
 			create(newName, true)
 		}
+		def editPage = at(AclSidEditPage)
 
 		then:
-		def aclSidEditPage = browser.at(AclSidEditPage)
-		aclSidEditPage.sid.text == newName
-		aclSidEditPage.principal.checked
+		editPage.sid.text == newName
+		editPage.principal.checked
 
 		// edit
 		when:
-		aclSidEditPage.sid = "${newName}_new"
-		aclSidEditPage.submit()
+		editPage.sid = "${newName}_new"
+		editPage.submit()
+		editPage = at(AclSidEditPage)
 
 		then:
-		browser.at(AclSidEditPage)
-		aclSidEditPage.sid.text == "${newName}_new"
+		editPage.sid.text == "${newName}_new"
 
 		// delete
 		when:
-		aclSidEditPage.delete()
+		editPage.delete()
+		searchPage = at(AclSidSearchPage)
+
+		and:
+		searchPage.sid = "${newName}_new"
+		searchPage.submit()
+		searchPage = at(AclSidSearchPage)
 
 		then:
-		browser.at(AclSidSearchPage)
-
-		when:
-		aclSidSearchPage.sid = "${newName}_new"
-		aclSidSearchPage.submit()
-
-		then:
-		browser.at(AclSidSearchPage)
-		aclSidSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

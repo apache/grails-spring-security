@@ -33,15 +33,15 @@ class User2FunctionalSpec extends AbstractSecuritySpec {
 	// user2 has read on 1-5, write on 5
 
 	void setup() {
-		login 'user2'
+		login('user2')
 	}
 
 	void 'view all (1-5)'() {
 		when:
-		go "report/show?number=$i"
+		go("report/show?number=$i")
 
 		then:
-		assertContentContains "report$i"
+		pageSource.contains("report$i")
 
 		where:
 		i << (1..5)
@@ -49,10 +49,10 @@ class User2FunctionalSpec extends AbstractSecuritySpec {
 
 	void 'view all (6-100)'() {
 		when:
-		go "report/show?number=$i"
+		go("report/show?number=$i")
 
 		then:
-		assertContentContains 'Access Denied'
+		pageSource.contains('Access Denied')
 
 		where:
 		i << (6..100)
@@ -61,95 +61,95 @@ class User2FunctionalSpec extends AbstractSecuritySpec {
 	void 'edit report 11'() {
 
 		when:
-		go 'report/edit?number=11'
+		go('report/edit?number=11')
 
 		then:
-		assertContentContains 'Access Denied'
+		pageSource.contains('Access Denied')
 	}
 
 	void 'delete report 1'() {
 		when:
-		go 'report/delete?number=1'
+		go('report/delete?number=1')
 
 		then:
-		assertContentContains 'Access Denied'
+		pageSource.contains('Access Denied')
 	}
 
 	void 'grant edit 2'() {
 		when:
-		go 'report/grant?number=2'
+		go('report/grant?number=2')
+		def grantPage = at(ReportGrantPage)
 
 		then:
-		at ReportGrantPage
-		assertContentContains 'Grant permission for report2'
+		pageSource.contains('Grant permission for report2')
 
 		when:
 		recipient = 'user1'
 		permission = BasePermission.WRITE.mask.toString()
-		grantButton.click()
+		grantPage.grantButton.click()
 
 		then:
-		assertContentContains 'Access Denied'
+		pageSource.contains('Access Denied')
 	}
 
 	void 'edit report 5'() {
 		when:
-		go 'report/edit?number=5'
+		go('report/edit?number=5')
+		def editPage = at(EditReportPage)
 
 		then:
-		at EditReportPage
 		$('form').name == 'report5'
 
 		when:
 		name = 'report5_new'
-		updateButton.click()
+		editPage.updateButton.click()
 
 		then:
-		at ShowReportPage
-		assertContentContains 'report5_new'
+		at(ShowReportPage)
+		pageSource.contains('report5_new')
 	}
 
 	void 'list is filtered'() {
 
 		when:
-		go 'report/list'
+		go('report/list')
 
 		then:
-		assertContentContains 'report5'
-		assertContentDoesNotContain 'report6'
+		pageSource.contains('report5')
+		!pageSource.contains('report6')
 
 		when:
-		go 'report/list?offset=80&max=10'
+		go('report/list?offset=80&max=10')
 
 		then:
-		assertContentContains 'Next'
-		assertContentDoesNotContain 'report85'
+		pageSource.contains('Next')
+		!pageSource.contains('report85')
 	}
 
 	void 'check tags'() {
 		when:
-		go 'tagLibTest/test'
+		go('tagLibTest/test')
 
 		then:
-		assertContentContains 'test 1 true 1'
-		assertContentContains 'test 2 true 1'
-		assertContentContains 'test 3 true 1'
-		assertContentContains 'test 4 true 1'
-		assertContentContains 'test 5 true 1'
-		assertContentContains 'test 6 true 1'
+		pageSource.contains('test 1 true 1')
+		pageSource.contains('test 2 true 1')
+		pageSource.contains('test 3 true 1')
+		pageSource.contains('test 4 true 1')
+		pageSource.contains('test 5 true 1')
+		pageSource.contains('test 6 true 1')
 
-		assertContentContains 'test 1 false 13'
-		assertContentContains 'test 2 false 13'
-		assertContentContains 'test 3 false 13'
-		assertContentContains 'test 4 false 13'
-		assertContentContains 'test 5 false 13'
-		assertContentContains 'test 6 false 13'
+		pageSource.contains('test 1 false 13')
+		pageSource.contains('test 2 false 13')
+		pageSource.contains('test 3 false 13')
+		pageSource.contains('test 4 false 13')
+		pageSource.contains('test 5 false 13')
+		pageSource.contains('test 6 false 13')
 
-		assertContentContains 'test 1 false 80'
-		assertContentContains 'test 2 false 80'
-		assertContentContains 'test 3 false 80'
-		assertContentContains 'test 4 false 80'
-		assertContentContains 'test 5 false 80'
-		assertContentContains 'test 6 false 80'
+		pageSource.contains('test 1 false 80')
+		pageSource.contains('test 2 false 80')
+		pageSource.contains('test 3 false 80')
+		pageSource.contains('test 4 false 80')
+		pageSource.contains('test 5 false 80')
+		pageSource.contains('test 6 false 80')
 	}
 }

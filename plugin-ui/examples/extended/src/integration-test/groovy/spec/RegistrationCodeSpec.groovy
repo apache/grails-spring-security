@@ -28,76 +28,76 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage)
+		def searchPage = to(RegistrationCodeSearchPage)
 
 		then:
-		registrationCodeSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		registrationCodeSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(RegistrationCodeSearchPage)
 
 		then:
-		browser.at(RegistrationCodeSearchPage)
-		registrationCodeSearchPage.assertResults(1, 10, 14)
-		assertContentContains('registration_test_2')
-		assertContentContains('0a154624f36d42e4aa68991a9477bd04')
+		searchPage.assertResults(1, 10, 14)
+		pageSource.contains('registration_test_2')
+		pageSource.contains('0a154624f36d42e4aa68991a9477bd04')
 	}
 
 	void testFindByToken() {
 		when:
-		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage).tap {
+		to(RegistrationCodeSearchPage).with {
 			token = '4a7f88afec3746f7aab2f5d0d8df6d8e'
 			submit()
 		}
+		def searchPage = at(RegistrationCodeSearchPage)
 
 		then:
-		browser.at(RegistrationCodeSearchPage)
-		registrationCodeSearchPage.assertResults(1, 1, 1)
-		assertContentContains('registration_test_1')
-		assertContentContains('4a7f88afec3746f7aab2f5d0d8df6d8e')
+		searchPage.assertResults(1, 1, 1)
+		pageSource.contains('registration_test_1')
+		pageSource.contains('4a7f88afec3746f7aab2f5d0d8df6d8e')
 	}
 
 	void testFindByUsername() {
 		when:
-		def registrationCodeSearchPage = browser.to(RegistrationCodeSearchPage).tap {
+		to(RegistrationCodeSearchPage).tap {
 			username = 'registration_test_3'
 			submit()
 		}
+		def searchPage = at(RegistrationCodeSearchPage)
 
 		then:
-		browser.at(RegistrationCodeSearchPage)
-		registrationCodeSearchPage.assertResults(1, 5, 5)
-		assertContentContains('registration_test_3')
-		assertContentContains('89f9bbc658b14808ae4c77c6e17e551a')
+		searchPage.assertResults(1, 5, 5)
+		pageSource.contains('registration_test_3')
+		pageSource.contains('89f9bbc658b14808ae4c77c6e17e551a')
 	}
 
 	void testEdit() {
 		when:
-		browser.go('registrationCode/edit/4')
+		go('registrationCode/edit/4')
+		def editPage = at(RegistrationCodeEditPage)
 
 		then:
-		def registrationCodeEditPage = browser.at(RegistrationCodeEditPage)
-		registrationCodeEditPage.username.text == 'registration_test_1'
-		registrationCodeEditPage.token.text == 'a50e061e0e2f424fb7fbc2ff3dae597d'
+		editPage.username.text == 'registration_test_1'
+		editPage.token.text == 'a50e061e0e2f424fb7fbc2ff3dae597d'
 
 		when:
-		registrationCodeEditPage.with {
+		editPage.with {
 			username = 'new_user'
 			token = 'new_token'
 			submit()
 		}
+		editPage = at(RegistrationCodeEditPage)
 
 		then:
-		browser.at(RegistrationCodeEditPage)
-		registrationCodeEditPage.username.text == 'new_user'
-		registrationCodeEditPage.token.text == 'new_token'
+		editPage.username.text == 'new_user'
+		editPage.token.text == 'new_token'
 
 		when:
-		browser.go('registrationCode/edit/4')
+		go('registrationCode/edit/4')
+		editPage = at(RegistrationCodeEditPage)
 
 		then:
-		browser.at(RegistrationCodeEditPage)
-		registrationCodeEditPage.username.text == 'new_user'
-		registrationCodeEditPage.token.text == 'new_token'
+		editPage.username.text == 'new_user'
+		editPage.token.text == 'new_token'
 	}
 }

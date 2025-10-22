@@ -24,6 +24,7 @@ import page.EditPage
 
 class AclObjectIdentityEditPage extends EditPage {
 
+	static at = { title == 'Edit AclObjectIdentity' }
 	static url = 'aclObjectIdentity/edit'
 	static typeName = { 'AclObjectIdentity' }
 	static content = {

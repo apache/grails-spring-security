@@ -25,29 +25,27 @@ import grails.testing.mixin.integration.Integration
 @Integration(applicationClass = Application)
 class SecuredControllerSpec extends ContainerGebSpec {
 
-    def "test RoleHierarchyEntry lifecycle"() {
+    def 'test RoleHierarchyEntry lifecycle'() {
         when:
-        to SecuredPage
+        via(SecuredPage)
+        def loginPage = at(LoginPage)
+
+        and:
+        loginPage.login('sherlock', 'elementary')
 
         then:
-        at LoginPage
+        pageSource.contains('Sorry, you\'re not authorized to view this page.')
 
         when:
-        login('sherlock', 'elementary')
+        go('secured/grantRoleHierarchyEntry')
 
         then:
-        $().text().contains 'Sorry, you\'re not authorized to view this page.'
+        pageSource.contains('OK')
 
         when:
-        go 'secured/grantRoleHierarchyEntry'
+        to(SecuredPage)
 
         then:
-        browser.driver.pageSource.contains 'OK'
-
-        when:
-        to SecuredPage
-
-        then:
-        browser.driver.pageSource.contains 'you have ROLE_ADMIN'
+        pageSource.contains('you have ROLE_ADMIN')
     }
 }
