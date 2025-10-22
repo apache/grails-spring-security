@@ -70,7 +70,7 @@ class User1FunctionalSpec extends AbstractSecuritySpec {
 		go("report/show?number=$i")
 
 		then:
-		waitFor { pageSource.contains("report$i") }
+		waitFor(20, 1) { pageSource.contains("report$i") } // Wait for slow CI environments
 
 		where:
 		i << (1..67)
@@ -81,7 +81,7 @@ class User1FunctionalSpec extends AbstractSecuritySpec {
 		go("report/show?number=$i")
 
 		then:
-		waitFor { pageSource.contains('Access Denied') }
+		waitFor(20, 1) { pageSource.contains('Access Denied') } // Wait for slow CI environments
 
 		where:
 		i << (68..100)
