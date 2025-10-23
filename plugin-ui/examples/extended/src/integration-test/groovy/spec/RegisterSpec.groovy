@@ -35,14 +35,15 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 	void testRegisterValidation() {
 		when:
-		def registerPage = browser.to(RegisterPage).tap {
+		to(RegisterPage).with {
 			submit()
 		}
+		def registerPage = at(RegisterPage)
 
 		then:
-		assertContentContains('Username is required')
-		assertContentContains('Email is required')
-		assertContentContains('Password is required')
+		pageSource.contains('Username is required')
+		pageSource.contains('Email is required')
+		pageSource.contains('Password is required')
 
 		when:
 		registerPage.with {
@@ -52,12 +53,13 @@ class RegisterSpec extends AbstractSecuritySpec {
 			password2 = 'mnopqrstuwzy'
 			submit()
 		}
+		registerPage = at(RegisterPage)
 
 		then:
-		assertContentContains('The username is taken')
-		assertContentContains('Please provide a valid email address')
-		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
-		assertContentContains('Passwords do not match')
+		pageSource.contains('The username is taken')
+		pageSource.contains('Please provide a valid email address')
+		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		pageSource.contains('Passwords do not match')
 
 		when:
 		registerPage.with {
@@ -69,17 +71,18 @@ class RegisterSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
+		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
 	}
 
 	void testForgotPasswordValidation() {
 		when:
-		def forgotPasswordPage = browser.to(ForgotPasswordPage).tap {
+		to(ForgotPasswordPage).with {
 			submit()
 		}
+		def forgotPasswordPage = at(ForgotPasswordPage)
 
 		then:
-		assertContentContains('Please enter your username')
+		pageSource.contains('Please enter your username')
 
 		when:
 		forgotPasswordPage.with {
@@ -88,7 +91,8 @@ class RegisterSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		assertContentContains('No user was found with that username')
+		at(ForgotPasswordPage)
+		pageSource.contains('No user was found with that username')
 	}
 
 	void testRegisterAndForgotPassword() {
@@ -96,18 +100,13 @@ class RegisterSpec extends AbstractSecuritySpec {
 		String un = "test_user_abcdef${System.currentTimeMillis()}"
 
 		when:
-		browser.go('register/resetPassword?t=123')
+		go('register/resetPassword?t=123')
 
 		then:
-		assertHtmlContains('Sorry, we have no record of that request, or it has expired')
+		pageSource.contains('Sorry, we have no record of that request, or it has expired')
 
 		when:
-		def registerPage = browser.to(RegisterPage)
-
-		then:
-		browser.at(RegisterPage)
-
-		when:
+		def registerPage = to(RegisterPage)
 		registerPage.with {
 			username = un
 			email = "$un@abcdef.com"
@@ -117,45 +116,43 @@ class RegisterSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		assertHtmlContains('Your registration is complete')
+		waitFor { pageSource.contains('Your registration is complete') }
 
 		when:
-		browser.to(ProfileCreatePage).with {
+		to(ProfileCreatePage).with {
 			create(un)
 		}
+		def listPage = at(ProfileListPage)
 
 		then:
-		def profileListPage = browser.at(ProfileListPage)
-		assertHtmlContains('created')
+		pageSource.contains('created')
 
 		when:
-		profileListPage.editProfile(un)
+		listPage.editProfile(un)
+		def profileEditPage = at(ProfileEditPage)
 
-		then:
-		def profileEditPage = browser.at(ProfileEditPage)
-
-		when:
+		and:
 		profileEditPage.updateProfile(un)
 
 		then:
-		browser.at(ProfileListPage)
-		assertHtmlContains('updated')
+		at(ProfileListPage)
+		pageSource.contains('updated')
 
 		when:
 		logout()
-		browser.go('')
+		go('')
 
 		then:
-		assertContentContains('Log in')
+		pageSource.contains('Log in')
 
 		when:
-		browser.to(ForgotPasswordPage).with {
+		to(ForgotPasswordPage).with {
 			username = un
 			submit()
 		}
 
 		then:
-		def securityQuestionPage = browser.at(SecurityQuestionsPage)
+		def securityQuestionPage = at(SecurityQuestionsPage)
 
 		when:
 		securityQuestionPage.with {
@@ -163,50 +160,45 @@ class RegisterSpec extends AbstractSecuritySpec {
 			question2 = '12345'
 			submit()
 		}
-
-		then:
 		def resetPasswordPage = browser.at(ResetPasswordPage)
 
-		when:
+		and:
 		resetPasswordPage.submit()
 
 		then:
-		assertContentContains('Password is required')
+		pageSource.contains('Password is required')
 
 		when:
 		resetPasswordPage.enterNewPassword('abcdefghijk','mnopqrstuwzy')
 
 		then:
-		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
-		assertContentContains('Passwords do not match')
+		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		pageSource.contains('Passwords do not match')
 
 		when:
 		resetPasswordPage.enterNewPassword('aaaaaaaa', 'aaaaaaaa')
 
 		then:
-		assertContentContains('Password must have at least one letter, number, and special character: !@#$%^&')
+		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
 
 		when:
 		resetPasswordPage.enterNewPassword('aaaaaa1#', 'aaaaaa1#')
 
 		then:
-		assertHtmlContains('Your password was successfully changed')
+		waitFor { pageSource.contains('Your password was successfully changed') }
 
 		when:
 		logout()
-		browser.go('')
+		go('')
 
 		then:
-		assertContentContains('Log in')
+		pageSource.contains('Log in')
 
 		when:
-		browser.to(ProfileListPage)
+		to(ProfileListPage)
 
-		then:
-		browser.at(ProfileListPage)
-
-		when:
-		profileListPage.editProfile(un)
+		and:
+		listPage.editProfile(un)
 
 		then:
 		def profileEditPage2 = browser.at(ProfileEditPage)
@@ -215,25 +207,25 @@ class RegisterSpec extends AbstractSecuritySpec {
 		profileEditPage2.deleteProfile()
 
 		then:
-		assertHtmlContains('deleted')
+		waitFor { pageSource.contains('deleted') }
 
 		when:
-		browser.go("user/edit?username=$un")
+		go("user/edit?username=$un")
 
 		then:
-		def userEditPage = browser.at(UserEditPage)
+		def userEditPage = at(UserEditPage)
 		userEditPage.username.text == un
 
 		when:
 		userEditPage.delete()
 
 		then:
-		browser.at(UserSearchPage)
+		at(UserSearchPage)
 
 		when:
-		browser.go("user/edit?username=$un")
+		go("user/edit?username=$un")
 
 		then:
-		assertHtmlContains('User not found')
+		pageSource.contains('User not found')
 	}
 }

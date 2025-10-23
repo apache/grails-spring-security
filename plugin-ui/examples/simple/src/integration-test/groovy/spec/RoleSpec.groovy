@@ -29,43 +29,42 @@ class RoleSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def roleSearchPage = browser.to(RoleSearchPage)
+		def searchPage = to(RoleSearchPage)
 
 		then:
-		roleSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		roleSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(RoleSearchPage)
 
 		then:
-		browser.at(RoleSearchPage)
-		roleSearchPage.assertResults(1, 10, 12)
-		assertContentContains('ROLE_COFFEE')
+		searchPage.assertResults(1, 10, 12)
+		pageSource.contains('ROLE_COFFEE')
 	}
 
 	void testFindByAuthority() {
 		when:
-		def roleSearchPage = browser.to(RoleSearchPage).tap {
+		to(RoleSearchPage).with {
 			search('ad')
 		}
+		def searchPage = at(RoleSearchPage)
 
 		then:
-		browser.at(RoleSearchPage)
-		roleSearchPage.assertResults(1, 2, 2)
-
-		assertContentContains('ROLE_ADMIN')
-		assertContentContains('ROLE_INSTEAD')
+		searchPage.assertResults(1, 2, 2)
+		pageSource.contains('ROLE_ADMIN')
+		pageSource.contains('ROLE_INSTEAD')
 	}
 
 	void testUniqueName() {
 		when:
-		def roleCreatePage = browser.to(RoleCreatePage).tap {
+		to(RoleCreatePage).with {
 			create('ROLE_ADMIN')
 		}
+		def createPage = at(RoleCreatePage)
 
 		then:
-		browser.at(RoleCreatePage)
-		roleCreatePage.assertNotUnique()
+		createPage.assertNotUnique()
 	}
 
 	void testCreateAndEdit() {
@@ -74,43 +73,42 @@ class RoleSpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def roleSearchPage = browser.to(RoleSearchPage).tap {
+		to(RoleSearchPage).with {
 			search(newName)
 		}
+		def searchPage = at(RoleSearchPage)
 
 		then:
-		roleSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		def roleCreatePage = browser.to(RoleCreatePage).tap {
+		to(RoleCreatePage).with {
 			create(newName)
 		}
 
 		then:
-		def roleEditPage = browser.at(RoleEditPage)
-		roleEditPage.authority.text == newName
+		def editPage = at(RoleEditPage)
+		editPage.authority.text == newName
 
 		// edit
 		when:
-		roleEditPage.update("${newName}_new")
+		editPage.update("${newName}_new")
+		editPage = at(RoleEditPage)
 
 		then:
-		browser.at(RoleEditPage)
-		roleEditPage.authority.text == "${newName}_new"
+		editPage.authority.text == "${newName}_new"
 
 		// delete
 		when:
-		roleEditPage.delete()
+		editPage.delete()
+		searchPage = at(RoleSearchPage)
+
+		and:
+		searchPage.search("${newName}_new")
+		searchPage = at(RoleSearchPage)
 
 		then:
-		browser.at(RoleSearchPage)
-
-		when:
-		roleSearchPage.search("${newName}_new")
-
-		then:
-		browser.at(RoleSearchPage)
-		roleSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

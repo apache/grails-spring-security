@@ -28,7 +28,7 @@ import grails.gorm.transactions.Rollback
 class SecuredControllerSpec extends ContainerGebSpec {
 
     def setup() {
-        if ( !User.findByUsername('sherlock') ) {
+        if (!User.findByUsername('sherlock')) {
             final boolean flush = true
             final boolean failOnError = true
 
@@ -51,37 +51,31 @@ class SecuredControllerSpec extends ContainerGebSpec {
         }
     }
 
-    def "test login as sherlock, sherlock belongs to detective groups. All detectives have the role ADMIN"() {
-
+    def 'test login as sherlock, sherlock belongs to detective groups. All detectives have the role ADMIN'() {
         when:
-        to SecuredPage
+        via(SecuredPage)
+        def loginPage = at(LoginPage)
+
+        and:
+        loginPage.login('sherlock', 'elementary')
 
         then:
-        at LoginPage
-
-        when:
-        login('sherlock', 'elementary')
-
-        then:
-        browser.driver.pageSource.contains 'you have ROLE_ADMIN'
+        pageSource.contains('you have ROLE_ADMIN')
 
         and: 'User has not role assigned to him directly'
         UserRole.count() == 0
     }
 
-    def "test login as watson, watson belongs to detective groups. All detectives have the role ADMIN"() {
-
+    def 'test login as watson, watson belongs to detective groups. All detectives have the role ADMIN'() {
         when:
-        to SecuredPage
+        via(SecuredPage)
+        def loginPage = at(LoginPage)
+
+        and:
+        loginPage.login('watson', 'houndsofbaskerville')
 
         then:
-        at LoginPage
-
-        when:
-        login('watson', 'houndsofbaskerville')
-
-        then:
-        browser.driver.pageSource.contains 'you have ROLE_ADMIN'
+        driver.pageSource.contains('you have ROLE_ADMIN')
 
         and: 'User has not role assigned to him directly'
         UserRole.count() == 0

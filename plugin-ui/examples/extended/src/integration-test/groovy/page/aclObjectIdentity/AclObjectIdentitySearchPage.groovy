@@ -25,6 +25,7 @@ import page.SearchPage
 
 class AclObjectIdentitySearchPage extends SearchPage {
 
+	static at = { title == 'AclObjectIdentity Search' }
 	static url = 'aclObjectIdentity/search'
 	static typeName = { 'AclObjectIdentity' }
 	static content = {

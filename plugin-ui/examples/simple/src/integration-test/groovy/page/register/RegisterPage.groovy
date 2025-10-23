@@ -26,11 +26,7 @@ import page.AbstractSecurityPage
 class RegisterPage extends AbstractSecurityPage {
 
 	static url = 'register'
-	static at = {
-		waitFor {
-			title == 'Register'
-		}
-	}
+	static at = { title == 'Register' }
 	static content = {
 		form { $('registerForm') }
 		username { $(name: 'username').module(TextInput) }

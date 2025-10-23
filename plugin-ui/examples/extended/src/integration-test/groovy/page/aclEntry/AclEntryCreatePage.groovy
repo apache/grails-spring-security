@@ -26,6 +26,7 @@ import page.CreatePage
 
 class AclEntryCreatePage extends CreatePage {
 
+	static at = { title == 'Create AclEntry' }
 	static url = 'aclEntry/create'
 	static typeName = { 'AclEntry' }
 	static content = {

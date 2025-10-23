@@ -26,34 +26,33 @@ class ExtendedMenuSpec extends AbstractSecuritySpec {
 
 	void testIndex() {
 		when:
-		browser.go('')
-		String html = pageSource
+		go('')
 
 		then:
-		html.contains 'Spring Security Management Console'
+		pageSource.contains('Spring Security Management Console')
 
-		html.contains 'Users'
+		pageSource.contains('Users')
 
-		html.contains 'Roles'
+		pageSource.contains('Roles')
 
-		html.contains 'Requestmaps'
+		pageSource.contains('Requestmaps')
 
-		html.contains 'Registration Code'
+		pageSource.contains('Registration Code')
 
-		html.contains 'Configuration'
-		html.contains 'Mappings'
-		html.contains 'Current Authentication'
-		html.contains 'User Cache'
-		html.contains 'Filter Chains'
-		html.contains 'Logout Handlers'
-		html.contains 'Voters'
-		html.contains 'Authentication Providers'
-		html.contains 'Profile Questions'
-		html.contains 'Persistent Logins'
+		pageSource.contains('Configuration')
+		pageSource.contains('Mappings')
+		pageSource.contains('Current Authentication')
+		pageSource.contains('User Cache')
+		pageSource.contains('Filter Chains')
+		pageSource.contains('Logout Handlers')
+		pageSource.contains('Voters')
+		pageSource.contains('Authentication Providers')
+		pageSource.contains('Profile Questions')
+		pageSource.contains('Persistent Logins')
 
-		html.contains 'ACL'
-		html.contains 'SID'
-		html.contains 'OID'
-		html.contains 'Entry'
+		pageSource.contains('ACL')
+		pageSource.contains('SID')
+		pageSource.contains('OID')
+		pageSource.contains('Entry')
 	}
 }

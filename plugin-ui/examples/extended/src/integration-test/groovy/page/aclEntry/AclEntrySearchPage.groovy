@@ -24,6 +24,7 @@ import page.SearchPage
 
 class AclEntrySearchPage extends SearchPage {
 
+	static at = { title == 'AclEntry Search' }
 	static url = 'aclEntry/search'
 	static typeName = { 'AclEntry' }
 	static content = {

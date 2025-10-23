@@ -29,56 +29,56 @@ class AclObjectIdentitySpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage)
+		def searchPage = to(AclObjectIdentitySearchPage)
 
 		then:
-		aclObjectIdentitySearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		aclObjectIdentitySearchPage.submit()
+		searchPage.submit()
+		searchPage = at(AclObjectIdentitySearchPage)
 
 		then:
-		browser.at(AclObjectIdentitySearchPage)
-		aclObjectIdentitySearchPage.assertResults(1, 10, 100)
+		searchPage.assertResults(1, 10, 100)
 	}
 
 	void testFindById() {
 		when:
-		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+		to(AclObjectIdentitySearchPage).with {
 			objectId = '10'
 			submit()
 		}
+		def searchPage = at(AclObjectIdentitySearchPage)
 
 		then:
-		browser.at(AclObjectIdentitySearchPage)
-		aclObjectIdentitySearchPage.assertResults(1, 1, 1)
-		assertContentContains('test.Report')
+		searchPage.assertResults(1, 1, 1)
+		pageSource.contains('test.Report')
 	}
 
 	void testFindByOwner() {
 		when:
-		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+		to(AclObjectIdentitySearchPage).with {
 			ownerId = '1'
 			submit()
 		}
+		def searchPage = at(AclObjectIdentitySearchPage)
 
 		then:
-		browser.at(AclObjectIdentitySearchPage)
-		aclObjectIdentitySearchPage.assertResults(1, 10, 98)
+		searchPage.assertResults(1, 10, 98)
 	}
 
 	void testUniqueId() {
 		when:
-		def aclObjectIdentityCreatePage = browser.to(AclObjectIdentityCreatePage).tap {
+		to(AclObjectIdentityCreatePage).with {
 			aclClass.selected = '1'
 			objectId = 1
 			ownerId.selected = '2'
 			submit()
 		}
+		at(AclObjectIdentityCreatePage)
 
 		then:
-		browser.at(AclObjectIdentityCreatePage)
-		aclObjectIdentityCreatePage.assertNotUnique()
+		pageSource.contains('must be unique')
 	}
 
 	void testCreateAndEdit() {
@@ -87,49 +87,47 @@ class AclObjectIdentitySpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def aclObjectIdentitySearchPage = browser.to(AclObjectIdentitySearchPage).tap {
+		to(AclObjectIdentitySearchPage).with {
 			objectId = newId
 			submit()
 		}
+		def searchPage = at(AclObjectIdentitySearchPage)
 
 		then:
-		aclObjectIdentitySearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		browser.to(AclObjectIdentityCreatePage).with {
+		to(AclObjectIdentityCreatePage).with {
 			aclClass.selected = '1'
 			objectId = newId
 			ownerId.selected = '2'
 			submit()
 		}
+		def editPage = at(AclObjectIdentityEditPage)
 
 		then:
-		def aclObjectIdentityEditPage = browser.at(AclObjectIdentityEditPage)
-		aclObjectIdentityEditPage.objectId.text == newId
+		editPage.objectId.text == newId
 
 		// edit
 		when:
-		aclObjectIdentityEditPage.objectId = (newId.toInteger() + 1).toString()
-		aclObjectIdentityEditPage.submit()
+		editPage.objectId = (newId.toInteger() + 1).toString()
+		editPage.submit()
+		editPage = at(AclObjectIdentityEditPage)
 
 		then:
-		browser.at(AclObjectIdentityEditPage)
-		aclObjectIdentityEditPage.objectId.text == (newId.toInteger() + 1).toString()
+		editPage.objectId.text == (newId.toInteger() + 1).toString()
 
 		// delete
 		when:
-		aclObjectIdentityEditPage.delete()
+		editPage.delete()
+		at(AclObjectIdentitySearchPage).with {
+			objectId = (newId.toInteger() + 1).toString()
+			submit()
+		}
+		searchPage = at(AclObjectIdentitySearchPage)
 
 		then:
-		browser.at(AclObjectIdentitySearchPage)
-
-		when:
-		aclObjectIdentitySearchPage.objectId = (newId.toInteger() + 1).toString()
-		aclObjectIdentitySearchPage.submit()
-
-		then:
-		browser.at(AclObjectIdentitySearchPage)
-		aclObjectIdentitySearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

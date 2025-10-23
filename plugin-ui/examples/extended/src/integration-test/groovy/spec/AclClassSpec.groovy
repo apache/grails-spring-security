@@ -29,40 +29,38 @@ class AclClassSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def aclClassSearchPage = browser.to(AclClassSearchPage)
+		def searchPage = to(AclClassSearchPage)
 
 		then:
-		aclClassSearchPage.assertNotSearched()
+		searchPage.assertNotSearched()
 
 		when:
-		aclClassSearchPage.submit()
+		searchPage.submit()
+		searchPage = at(AclClassSearchPage)
 
 		then:
-		browser.at(AclClassSearchPage)
-		aclClassSearchPage.assertResults(1, 1, 1)
+		searchPage.assertResults(1, 1, 1)
 	}
 
 	void testFindByName() {
 		when:
-		def aclClassSearchPage = browser.to(AclClassSearchPage).tap {
+		def searchPage = to(AclClassSearchPage).tap {
 			search('report')
 		}
 
 		then:
-		browser.at(AclClassSearchPage)
-		aclClassSearchPage.assertResults(1, 1, 1)
-		assertContentContains('test.Report')
+		searchPage.assertResults(1, 1, 1)
+		pageSource.contains('test.Report')
 	}
 
 	void testUniqueName() {
 		when:
-		def aclClassCreatePage = browser.to(AclClassCreatePage).tap {
+		to(AclClassCreatePage).tap {
 			create('test.Report')
 		}
 
 		then:
-		browser.at(AclClassCreatePage)
-		aclClassCreatePage.assertNotUnique()
+		pageSource.contains('must be unique')
 	}
 
 	void testCreateAndEdit() {
@@ -71,44 +69,39 @@ class AclClassSpec extends AbstractSecuritySpec {
 
 		// make sure it doesn't exist
 		when:
-		def aclClassSearchPage = browser.to(AclClassSearchPage).tap {
+		def searchPage = to(AclClassSearchPage).tap {
 			search(newName)
 		}
 
 		then:
-		browser.at(AclClassSearchPage)
-		aclClassSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 
 		// create
 		when:
-		browser.to(AclClassCreatePage).with {
+		to(AclClassCreatePage).with {
 			create(newName)
 		}
+		def editPage = at(AclClassEditPage)
 
 		then:
-		def aclClassEditPage = browser.at(AclClassEditPage)
-		aclClassEditPage.className.text == newName
+		editPage.className.text == newName
 
 		// edit
 		when:
-		aclClassEditPage.update("${newName}_new")
+		editPage.update("${newName}_new")
+		editPage = at(AclClassEditPage)
 
 		then:
-		browser.at(AclClassEditPage)
-		aclClassEditPage.className.text == "${newName}_new"
+		editPage.className.text == "${newName}_new"
 
 		// delete
 		when:
-		aclClassEditPage.delete()
+		editPage.delete()
+		searchPage = at(AclClassSearchPage)
+		searchPage.search("${newName}_new")
+		searchPage = at(AclClassSearchPage)
 
 		then:
-		browser.at(AclClassSearchPage)
-
-		when:
-		aclClassSearchPage.search("${newName}_new")
-
-		then:
-		browser.at(AclClassSearchPage)
-		aclClassSearchPage.assertNoResults()
+		searchPage.assertNoResults()
 	}
 }

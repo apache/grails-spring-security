@@ -36,43 +36,42 @@ class AdminFunctionalSpec extends AbstractSecuritySpec {
 	// admin has admin on all
 
 	void setup() {
-		login 'admin'
+		login('admin')
 	}
 
 	void 'check tags'() {
 		when:
-		go 'tagLibTest/test'
+		go('tagLibTest/test')
 
 		then:
-		assertContentContains 'test 1 true 1'
-		assertContentContains 'test 2 true 1'
-		assertContentContains 'test 3 true 1'
-		assertContentContains 'test 4 true 1'
-		assertContentContains 'test 5 true 1'
-		assertContentContains 'test 6 true 1'
+		pageSource.contains('test 1 true 1')
+		pageSource.contains('test 2 true 1')
+		pageSource.contains('test 3 true 1')
+		pageSource.contains('test 4 true 1')
+		pageSource.contains('test 5 true 1')
+		pageSource.contains('test 6 true 1')
 
-		assertContentContains 'test 1 true 13'
-		assertContentContains 'test 2 true 13'
-		assertContentContains 'test 3 true 13'
-		assertContentContains 'test 4 true 13'
-		assertContentContains 'test 5 true 13'
-		assertContentContains 'test 6 true 13'
+		pageSource.contains('test 1 true 13')
+		pageSource.contains('test 2 true 13')
+		pageSource.contains('test 3 true 13')
+		pageSource.contains('test 4 true 13')
+		pageSource.contains('test 5 true 13')
+		pageSource.contains('test 6 true 13')
 
-		assertContentContains 'test 1 true 80'
-		assertContentContains 'test 2 true 80'
-		assertContentContains 'test 3 true 80'
-		assertContentContains 'test 4 true 80'
-		assertContentContains 'test 5 true 80'
-		assertContentContains 'test 6 true 80'
+		pageSource.contains('test 1 true 80')
+		pageSource.contains('test 2 true 80')
+		pageSource.contains('test 3 true 80')
+		pageSource.contains('test 4 true 80')
+		pageSource.contains('test 5 true 80')
+		pageSource.contains('test 6 true 80')
 	}
 
 	void 'view all'() {
 		when:
-		go "report/show?number=$i"
-		waitFor { title == 'Show Report' }
+		go("report/show?number=$i")
 
 		then:
-		assertContentContains "report$i"
+		pageSource.contains("report$i")
 
 		where:
 		i << (1..100)
@@ -81,10 +80,10 @@ class AdminFunctionalSpec extends AbstractSecuritySpec {
 	void 'edit report 15'() {
 
 		when:
-		go 'report/edit?number=15'
+		go('report/edit?number=15')
 
 		then:
-		at EditReportPage
+		at(EditReportPage)
 		$('form').name == 'report15'
 
 		when:
@@ -92,54 +91,54 @@ class AdminFunctionalSpec extends AbstractSecuritySpec {
 		updateButton.click()
 
 		then:
-		at ShowReportPage
-		assertContentContains 'report15_new'
+		at(ShowReportPage)
+		pageSource.contains('report15_new')
 	}
 
 	void 'delete report 15'() {
 		when:
-		go 'report/delete?number=15'
+		go('report/delete?number=15')
+		def listReportPage = at(ListReportPage)
 
 		then:
-		at ListReportPage
 		message == 'Report 15 deleted'
-		reportRows.size() == 99
+		listReportPage.reportRows.size() == 99
 	}
 
 	void 'grant edit 16'() {
 		when:
-		go 'report/grant?number=16'
+		go('report/grant?number=16')
+		def reportGrantPage = at(ReportGrantPage)
 
 		then:
-		at ReportGrantPage
-		assertContentContains 'Grant permission for report16'
+		pageSource.contains('Grant permission for report16')
 
 		when:
 		recipient = 'user2'
 		permission = BasePermission.READ.mask.toString()
-		grantButton.click()
+		reportGrantPage.grantButton.click()
+		at(ShowReportPage)
 
 		then:
-		at ShowReportPage
-		assertContentContains "Permission $BasePermission.READ.mask granted on Report 16 to user2"
+		pageSource.contains("Permission $BasePermission.READ.mask granted on Report 16 to user2")
 
 		// login as user2 and verify the grant
 		when:
-		go 'logout'
+		go('logout')
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		login 'user2'
+		login('user2')
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go 'report/show?number=16'
+		go('report/show?number=16')
 
 		then:
-		assertContentContains 'report16'
+		pageSource.contains('report16')
 	}
 }

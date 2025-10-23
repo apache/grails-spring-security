@@ -31,65 +31,65 @@ class Person1FunctionalSpec extends AbstractSecurityFunctionalSpec {
 
 	void 'secured urls are not visible without auth'() {
 		when:
-		to SecureAdminPage
+		to(SecureAdminPage)
 
 		then:
-		assertContentContains 'Please Login'
+		pageSource.contains('Please Login')
 
 		when:
-		to SecureUserPage
+		to(SecureUserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		pageSource.contains('Please Login')
 
 		when:
-		to SecureSuperuserPage
+		to(SecureSuperuserPage)
 
 		then:
-		assertContentContains 'Please Login'
+		pageSource.contains('Please Login')
 
 		when:
-		to SecureFooBarPage
+		to(SecureFooBarPage)
 
 		then:
-		assertContentContains 'Please Login'
+		pageSource.contains('Please Login')
 	}
 
 	void 'secured urls are visible when authenticated'() {
 		when:
-		login 'person1', 'password1'
+		login('person1', 'password1')
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		to SecureUserPage
+		to(SecureUserPage)
 
 		then:
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_FOO_BAR'
-		assertContentDoesNotContain 'ROLE_ADMIN'
-		assertContentDoesNotContain 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_FOO_BAR')
+		!pageSource.contains('ROLE_ADMIN')
+		!pageSource.contains('ROLE_SUPERUSER')
 
 		when:
-		to SecureFooBarPage
+		to(SecureFooBarPage)
 
 		then:
-		assertContentContains 'ROLE_USER'
-		assertContentContains 'ROLE_FOO_BAR'
-		assertContentDoesNotContain 'ROLE_ADMIN'
-		assertContentDoesNotContain 'ROLE_SUPERUSER'
+		pageSource.contains('ROLE_USER')
+		pageSource.contains('ROLE_FOO_BAR')
+		!pageSource.contains('ROLE_ADMIN')
+		!pageSource.contains('ROLE_SUPERUSER')
 
 		when:
-		to SecureAdminPage
+		to(SecureAdminPage)
 
 		then:
-		assertContentContains "Sorry, you're not authorized to view this page."
+		pageSource.contains('Sorry, you\'re not authorized to view this page.')
 
 		when:
-		to SecureSuperuserPage
+		to(SecureSuperuserPage)
 
 		then:
-		assertContentContains "Sorry, you're not authorized to view this page."
+		pageSource.contains('Sorry, you\'re not authorized to view this page.')
 	}
 }
