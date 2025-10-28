@@ -530,7 +530,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div id="header">
 <h1>Spring Security LDAP Plugin - Reference Documentation</h1>
 <div class="details">
-<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option value='https://apache.github.io/grails-spring-security/snapshot/ldap-plugin/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/7.0.0-RC2/ldap-plugin/guide/index.html'>7.0.0-RC2</option></select></span></p>
+<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option value='https://apache.github.io/grails-spring-security/snapshot/ldap-plugin/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/7.0.0/ldap-plugin/guide/index.html'>7.0.0</option><option value='https://apache.github.io/grails-spring-security/7.0.0-RC2/ldap-plugin/guide/index.html'>7.0.0-RC2</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M5/ldap-plugin/guide/index.html'>7.0.0-M5</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M4/ldap-plugin/guide/index.html'>7.0.0-M4</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M3/ldap-plugin/guide/index.html'>7.0.0-M3</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M1/ldap-plugin/guide/index.html'>7.0.0-M1</option></select></span></p>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -556,13 +556,13 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="introduction">1. Introduction to the Spring Security LDAP Plugin</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The LDAP plugin adds support for LDAP and Active Directory authentication to a Grails application that uses Spring Security. It depends on the <a href="https://apache.github.io/grails-spring-security/7.0.0-RC2/index.html">Spring Security Core plugin</a>.</p>
+<p>The LDAP plugin adds support for LDAP and Active Directory authentication to a Grails application that uses Spring Security. It depends on the <a href="https://apache.github.io/grails-spring-security/7.0.0/index.html">Spring Security Core plugin</a>.</p>
 </div>
 <div class="paragraph">
 <p>Once you have configured your Grails application as an LDAP client you can delegate authentication to LDAP and not have to manage users' authentication information in your application. By default, roles are inferred from LDAP group membership and you can store additional application-specific roles in your database.</p>
 </div>
 <div class="paragraph">
-<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.3/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
+<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.5/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
 </div>
 </div>
 </div>
@@ -594,7 +594,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
    ...
-   implementation 'org.apache.grails:grails-spring-security-ldap:7.0.0-RC2'
+   implementation 'org.apache.grails:grails-spring-security-ldap:7.0.0'
 }</code></pre>
 </div>
 </div>
@@ -605,8 +605,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
     ...
-    implementation "org.apache.grails:grails-spring-security:7.0.0-RC2"
-    implementation "org.apache.grails:grails-spring-security-ldap:7.0.0-RC2"
+    implementation "org.apache.grails:grails-spring-security:7.0.0"
+    implementation "org.apache.grails:grails-spring-security-ldap:7.0.0"
 }</code></pre>
 </div>
 </div>
@@ -720,10 +720,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="sect2">
 <h3 id="custom-userdetailscontextmapper">2.3. Custom UserDetailsContextMapper</h3>
 <div class="paragraph">
-<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.3/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
+<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.5/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
 </div>
 <div class="paragraph">
-<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.3/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
+<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.5/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1190,8 +1190,8 @@ beans = {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 7.0.0-RC2<br>
-Last updated 2025-09-11 21:41:22 UTC
+Version 7.0.0<br>
+Last updated 2025-10-24 16:07:11 UTC
 </div>
 </div>
 </body>

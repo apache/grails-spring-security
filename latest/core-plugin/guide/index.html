@@ -445,7 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>Spring Security Core Plugin - Reference Documentation</h1>
 <div class="details">
 <span id="author" class="author">Burt Beckwith, Puneet Behl</span><br>
-<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option value='https://apache.github.io/grails-spring-security/snapshot/core-plugin/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/7.0.0-RC2/core-plugin/guide/index.html'>7.0.0-RC2</option></select></span></p>
+<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option value='https://apache.github.io/grails-spring-security/snapshot/core-plugin/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/7.0.0/core-plugin/guide/index.html'>7.0.0</option><option value='https://apache.github.io/grails-spring-security/7.0.0-RC2/core-plugin/guide/index.html'>7.0.0-RC2</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M5/core-plugin/guide/index.html'>7.0.0-M5</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M4/core-plugin/guide/index.html'>7.0.0-M4</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M3/core-plugin/guide/index.html'>7.0.0-M3</option><option value='https://apache.github.io/grails-spring-security/7.0.0-M1/core-plugin/guide/index.html'>7.0.0-M1</option></select></span></p>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -473,7 +473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#authorityGroupClass">3.4. Group Class</a></li>
 <li><a href="#personAuthorityGroupClass">3.5. PersonGroup Class</a></li>
 <li><a href="#authorityGroupAuthorityClass">3.6. GroupAuthority Class</a></li>
-<li><a href="#requestmapClass">3.7. Requestmap Class</a></li>
+<li><a href="#requestmapClass">3.7. Requestmap Domain Class</a></li>
 </ul>
 </li>
 <li><a href="#requestMappings">4. Configuring Request Mappings to Secure URLs</a>
@@ -483,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#comparing-the-approaches">4.3. Comparing the Approaches</a></li>
 <li><a href="#securedAnnotations">4.4. Defining Secured Annotations</a></li>
 <li><a href="#configGroovyMap">4.5. Static Map</a></li>
-<li><a href="#requestmapInstances">4.6. Requestmap Instances Stored in the Database</a></li>
+<li><a href="#requestmapInstances">4.6. Request Mappings Stored in the Database</a></li>
 <li><a href="#expressions">4.7. Using Expressions to Create Descriptive, Fine-Grained Rules</a></li>
 </ul>
 </li>
@@ -629,7 +629,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     // ... other dependencies
-    implementation 'org.apache.grails:grails-spring-security:7.0.0-RC2'
+    implementation 'org.apache.grails:grails-spring-security:7.0.0'
 }</code></pre>
 </div>
 </div>
@@ -652,7 +652,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>The Spring Security Core Plugin 6.0.0 is now installed and integrated into your Grails project.</p>
+<p>The Spring Security Core Plugin 7.0.0 is now installed and integrated into your Grails project.</p>
 </li>
 <li>
 <p>You can start using the plugin&#8217;s features and commands in your application.</p>
@@ -661,7 +661,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Run the <a href="#s2-quickstart">s2-quickstart</a> script to generate domain classes and add the initial configuration settings in <code>application.groovy</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code>./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 </li>
@@ -728,7 +728,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     implementation 'org.grails.plugins:cxf:3.1.1'
     // CXF above security.
-    implementation 'org.apache.grails:grails-spring-security:7.0.0-RC2'
+    implementation 'org.apache.grails:grails-spring-security:7.0.0'
 }</code></pre>
 </div>
 </div>
@@ -745,7 +745,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.apache.grails:grails-spring-security:7.0.0-RC2'</code></pre>
+<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.apache.grails:grails-spring-security:7.0.0'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -756,6 +756,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand -Pargs="s2-quickstart com.yourapp User Role"</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>If you are installing into a Grails plugin instead of an application, you must make sure you are using  the <code>web-plugin</code> profile. Otherwise dependencies will not be met.
+Running the same command will inject the spring beans into your <code>GrailsPlugin</code> classes <code>doWithSpring</code> method.</p>
 </div>
 <div class="sect3">
 <h4 id="plugin-configuration-and-setup">1.3.1. Plugin Configuration and Setup</h4>
@@ -808,7 +812,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="shell">./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1622,9 +1626,11 @@ class RoleGroupRole implements Serializable {
 </div>
 </div>
 <div class="sect2">
-<h3 id="requestmapClass">3.7. Requestmap Class</h3>
+<h3 id="requestmapClass">3.7. Requestmap Domain Class</h3>
 <div class="paragraph">
-<p>Optionally, use this class to store request mapping entries in the database instead of defining them with annotations or in <code>application.groovy</code>. This option makes the class configurable at runtime; you can add, remove and edit rules without restarting your application.</p>
+<p>Create and use a domain class to store request mapping entries in the database instead of defining them with annotations
+or in <code>application.groovy</code>. This option makes the rules configurable at runtime; you can add, remove and edit rules
+without restarting your application.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 5. Requestmap class configuration options</caption>
@@ -1643,31 +1649,30 @@ class RoleGroupRole implements Serializable {
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">requestMap.className</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>none</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">requestmap class name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>none</em> - set to your implementation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requestmap domain class</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">requestMap.urlField</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8220;url&#8221;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"url"</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">URL pattern property name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">requestMap.configAttributeField</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8220;configAttribute&#8221;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"configAttribute"</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">authority pattern property name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">requestMap.httpMethodField</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8220;httpMethod&#8221;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"httpMethod"</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">HTTP method property name (optional, does not have to exist in the class if you don&#8217;t require URL/method security)</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>Assuming you choose <code>com.mycompany.myapp</code> as your package, and <code>Requestmap</code> as your class name, you&#8217;ll generate this class:</p>
+<p>Assuming you choose <code>com.mycompany.myapp</code> as your package, and <code>SecurityMapping</code> as your class name, you&#8217;ll generate this class:</p>
 </div>
 <div class="listingblock">
-<div class="title"><code>Requestmap.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">package com.mycompany.myapp
 
@@ -1680,7 +1685,7 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 @EqualsAndHashCode(includes=['configAttribute', 'httpMethod', 'url'])
 @ToString(includes=['configAttribute', 'httpMethod', 'url'], cache=true, includeNames=true, includePackage=false)
-class RequestMap implements Serializable {
+class SecurityMapping implements Serializable {
 
 	private static final long serialVersionUID = 1
 
@@ -1689,19 +1694,19 @@ class RequestMap implements Serializable {
 	String url
 
 	static constraints = {
-		configAttribute blank: false
-		httpMethod nullable: true
-		url blank: false, unique: 'httpMethod'
+		configAttribute(blank: false)
+		httpMethod(nullable: true)
+		url(blank: false, unique: 'httpMethod')
 	}
 
 	static mapping = {
-		cache true
+		cache(true)
 	}
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To use Requestmap entries to guard URLs, see <a href="#requestmapInstances">Requestmap Instances Stored in the Database</a>.</p>
+<p>To use database entries to guard URLs, see <a href="#requestmapInstances">Request Mappings Stored in the Database</a>.</p>
 </div>
 </div>
 </div>
@@ -1721,7 +1726,7 @@ class RequestMap implements Serializable {
 <p>A simple Map in <code>application.groovy</code> - <a href="#configGroovyMap">Static Map</a></p>
 </li>
 <li>
-<p><code>Requestmap</code> domain class instances stored in the database - <a href="#requestmapInstances">Requestmap Instances Stored in the Database</a></p>
+<p><code>Requestmap</code> domain class instances stored in the database - <a href="#requestmapInstances">Request Mappings Stored in the Database</a></p>
 </li>
 </ul>
 </div>
@@ -2203,73 +2208,95 @@ class Thing {
 </div>
 </div>
 <div class="sect2">
-<h3 id="requestmapInstances">4.6. Requestmap Instances Stored in the Database</h3>
+<h3 id="requestmapInstances">4.6. Request Mappings Stored in the Database</h3>
 <div class="paragraph">
-<p>With this approach you use the <code>Requestmap</code> domain class to store mapping entries in the database. <code>Requestmap</code> has a <code>url</code> property that contains the secured URL pattern and a <code>configAttribute</code> property containing a comma-delimited list of required roles, SpEL expressions, and/or tokens such as <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, and <code>IS_AUTHENTICATED_ANONYMOUSLY</code>.</p>
+<p>With this approach you create and use a domain class to store security mapping entries in the database.</p>
 </div>
 <div class="paragraph">
-<p>To use <code>Requestmap</code> entries, specify <code>securityConfigType="Requestmap"</code>:</p>
+<p>The domain class must have the following properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>url</code> - the secured URL pattern</p>
+</li>
+<li>
+<p><code>httpMethod</code> - the http method for which the rule applies (or null for all methods)</p>
+</li>
+<li>
+<p><code>configAttribute</code> - containing a comma-delimited list of required roles,
+SpEL expressions, and/or tokens such as <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>,
+and <code>IS_AUTHENTICATED_ANONYMOUSLY</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To use database-backed url security mappings, use the following configuration:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 17. Specifying <code>securityConfigType</code> as &#8220;Requestmap&#8221;</div>
+<div class="title">Listing 17. Configuring database-backed url security rules</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.securityConfigType = "Requestmap"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.securityConfigType = 'Requestmap'
+grails.plugin.springsecurity.requestMap.className = 'com.mycompany.myapp.SecurityMapping'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You create <code>Requestmap</code> entries as you create entries in any Grails domain class:</p>
+<p>See <a href="#requestmapClass">Requestmap Domain Class</a> for an example request map domain class.</p>
+</div>
+<div class="paragraph">
+<p>You create request map entries as you create entries in any Grails domain class:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 18. Creating <code>Requestmap</code> entries</div>
+<div class="title">Listing 18. Creating request map entries</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">for (String url in [
       '/', '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
       '/assets/**', '/**/js/**', '/**/css/**', '/**/images/**',
       '/login', '/login.*', '/login/*',
       '/logout', '/logout.*', '/logout/*']) {
-   new Requestmap(url: url, configAttribute: 'permitAll').save()
+   new SecurityMapping(url: url, configAttribute: 'permitAll').save()
 }
 
-new Requestmap(url: '/profile/**',    configAttribute: 'ROLE_USER').save()
-new Requestmap(url: '/admin/**',      configAttribute: 'ROLE_ADMIN').save()
-new Requestmap(url: '/admin/role/**', configAttribute: 'ROLE_SUPERVISOR').save()
-new Requestmap(url: '/admin/user/**',
+new SecurityMapping(url: '/profile/**',    configAttribute: 'ROLE_USER').save()
+new SecurityMapping(url: '/admin/**',      configAttribute: 'ROLE_ADMIN').save()
+new SecurityMapping(url: '/admin/role/**', configAttribute: 'ROLE_SUPERVISOR').save()
+new SecurityMapping(url: '/admin/user/**',
                configAttribute: 'ROLE_ADMIN,ROLE_SUPERVISOR').save()
-new Requestmap(url: '/login/impersonate',
+new SecurityMapping(url: '/login/impersonate',
                configAttribute: 'ROLE_SWITCH_USER,IS_AUTHENTICATED_FULLY').save()
 springSecurityService.clearCachedRequestmaps()</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>configAttribute</code> value can have a single value or have multiple comma-delimited values. In this example only users with <code>ROLE_ADMIN</code> or <code>ROLE_SUPERVISOR</code> can access <code>/admin/user/**</code> urls, and only users with <code>ROLE_SWITCH_USER</code> can access the switch-user url (<code>/login/impersonate</code>) and in addition must be authenticated fully, i.e. not using a remember-me cookie. Note that when specifying multiple roles, the user must have at least one of them, but when combining <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, or <code>IS_AUTHENTICATED_ANONYMOUSLY</code> with one or more roles means the user must have one of the roles and satisty the <code>IS_AUTHENTICATED</code> rule.</p>
+<p>The <code>configAttribute</code> value can have a single value or have multiple comma-delimited values. In this example only users with <code>ROLE_ADMIN</code> or <code>ROLE_SUPERVISOR</code> can access <code>/admin/user/**</code> urls, and only users with <code>ROLE_SWITCH_USER</code> can access the switch-user url (<code>/login/impersonate</code>) and in addition must be authenticated fully, i.e. not using a remember-me cookie. Note that when specifying multiple roles, the user must have at least one of them, but when combining <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, or <code>IS_AUTHENTICATED_ANONYMOUSLY</code> with one or more roles means the user must have one of the roles and satisfy the <code>IS_AUTHENTICATED</code> rule.</p>
 </div>
 <div class="paragraph">
-<p>Unlike the <code>application.groovy</code> Map approach (<a href="#configGroovyMap">Static Map</a>), you do not need to revise the <code>Requestmap</code> entry order because the plugin calculates the most specific rule that applies to the current request.</p>
+<p>Unlike the <code>application.groovy</code> map approach (<a href="#configGroovyMap">Static Map</a>), you do not need to revise the request map entry order because the plugin calculates the most specific rule that applies to the current request.</p>
 </div>
 <div class="sect3">
-<h4 id="requestmap-cache">4.6.1. Requestmap Cache</h4>
+<h4 id="request-map-cache">4.6.1. Request Map Cache</h4>
 <div class="paragraph">
-<p><code>Requestmap</code> entries are cached for performance, but caching affects runtime configurability. If you create, edit, or delete an instance, the cache must be flushed and repopulated to be consistent with the database. You can call <code>springSecurityService.clearCachedRequestmaps()</code> to do this. For example, if you create a <code>RequestmapController</code> the <code>save</code> action should look like this (and the update and delete actions should similarly call <code>clearCachedRequestmaps()</code>):</p>
+<p>Request map entries are cached for performance, but caching affects runtime configurability. If you create, edit, or delete an instance, the cache must be flushed and repopulated to be consistent with the database. You can call <code>springSecurityService.clearCachedRequestmaps()</code> to do this. For example, if you create a <code>RequestSecurityRuleController</code> the <code>save</code> action should look like this (and the update and delete actions should similarly call <code>clearCachedRequestmaps()</code>):</p>
 </div>
 <div class="listingblock">
 <div class="title">Listing 19. Calling <code>clearCachedRequestmaps()</code></div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">class RequestmapController {
+<pre class="prettyprint highlight"><code data-lang="groovy">class SecurityMappingController {
 
    def springSecurityService
 
-   ...
+   //...
 
-   def save(Requestmap requestmap) {
-      if (!requestmap.save(flush: true)) {
-         render view: 'create', model: [requestmapInstance: requestmap]
+   def save(SecurityMapping mapping) {
+      if (!mapping.save(flush: true)) {
+         render(view: 'create', model: [instance: mapping])
          return
       }
 
       springSecurityService.clearCachedRequestmaps()
 
-      flash.message = ...
-      redirect action: 'show', id: requestmap.id
+      flash.message = 'Mapping saved'
+      redirect(action: 'show', id: mapping.id)
    }
 }</code></pre>
 </div>
@@ -2325,9 +2352,9 @@ new Requestmap(url: "/secure/someOtherAction",
 <p>and the corresponding static mappings would be</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 22. Adding mappings in <code>grails.plugin.springsecurity.interceptUrlMap</code></div>
+<div class="title">Listing 22. Adding mappings in <code>grails.plugin.springsecurity.controllerAnnotations.staticRules</code></div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.interceptUrlMap = [
+<pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.controllerAnnotations.staticRules = [
    [pattern: '/secure/someAction',      access: ["hasRole('ROLE_ADMIN')"]],
    [pattern: '/secure/someOtherAction', access: ["authentication.name == 'ralph'"]]
 ]</code></pre>
@@ -5316,7 +5343,7 @@ class SomeController {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6281,7 +6308,7 @@ $ cd bookstore</pre>
 <h4 id="3-create-the-user-and-role-domain-classes">22.1.3. 3. Create the User and Role domain classes.</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.mycompany.myapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.mycompany.myapp User Role</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7147,28 +7174,28 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart DOMAIN_CLASS_PACKAGE USER_CLASS_NAME ROLE_CLASS_NAME [REQUESTMAP_CLASS_NAME] [--groupClassName=GROUP_CLASS_NAME]"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart DOMAIN_CLASS_PACKAGE USER_CLASS_NAME ROLE_CLASS_NAME [REQUESTMAP_CLASS_NAME] [--groupClassName=GROUP_CLASS_NAME]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Examples</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp User Role --groupClassName=RoleGroup"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.yourapp User Role --groupClassName=RoleGroup</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart com.yourapp Person Authority Requestmap"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart com.yourapp Person Authority Requestmap</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-quickstart --uiOnly"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-quickstart --uiOnly</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -7188,13 +7215,13 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-persistent-token &lt;classname&gt;"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-persistent-token &lt;classname&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-persistent-token com.yourapp.PersistentLogin"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-persistent-token com.yourapp.PersistentLogin</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7210,13 +7237,13 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry &lt;classname&gt;"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry &lt;classname&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">./gradlew runCommand "-Pargs=s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry"</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">./grailsw s2-create-role-hierarchy-entry com.yourapp.RoleHierarchyEntry</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7244,8 +7271,8 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 7.0.0-RC2<br>
-Last updated 2025-09-11 21:41:22 UTC
+Version 7.0.0<br>
+Last updated 2025-10-24 16:07:11 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
