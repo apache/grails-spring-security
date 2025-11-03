@@ -61,7 +61,11 @@ dependencies {
     testImplementation "org.apache.grails:grails-testing-support-datamapping"
     testImplementation "org.apache.grails:grails-testing-support-web"
 
-    implementation 'org.ehcache:ehcache'
+    implementation 'org.ehcache:ehcache', {
+        capabilities {
+            requireCapability('org.ehcache:ehcache-jakarta')
+        }
+    }
 
     api project(':core-plugin')
     api 'org.springframework.security:spring-security-acl'
