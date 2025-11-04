@@ -59,7 +59,11 @@ dependencies {
 	api 'org.springframework:spring-web'
 
 	implementation 'org.apache.commons:commons-text'
-	implementation "org.ehcache:ehcache"
+	implementation "org.ehcache:ehcache", {
+        capabilities {
+            requireCapability('org.ehcache:ehcache-jakarta')
+        }
+    }
 	implementation 'org.apache.grails.bootstrap:grails-bootstrap'
 	implementation 'org.apache.grails:grails-rest-transforms'
 	implementation 'org.apache.grails:grails-converters'
