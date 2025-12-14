@@ -27,7 +27,7 @@ under the License.
 
 include::introduction.adoc[]
 
-== What's new in 6.0?z
+== What's new in 6.0?
 
 include::whatsNew60.adoc[]
 
