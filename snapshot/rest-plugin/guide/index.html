@@ -544,13 +544,20 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_release_history">1.2. Release History</a></li>
 </ul>
 </li>
-<li><a href="#_whats_new_in_6_0">2. What&#8217;s new in 6.0?</a></li>
+<li><a href="#_whats_new_in_6_0">2. What&#8217;s new in 6.0?</a>
+<ul class="sectlevel2">
+<li><a href="#_grails_7_support">2.1. Grails 7 support</a></li>
+<li><a href="#_only_allow_refresh_tokens_to_be_used_on_refresh_token_endpoint">2.2. Only allow refresh tokens to be used on refresh token endpoint</a></li>
+<li><a href="#_minimum_java_version">2.3. Minimum Java Version</a></li>
+<li><a href="#_dependency_updates">2.4. Dependency updates</a></li>
+</ul>
+</li>
 <li><a href="#_whats_new_in_5_0">3. What&#8217;s new in 5.0?</a>
 <ul class="sectlevel2">
 <li><a href="#_grails_6_support">3.1. Grails 6 support</a></li>
 <li><a href="#_provide_accesstoken_object_to_storetoken_and_removetoken_methods">3.2. Provide AccessToken object to storeToken and removeToken Methods</a></li>
-<li><a href="#_minimum_java_version">3.3. Minimum Java Version</a></li>
-<li><a href="#_dependency_updates">3.4. Dependency updates</a></li>
+<li><a href="#_minimum_java_version_2">3.3. Minimum Java Version</a></li>
+<li><a href="#_dependency_updates_2">3.4. Dependency updates</a></li>
 </ul>
 </li>
 <li><a href="#_whats_new_in_2_0">4. What&#8217;s new in 2.0?</a>
@@ -1131,8 +1138,51 @@ and Grails Cache support for token storage.</p>
 <div class="sect1">
 <h2 id="_whats_new_in_6_0">2. What&#8217;s new in 6.0?</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_grails_7_support">2.1. Grails 7 support</h3>
 <div class="paragraph">
-<p>include:whatsNew60.adoc[]</p>
+<p>This major release is working with Grails 7. It&#8217;s based on the newer versions of Spring Security Core plugin,
+which in turn uses newer Spring Security versions, so make sure you read carefully what the new versions have changed:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Grails Version</th>
+<th class="tableblock halign-left valign-top"><code>spring-security-rest</code> version</th>
+<th class="tableblock halign-left valign-top">Spring Security Core docs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>7.0.0-SNAPSHOT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://apache.github.io/grails-spring-security/7.0.x/index.html#whatsNew" class="bare">https://apache.github.io/grails-spring-security/7.0.x/index.html#whatsNew</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_only_allow_refresh_tokens_to_be_used_on_refresh_token_endpoint">2.2. Only allow refresh tokens to be used on refresh token endpoint</h3>
+<div class="paragraph">
+<p>See issue <a href="https://github.com/grails/grails-spring-security-rest/issues/515">#515</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_minimum_java_version">2.3. Minimum Java Version</h3>
+<div class="paragraph">
+<p>The minimum java version is now 17.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependency_updates">2.4. Dependency updates</h3>
+<div class="paragraph">
+<p>Dependencies are updated as of Grails 7.0.0 release date.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1174,13 +1224,13 @@ which in turn uses newer Spring Security versions, so make sure you read careful
 </div>
 </div>
 <div class="sect2">
-<h3 id="_minimum_java_version">3.3. Minimum Java Version</h3>
+<h3 id="_minimum_java_version_2">3.3. Minimum Java Version</h3>
 <div class="paragraph">
 <p>The minimum java version is now 11.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_dependency_updates">3.4. Dependency updates</h3>
+<h3 id="_dependency_updates_2">3.4. Dependency updates</h3>
 <div class="paragraph">
 <p>Dependencies are updated as of Grails 6.1.1 release date.</p>
 </div>
@@ -3697,7 +3747,7 @@ way of using HTTP sessions. So not acceptable.</p>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.1-SNAPSHOT<br>
-Last updated 2025-11-06 15:03:02 UTC
+Last updated 2026-01-31 15:17:55 UTC
 </div>
 </div>
 </body>
