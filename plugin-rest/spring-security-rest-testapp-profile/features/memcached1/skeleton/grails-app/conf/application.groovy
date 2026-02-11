@@ -29,16 +29,16 @@ grails {
 
                     google {
                         client = Google2Client
-                        key = '1093785205845-hl3jv0rd8jfohkn55jchgmnpvdpsnal4.apps.googleusercontent.com'
-                        secret = 'sWXY3VMm4wKAGoRZg8r3ftZc'
+                        key = 'TODO'
+                        secret = 'TODO'
                         scope = Google2Client.Google2Scope.EMAIL_AND_PROFILE
                         defaultRoles = ['ROLE_USER', 'ROLE_GOOGLE']
                     }
 
                     facebook {
                         client = FacebookClient
-                        key = '585495051532332'
-                        secret = 'f6bfaff8c66a3fd7b1e9ec4c986fda8b'
+                        key = 'TODO'
+                        secret = 'TODO'
 
                         //https://developers.facebook.com/docs/reference/login/
                         scope = 'public_profile,email'
@@ -48,8 +48,8 @@ grails {
 
                     twitter {
                         client = TwitterClient
-                        key = 'A2hwgEMfNIp7OF2f05Gqw'
-                        secret = 'BUpumhJGeNskn53Ssr3QQuesKg8lOIEWaLO4pCdgeTw'
+                        key = 'TODO'
+                        secret = 'TODO'
                         defaultRoles = ['ROLE_USER', 'ROLE_TWITTER']
                     }
                 }

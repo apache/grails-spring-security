@@ -20,19 +20,35 @@
 
 set -e
 
-rm -rf build/
-mkdir build
-export pluginVersion=`cat build.gradle | grep "version \"" | sed -n 's/^[ \t]*version\ "//pg' | sed -n 's/"//pg'`
-export grailsVersion=`cat spring-security-rest-testapp-profile/gradle.properties | grep grailsVersion | sed -n 's/^grailsVersion=//p'`
-./gradlew clean install
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+PREVIOUS_DIR=$(pwd)
+cd "${SCRIPT_DIR}"
 
-echo "Plugin version: $pluginVersion. Grails version for test apps: $grailsVersion"
+rm -rf ./build || true
+mkdir ./build
+export GRAILS_SECURITY_VERSION=`cat ${SCRIPT_DIR}/../gradle.properties | grep "^projectVersion=" | sed -n 's/^projectVersion=//p'`
+export GRAILS_VERSION=`cat ${SCRIPT_DIR}/../gradle.properties | grep "^grailsVersion=" | sed -n 's/^grailsVersion=//p'`
+
+for project in `find . -maxdepth 1 -type d ! -name . -name 'spring-security-rest*'`; do
+    cd "${SCRIPT_DIR}/${project}"
+    echo "Publishing ${project} to maven local"
+    ../../gradlew clean publishToMavenLocal
+done
+cd "${SCRIPT_DIR}/../plugin-core/plugin"
+echo "Publishing Spring Security Core plugin to maven local"
+../../gradlew clean publishToMavenLocal
+
+echo "Plugin version: ${GRAILS_SECURITY_VERSION}. Grails version for test apps: ${GRAILS_VERSION}"
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-[[ -d  ~/.sdkman/candidates/grails/$grailsVersion ]] || sdk install grails $grailsVersion
-sdk use grails $grailsVersion
-cd build
+[[ -d  ~/.sdkman/candidates/grails/${GRAILS_VERSION} ]] || sdk install grails ${GRAILS_VERSION}
+sdk use grails ${GRAILS_VERSION}
+cd "${SCRIPT_DIR}/build"
 
-for feature in `ls ../spring-security-rest-testapp-profile/features/`; do
-     grails create-app -profile org.apache.grails:grails-spring-security-rest-testapp-profile:$pluginVersion -features $feature $feature
+# TODO: only set ~/.m2/repository once fixed in Grails 7.0.8
+export GRAILS_REPO_URL='mavenLocal()'
+for feature in `ls "${SCRIPT_DIR}/spring-security-rest-testapp-profile/features/"`; do
+     grails create-app -profile org.apache.grails.profiles:spring-security-rest-testapp-profile:${GRAILS_SECURITY_VERSION} -features ${feature} ${feature}
 done
+
+cd "$PREVIOUS_DIR"
