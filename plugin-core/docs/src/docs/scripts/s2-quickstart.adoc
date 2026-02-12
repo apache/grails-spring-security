@@ -37,7 +37,7 @@ The general format is:
 
 [source,bash]
 ----
-./grailsw s2-quickstart s2-quickstart com.yourapp User Role
+./grailsw s2-quickstart com.yourapp User Role
 ----
 
 [source,bash]
