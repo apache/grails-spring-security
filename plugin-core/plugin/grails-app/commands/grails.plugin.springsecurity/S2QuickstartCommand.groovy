@@ -30,7 +30,7 @@ import groovy.transform.CompileStatic
  * 1. <code>./grailsw s2-quickstart com.yourapp User Role --groupClassName=RoleGroup</code>
  * 2. <code>./grailsw s2-quickstart com.yourapp Person Authority Requestmap</code>
  * 3. <code>./grailsw s2-quickstart --uiOnly</code>
- * 4. <code>./grailsw s2-quickstart s2-quickstart com.yourapp User Role</code>
+ * 4. <code>./grailsw s2-quickstart com.yourapp User Role</code>
  *
  * @author Puneet Behl
  * @since 6.0.0
@@ -54,7 +54,7 @@ class S2QuickstartCommand implements GrailsApplicationCommand, CommandLineHelper
    ./grailsw s2-quickstart [DOMAIN-CLASS-PACKAGE] [USER-CLASS-NAME] [ROLE-CLASS-NAME] [REQUESTMAP-CLASS-NAME] --groupClassName=GROUP-CLASS-NAME
 or ./grailsw s2-quickstart --uiOnly
 
-Example: ./grailsw s2-quickstart s2-quickstart com.yourapp User Role
+Example: ./grailsw s2-quickstart com.yourapp User Role
 Example: ./grailsw s2-quickstart com.yourapp User Role --groupClassName=RoleGroup
 Example: ./grailsw s2-quickstart com.yourapp Person Authority Requestmap
 Example: ./grailsw s2-quickstart --uiOnly
