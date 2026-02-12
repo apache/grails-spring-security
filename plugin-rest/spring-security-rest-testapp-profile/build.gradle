@@ -25,9 +25,9 @@ plugins {
 group = 'org.apache.grails.profiles'
 
 ext {
-    publishArtifactId = 'spring-security-rest-testapp'
-    pomTitle = 'Grails Spring Security REST Plugin'
-    pomDescription = 'Grails plugin to implement token-based, RESTful authentication using Spring Security'
+    publishArtifactId = 'spring-security-rest-testapp-profile'
+    pomTitle = 'Grails Spring Security REST Test App Profile'
+    pomDescription = 'A Grails profile to assist in generating various implementations of the Grails Spring Security REST plugin for testing purposes'
     pomDevelopers = [
             alvarosanchez: 'Alvaro Sanchez-Mariscal',
             jameskleeh: 'James Kleeh',
@@ -40,7 +40,7 @@ tasks.register('generateProfileConfig') {
         from 'profile.yml.tmpl'
         into '.'
         rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
-        expand pluginVersion: project.version
+        expand(pluginVersion: project.version, grailsVersion: findProperty('grailsVersion'))
     }
 
     file('features').eachDir { feature ->
@@ -48,9 +48,13 @@ tasks.register('generateProfileConfig') {
             from "features/${feature.name}/feature.yml.tmpl"
             into "features/${feature.name}/"
             rename { String fileName -> fileName.replaceAll '\\.tmpl', '' }
-            expand pluginVersion: project.version
+            expand(pluginVersion: project.version, grailsVersion: findProperty('grailsVersion'))
         }
     }
+}
+
+dependencies {
+    profileRuntimeApi "org.apache.grails.profiles:base:${findProperty('grailsVersion')}"
 }
 
 tasks.named('compileProfile') {
