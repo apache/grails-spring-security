@@ -1,0 +1,5 @@
+grails.plugin.springsecurity.oauth2
+grails.plugin.springsecurity.oauth2.exception
+grails.plugin.springsecurity.oauth2.service
+grails.plugin.springsecurity.oauth2.token
+grails.plugin.springsecurity.oauth2.util

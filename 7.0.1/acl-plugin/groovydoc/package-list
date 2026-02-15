@@ -1,0 +1,9 @@
+grails.plugin.springsecurity.acl
+grails.plugin.springsecurity.acl.access
+grails.plugin.springsecurity.acl.access.method
+grails.plugin.springsecurity.acl.annotation
+grails.plugin.springsecurity.acl.cache
+grails.plugin.springsecurity.acl.domain
+grails.plugin.springsecurity.acl.jdbc
+grails.plugin.springsecurity.acl.model
+grails.plugin.springsecurity.acl.util
