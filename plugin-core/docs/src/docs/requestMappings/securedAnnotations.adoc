@@ -145,18 +145,69 @@ class Thing {
 
 ==== controllerAnnotations.staticRules
 
-You can also define "`static`" mappings that cannot be expressed in the controllers, such as '/pass:[**]' or for JavaScript, CSS, or image URLs. Use the `controllerAnnotations.staticRules` property, for example:
+You can also define "`static`" mappings that cannot be expressed in the controllers, such as '/pass:[**]' or for JavaScript, CSS, or image URLs. Use the `controllerAnnotations.staticRules` property.
+
+In `application.groovy`:
 
 [source,groovy]
+.Listing {counter:listing}. Static rules in `application.groovy`
 ----
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-   ...
    [pattern: '/js/admin/**',   access: ['ROLE_ADMIN']],
    [pattern: '/someplugin/**', access: ['ROLE_ADMIN']]
 ]
 ----
 
+Or equivalently in `application.yml`:
+
+[source,yaml]
+.Listing {counter:listing}. Static rules in `application.yml` (flow mapping)
+----
+grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    - { pattern: '/js/admin/**',   access: ['ROLE_ADMIN'] }
+                    - { pattern: '/someplugin/**', access: ['ROLE_ADMIN'] }
+----
+
+Block mapping syntax also works:
+
+[source,yaml]
+.Listing {counter:listing}. Static rules in `application.yml` (block mapping)
+----
+grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    - pattern: '/js/admin/**'
+                      access:
+                          - ROLE_ADMIN
+                    - pattern: '/someplugin/**'
+                      access:
+                          - ROLE_ADMIN
+----
+
 This example maps all URLs associated with `SomePluginController`, which has URLs of the form `/somePlugin/...`, to `ROLE_ADMIN`; annotations are not an option here because you would not edit plugin code for a change like this.
+
+[IMPORTANT]
+====
+The `staticRules` value must be a *List* of Maps. A common YAML mistake is omitting the `-` list indicator, which produces a single Map instead:
+
+[source,yaml]
+.Listing {counter:listing}. Incorrect - single Map instead of List of Maps
+----
+# WRONG - this is a Map, not a List of Maps
+staticRules:
+    pattern: '/**'
+    access:
+        - permitAll
+----
+
+This will fail with: "`Static rules defined as a Map are not supported; must be specified as a List of Maps`". Each rule must be prefixed with `-` to create a list entry.
+====
 
 [NOTE]
 ====
