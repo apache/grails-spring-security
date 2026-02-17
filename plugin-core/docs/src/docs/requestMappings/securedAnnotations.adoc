@@ -190,7 +190,7 @@ grails:
                           - ROLE_ADMIN
 ----
 
-This example maps all URLs associated with `SomePluginController`, which has URLs of the form `/somePlugin/...`, to `ROLE_ADMIN`; annotations are not an option here because you would not edit plugin code for a change like this.
+This example maps all URLs associated with `SomePluginController`, which has URLs of the form `/someplugin/...`, to `ROLE_ADMIN`; annotations are not an option here because you would not edit plugin code for a change like this.
 
 [IMPORTANT]
 ====
@@ -200,10 +200,14 @@ The `staticRules` value must be a *List* of Maps. A common YAML mistake is omitt
 .Listing {counter:listing}. Incorrect - single Map instead of List of Maps
 ----
 # WRONG - this is a Map, not a List of Maps
-staticRules:
-    pattern: '/**'
-    access:
-        - permitAll
+grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    pattern: '/**'
+                    access:
+                        - permitAll
 ----
 
 This will fail with: "`Static rules defined as a Map are not supported; must be specified as a List of Maps`". Each rule must be prefixed with `-` to create a list entry.
