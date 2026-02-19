@@ -2108,19 +2108,87 @@ class Thing {
 <div class="sect3">
 <h4 id="controllerannotations-staticrules">4.4.2. controllerAnnotations.staticRules</h4>
 <div class="paragraph">
-<p>You can also define &#8220;static&#8221; mappings that cannot be expressed in the controllers, such as '/**' or for JavaScript, CSS, or image URLs. Use the <code>controllerAnnotations.staticRules</code> property, for example:</p>
+<p>You can also define &#8220;static&#8221; mappings that cannot be expressed in the controllers, such as '/**' or for JavaScript, CSS, or image URLs. Use the <code>controllerAnnotations.staticRules</code> property.</p>
+</div>
+<div class="paragraph">
+<p>In <code>application.groovy</code>:</p>
 </div>
 <div class="listingblock">
+<div class="title">Listing 12. Static rules in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-   ...
    [pattern: '/js/admin/**',   access: ['ROLE_ADMIN']],
    [pattern: '/someplugin/**', access: ['ROLE_ADMIN']]
 ]</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This example maps all URLs associated with <code>SomePluginController</code>, which has URLs of the form <code>/somePlugin/&#8230;&#8203;</code>, to <code>ROLE_ADMIN</code>; annotations are not an option here because you would not edit plugin code for a change like this.</p>
+<p>Or equivalently in <code>application.yml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Listing 13. Static rules in <code>application.yml</code> (flow mapping)</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    - { pattern: '/js/admin/**',   access: ['ROLE_ADMIN'] }
+                    - { pattern: '/someplugin/**', access: ['ROLE_ADMIN'] }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Block mapping syntax also works:</p>
+</div>
+<div class="listingblock">
+<div class="title">Listing 14. Static rules in <code>application.yml</code> (block mapping)</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    - pattern: '/js/admin/**'
+                      access:
+                          - ROLE_ADMIN
+                    - pattern: '/someplugin/**'
+                      access:
+                          - ROLE_ADMIN</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example maps all URLs associated with <code>SomePluginController</code>, which has URLs of the form <code>/someplugin/&#8230;&#8203;</code>, to <code>ROLE_ADMIN</code>; annotations are not an option here because you would not edit plugin code for a change like this.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>staticRules</code> value must be a <strong>List</strong> of Maps. A common YAML mistake is omitting the <code>-</code> list indicator, which produces a single Map instead:</p>
+</div>
+<div class="listingblock">
+<div class="title">Listing 15. Incorrect - single Map instead of List of Maps</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml"># WRONG - this is a Map, not a List of Maps
+grails:
+    plugin:
+        springsecurity:
+            controllerAnnotations:
+                staticRules:
+                    pattern: '/**'
+                    access:
+                        - permitAll</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will fail with: &#8220;Static rules defined as a Map are not supported; must be specified as a List of Maps&#8221;. Each rule must be prefixed with <code>-</code> to create a list entry.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2141,19 +2209,31 @@ class Thing {
 <div class="sect2">
 <h3 id="configGroovyMap">4.5. Static Map</h3>
 <div class="paragraph">
-<p>To use a static map in <code>application.groovy</code> to secure URLs, first specify <code>securityConfigType="InterceptUrlMap"</code>:</p>
+<p>To use a static map to secure URLs, first specify <code>securityConfigType="InterceptUrlMap"</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 12. Specifying <code>securityConfigType</code> as &#8220;InterceptUrlMap&#8221;</div>
+<div class="title">Listing 16. Specifying <code>securityConfigType</code> as &#8220;InterceptUrlMap&#8221; in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Define a Map in <code>application.groovy</code>:</p>
+<p>Or in <code>application.yml</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 13. Example <code>grails.plugin.springsecurity.interceptUrlMap</code></div>
+<div class="title">Listing 17. Specifying <code>securityConfigType</code> as &#8220;InterceptUrlMap&#8221; in <code>application.yml</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">grails:
+    plugin:
+        springsecurity:
+            securityConfigType: InterceptUrlMap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then define the URL mappings. In <code>application.groovy</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Listing 18. Example <code>interceptUrlMap</code> in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.interceptUrlMap = [
    [pattern: '/',               access: ['permitAll']],
@@ -2174,10 +2254,36 @@ class Thing {
 </div>
 </div>
 <div class="paragraph">
-<p>and add any custom mappings as needed, e.g.</p>
+<p>Or equivalently in <code>application.yml</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 14. Custom <code>interceptUrlMap</code> mappings</div>
+<div class="title">Listing 19. Example <code>interceptUrlMap</code> in <code>application.yml</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">grails:
+    plugin:
+        springsecurity:
+            interceptUrlMap:
+                - { pattern: '/',               access: ['permitAll'] }
+                - { pattern: '/error',          access: ['permitAll'] }
+                - { pattern: '/index',          access: ['permitAll'] }
+                - { pattern: '/index.gsp',      access: ['permitAll'] }
+                - { pattern: '/shutdown',       access: ['permitAll'] }
+                - { pattern: '/assets/**',      access: ['permitAll'] }
+                - { pattern: '/**/js/**',       access: ['permitAll'] }
+                - { pattern: '/**/css/**',      access: ['permitAll'] }
+                - { pattern: '/**/images/**',   access: ['permitAll'] }
+                - { pattern: '/**/favicon.ico', access: ['permitAll'] }
+                - { pattern: '/login',          access: ['permitAll'] }
+                - { pattern: '/login/**',       access: ['permitAll'] }
+                - { pattern: '/logout',         access: ['permitAll'] }
+                - { pattern: '/logout/**',      access: ['permitAll'] }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add any custom mappings as needed, e.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Listing 20. Custom <code>interceptUrlMap</code> mappings in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.interceptUrlMap = [
    ...
@@ -2186,11 +2292,22 @@ class Thing {
 ]</code></pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="title">Listing 21. Custom <code>interceptUrlMap</code> mappings in <code>application.yml</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">grails:
+    plugin:
+        springsecurity:
+            interceptUrlMap:
+                - { pattern: '/secure/**',  access: ['ROLE_ADMIN'] }
+                - { pattern: '/finance/**', access: ['ROLE_FINANCE', 'IS_AUTHENTICATED_FULLY'] }</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p>When using this approach, make sure that you order the rules correctly. The first applicable rule is used, so for example if you have a controller that has one set of rules but an action that has stricter access rules, e.g.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 15. Incorrect <code>interceptUrlMap</code> order</div>
+<div class="title">Listing 22. Incorrect <code>interceptUrlMap</code> order</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">[pattern: '/secure/**',               access: ['ROLE_ADMIN', 'ROLE_SUPERUSER']],
 [pattern: '/secure/reallysecure/**',  access: ['ROLE_SUPERUSER']]</code></pre>
@@ -2200,7 +2317,7 @@ class Thing {
 <p>then this would fail - it wouldn&#8217;t restrict access to <code>/secure/reallysecure/list</code> to a user with <code>ROLE_SUPERUSER</code> since the first URL pattern matches, so the second would be ignored. The correct mapping would be</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 16. Correct <code>interceptUrlMap</code> order</div>
+<div class="title">Listing 23. Correct <code>interceptUrlMap</code> order</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">[pattern: '/secure/reallysecure/**', access: ['ROLE_SUPERUSER']],
 [pattern: '/secure/**',              access: ['ROLE_ADMIN', 'ROLE_SUPERUSER']]</code></pre>
@@ -2234,7 +2351,7 @@ and <code>IS_AUTHENTICATED_ANONYMOUSLY</code></p>
 <p>To use database-backed url security mappings, use the following configuration:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 17. Configuring database-backed url security rules</div>
+<div class="title">Listing 24. Configuring database-backed url security rules</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.securityConfigType = 'Requestmap'
 grails.plugin.springsecurity.requestMap.className = 'com.mycompany.myapp.SecurityMapping'</code></pre>
@@ -2247,7 +2364,7 @@ grails.plugin.springsecurity.requestMap.className = 'com.mycompany.myapp.Securit
 <p>You create request map entries as you create entries in any Grails domain class:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 18. Creating request map entries</div>
+<div class="title">Listing 25. Creating request map entries</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">for (String url in [
       '/', '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
@@ -2279,7 +2396,7 @@ springSecurityService.clearCachedRequestmaps()</code></pre>
 <p>Request map entries are cached for performance, but caching affects runtime configurability. If you create, edit, or delete an instance, the cache must be flushed and repopulated to be consistent with the database. You can call <code>springSecurityService.clearCachedRequestmaps()</code> to do this. For example, if you create a <code>RequestSecurityRuleController</code> the <code>save</code> action should look like this (and the update and delete actions should similarly call <code>clearCachedRequestmaps()</code>):</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 19. Calling <code>clearCachedRequestmaps()</code></div>
+<div class="title">Listing 26. Calling <code>clearCachedRequestmaps()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SecurityMappingController {
 
@@ -2312,7 +2429,7 @@ springSecurityService.clearCachedRequestmaps()</code></pre>
 <p>You can use expressions with any of the previously described approaches to securing application URLs. For example, consider this annotated controller:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 20. An annotated controller</div>
+<div class="title">Listing 27. An annotated controller</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">package com.yourcompany.yourapp
 
@@ -2339,7 +2456,7 @@ class SecureController {
 <p>The corresponding <code>Requestmap</code> URLs would be</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 21. Creating Requestmap instances</div>
+<div class="title">Listing 28. Creating Requestmap instances</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">new Requestmap(url: "/secure/someAction",
                configAttribute: "hasRole('ROLE_ADMIN')").save()
@@ -2352,7 +2469,7 @@ new Requestmap(url: "/secure/someOtherAction",
 <p>and the corresponding static mappings would be</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 22. Adding mappings in <code>grails.plugin.springsecurity.controllerAnnotations.staticRules</code></div>
+<div class="title">Listing 29. Adding mappings in <code>grails.plugin.springsecurity.controllerAnnotations.staticRules</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.controllerAnnotations.staticRules = [
    [pattern: '/secure/someAction',      access: ["hasRole('ROLE_ADMIN')"]],
@@ -2490,7 +2607,7 @@ new Requestmap(url: "/secure/someOtherAction",
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 23. Example using <code>&lt;sec:ifLoggedIn&gt;</code></div>
+<div class="title">Listing 30. Example using <code>&lt;sec:ifLoggedIn&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifLoggedIn&gt;
 Welcome Back!
@@ -2507,7 +2624,7 @@ Welcome Back!
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 24. Example using <code>&lt;sec:ifNotLoggedIn&gt;</code></div>
+<div class="title">Listing 31. Example using <code>&lt;sec:ifNotLoggedIn&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifNotLoggedIn&gt;
 &lt;g:link controller='login' action='auth'&gt;Login&lt;/g:link&gt;
@@ -2524,7 +2641,7 @@ Welcome Back!
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 25. Example using <code>&lt;sec:ifAllGranted&gt;</code></div>
+<div class="title">Listing 32. Example using <code>&lt;sec:ifAllGranted&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifAllGranted roles='ROLE_ADMIN,ROLE_SUPERVISOR'&gt;
 ...
@@ -2543,7 +2660,7 @@ secure stuff here
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 26. Example using <code>&lt;sec:ifAnyGranted&gt;</code></div>
+<div class="title">Listing 33. Example using <code>&lt;sec:ifAnyGranted&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifAnyGranted roles='ROLE_ADMIN,ROLE_SUPERVISOR'&gt;
 ...
@@ -2562,7 +2679,7 @@ secure stuff here
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 27. Example using <code>&lt;sec:ifNotGranted&gt;</code></div>
+<div class="title">Listing 34. Example using <code>&lt;sec:ifNotGranted&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifNotGranted roles='ROLE_USER'&gt;
 ...
@@ -2578,7 +2695,7 @@ non-user stuff here
 <p>Displays the value of the specified UserDetails property if logged in. For example, to show the username property:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 28. Example using <code>&lt;sec:loggedInUserInfo&gt;</code></div>
+<div class="title">Listing 35. Example using <code>&lt;sec:loggedInUserInfo&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:loggedInUserInfo field='username'/&gt;</code></pre>
 </div>
@@ -2587,7 +2704,7 @@ non-user stuff here
 <p>If you have customized the UserDetails (e.g. with a custom UserDetailsService) to add a <code>fullName</code> property, you access it as follows:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 29. Example using <code>&lt;sec:loggedInUserInfo&gt;</code> for a nonstandard property</div>
+<div class="title">Listing 36. Example using <code>&lt;sec:loggedInUserInfo&gt;</code> for a nonstandard property</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">Welcome Back &lt;sec:loggedInUserInfo field='fullName'/&gt;</code></pre>
 </div>
@@ -2599,7 +2716,7 @@ non-user stuff here
 <p>Displays the value of the UserDetails <code>username</code> property if logged in.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 30. Example using <code>&lt;sec:username&gt;</code></div>
+<div class="title">Listing 37. Example using <code>&lt;sec:username&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifLoggedIn&gt;
 Welcome Back &lt;sec:username/&gt;!
@@ -2616,7 +2733,7 @@ Welcome Back &lt;sec:username/&gt;!
 <p>Displays the inner body content only if the current user switched from another user. (See also <a href="#switchUser">Switch User</a>.)</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 31. Example using <code>&lt;sec:ifSwitched&gt;</code> and <code>&lt;sec:ifNotSwitched&gt;</code></div>
+<div class="title">Listing 38. Example using <code>&lt;sec:ifSwitched&gt;</code> and <code>&lt;sec:ifNotSwitched&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifLoggedIn&gt;
 Logged in as &lt;sec:username/&gt;
@@ -2657,7 +2774,7 @@ Logged in as &lt;sec:username/&gt;
 <p>Renders the original user&#8217;s username if the current user switched from another user.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 32. Example using <code>&lt;sec:switchedUserOriginalUsername&gt;</code></div>
+<div class="title">Listing 39. Example using <code>&lt;sec:switchedUserOriginalUsername&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifSwitched&gt;
     &lt;form action='${request.contextPath}/logout/impersonate' method='POST'&gt;
@@ -2673,7 +2790,7 @@ Logged in as &lt;sec:username/&gt;
 <p>Renders the body if the specified expression evaluates to <code>true</code> or specified URL is allowed.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 33. Example using <code>&lt;sec:access&gt;</code> with an expression</div>
+<div class="title">Listing 40. Example using <code>&lt;sec:access&gt;</code> with an expression</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:access expression="hasRole('ROLE_USER')"&gt;
 
@@ -2683,7 +2800,7 @@ You're a user
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Listing 34. Example using <code>&lt;sec:access&gt;</code> with a URL</div>
+<div class="title">Listing 41. Example using <code>&lt;sec:access&gt;</code> with a URL</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:access url='/admin/user'&gt;
 
@@ -2696,7 +2813,7 @@ You're a user
 <p>You can also guard access to links generated from controller and action names or named URL mappings instead of hard-coding the values, for example</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 35. Example using <code>&lt;sec:access&gt;</code> with a controller and action</div>
+<div class="title">Listing 42. Example using <code>&lt;sec:access&gt;</code> with a controller and action</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:access controller='admin' action='user'&gt;
 
@@ -2709,7 +2826,7 @@ You're a user
 <p>or if you have a named URL mapping you can refer to that:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 36. Example using <code>&lt;sec:access&gt;</code> with a URL mapping</div>
+<div class="title">Listing 43. Example using <code>&lt;sec:access&gt;</code> with a URL mapping</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:access mapping='manageUsers'&gt;
 
@@ -2722,7 +2839,7 @@ You're a user
 <p>For even more control of the generated URL (still avoiding hard-coding) you can use <code>createLink</code> to build the URL, for example</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 37. Example using <code>&lt;sec:access&gt;</code> with <code>&lt;g:createLink&gt;</code></div>
+<div class="title">Listing 44. Example using <code>&lt;sec:access&gt;</code> with <code>&lt;g:createLink&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:access url='${createLink(controller: 'admin', action: 'user', base: '/')}'&gt;
 
@@ -2741,7 +2858,7 @@ You're a user
 <p>Renders the body if the specified expression evaluates to <code>false</code> or URL isn&#8217;t allowed.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 38. Example using <code>&lt;sec:noAccess&gt;</code></div>
+<div class="title">Listing 45. Example using <code>&lt;sec:noAccess&gt;</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:noAccess expression="hasRole('ROLE_USER')"&gt;
 
@@ -2760,7 +2877,7 @@ You're not a user
 <p>To define the expression to evaluate within the tag itself:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 39. Example using <code>&lt;sec:link&gt;</code> with an expression</div>
+<div class="title">Listing 46. Example using <code>&lt;sec:link&gt;</code> with an expression</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:link controller='myController' action='myAction' expression="hasRole('ROLE_USER')"&gt;My link text&lt;/sec:link&gt;</code></pre>
 </div>
@@ -2769,7 +2886,7 @@ You're not a user
 <p>To use access controls defined, for example, in the interceptUrlMap:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 40. Example using <code>&lt;sec:link&gt;</code> without an expression</div>
+<div class="title">Listing 47. Example using <code>&lt;sec:link&gt;</code> without an expression</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:link controller='myController' action='myAction'&gt;My link text&lt;/sec:link&gt;</code></pre>
 </div>
@@ -2778,7 +2895,7 @@ You're not a user
 <p>By default, nothing will be rendered if the specified expression evaluates to <code>false</code> or URL is not allowed. To render only the text that would have been linked, set the <code>fallback</code> attribute:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 41. Example using <code>&lt;sec:link fallback='true'&gt;</code> without an expression</div>
+<div class="title">Listing 48. Example using <code>&lt;sec:link fallback='true'&gt;</code> without an expression</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:link controller='myController' action='myAction' fallback='true'&gt;This text will display but won't be linked if the user doesn't have access&lt;/sec:link&gt;</code></pre>
 </div>
@@ -2807,7 +2924,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 42. Example using <code>getCurrentUser()</code></div>
+<div class="title">Listing 49. Example using <code>getCurrentUser()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SomeController {
 
@@ -2833,7 +2950,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 43. Example using <code>loadCurrentUser()</code></div>
+<div class="title">Listing 50. Example using <code>loadCurrentUser()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SomeController {
 
@@ -2862,7 +2979,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 44. Example using <code>isLoggedIn()</code></div>
+<div class="title">Listing 51. Example using <code>isLoggedIn()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SomeController {
 
@@ -2892,7 +3009,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 45. Example using <code>getAuthentication()</code></div>
+<div class="title">Listing 52. Example using <code>getAuthentication()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SomeController {
 
@@ -2921,7 +3038,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 46. Example using <code>getPrincipal()</code></div>
+<div class="title">Listing 53. Example using <code>getPrincipal()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class SomeController {
 
@@ -2961,7 +3078,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 47. Example using <code>encodePassword()</code></div>
+<div class="title">Listing 54. Example using <code>encodePassword()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class PersonController {
 
@@ -3009,7 +3126,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 48. Example using <code>updateRole()</code></div>
+<div class="title">Listing 55. Example using <code>updateRole()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class RoleController {
 
@@ -3037,7 +3154,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 49. Example using <code>deleteRole()</code></div>
+<div class="title">Listing 56. Example using <code>deleteRole()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class RoleController {
 
@@ -3067,7 +3184,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 50. Example using <code>clearCachedRequestmaps()</code></div>
+<div class="title">Listing 57. Example using <code>clearCachedRequestmaps()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class RequestmapController {
 
@@ -3096,7 +3213,7 @@ You're not a user
 <p>Example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 51. Example using <code>reauthenticate()</code></div>
+<div class="title">Listing 58. Example using <code>reauthenticate()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class UserController {
 
@@ -3194,7 +3311,7 @@ You're not a user
 <p>Checks whether the request was triggered by an Ajax call. The standard way is to determine whether <code>X-Requested-With</code> request header is set and has the value <code>XMLHttpRequest</code>. In addition, you can configure the name of the header with the <code>grails.plugin.springsecurity.ajaxHeader</code> configuration attribute, but this is not recommended because all major JavaScript toolkits use the standard name. Further, you can register a closure in <code>application.groovy</code> with the name <code>ajaxCheckClosure</code> that will be used to check if a request is an Ajax request. It is passed the request as its single argument, e.g.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 52. Customizing Ajax detection with <code>grails.plugin.springsecurity.ajaxCheckClosure</code></div>
+<div class="title">Listing 59. Customizing Ajax detection with <code>grails.plugin.springsecurity.ajaxCheckClosure</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.ajaxCheckClosure = { request -&gt;
    // return true or false
@@ -3357,7 +3474,7 @@ class MySecurityEventListener
 <p>Register the class in <code>grails-app/conf/spring/resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 53. Registration of the event listener bean in <code>resources.groovy</code></div>
+<div class="title">Listing 60. Registration of the event listener bean in <code>resources.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import com.foo.bar.MySecurityEventListener
 
@@ -3376,7 +3493,7 @@ beans = {
 <p>Implement the event handlers that you need, for example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 54. Adding event handling closures in <code>application.groovy</code></div>
+<div class="title">Listing 61. Adding event handling closures in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.useSecurityEventListener = true
 
@@ -3536,7 +3653,7 @@ grails.plugin.springsecurity.onAuthorizationEvent = { e, appCtx -&gt;
 <p>To use <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">HTTP Basic Authentication</a> in your application, set the <code>useBasicAuth</code> attribute to <code>true</code>. Also change the <code>basic.realmName</code> default value to one that suits your application, for example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 55. Basic Authentication example settings</div>
+<div class="title">Listing 62. Basic Authentication example settings</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.useBasicAuth = true
 grails.plugin.springsecurity.basic.realmName = "Ralph's Bait and Tackle"</code></pre>
@@ -3581,7 +3698,7 @@ grails.plugin.springsecurity.basic.realmName = "Ralph's Bait and Tackle"</code><
 <p>If you don&#8217;t want all of your URLs guarded by Basic authentication, you can partition the URL patterns and apply Basic authentication to some, but regular form login to others. For example, if you have a web service that uses Basic authentication for <code>/webservice/**</code> URLs, you would configure that using the <code>chainMap</code> config attribute:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 56. Example filter chain mappings for Basic authentication</div>
+<div class="title">Listing 63. Example filter chain mappings for Basic authentication</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.filterChain.chainMap = [
    [pattern: '/webservice/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter'],
@@ -4323,7 +4440,7 @@ $(function() {
 <p>To customize this list, you define a <code>providerNames</code> attribute with a list of bean names. The beans must be declared either by the plugin, or yourself in <code>resources.groovy</code>. Suppose you have a custom <code>MyAuthenticationProvider</code> in <code>resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 57. Registering a custom authentication provider bean in <code>resources.groovy</code></div>
+<div class="title">Listing 64. Registering a custom authentication provider bean in <code>resources.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import com.foo.MyAuthenticationProvider
 
@@ -4338,7 +4455,7 @@ beans = {
 <p>You register the provider in <code>grails-app/conf/application.groovy</code> as:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 58. Registering a custom authentication provider name in <code>grails.plugin.springsecurity.providerNames</code></div>
+<div class="title">Listing 65. Registering a custom authentication provider name in <code>grails.plugin.springsecurity.providerNames</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.providerNames = [
    'myAuthenticationProvider',
@@ -4448,7 +4565,7 @@ class MyUserDetailsService implements GrailsUserDetailsService {
 <p>To use your implementation, register it in <code>grails-app/conf/spring/resources.groovy</code> like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 59. Registering a custom <code>UserDetailsService</code> in <code>resources.groovy</code></div>
+<div class="title">Listing 66. Registering a custom <code>UserDetailsService</code> in <code>resources.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import com.mycompany.myapp.MyUserDetailsService
 
@@ -4469,7 +4586,7 @@ beans = {
 <p>If you store mutable data in your custom <code>UserDetails</code> implementation (such as full name in the preceding example), be sure to rebuild the <code>Authentication</code> if it changes. <code>springSecurityService</code> has a <code>reauthenticate</code> method that does this for you:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 60. Calling <code>reauthenticate()</code> after making a change that affects the cached authentication</div>
+<div class="title">Listing 67. Calling <code>reauthenticate()</code> after making a change that affects the cached authentication</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class MyController {
 
@@ -4632,7 +4749,7 @@ If you rely on them to be higher, set them manually when testing.
 <p>An example override of the salt source bean using SystemWideSaltSource would look like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 61. Configuring <code>SystemWideSaltSource</code> as the <code>saltSource</code> bean in <code>application.groovy</code></div>
+<div class="title">Listing 68. Configuring <code>SystemWideSaltSource</code> as the <code>saltSource</code> bean in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import org.springframework.security.authentication.dao.SystemWideSaltSource
 
@@ -4647,7 +4764,7 @@ beans = {
 <p>To have full control over the process, you can implement the <code>SaltSource</code> interface and replace the plugin&#8217;s implementation with your own by defining a bean in <code>grails-app/conf/spring/resources.groovy</code> with the name <code>saltSource</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 62. Configuring a custom implementation of the <code>saltSource</code> bean in <code>application.groovy</code></div>
+<div class="title">Listing 69. Configuring a custom implementation of the <code>saltSource</code> bean in <code>application.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import com.foo.bar.MySaltSource
 
@@ -4665,7 +4782,7 @@ beans = {
 <p>Regardless of the implementation, you need to be aware of what value to use for a salt when creating or updating users, for example, in a <code>save</code> or <code>update</code> action in a <code>UserController</code>. When hashing the password, use the two-parameter version of <code>springSecurityService.encodePassword()</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 63. Explicitly hashing passwords</div>
+<div class="title">Listing 70. Explicitly hashing passwords</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class UserController {
 
@@ -4789,7 +4906,7 @@ beans = {
 <p>You can configure exception mappings in <code>application.groovy</code> to associate a URL to any or all of these exceptions to determine where to redirect after a failure, for example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 64. Example <code>grails.plugin.springsecurity.failureHandler.exceptionMappings</code> configuration</div>
+<div class="title">Listing 71. Example <code>grails.plugin.springsecurity.failureHandler.exceptionMappings</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import org.springframework.security.authentication.LockedException
 import org.springframework.security.authentication.DisabledException
@@ -4857,7 +4974,7 @@ grails.plugin.springsecurity.failureHandler.exceptionMappings = [
 <p>Here&#8217;s an example for a password expired workflow. You&#8217;d need a simple action to display a password reset form (similar to the login form):</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 65. Adding a <code>passwordExpired()</code> controller action</div>
+<div class="title">Listing 72. Adding a <code>passwordExpired()</code> controller action</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">def passwordExpired() {
    [username: session['SPRING_SECURITY_LAST_USERNAME']]
@@ -4868,7 +4985,7 @@ grails.plugin.springsecurity.failureHandler.exceptionMappings = [
 <p>and the form would look something like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 66. Sample GSP code for a password reset page</div>
+<div class="title">Listing 73. Sample GSP code for a password reset page</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;div id='login'&gt;
    &lt;div class='inner'&gt;
@@ -4908,7 +5025,7 @@ grails.plugin.springsecurity.failureHandler.exceptionMappings = [
 <p>The GSP form would submit to an action like this one:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 67. Adding an <code>updatePassword()</code> controller action</div>
+<div class="title">Listing 74. Adding an <code>updatePassword()</code> controller action</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">def updatePassword(String password, String password_new, String password_new_2) {
    String username = session['SPRING_SECURITY_LAST_USERNAME']
@@ -5379,7 +5496,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>To store the equivalent entries for the ROLE_SUPERADMIN / ROLE_FINANCE_ADMIN / ROLE_ADMIN hierarchy, add code like this to a method in a transactional service:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 68. Persisting <code>RoleHierarchyEntry</code> instances</div>
+<div class="title">Listing 75. Persisting <code>RoleHierarchyEntry</code> instances</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">if (!RoleHierarchyEntry.count()) {
    new RoleHierarchyEntry(entry: 'ROLE_SUPERADMIN &gt; ROLE_FINANCE_ADMIN').save()
@@ -5419,7 +5536,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>To switch to another user, typically you create a form that submits to <code>/login/impersonate</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 69. An HTML form for switching to another user</div>
+<div class="title">Listing 76. An HTML form for switching to another user</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifAllGranted roles='ROLE_SWITCH_USER'&gt;
 
@@ -5435,7 +5552,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>Here the form is guarded by a check that the logged-in user has <code>ROLE_SWITCH_USER</code> and is not shown otherwise. You also need to guard the user switch URL, and the approach depends on your mapping scheme. If you use annotations, add a rule to the <code>controllerAnnotations.staticRules</code> attribute:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 70. Guarding the switch user url with <code>controllerAnnotations.staticRules</code></div>
+<div class="title">Listing 77. Guarding the switch user url with <code>controllerAnnotations.staticRules</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.controllerAnnotations.staticRules = [
    ...
@@ -5447,7 +5564,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>If you use <code>Requestmap</code>s, create a rule like this (for example, in <code>BootStrap</code>):</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 71. Guarding the switch user url with a database requestmap</div>
+<div class="title">Listing 78. Guarding the switch user url with a database requestmap</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">new Requestmap(url: '/login/impersonate',
                configAttribute: 'ROLE_SWITCH_USER,IS_AUTHENTICATED_FULLY').save(flush: true)</code></pre>
@@ -5457,7 +5574,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>If you use the static <code>application.groovy</code> map, add the rule there:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 72. Guarding the switch user url with <code>interceptUrlMap</code></div>
+<div class="title">Listing 79. Guarding the switch user url with <code>interceptUrlMap</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.interceptUrlMap = [
    ...
@@ -5472,7 +5589,7 @@ class RoleHierarchyEntry implements Serializable {
 <p>To resume as the original user, POST to <code>/logout/impersonate</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 73. A link to switch back to the real user</div>
+<div class="title">Listing 80. A link to switch back to the real user</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifSwitched&gt;
     &lt;form action='${request.contextPath}/logout/impersonate' method='POST'&gt;
@@ -5559,7 +5676,7 @@ grails.plugin.springsecurity.switchUser.switchFailureUrl = ...</code></pre>
 <p>One approach to supporting the switch user feature is to add code to one or more of your GSP templates. In this example the current username is displayed, and if the user has switched from another (using the <code>sec:ifSwitched</code> tag) then a &#8220;resume&#8221; button is displayed. If not, and the user has the required role, a form is displayed to allow input of the username to switch to:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 74. Example GSP code to conditionally display a switch user form and resume form</div>
+<div class="title">Listing 81. Example GSP code to conditionally display a switch user form and resume form</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="html">&lt;sec:ifLoggedIn&gt;
 Logged in as &lt;sec:username/&gt;
@@ -5607,7 +5724,7 @@ Logged in as &lt;sec:username/&gt;
 <p>For example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 75. Sample <code>grails.plugin.springsecurity.filterChain.filterNames</code> configuration</div>
+<div class="title">Listing 82. Sample <code>grails.plugin.springsecurity.filterChain.filterNames</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.filterChain.filterNames = [
    'securityContextPersistenceFilter', 'logoutFilter',
@@ -5627,7 +5744,7 @@ Logged in as &lt;sec:username/&gt;
 <p>Use the <code>filterChain.chainMap</code> attribute to define which filters are applied to different URL patterns. You define a Map that specifies one or more lists of filter bean names, each with a corresponding URL pattern.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 76. Sample <code>grails.plugin.springsecurity.filterChain.chainMap</code> configuration</div>
+<div class="title">Listing 83. Sample <code>grails.plugin.springsecurity.filterChain.chainMap</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.filterChain.chainMap = [
    [pattern: '/urlpattern1/**', filters: 'filter1,filter2,filter3,filter4'],
@@ -5660,7 +5777,7 @@ Logged in as &lt;sec:username/&gt;
 <p>There&#8217;s also a filter negation syntax that can be very convenient. Rather than specifying all of the filter names (and risking forgetting one or putting them in the wrong order), you can use the <code>JOINED_FILTERS</code> keyword and one or more filter names prefixed with a <code>-</code> . This means to use all configured filters except for the excluded ones. For example, if you had a web service that uses Basic Auth for <code>/webservice/**</code> URLs, you would configure that using:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 77. Using <code>JOINED_FILTERS</code> in a <code>filterChain.chainMap</code> configuration</div>
+<div class="title">Listing 84. Using <code>JOINED_FILTERS</code> in a <code>filterChain.chainMap</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.filterChain.chainMap = [
    [pattern: '/webservice/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter'],
@@ -5675,7 +5792,7 @@ Logged in as &lt;sec:username/&gt;
 <p>Additionally, you can use a <code>chainMap</code> configuration to declare one or more URL patterns which should have no filters applied. Use the name <code>'none'</code> for these patterns, e.g.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 78. Using <code>none</code> in a <code>filterChain.chainMap</code> configuration</div>
+<div class="title">Listing 85. Using <code>none</code> in a <code>filterChain.chainMap</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.filterChain.chainMap = [
    [pattern: '/someurlpattern/**', filters: 'none'],
@@ -5804,7 +5921,7 @@ class BootStrap {
 <p>Build a <code>List</code> of single-entry <code>Map</code>s under the <code>secureChannel.definition</code> key, where URL patterns are stored under the key &#8220;pattern&#8221;, and the values are stored under the key &#8220;access&#8221; and are one of the access keywords <code>REQUIRES_SECURE_CHANNEL</code>, <code>REQUIRES_INSECURE_CHANNEL</code>, or <code>ANY_CHANNEL</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 79. Sample <code>grails.plugin.springsecurity.secureChannel.definition</code></div>
+<div class="title">Listing 86. Sample <code>grails.plugin.springsecurity.secureChannel.definition</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.secureChannel.definition = [
    [pattern: '/login/**',        access: 'REQUIRES_SECURE_CHANNEL'],
@@ -5890,7 +6007,7 @@ grails.plugin.springsecurity.secureChannel.insecureHeaderValue = '...'</code></p
 <p>To use this feature, specify an <code>ipRestrictions</code> configuration as a <code>List</code> of <code>Map</code>s, one for each combination of URL pattern to IP address patterns that can access those URLs. The IP patterns can be single-value strings, or multi-value lists of strings. They can use <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> masks, and can specify either IPv4 or IPv6 patterns. For example, given this configuration:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 80. Sample <code>grails.plugin.springsecurity.ipRestrictions</code> configuration</div>
+<div class="title">Listing 87. Sample <code>grails.plugin.springsecurity.ipRestrictions</code> configuration</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.ipRestrictions = [
    [pattern: '/pattern1/**', access: '123.234.345.456'],
@@ -6030,7 +6147,7 @@ grails.plugin.springsecurity.secureChannel.insecureHeaderValue = '...'</code></p
 <p>The beans must be declared either by the plugin or by you in <code>resources.groovy</code>. For example, suppose you have a custom <code>MyLogoutHandler</code> in <code>resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 81. Registering a custom logout handler in <code>resources.groovy</code></div>
+<div class="title">Listing 88. Registering a custom logout handler in <code>resources.groovy</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">import com.foo.MyLogoutHandler
 
@@ -6045,7 +6162,7 @@ beans = {
 <p>You register it in <code>grails-app/conf/application.groovy</code> as:</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 82. Adding a custom logout handler in <code>grails.plugin.springsecurity.logout.handlerNames</code></div>
+<div class="title">Listing 89. Adding a custom logout handler in <code>grails.plugin.springsecurity.logout.handlerNames</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">grails.plugin.springsecurity.logout.handlerNames = [
    'rememberMeServices', 'securityContextLogoutHandler', 'myLogoutHandler'
@@ -6973,7 +7090,7 @@ class SecureController {
 <p>Returns <code>true</code> if there is an authenticated user.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 83. Example use of <code>isLoggedIn()</code></div>
+<div class="title">Listing 90. Example use of <code>isLoggedIn()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class MyController {
 
@@ -7008,7 +7125,7 @@ class SecureController {
 <p>Retrieves the current authenticated user&#8217;s Principal (a <code>GrailsUser</code> instance unless you&#8217;ve customized this) or <code>null</code> if not authenticated.</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 84. Example use of <code>getPrincipal()</code></div>
+<div class="title">Listing 91. Example use of <code>getPrincipal()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class MyController {
 
@@ -7035,7 +7152,7 @@ class SecureController {
 <p>Loads the user domain class instance from the database that corresponds to the currently authenticated user, or <code>null</code> if not authenticated. This is the equivalent of adding a dependency injection for <code>springSecurityService</code> and calling <code>PersonDomainClassName.get(springSecurityService.principal.id)</code> (the typical way that this is often done).</p>
 </div>
 <div class="listingblock">
-<div class="title">Listing 85. Example use of <code>getAuthenticatedUser()</code></div>
+<div class="title">Listing 92. Example use of <code>getAuthenticatedUser()</code></div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">class MyController {
 
@@ -7272,7 +7389,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 7.0.2-SNAPSHOT<br>
-Last updated 2026-02-15 20:09:26 UTC
+Last updated 2026-02-19 02:04:10 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
