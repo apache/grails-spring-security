@@ -50,8 +50,21 @@ Then publish the jar files to mavenLocal for usage:
 - `3.3.x` compatible with Grails 3.3.x
 - `3.2.x` compatible with Grails 3.2.x
 
-Grails 7 requires disabling any Spring Security Auto Configurations you may have in your classpath.  This can be done via annotation or `application.yml`
-e.g.
+### Spring Boot Auto-Configuration
+
+The plugin automatically excludes 7 Spring Boot security auto-configuration classes that conflict with the Grails Spring Security plugin. No manual `spring.autoconfigure.exclude` entries are needed.
+
+To disable this automatic exclusion (e.g. if you want to use Spring Boot's security auto-configuration directly), add the following to `application.yml`:
+
+```yml
+grails:
+  plugin:
+    springsecurity:
+      excludeSpringSecurityAutoConfiguration: false
+```
+
+If you are on an older version of the plugin that does not support automatic exclusion, you can manually exclude the conflicting classes:
+
 ```yml
 spring:
   autoconfigure:
