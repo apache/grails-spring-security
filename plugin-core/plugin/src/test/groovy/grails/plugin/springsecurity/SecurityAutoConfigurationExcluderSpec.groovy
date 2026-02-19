@@ -18,6 +18,7 @@
  */
 package grails.plugin.springsecurity
 
+import org.springframework.core.env.Environment
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
@@ -145,6 +146,59 @@ class SecurityAutoConfigurationExcluderSpec extends Specification {
 
         then:
         thrown(UnsupportedOperationException)
+    }
+
+    def "match allows all auto-configurations when disabled via environment property"() {
+        given:
+        Environment env = Mock(Environment)
+        env.getProperty(SecurityAutoConfigurationExcluder.ENABLED_PROPERTY, Boolean, true) >> false
+        excluder.setEnvironment(env)
+
+        and:
+        String[] autoConfigs = [
+                'org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration',
+                'org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration',
+                'org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration',
+        ] as String[]
+
+        when:
+        boolean[] results = excluder.match(autoConfigs, null)
+
+        then: 'all auto-configurations pass through when filter is disabled'
+        results[0]
+        results[1]
+        results[2]
+    }
+
+    def "match excludes by default when environment has no property set"() {
+        given:
+        Environment env = Mock(Environment)
+        env.getProperty(SecurityAutoConfigurationExcluder.ENABLED_PROPERTY, Boolean, true) >> true
+        excluder.setEnvironment(env)
+
+        and:
+        String[] autoConfigs = [
+                'org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration',
+        ] as String[]
+
+        when:
+        boolean[] results = excluder.match(autoConfigs, null)
+
+        then: 'exclusion is active by default'
+        !results[0]
+    }
+
+    def "match excludes by default when no environment is set"() {
+        given: 'excluder without environment (e.g. unit test usage)'
+        String[] autoConfigs = [
+                'org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration',
+        ] as String[]
+
+        when:
+        boolean[] results = excluder.match(autoConfigs, null)
+
+        then: 'exclusion is active by default'
+        !results[0]
     }
 
     def "spring.factories registers the filter correctly"() {

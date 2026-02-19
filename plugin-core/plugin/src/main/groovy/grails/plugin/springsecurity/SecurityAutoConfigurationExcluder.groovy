@@ -21,6 +21,8 @@ package grails.plugin.springsecurity
 import groovy.transform.CompileStatic
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata
+import org.springframework.context.EnvironmentAware
+import org.springframework.core.env.Environment
 
 /**
  * Automatically excludes Spring Boot security auto-configuration classes that
@@ -38,6 +40,16 @@ import org.springframework.boot.autoconfigure.AutoConfigurationMetadata
  * automatically filtering them out during Spring Boot's auto-configuration
  * discovery phase.</p>
  *
+ * <p>To disable this filter and allow Spring Boot's security auto-configurations
+ * to run, set the following property in {@code application.yml}:</p>
+ *
+ * <pre>
+ * grails:
+ *   plugin:
+ *     springsecurity:
+ *       excludeSpringSecurityAutoConfiguration: false
+ * </pre>
+ *
  * <p>Registered via {@code META-INF/spring.factories} as an
  * {@link AutoConfigurationImportFilter}. This runs before auto-configuration
  * bytecode is loaded, so there is no performance overhead from excluded classes.</p>
@@ -46,7 +58,16 @@ import org.springframework.boot.autoconfigure.AutoConfigurationMetadata
  * @see AutoConfigurationImportFilter
  */
 @CompileStatic
-class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter {
+class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter, EnvironmentAware {
+
+    static final String ENABLED_PROPERTY = 'grails.plugin.springsecurity.excludeSpringSecurityAutoConfiguration'
+
+    private boolean enabled = true
+
+    @Override
+    void setEnvironment(Environment environment) {
+        this.enabled = environment.getProperty(ENABLED_PROPERTY, Boolean, true)
+    }
 
     /**
      * Spring Boot security auto-configuration classes that conflict with the
@@ -86,7 +107,7 @@ class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter
     boolean[] match(String[] autoConfigurationClasses, AutoConfigurationMetadata autoConfigurationMetadata) {
         boolean[] matches = new boolean[autoConfigurationClasses.length]
         for (int i = 0; i < autoConfigurationClasses.length; i++) {
-            matches[i] = !EXCLUDED_AUTO_CONFIGURATIONS.contains(autoConfigurationClasses[i])
+            matches[i] = !enabled || !EXCLUDED_AUTO_CONFIGURATIONS.contains(autoConfigurationClasses[i])
         }
         return matches
     }
