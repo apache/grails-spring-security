@@ -19,6 +19,7 @@
 package grails.plugin.springsecurity
 
 import groovy.transform.CompileStatic
+
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata
 import org.springframework.context.EnvironmentAware
@@ -101,15 +102,13 @@ class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter
             'org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration',
             'org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration',
             'org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration',
-    ] as Set<String>
+    ].toSet().asImmutable()
 
     @Override
     boolean[] match(String[] autoConfigurationClasses, AutoConfigurationMetadata autoConfigurationMetadata) {
-        boolean[] matches = new boolean[autoConfigurationClasses.length]
-        for (int i = 0; i < autoConfigurationClasses.length; i++) {
-            matches[i] = !enabled || !EXCLUDED_AUTO_CONFIGURATIONS.contains(autoConfigurationClasses[i])
-        }
-        return matches
+        autoConfigurationClasses.collect {
+            !enabled || !(it in EXCLUDED_AUTO_CONFIGURATIONS)
+        } as boolean[]
     }
 
     /**
@@ -119,6 +118,6 @@ class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter
      * @return unmodifiable set of excluded class names
      */
     static Set<String> getExcludedAutoConfigurations() {
-        return Collections.unmodifiableSet(EXCLUDED_AUTO_CONFIGURATIONS)
+        EXCLUDED_AUTO_CONFIGURATIONS
     }
 }
