@@ -129,4 +129,8 @@ under the License.
 |`true`
 |Whether to remove the password from the `Authentication` and its child objects after successful authentication
 
+|excludeSpringSecurityAutoConfiguration
+|`true`
+|Whether to automatically exclude Spring Boot security auto-configuration classes that conflict with the plugin. Set to `false` to allow Spring Boot's security auto-configurations to load alongside the plugin. See <<installation>>
+
 |====================

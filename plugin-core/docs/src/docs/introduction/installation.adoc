@@ -72,6 +72,20 @@ dependencies {
 ./grailsw s2-quickstart com.yourapp User Role
 ```
 
+=== Spring Boot Auto-Configuration
+
+The plugin automatically excludes Spring Boot security auto-configuration classes (such as `SecurityAutoConfiguration`, `SecurityFilterAutoConfiguration`, and `UserDetailsServiceAutoConfiguration`) that conflict with the plugin's own security setup. This means you do not need to manually add `spring.autoconfigure.exclude` entries to your `application.yml`.
+
+If you need to disable this automatic exclusion - for example, to use Spring Boot's security auto-configuration directly alongside the plugin - set the following property in `application.yml`:
+
+[source,yaml]
+----
+grails:
+  plugin:
+    springsecurity:
+      excludeSpringSecurityAutoConfiguration: false
+----
+
 === Verifying Installation
 
 To verify that the plugin has been successfully installed, you can run a simple test:
