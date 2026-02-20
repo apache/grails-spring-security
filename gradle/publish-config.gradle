@@ -52,6 +52,18 @@ afterEvaluate {
         }
     }
     if (project.plugins.hasPlugin("maven-publish")) {
+        publishing.publications.withType(MavenPublication).configureEach { MavenPublication publication ->
+            publication.pom.withXml {
+                asNode().dependencies?.dependency?.findAll {
+                    it.groupId.text() == 'org.ehcache' && it.artifactId.text() == 'ehcache'
+                }?.each {
+                    if (!it.classifier) {
+                        it.appendNode('classifier', 'jakarta')
+                    }
+                }
+            }
+        }
+
         def checksumTask = tasks.register("publishedChecksums", Checksum)
         checksumTask.configure { Checksum check ->
             check.checksumAlgorithm = Checksum.Algorithm.SHA512
