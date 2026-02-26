@@ -86,8 +86,13 @@ tasks.register('generateConfigurationProperties') {
                 'grails.plugin.springsecurity.authentication',
                 'grails.plugin.springsecurity.login-logout',
                 'grails.plugin.springsecurity.password-encoding',
+                'grails.plugin.springsecurity.remember-me',
                 'grails.plugin.springsecurity.session',
                 'grails.plugin.springsecurity.url-mapping',
+                'grails.plugin.springsecurity.basic-digest-auth',
+                'grails.plugin.springsecurity.switch-user',
+                'grails.plugin.springsecurity.port-channel',
+                'grails.plugin.springsecurity.x509',
                 'grails.plugin.springsecurity.miscellaneous'
         ]
 
