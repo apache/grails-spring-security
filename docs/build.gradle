@@ -1,0 +1,154 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
+import grails.doc.dropdown.SoftwareVersion
+import grails.doc.git.FetchTagsTask
+import grails.doc.dropdown.CreateReleaseDropDownTask
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
+
+apply plugin: 'org.asciidoctor.jvm.convert'
+
+ext {
+    // Resolve the absolute paths to each plugin's docs source directory
+    coreDocsDir = rootProject.layout.projectDirectory.dir('plugin-core/docs/src/docs').asFile.absolutePath
+    aclDocsDir = rootProject.layout.projectDirectory.dir('plugin-acl/docs/src/docs').asFile.absolutePath
+    casDocsDir = rootProject.layout.projectDirectory.dir('plugin-cas/docs/src/docs').asFile.absolutePath
+    ldapDocsDir = rootProject.layout.projectDirectory.dir('plugin-ldap/docs/src/docs').asFile.absolutePath
+    oauth2DocsDir = rootProject.layout.projectDirectory.dir('plugin-oauth2/docs/src/docs').asFile.absolutePath
+    restDocsDir = rootProject.layout.projectDirectory.dir('plugin-rest/docs/src/docs').asFile.absolutePath
+    uiDocsDir = rootProject.layout.projectDirectory.dir('plugin-ui/docs/src/docs').asFile.absolutePath
+
+    asciidoctorAttributes = [
+            copyright            : 'Apache License, Version 2.0',
+            docinfo1             : 'true',
+            doctype              : 'book',
+            encoding             : 'utf-8',
+            icons                : 'font',
+            id                   : 'grails-spring-security-combined:' + projectVersion,
+            idprefix             : '',
+            idseparator          : '-',
+            lang                 : 'en',
+            linkattrs            : true,
+            numbered             : '',
+            producer             : 'Asciidoctor',
+            revnumber            : projectVersion,
+            projectVersion       : projectVersion,
+            version              : projectVersion,
+            setanchors           : true,
+            'source-highlighter' : 'prettify',
+            toc                  : 'left',
+            toc2                 : '',
+            toclevels            : '3',
+            // Document attribute references for cross-project includes
+            'core-docs-dir'      : coreDocsDir,
+            'acl-docs-dir'       : aclDocsDir,
+            'cas-docs-dir'       : casDocsDir,
+            'ldap-docs-dir'      : ldapDocsDir,
+            'oauth2-docs-dir'    : oauth2DocsDir,
+            'rest-docs-dir'      : restDocsDir,
+            'ui-docs-dir'        : uiDocsDir,
+            // Attributes needed by individual plugin docs (LDAP, REST, CAS)
+            'sourcedir'                       : "${rootProject.findProject(':spring-security-rest').projectDir}/src/main/groovy",
+            'baseGroovyApiUrl'                : "https://apache.github.io/grails-spring-security/${projectVersion}/rest-plugin/docs/gapi/",
+            'customUserDetailsContextMapperPath': "${rootProject.findProject(':ldap-examples-custom-user-details-context-mapper').projectDir}",
+            'functionalTestAppPath'           : "${rootProject.findProject(':ldap-examples-functional-test-app').projectDir}",
+            'threeZeroXProjectVersion'        : '3.0.1',
+            'experimental'                    : 'true',
+            'compat-mode'                     : '',
+    ]
+}
+
+tasks.named('asciidoctor', AsciidoctorTask) {
+    sourceDir(layout.projectDirectory.file('src/docs'))
+    sources { include('index.adoc') }
+    outputDir = layout.buildDirectory.file('docs')
+    attributes(asciidoctorAttributes)
+    baseDirFollowsSourceDir()
+    jvm {
+        jvmArgs('--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED', '--add-opens', 'java.base/java.io=ALL-UNNAMED')
+    }
+    // Declare inputs for all plugin doc sources so Gradle knows to rebuild when they change
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-core/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-acl/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-cas/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-ldap/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-oauth2/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-rest/docs/src/docs'))
+    inputs.dir(rootProject.layout.projectDirectory.dir('plugin-ui/docs/src/docs'))
+    inputs.dir(sourceDir)
+    outputs.dir(outputDir)
+}
+
+def fetchTagsTask = project.tasks.register('fetchTags', FetchTagsTask)
+
+def createReleaseDropdownTask = tasks.register('createReleaseDropdown', CreateReleaseDropDownTask)
+createReleaseDropdownTask.configure { CreateReleaseDropDownTask it ->
+    it.filesToAddDropdowns = project.layout.buildDirectory.files('docs-modified/index.html')
+    it.sourceDocsDirectory = project.layout.buildDirectory.dir('docs')
+    it.modifiedPagesDirectory = project.layout.buildDirectory.dir('docs-modified')
+    it.githubSlug = 'apache/grails-spring-security'
+    it.docBaseUrl = "https://apache.github.io/grails-spring-security"
+    it.versionHtml = '<span id="revnumber">version ' + project.version + '</span>'
+    it.additionalPath = "guide/"
+    it.minimumVersion = SoftwareVersion.build('7.0.0-SNAPSHOT')
+    it.dependsOn(fetchTagsTask)
+}
+
+def guideDocsTask = project.tasks.register('guideDocs', Copy)
+guideDocsTask.configure { Copy it ->
+    it.group = 'documentation'
+    it.dependsOn('asciidoctor')
+    it.duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    def sourceDir = layout.projectDirectory.dir('src/docs')
+    def targetDir = layout.buildDirectory.dir('docs')
+    it.outputs.dir(targetDir)
+    it.from(sourceDir)
+    it.into(targetDir)
+    it.include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    // Also copy images from all plugin doc source directories
+    it.from(rootProject.layout.projectDirectory.dir('plugin-core/docs/src/docs')) {
+        include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    }
+    it.from(rootProject.layout.projectDirectory.dir('plugin-acl/docs/src/docs')) {
+        include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    }
+    it.from(rootProject.layout.projectDirectory.dir('plugin-ui/docs/src/docs')) {
+        include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    }
+    it.from(rootProject.layout.projectDirectory.dir('plugin-rest/docs/src/docs')) {
+        include('**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg')
+    }
+    it.finalizedBy(createReleaseDropdownTask)
+}
+
+tasks.register('copyGuide', Copy) {
+    def sourceDir = layout.buildDirectory.dir('docs-modified')
+    def targetDir = rootProject.layout.buildDirectory.dir("docs/guide")
+    from(sourceDir)
+    into(targetDir)
+    dependsOn('guideDocs')
+    dependsOn(createReleaseDropdownTask)
+    outputs.dir(targetDir)
+}
+
+tasks.register('aggregateDocs') {
+    dependsOn('copyGuide')
+    group = 'documentation'
+    description = 'Aggregate combined documentation into the root docs directory'
+}

@@ -122,3 +122,6 @@ project(':ui-plugin').projectDir = new File(settingsDir, 'plugin-ui/plugin')
 project(':ui-docs').projectDir = new File(settingsDir, 'plugin-ui/docs')
 project(':ui-examples-extended').projectDir = new File(settingsDir, 'plugin-ui/examples/extended')
 project(':ui-examples-simple').projectDir = new File(settingsDir, 'plugin-ui/examples/simple')
+
+include 'docs'
+project(':docs').projectDir = new File(settingsDir, 'docs')
