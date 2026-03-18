@@ -37,6 +37,3 @@ tasks.withType(Groovydoc).configureEach {
     it.destinationDir = rootProject.layout.buildDirectory.dir('docs/ui-plugin/groovydoc').get().asFile
 }
 
-apply {
-    from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
-}

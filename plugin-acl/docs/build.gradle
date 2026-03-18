@@ -21,9 +21,6 @@ plugins {
     id 'groovy' // For groovydoc task
 }
 
-apply from: rootProject.layout.projectDirectory.file('gradle/groovydoc-config.gradle')
-apply from: rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
-
 // because the groovy plugin is being applied, a version of groovy must be provided
 dependencies {
     implementation platform("org.apache.grails:grails-bom:${grailsVersion}")
@@ -37,7 +34,4 @@ tasks.withType(Groovydoc).configureEach {
     it.destinationDir = rootProject.layout.buildDirectory.dir('docs/acl-plugin/groovydoc').get().asFile
 }
 
-apply {
-    from rootProject.layout.projectDirectory.file('gradle/reproducible-config.gradle')
-}
 
