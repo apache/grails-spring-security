@@ -18,7 +18,7 @@ under the License.
 ////
 
 [[rest-configuration]]
-=== Installing the plugin
+== Installing the plugin
 
 Just proceed as with any other Grails 3 plugin:
 
@@ -67,7 +67,7 @@ If you want your own token storage system, you need to implement
 include::{baseGroovyApiUrl}grails/plugin/springsecurity/rest/token/storage/TokenStorageService.html[TokenStorageService]
 and register it in `resources.groovy` as `tokenStorageService`.
 
-=== Plugin configuration
+== Plugin configuration
 
 This plugin is compatible by default with Spring Security core traditional, form-based authentication. The important thing
 to remember is: you have to separate the filter chains, so different filters are applied on each case.

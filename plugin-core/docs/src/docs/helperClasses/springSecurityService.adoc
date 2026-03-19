@@ -153,7 +153,7 @@ Hashes a password with the configured hashing scheme. By default the plugin uses
 
 [WARNING]
 ====
-You are *strongly* discouraged from using MD5 or SHA-1 algorithms because of their well-known vulnerabilities. You should also use a salt for your passwords, which greatly increases the computational complexity of computing passwords if your database gets compromised. See <<salt>>.
+You are *strongly* discouraged from using MD5 or SHA-1 algorithms because of their well-known vulnerabilities. You should also use a salt for your passwords, which greatly increases the computational complexity of computing passwords if your database gets compromised. See <<core-salt>>.
 ====
 
 Example:

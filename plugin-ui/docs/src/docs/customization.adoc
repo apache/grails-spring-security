@@ -137,7 +137,7 @@ There are a few configuration options specified in `DefaultUiSecurityConfig.groo
 
 ==== Registration attributes
 
-These settings are used in the registration workflow; see the <<userRegistration>> section for more details:
+These settings are used in the registration workflow; see the <<ui-userRegistration>> section for more details:
 
 * grails.plugin.springsecurity.ui.register.defaultRoleNames
 * grails.plugin.springsecurity.ui.register.emailBody
@@ -147,7 +147,7 @@ These settings are used in the registration workflow; see the <<userRegistration
 
 ==== Forgot Password attributes
 
-These settings are used in the forgot-password workflow; see the <<forgotPassword>> section for more details:
+These settings are used in the forgot-password workflow; see the <<ui-forgotPassword>> section for more details:
 
 * grails.plugin.springsecurity.ui.forgotPassword.emailBody
 * grails.plugin.springsecurity.ui.forgotPassword.emailFrom

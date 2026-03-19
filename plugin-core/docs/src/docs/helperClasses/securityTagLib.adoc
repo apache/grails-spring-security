@@ -126,7 +126,7 @@ Welcome Back <sec:username/>!
 ----
 
 ==== ifSwitched
-Displays the inner body content only if the current user switched from another user. (See also <<switchUser>>.)
+Displays the inner body content only if the current user switched from another user. (See also <<core-switchUser>>.)
 
 [source,html]
 .Listing {counter:listing}. Example using `<sec:ifSwitched>` and `<sec:ifNotSwitched>`

@@ -65,4 +65,4 @@ Once you have the core plugin working, you can add any combination of extension 
 | 5.x
 |===
 
-For information on upgrading from previous versions, see the <<upgrading,Upgrading>> section.
+For information on upgrading from previous versions, see the <<upgrading-from-previous-versions,Upgrading>> section.

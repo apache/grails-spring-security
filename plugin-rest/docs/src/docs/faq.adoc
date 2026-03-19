@@ -18,7 +18,7 @@ under the License.
 ////
 
 [[rest-faq]]
-=== Why this token-based implementation? Can't I use HTTP basic authentication?
+== Why this token-based implementation? Can't I use HTTP basic authentication?
 
 In theory you can. The only restriction to be truly stateless is to not use HTTP sessions at all. So if you go with
 basic authentication, you need to transfer the credentials back and forth every time.
@@ -46,7 +46,7 @@ A couple of link with further explanations on the token-based flow:
 * http://www.jamesward.com/2013/05/13/securing-single-page-apps-and-rest-services[]
 * http://blog.brunoscopelliti.com/authentication-to-a-restful-web-service-in-an-angularjs-web-app[]
 
-=== Why can't the API be secured with OAuth?
+== Why can't the API be secured with OAuth?
 
 http://tools.ietf.org/html/rfc6749[RFC 6749 - OAuth 2.0] specification does cover this scenario in what they call
 "public clients":
@@ -62,7 +62,7 @@ The OAuth 2.0 specification supports public clients with the implicit grant. Thi
 you delegate the authentication to another OAuth provider. If it's you who are authenticating the users
 (via DB, LDAP, etc), the token-based flow of this plugin is _OAuth-ish_.
 
-=== Why you didn't use any of the existing OAuth plugins? Why pac4j?
+== Why you didn't use any of the existing OAuth plugins? Why pac4j?
 
 I'm aware of plugins like http://grails.org/plugin/oauth[OAuth] and
 http://grails.org/plugin/spring-security-oauth[Spring Security OAuth], but all of them rely on Spring Security Core's
@@ -75,6 +75,6 @@ I chose pac4j because:
 
 I'm also aware of a pac4j-spring-security module. See my previous response on HTTP sessions.
 
-=== Project History
+== Project History
 
 Originally this plugin was written by Alvaro Sanchez-Mariscal (https://twitter.com/alvaro_sanchez[Twitter]).  It is currently maintained by the Grails Stewards.

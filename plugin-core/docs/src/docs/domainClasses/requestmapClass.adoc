@@ -81,4 +81,4 @@ class SecurityMapping implements Serializable {
 }
 ----
 
-To use database entries to guard URLs, see <<requestmapInstances>>.
+To use database entries to guard URLs, see <<core-requestmapInstances>>.

@@ -220,7 +220,7 @@ class User implements Serializable {
 }
 ----
 
-WARNING: If you use this older pattern, be aware that `springSecurityService` will be `null` when creating User instances in `BootStrap.groovy`. Domain class instances are plain Groovy objects, not Spring-managed beans, so their transient service references are not autowired at construction time. The `beforeInsert()` callback will silently skip password encoding because of the `?.` safe-navigation operator, resulting in plaintext passwords stored in the database. See <<bootstrapPasswordEncoding>> below for the recommended approach to seeding users in BootStrap.
+WARNING: If you use this older pattern, be aware that `springSecurityService` will be `null` when creating User instances in `BootStrap.groovy`. Domain class instances are plain Groovy objects, not Spring-managed beans, so their transient service references are not autowired at construction time. The `beforeInsert()` callback will silently skip password encoding because of the `?.` safe-navigation operator, resulting in plaintext passwords stored in the database. See <<core-password-encoding-bootstrap>> below for the recommended approach to seeding users in BootStrap.
 
 include::../domainClasses/gormAutowire.adoc[]
 
@@ -354,7 +354,7 @@ class UserRole implements Serializable {
 These generated files are not part of the plugin - these are your application files.
 They are examples to get you started, so you can edit them as you please.
 They contain the minimum needed for the plugin's default implementation of the Spring Security `UserDetailsService`
-(which like everything in the plugin is customizable - see <<userDetailsService>>).
+(which like everything in the plugin is customizable - see <<core-userDetailsService>>).
 ====
 
 The script has edited (or created) `grails-app/conf/application.groovy` and added the configuration for your domain classes. Make sure that the changes are correct.

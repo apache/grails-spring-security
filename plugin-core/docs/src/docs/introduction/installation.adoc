@@ -64,7 +64,7 @@ dependencies {
 
 9. You can start using the plugin's features and commands in your application.
 
-10. Run the <<s2-quickstart>> script to generate domain classes and add the initial configuration settings in `application.groovy`:
+10. Run the <<core-s2-quickstart>> script to generate domain classes and add the initial configuration settings in `application.groovy`:
 
 +
 [source,bash]

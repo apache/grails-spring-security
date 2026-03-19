@@ -51,15 +51,15 @@ under the License.
 
 |cacheUsers
 |`false`
-|If `true`, logins are cached using an `EhCache`. See "`Account Locking and Forcing Password Change`", under "`User Cache`": <<locking>>
+|If `true`, logins are cached using an `EhCache`. See "`Account Locking and Forcing Password Change`", under "`User Cache`": <<core-locking>>
 
 |useSecurity EventListener
 |`false`
-|If `true`, configure `SecurityEventListener`. See <<events>>
+|If `true`, configure `SecurityEventListener`. See <<core-events>>
 
 |dao.reflectionSaltSourceProperty
 |_none_
-|Which property to use for the reflection-based salt source. See <<salt>>
+|Which property to use for the reflection-based salt source. See <<core-salt>>
 
 |dao.hideUserNotFoundExceptions
 |`true`
@@ -71,7 +71,7 @@ under the License.
 
 |roleHierarchy
 |_none_
-|Hierarchical role definition. See <<hierarchicalRoles>>
+|Hierarchical role definition. See <<core-hierarchicalRoles>>
 
 |voterNames
 |`['authenticatedVoter', 'roleVoter', 'closureVoter']`
@@ -79,11 +79,11 @@ under the License.
 
 |providerNames
 |`['daoAuthenticationProvider', 'anonymousAuthenticationProvider', 'rememberMeAuthenticationProvider']`
-|Bean names of authentication providers. See <<authenticationProviders>>
+|Bean names of authentication providers. See <<core-authenticationProviders>>
 
 |securityConfigType
 |"`Annotation`"
-|Type of request mapping to use, one of "`Annotation`", "`Requestmap`", or "`InterceptUrlMap`" (or the corresponding enum value from `SecurityConfigType`). See <<requestMappings>>
+|Type of request mapping to use, one of "`Annotation`", "`Requestmap`", or "`InterceptUrlMap`" (or the corresponding enum value from `SecurityConfigType`). See <<core-requestMappings>>
 
 |controllerAnnotations.lowercase
 |`true`
@@ -95,7 +95,7 @@ under the License.
 
 |interceptUrlMap
 |_none_
-|Request mapping definition when using "`InterceptUrlMap`". See <<configGroovyMap>>
+|Request mapping definition when using "`InterceptUrlMap`". See <<core-configGroovyMap>>
 
 |registerLoggerListener
 |`false`

@@ -17,18 +17,18 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-=== Upgrading to 7.x (from Grails 6 / Spring Security 5.x)
+== Upgrading to 7.x (from Grails 6 / Spring Security 5.x)
 
 This guide covers upgrading the Grails Spring Security plugins from the Grails 6.x era (plugin versions 5.x/6.x, Spring Security 5.8.x) to the Grails 7.x era (plugin version 7.x, Spring Security 6.x).
 
 For the full Grails framework upgrade guide (Java 17 baseline, Groovy 4, coordinate changes, Gradle updates, etc.), see the https://docs.grails.org/7.0.x/guide/upgrading.html[Grails 7 Upgrade Guide].
 
-==== Repository Consolidation
+=== Repository Consolidation
 
 The previously separate Spring Security plugin repositories have been consolidated into a single mono-repository: https://github.com/apache/grails-spring-security[apache/grails-spring-security].
 This repository now contains the core plugin and all extension plugins (ACL, CAS, LDAP, OAuth2, REST, and UI).
 
-==== Dependency Changes
+=== Dependency Changes
 
 All artifacts have moved to the `org.apache.grails` group.
 The most notable change is that `spring-security-core` has been renamed to `grails-spring-security` (dropping the `-core` suffix).
@@ -73,7 +73,7 @@ Update your `build.gradle` dependencies as follows:
 | `org.apache.grails:grails-spring-security-ui`
 |===
 
-===== Example
+==== Example
 
 A typical Spring Security Core dependency change:
 
@@ -90,7 +90,7 @@ implementation 'org.apache.grails:grails-spring-security'
 NOTE: With the unified Grails BOM, versions are managed automatically when using a Grails Gradle plugin.
 You no longer need to specify the version explicitly.
 
-==== REST Plugin Token Storage Submodules
+=== REST Plugin Token Storage Submodules
 
 If you use the Spring Security REST plugin with a specific token storage backend, note the following renames:
 
@@ -99,7 +99,7 @@ If you use the Spring Security REST plugin with a specific token storage backend
 * `spring-security-rest-memcached` is now `grails-spring-security-rest-memcached`
 * `spring-security-rest-redis` is now `grails-spring-security-rest-redis`
 
-==== Spring Security 6.x Changes
+=== Spring Security 6.x Changes
 
 The underlying Spring Security framework has been upgraded from 5.8.x to 6.x.
 Key changes that may affect your application:
@@ -108,7 +108,7 @@ Key changes that may affect your application:
 * **Security filter chain configuration**: The `WebSecurityConfigurerAdapter` has been removed in Spring Security 6. If you have custom security configurations extending this class, you will need to migrate to the component-based approach. The Grails Spring Security plugin handles the core filter chain configuration internally, but any custom Spring Security beans may need updating.
 * **Default security behaviors**: Some default behaviors have changed in Spring Security 6 (e.g., CSRF protection, session management). Review the https://docs.spring.io/spring-security/reference/migration-7/index.html[Spring Security reference documentation] for the complete list of changes.
 
-==== Automated Migration
+=== Automated Migration
 
 The coordinate rename script from the Grails core repository also handles Spring Security artifacts.
 Running it will update your Gradle files automatically:
@@ -120,7 +120,7 @@ Running it will update your Gradle files automatically:
 
 The script is located in the `etc/bin` directory of the https://github.com/apache/grails-core/tree/7.0.x/etc/bin[grails-core] repository.
 
-==== Configuration Compatibility
+=== Configuration Compatibility
 
 The `grails.plugin.springsecurity.*` configuration namespace remains unchanged.
 Your existing `application.groovy` or `application.yml` security configuration should work without modification after updating the dependencies.

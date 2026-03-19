@@ -20,7 +20,7 @@ under the License.
 The Spring Security Rest plugin fires events exactly like Spring Security Core does.
 
 [[rest-events]]
-=== Event Notification
+== Event Notification
 
 You can set up event notifications in two ways. The sections that follow describe each approach in more detail.
 
@@ -30,7 +30,7 @@ You can set up event notifications in two ways. The sections that follow describ
 . Register one or more callback closures in `grails-app/conf/application.groovy` that take advantage of the plugin's
   `grails.plugin.springsecurity.rest.RestSecurityEventListener`. The listener does the filtering for you.
 
-==== AuthenticationEventPublisher
+=== AuthenticationEventPublisher
 
 Spring Security REST publishes events using an
 http://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/org/springframework/security/authentication/AuthenticationEventPublisher.html[AuthenticationEventPublisher]
@@ -43,7 +43,7 @@ publishing by setting `grails.plugin.springsecurity.useSecurityEventListener = t
 You can use the `useSecurityEventListener` setting to temporarily disable and enable the callbacks, or enable them
 per-environment.
 
-==== Token Creation
+=== Token Creation
 
 Currently the Spring Security REST plugin supports a single event in addition to the default spring security events.
 The event is fired whenever a new token is created. See `grails.plugin.springsecurity.rest.RestTokenCreationEvent`
@@ -53,7 +53,7 @@ The event is fired whenever a new token is created. See `grails.plugin.springsec
 Every time a token is successfully submitted, an `AuthenticationSuccessEvent` will be fired.
 ====
 
-=== Registering an Event Listener
+== Registering an Event Listener
 
 Enable events with `grails.plugin.springsecurity.useSecurityEventListener = true` and create one or more Groovy or Java
 classes, for example:
@@ -87,7 +87,7 @@ beans = {
 }
 ----
 
-=== Registering Callback Closures
+== Registering Callback Closures
 
 Alternatively, enable events with `grails.plugin.springsecurity.useSecurityEventListener = true` and register one or
 more callback closure(s) in `grails-app/conf/Config.groovy` and let `SecurityEventListener` do the filtering.

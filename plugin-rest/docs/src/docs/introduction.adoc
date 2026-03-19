@@ -22,7 +22,7 @@ The Spring Security REST Grails plugin allows you to use Spring Security for a s
 Versions `1.x.` of the plugin are compatible with Grails 2, whereas versions `2.x` are to be used with Grails 3.
 
 [[rest-introduction]]
-=== Motivation
+== Motivation
 
 The default behaviour of Spring Security is to store the authenticated principal in the HTTP session. However, in a
 RESTful scenario, we need to make sure our server is stateless.
@@ -46,7 +46,7 @@ This plugin helps you to wire your existing Spring Security authentication mecha
 with ready-to-use token generation strategies and comes prepackaged with JWT, Memcached, GORM, Redis
 and Grails Cache support for token storage.
 
-=== Release History
+== Release History
 
 You can view all releases at https://github.com/apache/grails-spring-security/releases[].
 

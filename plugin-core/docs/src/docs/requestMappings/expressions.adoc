@@ -112,7 +112,7 @@ The Spring Security docs have a https://{htmlsingle}#el-common-built-in[table li
 
 |====================
 
-In addition, you can use a web-specific expression `hasIpAddress`. However, you may find it more convenient to separate IP restrictions from role restrictions by using the IP address filter (<<ip>>).
+In addition, you can use a web-specific expression `hasIpAddress`. However, you may find it more convenient to separate IP restrictions from role restrictions by using the IP address filter (<<core-ip>>).
 
 To help you migrate traditional configurations to expressions, this table compares various configurations and their corresponding expressions:
 

@@ -18,7 +18,7 @@ under the License.
 ////
 
 [[rest-whatsNew50]]
-=== Grails 6 support
+== Grails 6 support
 
 This major release is working with Grails 6. It's based on the newer versions of Spring Security Core plugin,
 which in turn uses newer Spring Security versions, so make sure you read carefully what the new versions have changed:
@@ -32,14 +32,14 @@ which in turn uses newer Spring Security versions, so make sure you read careful
 
 |===
 
-=== Provide AccessToken object to storeToken and removeToken Methods
+== Provide AccessToken object to storeToken and removeToken Methods
 
 See issue https://github.com/grails/grails-spring-security-rest/issues/437[#437]
 
-=== Minimum Java Version
+== Minimum Java Version
 
 The minimum java version is now 11.
 
-=== Dependency updates
+== Dependency updates
 
 Dependencies are updated as of Grails 6.1.1 release date.

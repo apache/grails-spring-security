@@ -28,7 +28,7 @@ This means all plugins share the same version number and are guaranteed to be co
 
 The plugins have transitioned to the Apache Software Foundation.
 The group ID has changed from `org.grails.plugins` to `org.apache.grails`, and artifact names have been updated.
-See the <<upgrading,Upgrading>> section for a full mapping of old to new coordinates.
+See the <<upgrading-from-previous-versions,Upgrading>> section for a full mapping of old to new coordinates.
 
 === Unified Versioning
 

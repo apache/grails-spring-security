@@ -47,59 +47,59 @@ include::upgrading.adoc[]
 
 == Core Plugin
 
-include::{core-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{core-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/whatsNew.adoc[leveloffset=+2]
+include::{core-docs-dir}/whatsNew.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/domainClasses.adoc[leveloffset=+2]
+include::{core-docs-dir}/domainClasses.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/requestMappings.adoc[leveloffset=+2]
+include::{core-docs-dir}/requestMappings.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/helperClasses.adoc[leveloffset=+2]
+include::{core-docs-dir}/helperClasses.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/events.adoc[leveloffset=+2]
+include::{core-docs-dir}/events.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/domainClassProperties.adoc[leveloffset=+2]
+include::{core-docs-dir}/domainClassProperties.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/authentication.adoc[leveloffset=+2]
+include::{core-docs-dir}/authentication.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/authenticationProviders.adoc[leveloffset=+2]
+include::{core-docs-dir}/authenticationProviders.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/userDetailsService.adoc[leveloffset=+2]
+include::{core-docs-dir}/userDetailsService.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/passwords.adoc[leveloffset=+2]
+include::{core-docs-dir}/passwords.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/urlProperties.adoc[leveloffset=+2]
+include::{core-docs-dir}/urlProperties.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/hierarchicalRoles.adoc[leveloffset=+2]
+include::{core-docs-dir}/hierarchicalRoles.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/switchUser.adoc[leveloffset=+2]
+include::{core-docs-dir}/switchUser.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/filters.adoc[leveloffset=+2]
+include::{core-docs-dir}/filters.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/channelSecurity.adoc[leveloffset=+2]
+include::{core-docs-dir}/channelSecurity.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/ip.adoc[leveloffset=+2]
+include::{core-docs-dir}/ip.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/sessionFixation.adoc[leveloffset=+2]
+include::{core-docs-dir}/sessionFixation.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/logoutHandlers.adoc[leveloffset=+2]
+include::{core-docs-dir}/logoutHandlers.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/voters.adoc[leveloffset=+2]
+include::{core-docs-dir}/voters.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/miscProperties.adoc[leveloffset=+2]
+include::{core-docs-dir}/miscProperties.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/tutorials.adoc[leveloffset=+2]
+include::{core-docs-dir}/tutorials.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/examples.adoc[leveloffset=+2]
+include::{core-docs-dir}/examples.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/controllerMethods.adoc[leveloffset=+2]
+include::{core-docs-dir}/controllerMethods.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/i18n.adoc[leveloffset=+2]
+include::{core-docs-dir}/i18n.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/scripts.adoc[leveloffset=+2]
+include::{core-docs-dir}/scripts.adoc[leveloffset=+1]
 
-include::{core-docs-dir}/debugging.adoc[leveloffset=+2]
+include::{core-docs-dir}/debugging.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -111,23 +111,23 @@ The Core plugin Groovydoc API documentation is available at https://apache.githu
 
 == ACL Plugin
 
-include::{acl-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{acl-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/installing.adoc[leveloffset=+2]
+include::{acl-docs-dir}/installing.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/usage.adoc[leveloffset=+2]
+include::{acl-docs-dir}/usage.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/tutorial.adoc[leveloffset=+2]
+include::{acl-docs-dir}/tutorial.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/sampleApp.adoc[leveloffset=+2]
+include::{acl-docs-dir}/sampleApp.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/AclUtilService.adoc[leveloffset=+2]
+include::{acl-docs-dir}/AclUtilService.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/Scripts.adoc[leveloffset=+2]
+include::{acl-docs-dir}/Scripts.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/TagLibraries.adoc[leveloffset=+2]
+include::{acl-docs-dir}/TagLibraries.adoc[leveloffset=+1]
 
-include::{acl-docs-dir}/history.adoc[leveloffset=+2]
+include::{acl-docs-dir}/history.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -139,13 +139,13 @@ The ACL plugin Groovydoc API documentation is available at https://apache.github
 
 == CAS Plugin
 
-include::{cas-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{cas-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{cas-docs-dir}/usage.adoc[leveloffset=+2]
+include::{cas-docs-dir}/usage.adoc[leveloffset=+1]
 
-include::{cas-docs-dir}/configuration.adoc[leveloffset=+2]
+include::{cas-docs-dir}/configuration.adoc[leveloffset=+1]
 
-include::{cas-docs-dir}/history.adoc[leveloffset=+2]
+include::{cas-docs-dir}/history.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -157,11 +157,11 @@ The CAS plugin Groovydoc API documentation is available at https://apache.github
 
 == LDAP Plugin
 
-include::{ldap-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{ldap-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{ldap-docs-dir}/usage.adoc[leveloffset=+2]
+include::{ldap-docs-dir}/usage.adoc[leveloffset=+1]
 
-include::{ldap-docs-dir}/configuration.adoc[leveloffset=+2]
+include::{ldap-docs-dir}/configuration.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -173,13 +173,13 @@ The LDAP plugin Groovydoc API documentation is available at https://apache.githu
 
 == OAuth2 Plugin
 
-include::{oauth2-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{oauth2-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{oauth2-docs-dir}/installation.adoc[leveloffset=+2]
+include::{oauth2-docs-dir}/installation.adoc[leveloffset=+1]
 
-include::{oauth2-docs-dir}/configuration.adoc[leveloffset=+2]
+include::{oauth2-docs-dir}/configuration.adoc[leveloffset=+1]
 
-include::{oauth2-docs-dir}/extensions.adoc[leveloffset=+2]
+include::{oauth2-docs-dir}/extensions.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -191,39 +191,39 @@ The OAuth2 plugin Groovydoc API documentation is available at https://apache.git
 
 == REST Plugin
 
-include::{rest-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{rest-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/whatsNew60.adoc[leveloffset=+2]
+include::{rest-docs-dir}/whatsNew60.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/whatsNew50.adoc[leveloffset=+2]
+include::{rest-docs-dir}/whatsNew50.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/whatsNew20.adoc[leveloffset=+2]
+include::{rest-docs-dir}/whatsNew20.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/whatsNew15.adoc[leveloffset=+2]
+include::{rest-docs-dir}/whatsNew15.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/whatsNew14.adoc[leveloffset=+2]
+include::{rest-docs-dir}/whatsNew14.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/configuration.adoc[leveloffset=+2]
+include::{rest-docs-dir}/configuration.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/events.adoc[leveloffset=+2]
+include::{rest-docs-dir}/events.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/authentication.adoc[leveloffset=+2]
+include::{rest-docs-dir}/authentication.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/tokenGeneration.adoc[leveloffset=+2]
+include::{rest-docs-dir}/tokenGeneration.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/tokenStorage.adoc[leveloffset=+2]
+include::{rest-docs-dir}/tokenStorage.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/tokenRendering.adoc[leveloffset=+2]
+include::{rest-docs-dir}/tokenRendering.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/tokenValidation.adoc[leveloffset=+2]
+include::{rest-docs-dir}/tokenValidation.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/cors.adoc[leveloffset=+2]
+include::{rest-docs-dir}/cors.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/oauth.adoc[leveloffset=+2]
+include::{rest-docs-dir}/oauth.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/debugging.adoc[leveloffset=+2]
+include::{rest-docs-dir}/debugging.adoc[leveloffset=+1]
 
-include::{rest-docs-dir}/faq.adoc[leveloffset=+2]
+include::{rest-docs-dir}/faq.adoc[leveloffset=+1]
 
 === API Reference
 
@@ -235,27 +235,27 @@ The REST plugin Groovydoc API documentation is available at https://apache.githu
 
 == UI Plugin
 
-include::{ui-docs-dir}/introduction.adoc[leveloffset=+2]
+include::{ui-docs-dir}/introduction.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/user.adoc[leveloffset=+2]
+include::{ui-docs-dir}/user.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/role.adoc[leveloffset=+2]
+include::{ui-docs-dir}/role.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/requestmap.adoc[leveloffset=+2]
+include::{ui-docs-dir}/requestmap.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/userRegistration.adoc[leveloffset=+2]
+include::{ui-docs-dir}/userRegistration.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/forgotPassword.adoc[leveloffset=+2]
+include::{ui-docs-dir}/forgotPassword.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/acls.adoc[leveloffset=+2]
+include::{ui-docs-dir}/acls.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/persistentCookie.adoc[leveloffset=+2]
+include::{ui-docs-dir}/persistentCookie.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/configUI.adoc[leveloffset=+2]
+include::{ui-docs-dir}/configUI.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/customization.adoc[leveloffset=+2]
+include::{ui-docs-dir}/customization.adoc[leveloffset=+1]
 
-include::{ui-docs-dir}/scripts.adoc[leveloffset=+2]
+include::{ui-docs-dir}/scripts.adoc[leveloffset=+1]
 
 === API Reference
 

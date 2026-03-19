@@ -135,7 +135,7 @@ parameter will be empty, and both `error` and `message` params will be appended:
 Below are some examples on how to configure it for Google, Facebook and Twitter.
 
 [[rest-oauth]]
-=== Google
+== Google
 
 Define the following block in your `application.groovy`:
 
@@ -175,7 +175,7 @@ default `OauthUserDetailsService`, you need to use `EMAIL_AND_PROFILE`. That is 
 uses the profile ID as the username, and that is only returned by Google if `EMAIL_AND_PROFILE` scope is used.
 ====
 
-==== Facebook
+=== Facebook
 
 Define the following block in your `application.groovy`:
 
@@ -217,7 +217,7 @@ https://developers.facebook.com/docs/graph-api/reference/user/[user fields].
 Both `scope` and `fields` are optional, but it's highly recommendable to fine tune those lists so you don't ask for
 information you don't need.
 
-==== Twitter
+=== Twitter
 
 Define the following block in your `application.groovy`:
 
@@ -250,7 +250,7 @@ grails {
 
 There is no additional configuration for Twitter.
 
-==== CAS (Central Authentication Service)
+=== CAS (Central Authentication Service)
 
 Define the following block in your `application.groovy`:
 
