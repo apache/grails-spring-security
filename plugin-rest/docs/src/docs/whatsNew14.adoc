@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[rest-whatsNew14]]
 === Full compatibility with Spring Security core.
 
 Up to previous releases, this plugin was overriding "stateful" Spring Security core beans, to ensure a stateless behaviour.

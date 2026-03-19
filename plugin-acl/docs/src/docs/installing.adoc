@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[Installing]]
+[[acl-installing]]
 == Installing
 
 Add an entry in the dependencies block of your `build.gradle file, changing the version as needed:

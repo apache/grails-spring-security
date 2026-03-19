@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[s2ui-override]]
+[[ui-s2ui-override]]
 === s2ui-override
 
 .Purpose

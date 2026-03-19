@@ -55,6 +55,7 @@ The following are the configuration properties available:
 |`401`
 |===
 
+[[rest-extracting-credentials]]
 === Extracting credentials from the request
 
 The plugin supports 2 ways of extracting the username and password: using request parameters, and using a JSON payload.
@@ -139,6 +140,7 @@ Note that the name of the parameters can also be customised:
 |`password`
 |===
 
+[[rest-logout]]
 === Logout
 
 [NOTE]

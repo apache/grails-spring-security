@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[rest-faq]]
 === Why this token-based implementation? Can't I use HTTP basic authentication?
 
 In theory you can. The only restriction to be truly stateless is to not use HTTP sessions at all. So if you go with

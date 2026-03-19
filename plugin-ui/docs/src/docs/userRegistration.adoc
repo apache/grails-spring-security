@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[userRegistration]]
+[[ui-userRegistration]]
 == User Registration
 
 Most of the plugin's controllers are intended to be part of a backend admin application, but the Registration and Forgot Password workflows are expected to be user-facing. So they're not available in the admin menu like the User, Role, and other backend functionality - you'll need to expose them to your users.

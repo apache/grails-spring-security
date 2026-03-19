@@ -20,6 +20,7 @@ under the License.
 By default, the plugin generates JWT tokens. Note that when using JWT, you can't plug any other token generator. For
 more information about how this plugin uses JWT's, check the <<tokenStorage>> section.
 
+[[rest-tokenGeneration]]
 === JWT
 
 ==== Claims

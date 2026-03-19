@@ -80,6 +80,7 @@ The output will look like:
 }
 ----
 
+[[rest-tokenRendering]]
 === Disabling bearer tokens support for full response customisation
 
 In order to fully customise the response, you need first to disable bearer tokens support by setting

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[ip]]
+[[core-ip]]
 == IP Address Restrictions
 
 Ordinarily you can guard URLs sufficiently with roles, but the plugin provides an extra layer of security with its ability to restrict by IP address.

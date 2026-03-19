@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[customization]]
+[[ui-customization]]
 == Customization
 
 Most aspects of the plugin are configurable.

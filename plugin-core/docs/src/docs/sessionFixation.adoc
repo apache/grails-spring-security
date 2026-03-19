@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[sessionFixation]]
+[[core-sessionFixation]]
 == Session Fixation Prevention
 
 To guard against https://en.wikipedia.org/wiki/Session_fixation[session-fixation attacks] set the `useSessionFixationPrevention` attribute to `true`:

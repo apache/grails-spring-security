@@ -134,6 +134,7 @@ parameter will be empty, and both `error` and `message` params will be appended:
 
 Below are some examples on how to configure it for Google, Facebook and Twitter.
 
+[[rest-oauth]]
 === Google
 
 Define the following block in your `application.groovy`:

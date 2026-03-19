@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[rest-whatsNew20]]
 === Grails 3 and 4 support
 
 This major release is working with Grails 3 and 4. It's based on the newer versions of Spring Security Core plugin,

@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[rest-whatsNew15]]
 === JWT support
 
 JWT is fully supported and is now the default token "storage" mechanism. If you still want to use your previous storage

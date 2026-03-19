@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[role]]
+[[ui-role]]
 == Role Management
 
 === Role search

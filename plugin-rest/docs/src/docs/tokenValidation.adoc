@@ -32,6 +32,7 @@ domain classes to store the users. Use `springSecurityService.principal` instead
 
 This plugin supports http://tools.ietf.org/html/rfc6750[RFC 6750 Bearer Token] specification out-of-the-box.
 
+[[rest-tokenValidation]]
 === Sending tokens in the request
 
 The token can be sent in the `Authorization` request header:

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[requestMappings]]
+[[core-requestMappings]]
 == Configuring Request Mappings to Secure URLs
 
 You can choose among the following approaches to configuring request mappings for secure application URLs. The goal is to map URL patterns to the roles required to access those URLs.

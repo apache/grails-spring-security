@@ -21,6 +21,7 @@ The Spring Security REST Grails plugin allows you to use Spring Security for a s
 
 Versions `1.x.` of the plugin are compatible with Grails 2, whereas versions `2.x` are to be used with Grails 3.
 
+[[rest-introduction]]
 === Motivation
 
 The default behaviour of Spring Security is to store the authenticated principal in the HTTP session. However, in a

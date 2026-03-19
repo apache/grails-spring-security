@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[securedAnnotations]]
+[[core-securedAnnotations]]
 === Defining Secured Annotations
 
 You can use an `@Secured` annotation (either the standard `org.springframework.security.access.annotation.Secured` or the plugin's `grails.plugin.springsecurity.annotation.Secured` which has the same attributes and features but also supports defining a closure as the config attribute to make authorization decisions) in your controllers to configure which roles are required for which actions. To use annotations, specify `securityConfigType="Annotation"`, or leave it unspecified because it's the default:

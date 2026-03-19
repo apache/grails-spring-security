@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[usingControllerAnnotations]]
+[[core-usingControllerAnnotations]]
 === Using Controller Annotations to Secure URLs
 
 ==== 1. Create your Grails application.
@@ -434,7 +434,7 @@ Some things to note about the preceding `BootStrap.groovy`:
 * We explicitly flush (using `withSession`) because `BootStrap` does not run in a transaction or OpenSessionInView.
 * This example works correctly because the `UserPasswordEncoderListener` (a Spring-managed bean) handles password encoding during the GORM `PreInsertEvent`. If you are using the older domain class pattern with `beforeInsert()` instead, see the note below.
 
-[[bootstrapPasswordEncoding]]
+[[core-password-encoding-bootstrap]]
 ===== Password Encoding in BootStrap
 
 If you are using the older User domain class pattern where `springSecurityService` is declared as a `transient` field and password encoding happens in `beforeInsert()`, passwords will **not** be encoded when creating users in `BootStrap.groovy`. This is because domain class instances are plain Groovy objects - their transient service references are not autowired by Spring at construction time. The `springSecurityService` field will be `null`, and the safe-navigation operator (`?.`) in `encodePassword()` will silently skip encoding.

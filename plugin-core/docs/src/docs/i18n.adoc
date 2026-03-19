@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[i18n]]
+[[core-i18n]]
 == Internationalization
 
 The plugin includes i18n messages in several languages. To customize or translate these, add messages for the following keys to your i18n resource bundle(s) for each exception:

@@ -28,6 +28,7 @@ The default implementation, JWT, is stateless. Nothing is really stored. However
 chance to the other implementations to store the principal if they need to.
 ====
 
+[[rest-jwt]]
 === JSON Web Token
 
 JSON Web Token (JWT) is an https://tools.ietf.org/html/rfc7519[IETF standard] which defines a secure way to encapsulate arbitrary data that can be sent over unsecure URL's.
@@ -48,6 +49,7 @@ principal information is stored directly in the JWT.
 .JWT example
 image::images/jwt.png[]
 
+[[rest-jwt-header]]
 ===== Header
 
 A base64-encoded JSON like:

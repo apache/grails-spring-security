@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[domainClasses]]
+[[core-domainClasses]]
 == Domain Classes
 
 By default the plugin uses regular Grails domain classes to access its required data. It's easy to create your own user lookup code though, which can access a database or any other source to retrieve user and authority data. See <<userDetailsService>> for how to implement this.

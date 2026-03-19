@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[introduction]]
+[[cas-introduction]]
 == Introduction to the Spring Security CAS Plugin
 
 The CAS plugin adds https://www.jasig.org/cas[CAS] single sign-on support to a Grails application that uses Spring Security. It depends on the https://github.com/apache/grails-spring-security[Spring Security Core plugin].

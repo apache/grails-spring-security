@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[hierarchicalRoles]]
+[[core-hierarchicalRoles]]
 == Hierarchical Roles
 
 Hierarchical roles are a convenient way to reduce clutter in your request mappings.

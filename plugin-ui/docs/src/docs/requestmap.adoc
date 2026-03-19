@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[requestmap]]
+[[ui-requestmap]]
 == Requestmap Management
 
 The default approach to securing URLs is with annotations, so the Requestmaps menu is only shown if `grails.plugin.springsecurity.securityConfigType` has the value `"Requestmap"` or `SecurityConfigType.Requestmap` in `application.groovy`.

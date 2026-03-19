@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[domainClasses]]
+[[acl-domainClasses]]
 === Domain Classes
 
 The plugin uses domain classes to manage database state. Ordinarily the database structure isn't all that important, but to be compatible with the traditional JDBC-based Spring Security code, the domain classes are configured to generate the table and column names that are used there.

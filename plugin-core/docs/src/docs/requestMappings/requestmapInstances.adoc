@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[requestmapInstances]]
+[[core-requestmapInstances]]
 === Request Mappings Stored in the Database
 
 With this approach you create and use a domain class to store security mapping entries in the database.

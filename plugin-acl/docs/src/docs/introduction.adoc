@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[introduction]]
+[[acl-introduction]]
 == Introduction to the Spring Security ACL Plugin
 
 The ACL plugin adds Domain Object Security support to a Grails application that uses Spring Security. It depends on the https://github.com/apache/grails-spring-security[Spring Security Core plugin].

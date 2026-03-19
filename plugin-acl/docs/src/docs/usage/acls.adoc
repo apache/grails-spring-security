@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[acls]]
+[[acl-acls]]
 === Working with ACLs
 
 ==== Suggested application changes

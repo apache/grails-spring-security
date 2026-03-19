@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[authorityGroupClass]]
+[[core-authorityGroupClass]]
 === Group Class
 
 The plugin provides you the option of creating an access inheritance level between "`person`" and "`authority`": the "`group`". The next three classes you will read about (including this one) are only used in a "`person`"/"`group`"/"`authority`" implementation. Rather than granting authorities directly to a "`person`", you can create a "`group`", map authorities to it, and then map a "`person`" to that "`group`". For applications that have a one or more groups of users who need the same level of access, having one or more "`group`" instances makes managing changes to access levels easier because the authorities that make up that access level are encapsulated in the "`group`", and a single change will affect all of the users.

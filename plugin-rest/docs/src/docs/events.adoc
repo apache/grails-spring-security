@@ -19,6 +19,7 @@ under the License.
 
 The Spring Security Rest plugin fires events exactly like Spring Security Core does.
 
+[[rest-events]]
 === Event Notification
 
 You can set up event notifications in two ways. The sections that follow describe each approach in more detail.

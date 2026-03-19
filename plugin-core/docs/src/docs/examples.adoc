@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[examples]]
+[[core-examples]]
 == Example Applications
 
 Sometimes the best way to learn is by example. We have an ever-expanding list of example apps created to do just that... help you learn how to utilize the grails-spring-security plugin in your current application.

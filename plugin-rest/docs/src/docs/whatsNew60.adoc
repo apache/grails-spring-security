@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[rest-whatsNew60]]
 === Grails 7 support
 
 This major release is working with Grails 7. It's based on the newer versions of Spring Security Core plugin,

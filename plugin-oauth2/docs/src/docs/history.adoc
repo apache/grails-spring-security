@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[oauth2-history]]
 === Release History
 
 Please read release notes at https://github.com/apache/grails-spring-security/releases for checking release information in the future.

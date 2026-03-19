@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[user]]
+[[ui-user]]
 == User Management
 
 === User search

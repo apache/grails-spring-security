@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[springSecurityUtils]]
+[[core-springSecurityUtils]]
 === SpringSecurityUtils
 
 `grails.plugin.springsecurity.SpringSecurityUtils` is a utility class with static methods that you can call directly without using dependency injection. It is primarily an internal class but can be called from application code.

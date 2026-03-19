@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[Snapshots]]
+[[acl-snapshots]]
 === Snapshots
 
 Snapshots are published automatically to https://repo.grails.org/ui/native/core/org/grails/plugins/spring-security-acl/[repo.grails.org] on every successful build.

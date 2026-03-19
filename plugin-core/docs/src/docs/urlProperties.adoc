@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[urlProperties]]
+[[core-urlProperties]]
 == URL Properties
 
 The table shows configurable URL-related properties.

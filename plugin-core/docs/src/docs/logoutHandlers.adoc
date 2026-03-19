@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[logoutHandlers]]
+[[core-logoutHandlers]]
 == Logout Handlers
 
 You register a list of logout handlers by implementing the {apidocs}org/springframework/security/web/authentication/logout/LogoutHandler.html[LogoutHandler] interface. The list is called when a user explicitly logs out.

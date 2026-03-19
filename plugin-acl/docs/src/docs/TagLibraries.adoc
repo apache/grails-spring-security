@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[TagLibraries]]
+[[acl-TagLibraries]]
 == Tag Libraries
 
 include::TagLibraries/permitted.adoc[]
