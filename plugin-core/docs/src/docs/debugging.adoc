@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[debugging]]
+[[core-debugging]]
 == Debugging
 
 If you need debug information, you can specify the following entries in logback.groovy:

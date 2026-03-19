@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[introduction]]
+[[ldap-introduction]]
 == Introduction to the Spring Security LDAP Plugin
 
 The LDAP plugin adds support for LDAP and Active Directory authentication to a Grails application that uses Spring Security. It depends on the {grailsSpringSecurityCoreLink}[Spring Security Core plugin].

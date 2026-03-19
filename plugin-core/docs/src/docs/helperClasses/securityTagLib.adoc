@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[securityTagLib]]
+[[core-securityTagLib]]
 === SecurityTagLib
 
 The plugin includes GSP tags to support conditional display based on whether the user is authenticated, and/or has the required role to perform a particular action. These tags are in the `sec` namespace and are implemented in `grails.plugin.springsecurity.SecurityTagLib`.
@@ -110,6 +110,7 @@ If you have customized the UserDetails (e.g. with a custom UserDetailsService) t
 Welcome Back <sec:loggedInUserInfo field='fullName'/>
 ----
 
+[[core-taglib-username]]
 ==== username
 Displays the value of the UserDetails `username` property if logged in.
 
@@ -125,7 +126,7 @@ Welcome Back <sec:username/>!
 ----
 
 ==== ifSwitched
-Displays the inner body content only if the current user switched from another user. (See also <<switchUser>>.)
+Displays the inner body content only if the current user switched from another user. (See also <<core-switchUser>>.)
 
 [source,html]
 .Listing {counter:listing}. Example using `<sec:ifSwitched>` and `<sec:ifNotSwitched>`

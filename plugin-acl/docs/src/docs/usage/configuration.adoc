@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[configuration]]
+[[acl-configuration]]
 === Configuration
 
 Creating, editing, or deleting permissions requires an authenticated user. In most cases  if the authenticated user is the owner of the ACL then access is allowed, but granted roles also affect whether access is allowed. The default required role is `ROLE_ADMIN` for all actions, but this can be configured in `grails-app/conf/application.groovy`. This table summarizes the attribute names and the corresponding actions that are allowed for it:

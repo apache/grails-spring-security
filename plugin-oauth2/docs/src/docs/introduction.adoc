@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[introduction]]
+[[oauth2-introduction]]
 == Introduction to the Spring Security OAuth2 Plugin
 
 The OAuth2 Plugin adds oAuth v2 sign-on support to Grails applications that use Spring Security. It depends on the https://github.com/apache/grails-spring-security[Spring Security Core plugin].

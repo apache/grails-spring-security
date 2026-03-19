@@ -32,7 +32,8 @@ domain classes to store the users. Use `springSecurityService.principal` instead
 
 This plugin supports http://tools.ietf.org/html/rfc6750[RFC 6750 Bearer Token] specification out-of-the-box.
 
-=== Sending tokens in the request
+[[rest-tokenValidation]]
+== Sending tokens in the request
 
 The token can be sent in the `Authorization` request header:
 
@@ -76,7 +77,7 @@ and register it in your `resources.groovy`  as `tokenReader`.
 You must disable bearer token support to register your own `tokenReader` implementation.
 ====
 
-=== Anonymous access
+== Anonymous access
 
 If you want to enable anonymous access to URL's where this plugin's filters are applied, you need to:
 
@@ -120,7 +121,7 @@ The following chains are configured:
 . `/api/**` is a stateless chain that doesn't allow anonymous access. Thus, the token will always be required, and if missing, a Bad Request reponse will be sent back to the client.
 . `/**` (read: everything else) is a traditional stateful chain.
 
-=== Validation Endpoint
+== Validation Endpoint
 
 There is also an endpoint available that you can call in case you want to know if a given token is valid. It looks for
 the token in a HTTP header as well, and if the token is still valid, it renders guide:authentication[its JSON representation].

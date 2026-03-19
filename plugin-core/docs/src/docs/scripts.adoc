@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[scripts]]
+[[core-scripts]]
 == Scripts
 
 include::scripts/s2-quickstart.adoc[]

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[s2-create-acl-domains]]
+[[acl-s2-create-acl-domains]]
 === s2-create-acl-domains
 
 .Purpose

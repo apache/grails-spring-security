@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[configGroovyMap]]
+[[core-configGroovyMap]]
 === Static Map
 
 To use a static map to secure URLs, first specify `securityConfigType="InterceptUrlMap"`:

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[eventNotification]]
+[[core-eventNotification]]
 === Event Notification
 
 You can set up event notifications in two ways. The sections that follow describe each approach in more detail.

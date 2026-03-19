@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[expressions]]
+[[core-expressions]]
 === Using Expressions to Create Descriptive, Fine-Grained Rules
 
 Spring Security uses the {spring_framework_reference}expressions.html[Spring Expression Language (SpEL)], which allows you to declare the rules for guarding URLs more descriptively than does the traditional approach, and also allows much more fine-grained rules. Where you traditionally would specify a list of role names and/or special tokens (for example, `IS_AUTHENTICATED_FULLY`), with https://{htmlsingle}#el-access[Spring Security's expression support], you can instead use the embedded scripting language to define simple or complex access rules.
@@ -112,7 +112,7 @@ The Spring Security docs have a https://{htmlsingle}#el-common-built-in[table li
 
 |====================
 
-In addition, you can use a web-specific expression `hasIpAddress`. However, you may find it more convenient to separate IP restrictions from role restrictions by using the IP address filter (<<ip>>).
+In addition, you can use a web-specific expression `hasIpAddress`. However, you may find it more convenient to separate IP restrictions from role restrictions by using the IP address filter (<<core-ip>>).
 
 To help you migrate traditional configurations to expressions, this table compares various configurations and their corresponding expressions:
 

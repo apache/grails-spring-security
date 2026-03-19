@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[registeringEventListener]]
+[[core-registeringEventListener]]
 === Registering an Event Listener
 
 Enable events with `grails.plugin.springsecurity.useSecurityEventListener = true` and create one or more Groovy or Java classes, for example:

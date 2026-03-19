@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[gettingStarted]]
+[[core-gettingStarted]]
 == Quick Start Guide
 
 Getting started with the plugin is simple and efficient. Follow these steps to enhance the security of your Grails application:

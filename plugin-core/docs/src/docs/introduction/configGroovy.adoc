@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[configGroovy]]
+[[core-configGroovy]]
 == Configuration and Customization
 
 The Spring Security plugin's configuration is primarily managed within the `grails-app/conf/application.groovy` file, although an alternative is to house plugin configuration within `application.yml`. Default values are stored in the `grails-app/conf/DefaultSecurityConfig.groovy` file, with additional application-specific settings appended to `application.groovy` (or `application.yml`). This configuration structure involves merging default and custom values, giving precedence to application-specific settings.

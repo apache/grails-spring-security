@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[scripts]]
+[[ui-scripts]]
 == Scripts
 
 include::scripts/s2ui-override.adoc[]

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[s2-create-persistent-token]]
+[[core-s2-create-persistent-token]]
 === s2-create-persistent-token
 
 .Purpose

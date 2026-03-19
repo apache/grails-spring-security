@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[channelSecurity]]
+[[core-channelSecurity]]
 == Channel Security
 
 Use channel security to configure which URLs require HTTP and which require HTTPS.

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[customPermissions]]
+[[acl-customPermissions]]
 === Custom Permissions
 
 By default there are 5 permissions available from the `org.springframework.security.acls.domain. BasePermission` class: `READ`, `WRITE`, `CREATE`, `DELETE`, and `ADMINISTRATION`. You can also add your own permissions if these aren't sufficient.

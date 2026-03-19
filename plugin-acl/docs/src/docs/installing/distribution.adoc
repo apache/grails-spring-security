@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[Distribution]]
+[[acl-distribution]]
 === Distribution
 
 Grails Spring Security ACL plugin is https://repo.grails.org/ui/native/core/org/grails/plugins/spring-security-acl/[distributed in repo.grails.org].

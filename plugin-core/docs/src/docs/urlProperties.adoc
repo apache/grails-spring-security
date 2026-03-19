@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[urlProperties]]
+[[core-urlProperties]]
 == URL Properties
 
 The table shows configurable URL-related properties.
@@ -121,7 +121,7 @@ The table shows configurable URL-related properties.
 
 |logout.handlerNames
 |`['rememberMeServices', 'securityContextLogoutHandler']`
-|Logout handler bean names. See <<logoutHandlers>>
+|Logout handler bean names. See <<core-logoutHandlers>>
 
 |logout.clearAuthentication
 |`true`
@@ -173,7 +173,7 @@ The table shows configurable URL-related properties.
 
 |switchUser URLs
 |
-|See <<switchUser>>, under *Customizing URLs*
+|See <<core-switchUser>>, under *Customizing URLs*
 
 |fii.alwaysReauthenticate
 |`false`

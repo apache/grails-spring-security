@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[userDetailsService]]
+[[core-userDetailsService]]
 == Custom UserDetailsService
 
 When you authenticate users from a database using {apidocs}org/springframework/security/authentication/dao/DaoAuthenticationProvider.html[DaoAuthenticationProvider] (the default mode in the plugin if you have not enabled OpenID, LDAP, and so on), an implementation of {apidocs}org/springframework/security/core/userdetails/UserDetailsService.html[UserDetailsService] is required. This class is responsible for returning a concrete implementation of {apidocs}org/springframework/security/core/userdetails/UserDetails.html[UserDetails]. The plugin provides `grails.plugin.springsecurity.userdetails.GormUserDetailsService` as its `UserDetailsService` implementation and `grails.plugin.springsecurity.userdetails.GrailsUser` (which extends Spring Security's {apidocs}org/springframework/security/core/userdetails/User.html[User]) as its `UserDetails` implementation.

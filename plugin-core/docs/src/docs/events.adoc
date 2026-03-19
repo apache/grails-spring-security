@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[events]]
+[[core-events]]
 == Events
 
 Spring Security fires application events after various security-related actions such as successful login, unsuccessful login, and so on. Spring Security uses two main event classes, {apidocs}org/springframework/security/authentication/event/AbstractAuthenticationEvent.html[AbstractAuthenticationEvent] and {apidocs}org/springframework/security/access/event/AbstractAuthorizationEvent.html[AbstractAuthorizationEvent].

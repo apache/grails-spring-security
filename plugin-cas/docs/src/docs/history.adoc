@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
+[[cas-history]]
 == Release History
 Please check release notes at https://github.com/apache/grails-spring-security/releases for release history of future releases.
 

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[authorityClass]]
+[[core-authorityClass]]
 === Authority Class
 
 The Spring Security plugin uses an "`authority`" class to represent a user's roles in the application. In general this class restricts URLs to users who have been assigned the required access rights. A user can be granted multiple roles to indicate various access rights in the application, and should have at least one. A basic user who can access only non-restricted resources but can still authenticate is a bit unusual. Spring Security usually functions fine if a user has no granted authorities, but fails in a few places that assume one or more. So if a user authenticates successfully but has no granted roles, the plugin grants the user a "`virtual`" role, `ROLE_NO_ROLES`. Thus the user satisfies Spring Security's requirements but cannot access secure resources, as you would not associate any secure resources with this role.

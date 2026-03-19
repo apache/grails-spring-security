@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[requestmapInstances]]
+[[core-requestmapInstances]]
 === Request Mappings Stored in the Database
 
 With this approach you create and use a domain class to store security mapping entries in the database.
@@ -39,7 +39,7 @@ grails.plugin.springsecurity.securityConfigType = 'Requestmap'
 grails.plugin.springsecurity.requestMap.className = 'com.mycompany.myapp.SecurityMapping'
 ----
 
-See <<requestmapClass>> for an example request map domain class.
+See <<core-requestmapClass>> for an example request map domain class.
 
 You create request map entries as you create entries in any Grails domain class:
 
@@ -66,7 +66,7 @@ springSecurityService.clearCachedRequestmaps()
 
 The `configAttribute` value can have a single value or have multiple comma-delimited values. In this example only users with `ROLE_ADMIN` or `ROLE_SUPERVISOR` can access `/admin/user/pass:[**]` urls, and only users with `ROLE_SWITCH_USER` can access the switch-user url (`/login/impersonate`) and in addition must be authenticated fully, i.e. not using a remember-me cookie. Note that when specifying multiple roles, the user must have at least one of them, but when combining `IS_AUTHENTICATED_FULLY`, `IS_AUTHENTICATED_REMEMBERED`, or `IS_AUTHENTICATED_ANONYMOUSLY` with one or more roles means the user must have one of the roles and satisfy the `IS_AUTHENTICATED` rule.
 
-Unlike the `application.groovy` map approach (<<configGroovyMap>>), you do not need to revise the request map entry order because the plugin calculates the most specific rule that applies to the current request.
+Unlike the `application.groovy` map approach (<<core-configGroovyMap>>), you do not need to revise the request map entry order because the plugin calculates the most specific rule that applies to the current request.
 
 ==== Request Map Cache
 

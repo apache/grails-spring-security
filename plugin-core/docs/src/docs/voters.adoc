@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[voters]]
+[[core-voters]]
 == Voters
 
 Voters are classes that implement the Spring Security {apidocs}org/springframework/security/access/AccessDecisionVoter.html[AccessDecisionVoter] interface and are used to confirm whether a successful authentication is authorized for the current request.

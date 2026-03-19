@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[helperClasses]]
+[[core-helperClasses]]
 == Helper Classes
 
 Use the plugin helper classes in your application to avoid dealing with some lower-level details of Spring Security.

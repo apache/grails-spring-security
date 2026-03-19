@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[s2-create-role-hierarchy-entry]]
+[[core-s2-create-role-hierarchy-entry]]
 === s2-create-role-hierarchy-entry
 
 .Purpose
