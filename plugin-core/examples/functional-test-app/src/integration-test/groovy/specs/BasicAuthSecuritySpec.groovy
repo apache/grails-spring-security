@@ -211,7 +211,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()

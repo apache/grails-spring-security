@@ -16,126 +16,134 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.user.UserCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
+import spock.lang.Stepwise
 
+import grails.testing.mixin.integration.Integration
+
+@Stepwise
 @Integration
 class UserSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def searchPage = to(UserSearchPage)
+		def page = to(UserSearchPage)
 
 		then:
-		searchPage.assertNotSearched()
+		page.assertNotSearched()
 
 		when:
-		searchPage.submit()
+		page.submit()
 
 		then:
-		searchPage.assertResults(1, 10, 22)
+		page.assertResults(1, 10, 22)
 	}
 
 	void testFindByUsername() {
 		when:
-		to(UserSearchPage).with {
-			username = 'foo'
+		def page = to(UserSearchPage).tap {
+			username.text = 'foo'
 			submit()
 		}
-		def searchPage = at(UserSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
-		pageSource.contains('foon_2')
-		pageSource.contains('foolkiller')
-		pageSource.contains('foostra')
+		page.assertResults(1, 3, 3)
+		with(pageSource) {
+			contains('foon_2')
+			contains('foolkiller')
+			contains('foostra')
+		}
 	}
 
 	void testFindByDisabled() {
 		when:
-		def searchPage = to(UserSearchPage)
+		def page = to(UserSearchPage)
 
 		// Temporary workaround for problem with Geb RadioButtons module
 		//searchPage.enabled.checked = '-1'
 		$('input', type: 'radio', name: 'enabled', value: '-1').click()
-		searchPage.submit()
-		searchPage = at(UserSearchPage)
+		page.submit()
+		page = at(UserSearchPage)
 
 		then:
-		searchPage.assertResults(1, 1, 1)
+		page.assertResults(1, 1, 1)
 		pageSource.contains('billy9494')
 	}
 
 	void testFindByAccountExpired() {
 		when:
-		def searchPage = to(UserSearchPage)
+		def page = to(UserSearchPage)
 
 		// Temporary workaround for problem with Geb RadioButtons module
 		//searchPage.accountExpired.checked = '1'
 		$('input', type: 'radio', name: 'accountExpired', value: '1').click()
-		searchPage.submit()
-		searchPage = at(UserSearchPage)
+		page.submit()
+		page = at(UserSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
-		pageSource.contains('maryrose')
-		pageSource.contains('ratuig')
-		pageSource.contains('rome20c')
+		page.assertResults(1, 3, 3)
+		with(pageSource) {
+			contains('maryrose')
+			contains('ratuig')
+			contains('rome20c')
+		}
 	}
 
 	void testFindByAccountLocked() {
 		when:
-		def searchPage = to(UserSearchPage)
+		def page = to(UserSearchPage)
 
 		// Temporary workaround for problem with Geb RadioButtons module
 		//searchPage.accountLocked.checked = '1'
 		$('input', type: 'radio', name: 'accountLocked', value: '1').click()
-		searchPage.submit()
-		searchPage = at(UserSearchPage)
+		page.submit()
+		page = at(UserSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
-		pageSource.contains('aaaaaasd')
-		pageSource.contains('achen')
-		pageSource.contains('szhang1999')
+		page.assertResults(1, 3, 3)
+		with(pageSource) {
+			contains('aaaaaasd')
+			contains('achen')
+			contains('szhang1999')
+		}
 	}
 
 	void testFindByPasswordExpired() {
 		when:
-		def searchPage = to(UserSearchPage)
+		def page = to(UserSearchPage)
 
 		// Temporary workaround for problem with Geb RadioButtons module
 		//searchPage.passwordExpired.checked = '1'
 		$('input', type: 'radio', name: 'passwordExpired', value: '1').click()
-		searchPage.submit()
-		searchPage = at(UserSearchPage)
+		page.submit()
+		page = at(UserSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
-		pageSource.contains('hhheeeaaatt')
-		pageSource.contains('mscanio')
-		pageSource.contains('kittal')
+		page.assertResults(1, 3, 3)
+		with(pageSource) {
+			contains('hhheeeaaatt')
+			contains('mscanio')
+			contains('kittal')
+		}
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newUsername = "newuser${UUID.randomUUID()}"
+		def newUsername = "newuser${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
-		to(UserSearchPage).with {
+		def page = to(UserSearchPage).tap {
 			username = newUsername
 			submit()
 		}
-		def searchPage = at(UserSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		page.assertNoResults()
 
 		// create
 		when:
@@ -145,46 +153,52 @@ class UserSpec extends AbstractSecuritySpec {
 			enabled.check()
 			submit()
 		}
-		def editPage = at(UserEditPage)
+		page = at(UserEditPage)
 
 		then:
-		editPage.username.text == newUsername
-		editPage.enabled.checked
-		!editPage.accountExpired.checked
-		!editPage.accountLocked.checked
-		!editPage.passwordExpired.checked
+		with(page) {
+			username.text == newUsername
+			enabled.checked
+			!accountExpired.checked
+			!accountLocked.checked
+			!passwordExpired.checked
+		}
 
 		// edit
 		when:
-		String updatedName = "${newUsername}_updated"
-		editPage.with {
-			username = updatedName
+		def updatedName = "${newUsername}_updated"
+		page.with {
+			username.text = updatedName
 			enabled.uncheck()
 			accountExpired.check()
 			accountLocked.check()
 			passwordExpired.check()
 			submit()
 		}
-		editPage = at(UserEditPage)
+		page = at(UserEditPage)
 
 		then:
-		editPage.username.text == updatedName
-		!editPage.enabled.checked
-		editPage.accountExpired.checked
-		editPage.accountLocked.checked
-		editPage.passwordExpired.checked
+		with(page) {
+			username.text == updatedName
+			!enabled.checked
+			accountExpired.checked
+			accountLocked.checked
+			passwordExpired.checked
+		}
 
 		// delete
 		when:
-		editPage.delete()
-		searchPage = at(UserSearchPage)
+		page.delete()
+		page = at(UserSearchPage)
 
 		and:
-		searchPage.username = updatedName
-		searchPage.submit()
-		searchPage = at(UserSearchPage)
+		page.with {
+			username.text = updatedName
+			submit()
+		}
+		page = at(UserSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		page.assertNoResults()
 	}
 }

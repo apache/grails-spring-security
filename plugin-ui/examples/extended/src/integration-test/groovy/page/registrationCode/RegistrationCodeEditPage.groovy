@@ -26,6 +26,11 @@ class RegistrationCodeEditPage extends EditPage {
 
 	static url = 'registrationCode/edit'
 	static typeName = { 'RegistrationCode' }
+
+	String convertToPath(Object[] args) {
+		args ? "/${args[0]}" : ''
+	}
+
 	static content = {
 		token { $(name: 'token').module(TextInput) }
 		username { $('#username').module(TextInput) }

@@ -29,6 +29,11 @@ class UserEditPage extends EditPage {
 	static url = 'user/edit'
 	static typeName = { 'User' }
 	static at = { title == 'Edit User' }
+
+	String convertToPath(Object[] args) {
+		args ? "/${args[0]}" : ''
+	}
+
 	static content = {
 		username { $('#username').module(TextInput) }
 		enabled { $(name: 'enabled').module(Checkbox) }

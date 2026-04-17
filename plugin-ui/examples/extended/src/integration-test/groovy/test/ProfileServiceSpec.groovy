@@ -19,12 +19,15 @@
 
 package test
 
+import spock.lang.Stepwise
+
 import grails.gorm.transactions.Rollback
 import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
 import org.hibernate.SessionFactory
 
 @Rollback
+@Stepwise
 @Integration
 class ProfileServiceSpec extends Specification {
 
