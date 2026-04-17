@@ -23,6 +23,10 @@ import geb.Page
 
 abstract class AbstractSecurityPage extends Page {
 
+	static content = {
+		submitBtn { $('input', type: 'submit') }
+	}
+
 	void submit() {
 		submitBtn.click()
 	}

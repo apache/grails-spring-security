@@ -16,14 +16,15 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package pages.role
 
+import geb.module.TextInput
 import pages.EditPage
 
 class EditRolePage extends EditPage {
+
 	static content = {
-		updateButton(to: ShowRolePage) { $('input', value: 'Update') }
-		deleteButton(to: ListRolePage) { $('input', value: 'Delete') }
+		authorityField { $('input', name: 'authority').module(TextInput) }
+		updateButton { $('input', value: 'Update') }
 	}
 }

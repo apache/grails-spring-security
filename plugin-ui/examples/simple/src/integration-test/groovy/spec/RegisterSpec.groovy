@@ -16,31 +16,22 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
+import com.dumbster.smtp.SimpleSmtpServer
+import com.dumbster.smtp.SmtpMessage
 import page.register.ForgotPasswordPage
 import page.register.RegisterPage
 import page.register.ResetPasswordPage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 
-import com.dumbster.smtp.SimpleSmtpServer
-import com.dumbster.smtp.SmtpMessage
+import grails.testing.mixin.integration.Integration
 
 @Integration
 class RegisterSpec extends AbstractSecuritySpec {
 
 	private SimpleSmtpServer server
-
-	void setup() {
-		startMailServer()
-	}
-
-	void cleanup() {
-		server.stop()
-	}
 
 	void testRegisterValidation() {
 		when:
@@ -105,14 +96,14 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 	void testRegisterAndForgotPassword() {
 		given:
-		String un = "test_user_abcdef${System.currentTimeMillis()}"
-
-		when:
-		def registerPage = to(RegisterPage)
+		startMailServer()
 
 		and:
-		registerPage.with {
-			username = un
+		def un = "test_user_abcdef${System.currentTimeMillis()}"
+
+		when:
+		to(RegisterPage).with {
+ 			username = un
 			email = "$un@abcdef.com"
 			password = 'aaaaaa1#'
 			password2 = 'aaaaaa1#'
@@ -121,22 +112,17 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 		then:
 		pageSource.contains('Your account registration email was sent - check your mail!')
-		1 == server.receivedEmailSize
+		server.receivedEmailSize == 1
 
 		when:
-		def email = currentEmail
+		def smtpMessage = currentEmail
 
 		then:
-		'New Account' == email.getHeaderValue('Subject')
+		'New Account' == smtpMessage.getHeaderValue('Subject')
+		smtpMessage.body.contains("Hi $un")
 
 		when:
-		String body = email.body
-
-		then:
-		body.contains("Hi $un")
-
-		when:
-		String code = findCode(body, 'verifyRegistration')
+		String code = findCode(smtpMessage.body, 'verifyRegistration')
 
 		then:
 		code ==~ /^[a-f0-9]{32}$/
@@ -162,22 +148,18 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 		then:
 		pageSource.contains('Your password reset email was sent - check your mail!')
-		2 == server.receivedEmailSize
+		server.receivedEmailSize == 2
 
 		when:
-		email = currentEmail
+		smtpMessage = currentEmail
 
 		then:
-		'Password Reset' == email.getHeaderValue('Subject')
+		smtpMessage.getHeaderValue('Subject') == 'Password Reset'
+
+		smtpMessage.body.contains("Hi $un")
 
 		when:
-		body = email.body
-
-		then:
-		body.contains("Hi $un")
-
-		when:
-		code = findCode(body, 'resetPassword')
+		code = findCode(smtpMessage.body, 'resetPassword')
 		go('register/resetPassword?t=123')
 
 		then:
@@ -247,6 +229,10 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 		then:
 		pageSource.contains('User not found')
+
+		cleanup:
+		server?.stop()
+		server = null
 	}
 
 	private SmtpMessage getCurrentEmail() {
@@ -258,11 +244,11 @@ class RegisterSpec extends AbstractSecuritySpec {
 		return email as SmtpMessage
 	}
 
-	private String findCode(String body, String action) {
+	private static String findCode(String body, String action) {
 		def matcher = body =~ /(?s).*$action\?t=(.+)".*/
-		assert matcher.hasGroup()
-		assert matcher.count == 1
-		matcher[0][1]
+		assert matcher.find()
+		assert matcher.groupCount() == 1
+		matcher.group(1)
 	}
 
 	private void startMailServer() {
@@ -279,6 +265,6 @@ class RegisterSpec extends AbstractSecuritySpec {
 		}
 		server = SimpleSmtpServer.start(port)
 		go("testData/updateMailSenderPort?port=$port")
-		pageSource.contains("OK: $port")
+		assert pageSource.contains("OK: $port")
 	}
 }

@@ -16,10 +16,8 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.profile.ProfileCreatePage
 import page.profile.ProfileEditPage
 import page.profile.ProfileListPage
@@ -29,6 +27,8 @@ import page.register.ResetPasswordPage
 import page.register.SecurityQuestionsPage
 import page.user.UserEditPage
 import page.user.UserSearchPage
+
+import grails.testing.mixin.integration.Integration
 
 @Integration
 class RegisterSpec extends AbstractSecuritySpec {

@@ -94,8 +94,8 @@
 		</div>
 
 		<div class="buttons">
-			<span class="button"><g:actionSubmit class="save" action="update" value='Update' /></span>
-			<span class="button"><g:actionSubmit class="delete" action="delete" value='Delete' onclick="return confirm('Are you sure?');" /></span>
+			<span class="button"><g:formActionSubmit action="update" method="PUT" class="save" value='Update' /></span>
+			<span class="button"><g:formActionSubmit action="delete" method="DELETE" class="delete" value='Delete' onclick="return confirm('Are you sure?');" /></span>
 		</div>
 	</g:form>
 </div>

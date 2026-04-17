@@ -218,7 +218,7 @@ class SpringSecurityUtilsSpec extends AbstractUnitSpec {
 
 	void 'isAjax using SavedRequest, false'() {
 		when:
-		def savedRequest = new DefaultSavedRequest(request, new PortResolverImpl())
+		def savedRequest = new DefaultSavedRequest(request)
 		request.session.setAttribute SpringSecurityUtils.SAVED_REQUEST, savedRequest
 
 		then:
@@ -228,7 +228,7 @@ class SpringSecurityUtilsSpec extends AbstractUnitSpec {
 	void 'isAjax using SavedRequest, true'() {
 		when:
 		request.addHeader 'X-Requested-With', 'true'
-		def savedRequest = new DefaultSavedRequest(request, new PortResolverImpl())
+		def savedRequest = new DefaultSavedRequest(request)
 		request.session.setAttribute SpringSecurityUtils.SAVED_REQUEST, savedRequest
 
 		then:
@@ -238,7 +238,7 @@ class SpringSecurityUtilsSpec extends AbstractUnitSpec {
 	void 'isAjax using SavedRequest, XMLHttpRequest'() {
 		when:
 		request.addHeader 'X-Requested-With', 'XMLHttpRequest'
-		def savedRequest = new DefaultSavedRequest(request, new PortResolverImpl())
+		def savedRequest = new DefaultSavedRequest(request)
 		request.session.setAttribute SpringSecurityUtils.SAVED_REQUEST, savedRequest
 
 		then:
@@ -431,7 +431,7 @@ class SpringSecurityUtilsSpec extends AbstractUnitSpec {
 
 	private void initRoleHierarchy(String hierarchyString) {
 		defineBeans {
-			roleHierarchy(RoleHierarchyImpl) {
+			roleHierarchy(MutableRoleHierarchy) {
 				hierarchy = hierarchyString
 			}
 		}

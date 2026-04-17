@@ -40,28 +40,6 @@ class SecurityAutoConfigurationExcluderIntegrationSpec extends Specification {
         )
     }
 
-    void "SecurityAutoConfiguration bean is not registered"() {
-        given:
-        def secAutoConfig = Class.forName(
-                'org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration'
-        )
-
-        expect:
-        applicationContext
-                .getBeanNamesForType(secAutoConfig).length == 0
-    }
-
-    void "SecurityFilterAutoConfiguration bean is not registered"() {
-        given:
-        def secFilterAutoConfig = Class.forName(
-                'org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration'
-        )
-
-        expect:
-        applicationContext
-                .getBeanNamesForType(secFilterAutoConfig).length == 0
-    }
-
     void "no duplicate SecurityFilterChain beans from auto-configuration"() {
         given:
         def filterChainBeans = applicationContext

@@ -75,7 +75,7 @@
 			<fieldset class="buttons">
 				<g:hiddenField name="id" value="${person?.id}" />
 				<g:link class="edit" action="edit" id="${person?.id}">Edit</g:link>
-				<g:actionSubmit class="delete" action="delete" value='Delete' onclick="return confirm('Are you sure?');" />
+				<g:formActionSubmit action="delete" method="DELETE" class="delete" value='Delete' onclick="return confirm('Are you sure?');" />
 			</fieldset>
 		</g:form>
 	</div>
