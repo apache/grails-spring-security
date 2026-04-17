@@ -53,7 +53,6 @@ jobs:
           --max-workers=2
           --refresh-dependencies
           --continue
-          -PgebAtCheckWaiting
   functionalTests:
     if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
     runs-on: ubuntu-24.04
@@ -78,7 +77,6 @@ jobs:
           ./gradlew
           core-examples-functional-test-app:check
           -DTESTCONFIG=${{ matrix.test-config }}
-          -PgebAtCheckWaiting
   publish:
     needs: [ coreTests, functionalTests ]
     if: ${{ always() && github.repository_owner == 'apache' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.coreTests.result == 'success' || needs.coreTests.result == 'skipped') && (needs.functionalTests.result == 'success' || needs.functionalTests.result == 'skipped') }}
