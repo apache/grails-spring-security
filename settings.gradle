@@ -99,6 +99,9 @@ include 'oauth2-docs'
 project(':oauth2-plugin').projectDir = new File(settingsDir, 'plugin-oauth2/plugin')
 project(':oauth2-docs').projectDir = new File(settingsDir, 'plugin-oauth2/docs')
 
+include 'spring-security-compat'
+project(':spring-security-compat').projectDir = new File(settingsDir, 'spring-security-compat')
+
 include 'spring-security-rest'
 include 'spring-security-rest-gorm'
 include 'spring-security-rest-grailscache'
