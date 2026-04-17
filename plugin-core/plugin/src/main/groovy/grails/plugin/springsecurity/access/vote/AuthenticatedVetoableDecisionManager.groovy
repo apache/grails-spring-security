@@ -18,6 +18,8 @@
  */
 package grails.plugin.springsecurity.access.vote
 
+import groovy.util.logging.Slf4j
+
 import org.springframework.security.access.AccessDecisionVoter
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.access.ConfigAttribute
@@ -35,6 +37,7 @@ import groovy.transform.CompileStatic
  *
  * @author Burt Beckwith
  */
+@Slf4j
 @CompileStatic
 class AuthenticatedVetoableDecisionManager extends AbstractAccessDecisionManager {
 
@@ -48,7 +51,7 @@ class AuthenticatedVetoableDecisionManager extends AbstractAccessDecisionManager
 		boolean authenticatedVotersGranted = checkAuthenticatedVoters(authentication, object, configAttributes)
 		boolean otherVotersGranted = checkOtherVoters(authentication, object, configAttributes)
 
-		logger.trace "decide(): authenticatedVotersGranted=$authenticatedVotersGranted otherVotersGranted=$otherVotersGranted"
+		log.trace "decide(): authenticatedVotersGranted=$authenticatedVotersGranted otherVotersGranted=$otherVotersGranted"
 
 		if (!authenticatedVotersGranted && !otherVotersGranted) {
 			checkAllowIfAllAbstainDecisions()

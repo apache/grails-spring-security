@@ -58,19 +58,15 @@ import grails.plugin.springsecurity.web.filter.GrailsAnonymousAuthenticationFilt
 import grails.plugin.springsecurity.web.filter.GrailsRememberMeAuthenticationFilter
 import grails.plugin.springsecurity.web.filter.IpAddressFilter
 import grails.plugins.Plugin
-import grails.util.Metadata
 import groovy.util.logging.Slf4j
 import org.grails.web.mime.HttpServletResponseExtension
-import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.cache.jcache.JCacheCacheManager
-import org.springframework.core.Ordered
 import org.springframework.expression.spel.standard.SpelExpressionParser
-import org.springframework.security.access.event.LoggerListener
+import org.springframework.security.authentication.event.LoggerListener
 import org.springframework.security.access.expression.DenyAllPermissionEvaluator
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyAuthoritiesMapper
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
 import org.springframework.security.access.intercept.AfterInvocationProviderManager
 import org.springframework.security.access.intercept.NullRunAsManager
 import org.springframework.security.access.vote.AuthenticatedVoter
@@ -228,12 +224,13 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 		springSecurityBeanFactoryPostProcessor(classFor('springSecurityBeanFactoryPostProcessor', SpringSecurityBeanFactoryPostProcessor))
 
 		// configure the filter and optionally the listener
+		int filterOrder = securityFilterOrder()
 
 		springSecurityFilterChainRegistrationBean(classFor('springSecurityFilterChainRegistrationBean', FilterRegistrationBean)) {
 			filter = ref('springSecurityFilterChain')
 			urlPatterns = ['/*']
 			dispatcherTypes = EnumSet.of(DispatcherType.ERROR, DispatcherType.REQUEST)
-			order = SecurityProperties.DEFAULT_FILTER_ORDER
+			order = filterOrder
 		}
 
 		if (conf.useHttpSessionEventPublisher) {
@@ -381,7 +378,6 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 			forceHttps = conf.auth.forceHttps // false
 			useForward = conf.auth.useForward // false
 			portMapper = ref('portMapper')
-			portResolver = ref('portResolver')
 			redirectStrategy = ref('redirectStrategy')
 		}
 
@@ -476,8 +472,7 @@ to default to 'Annotation'; setting value to 'Annotation'
 		preAuthenticationChecks(classFor('preAuthenticationChecks', DefaultPreAuthenticationChecks))
 		postAuthenticationChecks(classFor('postAuthenticationChecks', DefaultPostAuthenticationChecks))
 
-		daoAuthenticationProvider(classFor('daoAuthenticationProvider', DaoAuthenticationProvider)) {
-			userDetailsService = ref('userDetailsService')
+		daoAuthenticationProvider(classFor('daoAuthenticationProvider', DaoAuthenticationProvider), ref('userDetailsService')) {
 			passwordEncoder = ref('passwordEncoder')
 			userCache = ref('userCache')
 			preAuthenticationChecks = ref('preAuthenticationChecks')
@@ -866,7 +861,7 @@ to default to 'Annotation'; setting value to 'Annotation'
 
 		// the hierarchy string is set in doWithApplicationContext to support building
 		// from the database using GORM if roleHierarchyEntryClassName is set
-		roleHierarchy(classFor('roleHierarchy', RoleHierarchyImpl))
+		roleHierarchy(classFor('roleHierarchy', MutableRoleHierarchy))
 
 		roleVoter(classFor('roleVoter', RoleHierarchyVoter), ref('roleHierarchy'))
 
@@ -1040,7 +1035,6 @@ to default to 'Annotation'; setting value to 'Annotation'
 		requestMatcher(classFor('requestMatcher', AnyRequestMatcher))
 
 		requestCache(classFor('requestCache', HttpSessionRequestCache)) {
-			portResolver = ref('portResolver')
 			createSessionAllowed = conf.requestCache.createSession // true
 			requestMatcher = ref('requestMatcher')
 		}
@@ -1099,6 +1093,17 @@ to default to 'Annotation'; setting value to 'Annotation'
 		beanTypeResolver.resolveType beanName, defaultType
 	}
 
+	private static int securityFilterOrder() {
+		try {
+			def securityProperties = SpringSecurityCoreGrailsPlugin.classLoader.loadClass(
+					'org.springframework.boot.autoconfigure.security.SecurityProperties'
+			)
+			return (Integer) securityProperties.getField('DEFAULT_FILTER_ORDER').get(null)
+		}
+		catch (Throwable ignored) {
+			return -100
+		}
+	}
 
 	static Map<String, PasswordEncoder> idToPasswordEncoder(ConfigObject conf) {
 

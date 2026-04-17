@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
-import org.springframework.security.access.event.AbstractAuthorizationEvent
+import org.springframework.security.authorization.event.AuthorizationEvent
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
@@ -81,7 +81,7 @@ class SecurityEventListener implements ApplicationListener<ApplicationEvent>, Ap
 				call e, 'onAuthenticationSwitchUserEvent'
 			}
 		}
-		else if (e instanceof AbstractAuthorizationEvent) {
+		else if (e instanceof AuthorizationEvent) {
 			call e, 'onAuthorizationEvent'
 		}
 	}

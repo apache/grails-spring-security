@@ -18,6 +18,8 @@
  */
 package grails.plugin.springsecurity.acl.access.method
 
+import groovy.util.logging.Slf4j
+
 import grails.plugin.springsecurity.acl.util.ProxyUtils
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.InitializingBean
@@ -40,6 +42,7 @@ import java.lang.reflect.Method
  * @author Luke Taylor
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
+@Slf4j
 @CompileStatic
 class ProxyAwareDelegatingMethodSecurityMetadataSource
 extends AbstractMethodSecurityMetadataSource
@@ -82,7 +85,7 @@ implements InitializingBean {
 				return null
 			}
 
-			logger.debug "Adding security method [$cacheKey] with attributes $attributes"
+			log.debug "Adding security method [$cacheKey] with attributes $attributes"
 
 			cache[cacheKey] = attributes
 

@@ -61,7 +61,7 @@ class AccessToken extends AbstractAuthenticationToken {
     }
 
     AccessToken(String accessToken, String refreshToken = null, Integer expiration = null) {
-        super(null)
+        super(null as Collection<? extends GrantedAuthority>)
         this.accessToken = accessToken
         this.refreshToken = refreshToken
         this.expiration = expiration

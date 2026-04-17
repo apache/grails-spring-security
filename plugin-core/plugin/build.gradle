@@ -43,6 +43,7 @@ dependencies {
 
 	implementation platform("org.apache.grails:grails-bom:$grailsVersion")
 
+	api project(':spring-security-compat')
 	api 'org.apache.grails:grails-async' // AsyncGrailsWebRequest is used in public API
 	api 'org.apache.grails:grails-mimetypes'
 	api 'org.apache.grails.data:grails-datastore-core' // API because used in templates
