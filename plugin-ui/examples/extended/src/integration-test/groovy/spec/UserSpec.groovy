@@ -38,9 +38,12 @@ class UserSpec extends AbstractSecuritySpec {
 
 		when:
 		page.submit()
+		page = at(UserSearchPage)
 
 		then:
-		page.assertResults(1, 10, 22)
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 10, 22)
+		}
 	}
 
 	void testFindByUsername() {
@@ -49,9 +52,13 @@ class UserSpec extends AbstractSecuritySpec {
 			username.text = 'foo'
 			submit()
 		}
+		page = at(UserSearchPage)
+
 
 		then:
-		page.assertResults(1, 3, 3)
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 3, 3)
+		}
 		with(pageSource) {
 			contains('foon_2')
 			contains('foolkiller')
@@ -70,7 +77,9 @@ class UserSpec extends AbstractSecuritySpec {
 		page = at(UserSearchPage)
 
 		then:
-		page.assertResults(1, 1, 1)
+		waitFor { // wait for the page to re-load and display results}
+			page.assertResults(1, 1, 1)
+		}
 		pageSource.contains('billy9494')
 	}
 
@@ -85,7 +94,9 @@ class UserSpec extends AbstractSecuritySpec {
 		page = at(UserSearchPage)
 
 		then:
-		page.assertResults(1, 3, 3)
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 3, 3)
+		}
 		with(pageSource) {
 			contains('maryrose')
 			contains('ratuig')
@@ -104,7 +115,9 @@ class UserSpec extends AbstractSecuritySpec {
 		page = at(UserSearchPage)
 
 		then:
-		page.assertResults(1, 3, 3)
+		waitFor { // wait for the page to re-load and display results}
+			page.assertResults(1, 3, 3)
+		}
 		with(pageSource) {
 			contains('aaaaaasd')
 			contains('achen')
@@ -123,7 +136,9 @@ class UserSpec extends AbstractSecuritySpec {
 		page = at(UserSearchPage)
 
 		then:
-		page.assertResults(1, 3, 3)
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 3, 3)
+		}
 		with(pageSource) {
 			contains('hhheeeaaatt')
 			contains('mscanio')
@@ -141,9 +156,12 @@ class UserSpec extends AbstractSecuritySpec {
 			username = newUsername
 			submit()
 		}
+		page = at(UserSearchPage)
 
 		then:
-		page.assertNoResults()
+		waitFor { // wait for the page to re-load and display results
+			page.assertNoResults()
+		}
 
 		// create
 		when:
@@ -199,6 +217,8 @@ class UserSpec extends AbstractSecuritySpec {
 		page = at(UserSearchPage)
 
 		then:
-		page.assertNoResults()
+		waitFor { // wait for the page to re-load and display results}
+			page.assertNoResults()
+		}
 	}
 }

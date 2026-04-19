@@ -128,12 +128,13 @@ class User1FunctionalSpec extends AbstractSecuritySpec {
 
 		when:
 		page.grantPermission('user2', READ)
+		page = at(ShowReportPage)
 
 		then:
 		page.message == "Permission $READ.mask granted on Report 12 to user2"
 
 		when:
-		to(ReportGrantPage, 12)
+		page = to(ReportGrantPage, 12)
 
 		then:
 		page.heading == 'Grant permission for report12'
