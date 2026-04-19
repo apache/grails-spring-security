@@ -28,7 +28,10 @@ import geb.navigator.Navigator
 class RolesTab extends Module {
 
     static content = {
-        tab { $('a', href: '#tab-roles') }
+        tab {
+            // Needs to be dynamic to ensure not becoming stale
+            $('a', href: '#tab-roles', dynamic: true)
+        }
     }
 
     void select() {

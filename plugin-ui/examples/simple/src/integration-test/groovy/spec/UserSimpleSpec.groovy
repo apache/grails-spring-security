@@ -18,11 +18,12 @@
  */
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.user.UserCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 import spock.lang.Issue
+
+import grails.testing.mixin.integration.Integration
 
 @Integration
 class UserSimpleSpec extends AbstractSecuritySpec {

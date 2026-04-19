@@ -29,23 +29,27 @@ class RequestmapSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def searchPage = to(RequestmapSearchPage)
+		def page = to(RequestmapSearchPage)
 
 		then:
-		searchPage.assertNotSearched()
+		page.assertNotSearched()
 
 		when:
-		searchPage.submit()
-		searchPage = at(RequestmapSearchPage)
+		page.submit()
+		page = at(RequestmapSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
-		pageSource.contains('/secure/**')
-		pageSource.contains('ROLE_ADMIN')
-		pageSource.contains('/j_spring_security_switch_user')
-		pageSource.contains('ROLE_RUN_AS')
-		pageSource.contains('/**')
-		pageSource.contains('permitAll')
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 3, 3)
+		}
+		with(pageSource) {
+			contains('/secure/**')
+			contains('ROLE_ADMIN')
+			contains('/j_spring_security_switch_user')
+			contains('ROLE_RUN_AS')
+			contains('/**')
+			contains('permitAll')
+		}
 	}
 
 	void testFindByConfigAttribute() {
@@ -54,12 +58,16 @@ class RequestmapSpec extends AbstractSecuritySpec {
 			configAttribute = 'run'
 			submit()
 		}
-		def searchPage = at(RequestmapSearchPage)
+		def page = at(RequestmapSearchPage)
 
 		then:
-		searchPage.assertResults(1, 1, 1)
-		pageSource.contains('/j_spring_security_switch_user')
-		pageSource.contains('ROLE_RUN_AS')
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 1, 1)
+		}
+		with(pageSource) {
+			contains('/j_spring_security_switch_user')
+			contains('ROLE_RUN_AS')
+		}
 	}
 
 	void testFindByUrl() {
@@ -68,12 +76,16 @@ class RequestmapSpec extends AbstractSecuritySpec {
 			urlPattern = 'secure'
 			submit()
 		}
-		def searchPage = at(RequestmapSearchPage)
+		def page = at(RequestmapSearchPage)
 
 		then:
-		searchPage.assertResults(1, 1, 1)
-		pageSource.contains('/secure/**')
-		pageSource.contains('ROLE_ADMIN')
+		waitFor { // wait for the page to re-load and display results
+			page.assertResults(1, 1, 1)
+		}
+		with(pageSource) {
+			contains('/secure/**')
+			contains('ROLE_ADMIN')
+		}
 	}
 
 	void testUniqueUrl() {
@@ -83,15 +95,17 @@ class RequestmapSpec extends AbstractSecuritySpec {
 			configAttribute = 'ROLE_FOO'
 			submit()
 		}
+		at(RequestmapCreatePage)
 
 		then:
-		at(RequestmapCreatePage)
-		pageSource.contains('must be unique')
+		waitFor { // wait for the page to re-load and display validation errors
+			pageSource.contains('must be unique')
+		}
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newPattern = "/foo/${UUID.randomUUID()}"
+		def newPattern = "/foo/${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
@@ -99,10 +113,10 @@ class RequestmapSpec extends AbstractSecuritySpec {
 			urlPattern = newPattern
 			submit()
 		}
-		def searchPage = at(RequestmapSearchPage)
+		def page = at(RequestmapSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { page.assertNoResults() }
 
 		// create
 		when:
@@ -111,31 +125,35 @@ class RequestmapSpec extends AbstractSecuritySpec {
 			configAttribute = 'ROLE_FOO'
 			submit()
 		}
-		def editPage = at(RequestmapEditPage)
+		page = at(RequestmapEditPage)
 
 		then:
-		editPage.urlPattern.text == newPattern
+		page.urlPattern.text == newPattern
 
 		// edit
 		when:
-		editPage.urlPattern = "${newPattern}/new"
-		editPage.submit()
-		editPage = at(RequestmapEditPage)
+		page.urlPattern = "${newPattern}/new"
+		page.submit()
+		page = at(RequestmapEditPage)
 
 		then:
-		editPage.urlPattern.text == "${newPattern}/new"
+		waitFor { // wait for the page to re-load and display updated values
+			page.urlPattern.text == "${newPattern}/new"
+		}
 
 		// delete
 		when:
-		editPage.delete()
-		searchPage = at(RequestmapSearchPage)
+		page.delete()
+		page = at(RequestmapSearchPage)
 
 		and:
-		searchPage.urlPattern = "${newPattern}/new"
-		searchPage.submit()
-		searchPage = at(RequestmapSearchPage)
+		page.urlPattern = "${newPattern}/new"
+		page.submit()
+		page = at(RequestmapSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { // wait for the page to re-load and display results}
+			page.assertNoResults()
+		}
 	}
 }

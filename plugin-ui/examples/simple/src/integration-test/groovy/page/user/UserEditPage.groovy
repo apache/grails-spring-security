@@ -40,6 +40,6 @@ class UserEditPage extends EditPage {
 		accountExpired { $(name: 'accountExpired').module(Checkbox) }
 		accountLocked { $(name: 'accountLocked').module(Checkbox) }
 		passwordExpired { $(name: 'passwordExpired').module(Checkbox) }
-		rolesTab { module RolesTab }
+		rolesTab { module(RolesTab) }
 	}
 }
