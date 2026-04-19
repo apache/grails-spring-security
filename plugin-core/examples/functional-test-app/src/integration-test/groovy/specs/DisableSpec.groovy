@@ -16,13 +16,12 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package specs
 
-import grails.testing.mixin.integration.Integration
 import pages.IndexPage
 import spock.lang.IgnoreIf
 
+import grails.testing.mixin.integration.Integration
 
 @Integration
 @IgnoreIf({ System.getProperty('TESTCONFIG') != 'misc' })
@@ -30,173 +29,173 @@ class DisableSpec extends AbstractHyphenatedSecuritySpec {
 
 	void 'lock account'() {
 		given:
-		String username = 'admin'
+		def username = 'admin'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go 'secure-annotated'
+		go('secure-annotated')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 
 		then:
-		'false' == getUserProperty(username, 'accountLocked')
+		getUserProperty(username, 'accountLocked') == 'false'
 
 		when:
-		setUserProperty username, 'accountLocked', true
+		setUserProperty(username, 'accountLocked', true)
 
 		then:
-		'true' == getUserProperty(username, 'accountLocked')
+		getUserProperty(username, 'accountLocked') == 'true'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		pageSource.contains('accountLocked')
+		waitFor { pageSource.contains('accountLocked') }
 
 		// reset
 		when:
-		setUserProperty username, 'accountLocked', false
+		setUserProperty(username, 'accountLocked', false)
 
 		then:
-		'false' == getUserProperty(username, 'accountLocked')
+		getUserProperty(username, 'accountLocked') == 'false'
 	}
 
 	void 'disable account'() {
 		given:
-		String username = 'admin'
+		def username = 'admin'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go 'secure-annotated'
+		go('secure-annotated')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 
 		then:
-		'true' == getUserProperty(username, 'enabled')
+		getUserProperty(username, 'enabled') == 'true'
 
 		when:
-		setUserProperty username, 'enabled', false
+		setUserProperty(username, 'enabled', false)
 
 		then:
-		'false' == getUserProperty(username, 'enabled')
+		getUserProperty(username, 'enabled') == 'false'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		pageSource.contains('accountDisabled')
+		waitFor { pageSource.contains('accountDisabled') }
 
 		// reset
 		when:
-		setUserProperty username, 'enabled', true
+		setUserProperty(username, 'enabled', true)
 
 		then:
-		'true' == getUserProperty(username, 'enabled')
+		getUserProperty(username, 'enabled') == 'true'
 	}
 
 	void 'expire account'() {
 		given:
-		String username = 'admin'
+		def username = 'admin'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go 'secure-annotated'
+		go('secure-annotated')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 
 		then:
-		'false' == getUserProperty(username, 'accountExpired')
+		getUserProperty(username, 'accountExpired') == 'false'
 
 		when:
-		setUserProperty username, 'accountExpired', true
+		setUserProperty(username, 'accountExpired', true)
 
 		then:
-		'true' == getUserProperty(username, 'accountExpired')
+		getUserProperty(username, 'accountExpired') == 'true'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		pageSource.contains('accountExpired')
+		waitFor { pageSource.contains('accountExpired') }
 
 		// reset
 		when:
-		setUserProperty username, 'accountExpired', false
+		setUserProperty(username, 'accountExpired', false)
 
 		then:
-		'false' == getUserProperty(username, 'accountExpired')
+		getUserProperty(username, 'accountExpired') == 'false'
 	}
 
 	void 'expire password'() {
 		given:
-		String username = 'admin'
+		def username = 'admin'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		at IndexPage
+		at(IndexPage)
 
 		when:
-		go 'secure-annotated'
+		go('secure-annotated')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 
 		then:
-		'false' == getUserProperty(username, 'passwordExpired')
+		getUserProperty(username, 'passwordExpired') == 'false'
 
 		when:
-		setUserProperty username, 'passwordExpired', true
+		setUserProperty(username, 'passwordExpired', true)
 
 		then:
-		'true' == getUserProperty(username, 'passwordExpired')
+		getUserProperty(username, 'passwordExpired') == 'true'
 
 		when:
-		login username
+		login(username)
 
 		then:
-		pageSource.contains('passwordExpired')
+		waitFor { pageSource.contains('passwordExpired') }
 
 		// reset
 		when:
-		setUserProperty username, 'passwordExpired', false
+		setUserProperty(username, 'passwordExpired', false)
 
 		then:
-		'false' == getUserProperty(username, 'passwordExpired')
+		getUserProperty(username, 'passwordExpired') == 'false'
 	}
 
 	private void setUserProperty(String user, String propertyName, value) {
-		go "hack/set-user-property?user=$user&$propertyName=$value"
+		go("hack/set-user-property?user=$user&$propertyName=$value")
 	}
 }
