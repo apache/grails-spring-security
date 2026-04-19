@@ -93,16 +93,15 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 			token.text = 'new_token'
 			submit()
 		}
-		page = at(RegistrationCodeEditPage)
 
 		then:
-		with(page) {
-			username.text == 'new_user'
-			token.text == 'new_token'
-		}
+		at(RegistrationCodeEditPage)
 
-		when:
-		page = to(RegistrationCodeSearchPage, 4)
+		when: 'visit so the edit page can be verified properly after submit'
+		to(RegistrationCodeSearchPage)
+
+		and:
+		page = to(RegistrationCodeEditPage, 4)
 
 		then:
 		with(page) {
