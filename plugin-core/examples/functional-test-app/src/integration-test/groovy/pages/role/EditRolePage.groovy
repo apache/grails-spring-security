@@ -25,6 +25,6 @@ class EditRolePage extends EditPage {
 
 	static content = {
 		authorityField { $('input', name: 'authority').module(TextInput) }
-		updateButton { $('input', value: 'Update') }
+		updateButton(to: ShowRolePage) { $('input', value: 'Update') }
 	}
 }
