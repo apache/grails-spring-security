@@ -22,9 +22,11 @@ import page.user.UserCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 import spock.lang.Issue
+import spock.lang.Stepwise
 
 import grails.testing.mixin.integration.Integration
 
+@Stepwise
 @Integration
 class UserSimpleSpec extends AbstractSecuritySpec {
 
@@ -40,7 +42,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         page = at(UserSearchPage)
 
         then:
-        page.assertResults(1, 10, 22)
+        waitFor { // Wait for the search results page to reload
+            page.assertResults(1, 10, 22)
+        }
     }
 
     void testFindByUsername() {
@@ -52,7 +56,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         def page = at(UserSearchPage)
 
         then:
-        page.assertResults(1, 3, 3)
+        waitFor { // Wait for the search results page to reload
+            page.assertResults(1, 3, 3)
+        }
         with(pageSource) {
             contains('foon_2')
             contains('foolkiller')
@@ -71,7 +77,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         page = at(UserSearchPage)
 
         then:
-        page.assertResults(1, 1, 1)
+        waitFor { // Wait for the search results page to reload
+            page.assertResults(1, 1, 1)
+        }
         pageSource.contains('billy9494')
     }
 
@@ -86,7 +94,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         searchPage = at(UserSearchPage)
 
         then:
-        searchPage.assertResults(1, 3, 3)
+        waitFor { // Wait for the search results page to reload
+            searchPage.assertResults(1, 3, 3)
+        }
         with(pageSource) {
             contains('maryrose')
             contains('ratuig')
@@ -105,7 +115,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         searchPage = at(UserSearchPage)
 
         then:
-        searchPage.assertResults(1, 3, 3)
+        waitFor { // Wait for the search results page to reload
+            searchPage.assertResults(1, 3, 3)
+        }
         with(pageSource) {
             contains('aaaaaasd')
             contains('achen')
@@ -124,7 +136,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         searchPage = at(UserSearchPage)
 
         then:
-        searchPage.assertResults(1, 3, 3)
+        waitFor { // Wait for the search results page to reload
+            searchPage.assertResults(1, 3, 3)
+        }
         pageSource.with {
             contains('hhheeeaaatt')
             contains('mscanio')
@@ -144,7 +158,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         }
 
         then:
-        page.assertNoResults()
+        waitFor { // Wait for the search results page to reload
+            page.assertNoResults()
+        }
 
         // create
         when:
@@ -177,6 +193,13 @@ class UserSimpleSpec extends AbstractSecuritySpec {
             submit()
         }
         page = at(UserEditPage)
+        def userId = page.userId
+
+        and: 'visit other page so the edit page can be verified properly after submit'
+        to(UserSearchPage)
+
+        and:
+        page = to(UserEditPage, userId)
 
         then:
         with(page) {
@@ -201,7 +224,9 @@ class UserSimpleSpec extends AbstractSecuritySpec {
         page = at(UserSearchPage)
 
         then:
-        page.assertNoResults()
+        waitFor { // Wait for the search results page to reload
+            page.assertNoResults()
+        }
     }
 
     @Issue('https://github.com/grails-plugins/grails-spring-security-ui/issues/89')

@@ -40,7 +40,9 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 		page = at(RegistrationCodeSearchPage)
 
 		then:
-		page.assertResults(1, 10, 14)
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 10, 14)
+		}
 		with(pageSource) {
 			contains('registration_test_2')
 			contains('0a154624f36d42e4aa68991a9477bd04')
@@ -55,7 +57,9 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		page.assertResults(1, 1, 1)
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 1, 1)
+		}
 		with(pageSource) {
 			contains('registration_test_1')
 			contains('4a7f88afec3746f7aab2f5d0d8df6d8e')
@@ -70,7 +74,9 @@ class RegistrationCodeSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		page.assertResults(1, 5, 5)
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 5, 5)
+		}
 		with(pageSource) {
 			contains('registration_test_3')
 			contains('89f9bbc658b14808ae4c77c6e17e551a')

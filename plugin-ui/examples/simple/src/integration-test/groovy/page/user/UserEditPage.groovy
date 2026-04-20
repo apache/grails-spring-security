@@ -35,6 +35,7 @@ class UserEditPage extends EditPage {
 	}
 
 	static content = {
+		userId { $('input', type: 'hidden', name: 'id', 0).value() }
 		username { $('#username').module(TextInput) }
 		enabled { $(name: 'enabled').module(Checkbox) }
 		accountExpired { $(name: 'accountExpired').module(Checkbox) }
