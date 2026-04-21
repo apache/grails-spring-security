@@ -83,15 +83,6 @@ class DefaultRestAuthenticationEventPublisherSpec extends Specification {
         0 * eventPublisher.publishEvent(_)
     }
 
-    void "should allow null publisher in constructor and remain no-op for token events"() {
-        when:
-        new DefaultRestAuthenticationEventPublisher(null).publishTokenCreation(accessToken)
-
-        then:
-        noExceptionThrown()
-        0 * eventPublisher.publishEvent(_)
-    }
-
     void "should not execute parent publishEvent when publisher is not set"() {
         when:
         new DefaultRestAuthenticationEventPublisher().publishAuthenticationSuccess(accessToken)

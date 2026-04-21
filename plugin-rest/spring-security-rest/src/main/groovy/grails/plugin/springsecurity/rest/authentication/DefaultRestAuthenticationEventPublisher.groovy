@@ -30,23 +30,14 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @CompileStatic
 class DefaultRestAuthenticationEventPublisher extends DefaultAuthenticationEventPublisher implements RestAuthenticationEventPublisher {
 
-    // Spring Security 7 no longer accepts a null ApplicationEventPublisher in the
-    // DefaultAuthenticationEventPublisher constructor, so use a no-op fallback until
-    // Spring injects the real publisher through the setter.
-    private static final ApplicationEventPublisher NO_OP_APPLICATION_EVENT_PUBLISHER = new ApplicationEventPublisher() {
-        @Override
-        void publishEvent(Object event) {
-        }
-    }
-
     private ApplicationEventPublisher applicationEventPublisher
 
     DefaultRestAuthenticationEventPublisher() {
-        this(null)
+        super()
     }
 
     DefaultRestAuthenticationEventPublisher(ApplicationEventPublisher publisher) {
-        super(publisher ?: NO_OP_APPLICATION_EVENT_PUBLISHER)
+        super(publisher)
         this.applicationEventPublisher = publisher
     }
 
