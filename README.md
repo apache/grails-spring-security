@@ -56,6 +56,20 @@ The plugin automatically excludes Spring Boot's servlet security auto-configurat
 
 **Configuration contract:** while this exclusion is enabled (the default), `grails.plugin.springsecurity.*` is the authoritative configuration source for the application's security. Spring Boot's `spring.security.*` properties are *not* merged into the plugin configuration and are *not* applied by Boot's auto-configuration. Use the plugin's keys, not Spring Boot's, to configure security when this plugin is active.
 
+#### Coexistence with the component-based Spring Security configuration model
+
+Spring Security 5.7 deprecated and Spring Security 6 removed `WebSecurityConfigurerAdapter`, replacing it with a component-based configuration model that registers individual `@Bean` components (see [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)). This plugin pre-dates that model and provides equivalent functionality through the `grails.plugin.springsecurity.*` configuration namespace. The following table summarises how the plugin coexists with each component-based pattern when the auto-configuration excluder is enabled:
+
+| Spring component-based pattern | Behaviour with this plugin active | How to achieve the equivalent |
+|---|---|---|
+| `@Bean SecurityFilterChain` | Not added to the plugin's `FilterChainProxy`; the bean is created but never services requests. | `grails.plugin.springsecurity.filterChain.chainMap` / `filterNames` and `staticRules`. |
+| `@Bean WebSecurityCustomizer` | No-op. The plugin does not use Spring's `WebSecurity` builder. | `grails.plugin.springsecurity.staticRules` with `permitAll`, or `grails.plugin.springsecurity.ipRestrictions`. |
+| `@Bean AuthenticationManager` | Conflicts with the plugin's `authenticationManager` (`ProviderManager`) bean by name. | Register custom `AuthenticationProvider` beans and add their bean names to `grails.plugin.springsecurity.providerNames`. |
+| `@Bean InMemoryUserDetailsManager` / `JdbcUserDetailsManager` | Coexists in the context but is not used by the plugin's authentication providers (which use the plugin's `userDetailsService` / `GormUserDetailsService`). | `grails.plugin.springsecurity.userLookup.userDomainClassName`, or replace the `userDetailsService` bean. |
+| LDAP factory beans (`EmbeddedLdapServerContextSourceFactoryBean`, `LdapBindAuthenticationManagerFactory`, `LdapPasswordComparisonAuthenticationManagerFactory`) | Coexist but are not wired into the plugin's authentication providers. | Use the `grails-spring-security-ldap` plugin and the `grails.plugin.springsecurity.ldap.*` configuration. |
+
+To delegate the entire servlet security stack to Spring Boot's component-based model (and stop using the plugin's `grails.plugin.springsecurity.*` configuration), disable the excluder via the property below.
+
 To disable this automatic exclusion (e.g. if you want to delegate the entire servlet security stack to Spring Boot instead of the plugin), add the following to `application.yml`:
 
 ```yml
