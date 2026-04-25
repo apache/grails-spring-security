@@ -95,11 +95,11 @@ Spring Security 5.7 deprecated and Spring Security 6 removed `WebSecurityConfigu
 | `grails.plugin.springsecurity.componentBased.autoMergeAuthenticationProviders: false`
 
 | `@Bean InMemoryUserDetailsManager` / `JdbcUserDetailsManager` (or any extra `UserDetailsService`)
-| *Auto-chained* behind the plugin's primary `GormUserDetailsService`; queried in bean-name order if the GORM lookup throws `UsernameNotFoundException`. The chained service is wired into `daoAuthenticationProvider`.
+| For each additional `UserDetailsService` bean, a new `DaoAuthenticationProvider` is created and *appended* to the plugin's `authenticationManager` providers list. The plugin's primary GORM-backed provider runs first; if it does not authenticate the user, each additional provider is tried in turn. (Spring Security 7 made `DaoAuthenticationProvider.userDetailsService` final, so we add new providers instead of mutating the existing one.)
 | `grails.plugin.springsecurity.componentBased.autoChainUserDetailsServices: false`
 
 | `spring.security.user.name` / `spring.security.user.password` / `spring.security.user.roles`
-| If `spring.security.user.name` is set, an `InMemoryUserDetailsManager` is created from those properties (mimicking what Spring Boot's `UserDetailsServiceAutoConfiguration` would have done) and chained behind the plugin's primary user lookup.
+| If `spring.security.user.name` is set, an `InMemoryUserDetailsManager` is created from those properties (mimicking what Spring Boot's `UserDetailsServiceAutoConfiguration` would have done), wrapped in a `DaoAuthenticationProvider`, and added to the plugin's authenticationManager.
 | `grails.plugin.springsecurity.componentBased.bridgeSpringSecurityUserProperties: false`
 
 | `@Bean WebSecurityCustomizer`

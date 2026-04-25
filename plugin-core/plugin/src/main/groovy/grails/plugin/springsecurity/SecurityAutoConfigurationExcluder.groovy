@@ -101,14 +101,15 @@ import org.springframework.core.env.Environment
  *       {@code grails.plugin.springsecurity.componentBased.autoMergeAuthenticationProviders: false}.</li>
  *   <li><strong>{@code @Bean UserDetailsManager} /
  *       {@code InMemoryUserDetailsManager} /
- *       {@code JdbcUserDetailsManager}</strong> - additional
- *       {@code UserDetailsService} beans are <strong>auto-chained</strong>
- *       behind the plugin's primary {@code GormUserDetailsService} via
- *       {@link grails.plugin.springsecurity.componentbased.ChainedUserDetailsService}.
- *       The plugin's GORM-backed user lookup runs first; if it throws
- *       {@code UsernameNotFoundException}, each additional bean is queried in
- *       turn. The chained service is wired into
- *       {@code daoAuthenticationProvider}. Disable via
+ *       {@code JdbcUserDetailsManager}</strong> - for each additional
+ *       {@code UserDetailsService} bean, a new
+ *       {@code DaoAuthenticationProvider} is created and appended to the
+ *       plugin's {@code authenticationManager} providers list. The plugin's
+ *       primary GORM-backed provider runs first; if it does not authenticate
+ *       the user, each additional provider is tried in turn. (We cannot
+ *       rewire the existing {@code daoAuthenticationProvider} because Spring
+ *       Security 7 made its {@code userDetailsService} a final
+ *       constructor-only field.) Disable via
  *       {@code grails.plugin.springsecurity.componentBased.autoChainUserDetailsServices: false}.</li>
  *   <li><strong>{@code spring.security.user.name} /
  *       {@code spring.security.user.password} /
@@ -116,8 +117,9 @@ import org.springframework.core.env.Environment
  *       {@code spring.security.user.name} is set, an
  *       {@code InMemoryUserDetailsManager} is created from those properties
  *       (mimicking what Spring Boot's
- *       {@code UserDetailsServiceAutoConfiguration} would have done) and
- *       chained behind the plugin's primary user lookup. Disable via
+ *       {@code UserDetailsServiceAutoConfiguration} would have done), wrapped
+ *       in a {@code DaoAuthenticationProvider} and added to the plugin's
+ *       authenticationManager. Disable via
  *       {@code grails.plugin.springsecurity.componentBased.bridgeSpringSecurityUserProperties: false}.</li>
  *   <li><strong>LDAP factory beans
  *       ({@code EmbeddedLdapServerContextSourceFactoryBean},

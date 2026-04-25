@@ -25,7 +25,6 @@ import grails.plugin.springsecurity.access.vote.ClosureVoter
 import grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationProvider
 import grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher
 import grails.plugin.springsecurity.cache.SpringUserCacheFactoryBean
-import grails.plugin.springsecurity.componentbased.ChainedUserDetailsService
 import grails.plugin.springsecurity.componentbased.ComponentBasedConfigBlender
 import grails.plugin.springsecurity.userdetails.DefaultPostAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.DefaultPreAuthenticationChecks
@@ -810,9 +809,17 @@ to default to 'Annotation'; setting value to 'Annotation'
 			}
 
 			if (additional) {
-				def chained = new ChainedUserDetailsService([primary] + additional)
-				applicationContext.daoAuthenticationProvider.userDetailsService = chained
-				log.info 'Wired chained UserDetailsService into daoAuthenticationProvider (primary GORM + {} additional)', additional.size()
+				def passwordEncoder = applicationContext.containsBean('passwordEncoder') ? applicationContext.passwordEncoder : null
+				List<DaoAuthenticationProvider> additionalProviders = additional.collect { UserDetailsService uds ->
+					def provider = new DaoAuthenticationProvider(uds)
+					if (passwordEncoder != null) {
+						provider.passwordEncoder = passwordEncoder
+					}
+					provider
+				}
+				applicationContext.authenticationManager.providers.addAll additionalProviders
+				log.info 'Added {} DaoAuthenticationProvider(s) for additional UserDetailsService sources to authenticationManager (the plugin GORM-backed provider remains primary)',
+						additionalProviders.size()
 			}
 		}
 	}
