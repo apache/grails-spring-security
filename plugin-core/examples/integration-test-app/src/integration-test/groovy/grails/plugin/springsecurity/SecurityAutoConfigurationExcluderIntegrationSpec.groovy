@@ -30,32 +30,47 @@ import grails.testing.mixin.integration.Integration
 @Integration
 class SecurityAutoConfigurationExcluderIntegrationSpec extends Specification {
 
-    @Autowired
-    ApplicationContext applicationContext
+	@Autowired
+	ApplicationContext applicationContext
 
-    void "SecurityAutoConfigurationExcluder class is on the classpath"() {
-        expect:
-        Class.forName(
-                'grails.plugin.springsecurity.SecurityAutoConfigurationExcluder'
-        )
-    }
+	void "SecurityAutoConfigurationExcluder class is on the classpath"() {
+		expect:
+		Class.forName(
+				'grails.plugin.springsecurity.SecurityAutoConfigurationExcluder'
+		)
+	}
 
-    void "no duplicate SecurityFilterChain beans from auto-configuration"() {
-        given:
-        def filterChainBeans = applicationContext
-                .getBeanNamesForType(SecurityFilterChain)
+	void "no Spring Boot SecurityFilterChain bean is registered alongside the plugin"() {
+		given: 'all SecurityFilterChain beans visible to the application context'
+		def filterChainBeans = applicationContext.getBeanNamesForType(SecurityFilterChain)
 
-        expect:
-        filterChainBeans.length <= 1
-    }
+		expect: 'none come from Spring Boot security auto-configurations'
+		filterChainBeans.every { name ->
+			def def_ = applicationContext.getBeanFactory().getBeanDefinition(name)
+			!def_.beanClassName?.startsWith('org.springframework.boot.security.')
+		}
 
-    void "only the plugin UserDetailsService is registered"() {
-        given:
-        def udsBeans = applicationContext
-                .getBeanNamesForType(UserDetailsService)
+		and: 'none of the excluded auto-configuration class names are registered as beans'
+		SecurityAutoConfigurationExcluder.excludedAutoConfigurations.each { className ->
+			assert !applicationContext.containsBeanDefinition(className) :
+					"Spring Boot auto-configuration ${className} should be excluded by SecurityAutoConfigurationExcluder"
+		}
+	}
 
-        expect:
-        udsBeans.length >= 1
-        udsBeans.any { it.contains('userDetailsService') }
-    }
+	void "no Spring Boot in-memory UserDetailsService is registered alongside the plugin"() {
+		given: 'all UserDetailsService beans visible to the application context'
+		def udsBeans = applicationContext.getBeanNamesForType(UserDetailsService)
+
+		expect: 'at least one (the plugin one) exists'
+		udsBeans.length >= 1
+
+		and: 'none come from Spring Boot security auto-configurations'
+		udsBeans.every { name ->
+			def def_ = applicationContext.getBeanFactory().getBeanDefinition(name)
+			!def_.beanClassName?.startsWith('org.springframework.boot.security.')
+		}
+
+		and: "Boot's in-memory UserDetailsService is not present"
+		!udsBeans.any { it == 'inMemoryUserDetailsManager' }
+	}
 }
