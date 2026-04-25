@@ -21,7 +21,8 @@ package grails.plugin.springsecurity
 import spock.lang.Specification
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.SecurityFilterChain
 
@@ -31,7 +32,7 @@ import grails.testing.mixin.integration.Integration
 class SecurityAutoConfigurationExcluderIntegrationSpec extends Specification {
 
 	@Autowired
-	ApplicationContext applicationContext
+	ConfigurableApplicationContext applicationContext
 
 	void "SecurityAutoConfigurationExcluder class is on the classpath"() {
 		expect:
@@ -41,24 +42,29 @@ class SecurityAutoConfigurationExcluderIntegrationSpec extends Specification {
 	}
 
 	void "no Spring Boot SecurityFilterChain bean is registered alongside the plugin"() {
-		given: 'all SecurityFilterChain beans visible to the application context'
+		given: 'the application context bean factory'
+		ConfigurableListableBeanFactory beanFactory = applicationContext.beanFactory
+
+		and: 'all SecurityFilterChain beans visible to the application context'
 		def filterChainBeans = applicationContext.getBeanNamesForType(SecurityFilterChain)
 
 		expect: 'none come from Spring Boot security auto-configurations'
 		filterChainBeans.every { name ->
-			def def_ = applicationContext.getBeanFactory().getBeanDefinition(name)
-			!def_.beanClassName?.startsWith('org.springframework.boot.security.')
+			!beanFactory.getBeanDefinition(name).beanClassName?.startsWith('org.springframework.boot.security.')
 		}
 
 		and: 'none of the excluded auto-configuration class names are registered as beans'
 		SecurityAutoConfigurationExcluder.excludedAutoConfigurations.each { className ->
-			assert !applicationContext.containsBeanDefinition(className) :
+			assert !beanFactory.containsBeanDefinition(className) :
 					"Spring Boot auto-configuration ${className} should be excluded by SecurityAutoConfigurationExcluder"
 		}
 	}
 
 	void "no Spring Boot in-memory UserDetailsService is registered alongside the plugin"() {
-		given: 'all UserDetailsService beans visible to the application context'
+		given: 'the application context bean factory'
+		ConfigurableListableBeanFactory beanFactory = applicationContext.beanFactory
+
+		and: 'all UserDetailsService beans visible to the application context'
 		def udsBeans = applicationContext.getBeanNamesForType(UserDetailsService)
 
 		expect: 'at least one (the plugin one) exists'
@@ -66,8 +72,7 @@ class SecurityAutoConfigurationExcluderIntegrationSpec extends Specification {
 
 		and: 'none come from Spring Boot security auto-configurations'
 		udsBeans.every { name ->
-			def def_ = applicationContext.getBeanFactory().getBeanDefinition(name)
-			!def_.beanClassName?.startsWith('org.springframework.boot.security.')
+			!beanFactory.getBeanDefinition(name).beanClassName?.startsWith('org.springframework.boot.security.')
 		}
 
 		and: "Boot's in-memory UserDetailsService is not present"
