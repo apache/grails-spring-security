@@ -25,6 +25,8 @@ import grails.plugin.springsecurity.access.vote.ClosureVoter
 import grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationProvider
 import grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher
 import grails.plugin.springsecurity.cache.SpringUserCacheFactoryBean
+import grails.plugin.springsecurity.componentbased.ChainedUserDetailsService
+import grails.plugin.springsecurity.componentbased.ComponentBasedConfigBlender
 import grails.plugin.springsecurity.userdetails.DefaultPostAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.DefaultPreAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.GormUserDetailsService
@@ -80,6 +82,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.cache.NullUserCache
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -696,6 +699,8 @@ to default to 'Annotation'; setting value to 'Annotation'
 		applicationContext.authenticationManager.providers = createBeanList(providerNames)
 		log.trace 'AuthenticationProviders: {}', applicationContext.authenticationManager.providers
 
+		applyComponentBasedConfigBlending conf, applicationContext, securityFilterChains
+
 		// build handlers list here to give dependent plugins a chance to register some
 		def logoutHandlerNames = (conf.logout.handlerNames ?: SpringSecurityUtils.logoutHandlerNames) +
 				(conf.logout.additionalHandlerNames ?: [])
@@ -768,6 +773,49 @@ to default to 'Annotation'; setting value to 'Annotation'
 	private createRefList = { names -> names.collect { name -> ref(name) } }
 
 	private createBeanList(names) { names.collect { name -> applicationContext.getBean(name) } }
+
+	private void applyComponentBasedConfigBlending(conf, applicationContext, securityFilterChains) {
+		def cb = conf.componentBased
+		boolean mergeFilterChains = cb?.containsKey('autoMergeSecurityFilterChain') ? cb.autoMergeSecurityFilterChain : true
+		boolean mergeProviders = cb?.containsKey('autoMergeAuthenticationProviders') ? cb.autoMergeAuthenticationProviders : true
+		boolean chainUds = cb?.containsKey('autoChainUserDetailsServices') ? cb.autoChainUserDetailsServices : true
+		boolean bridgeUserProps = cb?.containsKey('bridgeSpringSecurityUserProperties') ? cb.bridgeSpringSecurityUserProperties : true
+
+		if (mergeFilterChains) {
+			ComponentBasedConfigBlender.mergeUserSecurityFilterChains applicationContext, securityFilterChains
+		}
+
+		if (mergeProviders) {
+			ComponentBasedConfigBlender.mergeUserAuthenticationProviders applicationContext, applicationContext.authenticationManager
+		}
+
+		if (chainUds || bridgeUserProps) {
+			def primary = applicationContext.userDetailsService
+			List<UserDetailsService> additional = []
+
+			if (bridgeUserProps) {
+				def env = applicationContext.environment
+				String userName = env.getProperty('spring.security.user.name', String)
+				String userPassword = env.getProperty('spring.security.user.password', String)
+				List<String> userRoles = env.getProperty('spring.security.user.roles', List)
+				def bridged = ComponentBasedConfigBlender.bridgeSpringSecurityUserProperties(userName, userPassword, userRoles)
+				if (bridged != null) {
+					additional << (UserDetailsService) bridged
+				}
+			}
+
+			if (chainUds) {
+				def others = applicationContext.getBeansOfType(UserDetailsService).values().findAll { it !== primary }
+				additional.addAll(others)
+			}
+
+			if (additional) {
+				def chained = new ChainedUserDetailsService([primary] + additional)
+				applicationContext.daoAuthenticationProvider.userDetailsService = chained
+				log.info 'Wired chained UserDetailsService into daoAuthenticationProvider (primary GORM + {} additional)', additional.size()
+			}
+		}
+	}
 
 	private configureLogout = { conf ->
 

@@ -63,23 +63,25 @@ import org.springframework.core.env.Environment
  * Spring Security without the WebSecurityConfigurerAdapter</a>).</p>
  *
  * <p>This plugin pre-dates that model and provides equivalent functionality
- * through the {@code grails.plugin.springsecurity.*} configuration namespace.
- * The following table summarises how the plugin coexists with each
- * component-based pattern when this filter is enabled:</p>
+ * through the {@code grails.plugin.springsecurity.*} configuration namespace,
+ * but it now <strong>blends</strong> the most common component-based patterns
+ * automatically via {@link grails.plugin.springsecurity.componentbased.ComponentBasedConfigBlender}.
+ * This means you can configure security from either side (or both) and the
+ * effective configuration is the union of both sources.</p>
+ *
+ * <p>The following table summarises how each component-based pattern is
+ * blended with the plugin's configuration:</p>
  *
  * <ul>
  *   <li><strong>{@code @Bean SecurityFilterChain}</strong> - user-defined
- *       {@code SecurityFilterChain} beans are NOT automatically added to the
- *       plugin's {@code FilterChainProxy} (the bean named
- *       {@code springSecurityFilterChain}). They live in the application
- *       context but never service requests. To customise the plugin's
- *       filter chain, configure
- *       {@code grails.plugin.springsecurity.filterChain.chainMap} and
- *       {@code grails.plugin.springsecurity.filterChain.filterNames} (or
- *       {@code staticRules}).</li>
- *   <li><strong>{@code @Bean WebSecurityCustomizer}</strong> - no-op. The
- *       plugin does not use Spring's {@code WebSecurity} builder. To exclude
- *       URLs from security checks, use
+ *       {@code SecurityFilterChain} beans are <strong>auto-merged</strong>
+ *       into the plugin's {@code FilterChainProxy}. User chains are prepended
+ *       (higher precedence) so their typically more-specific request matchers
+ *       win against the plugin's catch-all chain. Disable via
+ *       {@code grails.plugin.springsecurity.componentBased.autoMergeSecurityFilterChain: false}.</li>
+ *   <li><strong>{@code @Bean WebSecurityCustomizer}</strong> - still a no-op.
+ *       The plugin does not use Spring's {@code WebSecurity} builder. To
+ *       exclude URLs from security checks, use
  *       {@code grails.plugin.springsecurity.ipRestrictions} or
  *       {@code grails.plugin.springsecurity.staticRules} with
  *       {@code permitAll} access.</li>
@@ -87,17 +89,36 @@ import org.springframework.core.env.Environment
  *       registers an {@code authenticationManager} bean (a
  *       {@code ProviderManager}). A user-defined bean with the same name
  *       will fail with a duplicate-bean error. To plug in custom
- *       authentication providers, register them as Spring beans and add
- *       their bean names to {@code grails.plugin.springsecurity.providerNames}.</li>
+ *       authentication providers, define {@code @Bean AuthenticationProvider}
+ *       beans (auto-merged - see the next entry) or add their bean names to
+ *       {@code grails.plugin.springsecurity.providerNames}.</li>
+ *   <li><strong>{@code @Bean AuthenticationProvider}</strong> - user-defined
+ *       {@code AuthenticationProvider} beans are <strong>auto-merged</strong>
+ *       into the plugin's {@code authenticationManager}. User providers are
+ *       appended so the plugin's primary GORM-backed provider runs first;
+ *       providers already in the manager (e.g. those declared via
+ *       {@code providerNames}) are not re-added. Disable via
+ *       {@code grails.plugin.springsecurity.componentBased.autoMergeAuthenticationProviders: false}.</li>
  *   <li><strong>{@code @Bean UserDetailsManager} /
  *       {@code InMemoryUserDetailsManager} /
- *       {@code JdbcUserDetailsManager}</strong> - the plugin registers a
- *       {@code userDetailsService} bean (a {@code GormUserDetailsService}).
- *       Additional {@code UserDetailsService} beans coexist in the context
- *       but are not used by the plugin's authentication providers. To
- *       customise user lookup, configure
- *       {@code grails.plugin.springsecurity.userLookup.userDomainClassName}
- *       (or replace the {@code userDetailsService} bean entirely).</li>
+ *       {@code JdbcUserDetailsManager}</strong> - additional
+ *       {@code UserDetailsService} beans are <strong>auto-chained</strong>
+ *       behind the plugin's primary {@code GormUserDetailsService} via
+ *       {@link grails.plugin.springsecurity.componentbased.ChainedUserDetailsService}.
+ *       The plugin's GORM-backed user lookup runs first; if it throws
+ *       {@code UsernameNotFoundException}, each additional bean is queried in
+ *       turn. The chained service is wired into
+ *       {@code daoAuthenticationProvider}. Disable via
+ *       {@code grails.plugin.springsecurity.componentBased.autoChainUserDetailsServices: false}.</li>
+ *   <li><strong>{@code spring.security.user.name} /
+ *       {@code spring.security.user.password} /
+ *       {@code spring.security.user.roles}</strong> - if
+ *       {@code spring.security.user.name} is set, an
+ *       {@code InMemoryUserDetailsManager} is created from those properties
+ *       (mimicking what Spring Boot's
+ *       {@code UserDetailsServiceAutoConfiguration} would have done) and
+ *       chained behind the plugin's primary user lookup. Disable via
+ *       {@code grails.plugin.springsecurity.componentBased.bridgeSpringSecurityUserProperties: false}.</li>
  *   <li><strong>LDAP factory beans
  *       ({@code EmbeddedLdapServerContextSourceFactoryBean},
  *       {@code LdapBindAuthenticationManagerFactory},
