@@ -75,6 +75,7 @@ dependencies {
 
 	compileOnly 'jakarta.servlet:jakarta.servlet-api' // Provided
 	compileOnly 'jline:jline' // for shell commands
+	compileOnly 'org.jline:jline-reader:3.30.9' // Required for Groovy static type checking (referenced via Groovy 5.x groovysh by the grails-plugin gradle compiler)
 	compileOnly 'org.apache.grails:grails-core' // Provided as this is a Grails Plugin
 	compileOnly 'org.apache.groovy:groovy' // Compile-time annotations
 	compileOnly 'org.slf4j:slf4j-nop' // Prevents warnings about missing slf4j implementation during compilation
