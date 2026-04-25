@@ -139,6 +139,65 @@ implements <a href='../../../org.springframework.boot.autoconfigure.AutoConfigur
  Use the plugin's keys, not Spring Boot's, to configure security when this
  plugin is active.</p>
 
+ <h2>Coexistence with the component-based Spring Security configuration model</h2>
+
+ <p>Spring Security 5.7 deprecated and Spring Security 6 removed
+ <CODE>WebSecurityConfigurerAdapter</CODE>, replacing it with a component-based
+ configuration model that registers individual <CODE>@Bean</CODE> components
+ (see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">
+ Spring Security without the WebSecurityConfigurerAdapter</a>).</p>
+
+ <p>This plugin pre-dates that model and provides equivalent functionality
+ through the <CODE>grails.plugin.springsecurity.*</CODE> configuration namespace.
+ The following table summarises how the plugin coexists with each
+ component-based pattern when this filter is enabled:</p>
+
+ <ul>
+   <li><strong><CODE>@Bean SecurityFilterChain</CODE></strong> - user-defined
+       <CODE>SecurityFilterChain</CODE> beans are NOT automatically added to the
+       plugin's <CODE>FilterChainProxy</CODE> (the bean named
+       <CODE>springSecurityFilterChain</CODE>). They live in the application
+       context but never service requests. To customise the plugin's
+       filter chain, configure
+       <CODE>grails.plugin.springsecurity.filterChain.chainMap</CODE> and
+       <CODE>grails.plugin.springsecurity.filterChain.filterNames</CODE> (or
+       <CODE>staticRules</CODE>).</li>
+   <li><strong><CODE>@Bean WebSecurityCustomizer</CODE></strong> - no-op. The
+       plugin does not use Spring's <CODE>WebSecurity</CODE> builder. To exclude
+       URLs from security checks, use
+       <CODE>grails.plugin.springsecurity.ipRestrictions</CODE> or
+       <CODE>grails.plugin.springsecurity.staticRules</CODE> with
+       <CODE>permitAll</CODE> access.</li>
+   <li><strong><CODE>@Bean AuthenticationManager</CODE></strong> - the plugin
+       registers an <CODE>authenticationManager</CODE> bean (a
+       <CODE>ProviderManager</CODE>). A user-defined bean with the same name
+       will fail with a duplicate-bean error. To plug in custom
+       authentication providers, register them as Spring beans and add
+       their bean names to <CODE>grails.plugin.springsecurity.providerNames</CODE>.</li>
+   <li><strong><CODE>@Bean UserDetailsManager</CODE> /
+       <CODE>InMemoryUserDetailsManager</CODE> /
+       <CODE>JdbcUserDetailsManager</CODE></strong> - the plugin registers a
+       <CODE>userDetailsService</CODE> bean (a <CODE>GormUserDetailsService</CODE>).
+       Additional <CODE>UserDetailsService</CODE> beans coexist in the context
+       but are not used by the plugin's authentication providers. To
+       customise user lookup, configure
+       <CODE>grails.plugin.springsecurity.userLookup.userDomainClassName</CODE>
+       (or replace the <CODE>userDetailsService</CODE> bean entirely).</li>
+   <li><strong>LDAP factory beans
+       (<CODE>EmbeddedLdapServerContextSourceFactoryBean</CODE>,
+       <CODE>LdapBindAuthenticationManagerFactory</CODE>,
+       <CODE>LdapPasswordComparisonAuthenticationManagerFactory</CODE>)</strong>
+       - the <CODE>grails-spring-security-ldap</CODE> plugin provides equivalent
+       configuration through <CODE>grails.plugin.springsecurity.ldap.*</CODE>.
+       User-defined LDAP factory beans coexist but are not wired into the
+       plugin's authentication providers.</li>
+ </ul>
+
+ <p>To delegate the entire servlet security stack to Spring Boot's
+ component-based model (and stop using the plugin's
+ <CODE>grails.plugin.springsecurity.*</CODE> configuration), disable this filter
+ - see the "Opt-out" section below.</p>
+
  <h2>What this filter excludes</h2>
 
  <p>In Spring Boot 4 the security auto-configurations were moved out of

@@ -1208,7 +1208,7 @@ Key changes that may affect your application:</p>
 <p><strong>Jakarta EE namespace</strong>: Spring Security 6 uses <code>jakarta.servlet</code> instead of <code>javax.servlet</code>. See the <a href="https://docs.spring.io/spring-security/reference/migration/index.html">Spring Security Migration Guide</a> for details.</p>
 </li>
 <li>
-<p><strong>Security filter chain configuration</strong>: The <code>WebSecurityConfigurerAdapter</code> has been removed in Spring Security 6. If you have custom security configurations extending this class, you will need to migrate to the component-based approach. The Grails Spring Security plugin handles the core filter chain configuration internally, but any custom Spring Security beans may need updating.</p>
+<p><strong>Security filter chain configuration</strong>: The <code>WebSecurityConfigurerAdapter</code> has been removed in Spring Security 6. If you have custom security configurations extending this class, you will need to migrate to the component-based approach described in <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>. The Grails Spring Security plugin handles the core filter chain configuration internally through the <code>grails.plugin.springsecurity.*</code> namespace, so for most apps no migration is needed. However, user-defined <code>@Bean SecurityFilterChain</code>, <code>@Bean WebSecurityCustomizer</code>, <code>@Bean AuthenticationManager</code>, and <code>@Bean UserDetailsManager</code> beans are not automatically wired into the plugin&#8217;s filter chain, authentication providers, or user lookup. See the "Coexistence with the component-based Spring Security configuration model" section in the Installation chapter for the full coexistence matrix and the equivalent plugin configuration for each pattern.</p>
 </li>
 <li>
 <p><strong>Default security behaviors</strong>: Some default behaviors have changed in Spring Security 6 (e.g., CSRF protection, session management). Review the <a href="https://docs.spring.io/spring-security/reference/migration-7/index.html">Spring Security reference documentation</a> for the complete list of changes.</p>
@@ -1345,6 +1345,55 @@ While the plugin is active, <code>grails.plugin.springsecurity.*</code> is the a
 </tr>
 </table>
 </div>
+<div class="sect5">
+<h6 id="coexistence-with-the-component-based-spring-security-configuration-model">Coexistence with the component-based Spring Security configuration model</h6>
+<div class="paragraph">
+<p>Spring Security 5.7 deprecated and Spring Security 6 removed <code>WebSecurityConfigurerAdapter</code>, replacing it with a component-based configuration model that registers individual <code>@Bean</code> components (see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>). This plugin pre-dates that model and provides equivalent functionality through the <code>grails.plugin.springsecurity.*</code> configuration namespace. The following table summarises how the plugin coexists with each component-based pattern when the auto-configuration excluder is enabled:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Spring component-based pattern</th>
+<th class="tableblock halign-left valign-top">Behaviour with this plugin active</th>
+<th class="tableblock halign-left valign-top">How to achieve the equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean SecurityFilterChain</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not added to the plugin&#8217;s <code>FilterChainProxy</code>; the bean is created but never services requests.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.filterChain.chainMap</code> / <code>filterNames</code> and <code>staticRules</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean WebSecurityCustomizer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No-op. The plugin does not use Spring&#8217;s <code>WebSecurity</code> builder.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.staticRules</code> with <code>permitAll</code>, or <code>grails.plugin.springsecurity.ipRestrictions</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean AuthenticationManager</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Conflicts with the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>) bean by name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Register custom <code>AuthenticationProvider</code> beans and add their bean names to <code>grails.plugin.springsecurity.providerNames</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean InMemoryUserDetailsManager</code> / <code>JdbcUserDetailsManager</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coexists in the context but is not used by the plugin&#8217;s authentication providers (which use the plugin&#8217;s <code>userDetailsService</code> / <code>GormUserDetailsService</code>).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.userDomainClassName</code>, or replace the <code>userDetailsService</code> bean.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LDAP factory beans (<code>EmbeddedLdapServerContextSourceFactoryBean</code>, <code>LdapBindAuthenticationManagerFactory</code>, <code>LdapPasswordComparisonAuthenticationManagerFactory</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coexist but are not wired into the plugin&#8217;s authentication providers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use the <code>grails-spring-security-ldap</code> plugin and the <code>grails.plugin.springsecurity.ldap.*</code> configuration.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>To delegate the entire servlet security stack to Spring Boot&#8217;s component-based model (and stop using the plugin&#8217;s <code>grails.plugin.springsecurity.*</code> configuration), disable the excluder via the property below.</p>
+</div>
 <div class="paragraph">
 <p>If you need to disable this automatic exclusion - for example, to delegate the entire servlet security stack to Spring Boot instead of the plugin - set the following property in <code>application.yml</code>:</p>
 </div>
@@ -1367,6 +1416,7 @@ Disabling the exclusion is intentionally a footgun. The plugin can no longer gua
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 <div class="sect4">
@@ -16484,7 +16534,7 @@ The second service is a listener service which ensures that anytime an answer is
 <div id="footer">
 <div id="footer-text">
 Version 8.0.0-SNAPSHOT<br>
-Last updated 2026-04-25 17:27:29 UTC
+Last updated 2026-04-25 18:48:45 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
