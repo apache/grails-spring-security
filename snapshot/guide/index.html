@@ -1348,7 +1348,7 @@ While the plugin is active, <code>grails.plugin.springsecurity.*</code> is the a
 <div class="sect5">
 <h6 id="coexistence-with-the-component-based-spring-security-configuration-model">Coexistence with the component-based Spring Security configuration model</h6>
 <div class="paragraph">
-<p>Spring Security 5.7 deprecated and Spring Security 6 removed <code>WebSecurityConfigurerAdapter</code>, replacing it with a component-based configuration model that registers individual <code>@Bean</code> components (see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>). This plugin pre-dates that model and provides equivalent functionality through the <code>grails.plugin.springsecurity.*</code> configuration namespace. The following table summarises how the plugin coexists with each component-based pattern when the auto-configuration excluder is enabled:</p>
+<p>Spring Security 5.7 deprecated and Spring Security 6 removed <code>WebSecurityConfigurerAdapter</code>, replacing it with a component-based configuration model that registers individual <code>@Bean</code> components (see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>). This plugin pre-dates that model and provides equivalent functionality through the <code>grails.plugin.springsecurity.*</code> configuration namespace, but it now <strong>blends</strong> the most common component-based patterns automatically. You can configure security from either side (or both) and the effective configuration is the union of both sources.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1359,30 +1359,40 @@ While the plugin is active, <code>grails.plugin.springsecurity.*</code> is the a
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Spring component-based pattern</th>
-<th class="tableblock halign-left valign-top">Behaviour with this plugin active</th>
-<th class="tableblock halign-left valign-top">How to achieve the equivalent</th>
+<th class="tableblock halign-left valign-top">Blending behaviour with this plugin active</th>
+<th class="tableblock halign-left valign-top">Disable via</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean SecurityFilterChain</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Not added to the plugin&#8217;s <code>FilterChainProxy</code>; the bean is created but never services requests.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.filterChain.chainMap</code> / <code>filterNames</code> and <code>staticRules</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Auto-merged</strong> into the plugin&#8217;s <code>FilterChainProxy</code>; user chains are prepended (higher precedence) so their typically more-specific request matchers win against the plugin&#8217;s catch-all chain.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoMergeSecurityFilterChain: false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean AuthenticationProvider</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Auto-merged</strong> into the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>); user providers are appended so the plugin&#8217;s primary GORM-backed provider runs first; providers already declared via <code>providerNames</code> are not re-added.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoMergeAuthenticationProviders: false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean InMemoryUserDetailsManager</code> / <code>JdbcUserDetailsManager</code> (or any extra <code>UserDetailsService</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For each additional <code>UserDetailsService</code> bean, a new <code>DaoAuthenticationProvider</code> is created and <strong>appended</strong> to the plugin&#8217;s <code>authenticationManager</code> providers list. The plugin&#8217;s primary GORM-backed provider runs first; if it does not authenticate the user, each additional provider is tried in turn. (Spring Security 7 made <code>DaoAuthenticationProvider.userDetailsService</code> final, so we add new providers instead of mutating the existing one.)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoChainUserDetailsServices: false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.security.user.name</code> / <code>spring.security.user.password</code> / <code>spring.security.user.roles</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>spring.security.user.name</code> is set, an <code>InMemoryUserDetailsManager</code> is created from those properties (mimicking what Spring Boot&#8217;s <code>UserDetailsServiceAutoConfiguration</code> would have done), wrapped in a <code>DaoAuthenticationProvider</code>, and added to the plugin&#8217;s authenticationManager.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.bridgeSpringSecurityUserProperties: false</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean WebSecurityCustomizer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No-op. The plugin does not use Spring&#8217;s <code>WebSecurity</code> builder.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.staticRules</code> with <code>permitAll</code>, or <code>grails.plugin.springsecurity.ipRestrictions</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Still a no-op. The plugin does not use Spring&#8217;s <code>WebSecurity</code> builder. To exclude URLs from security checks, use <code>grails.plugin.springsecurity.staticRules</code> with <code>permitAll</code>, or <code>grails.plugin.springsecurity.ipRestrictions</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">n/a</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean AuthenticationManager</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Conflicts with the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>) bean by name.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Register custom <code>AuthenticationProvider</code> beans and add their bean names to <code>grails.plugin.springsecurity.providerNames</code>.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean InMemoryUserDetailsManager</code> / <code>JdbcUserDetailsManager</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Coexists in the context but is not used by the plugin&#8217;s authentication providers (which use the plugin&#8217;s <code>userDetailsService</code> / <code>GormUserDetailsService</code>).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.userDomainClassName</code>, or replace the <code>userDetailsService</code> bean.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Conflicts with the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>) bean by name. Use <code>@Bean AuthenticationProvider</code> (auto-merged - see above) or <code>grails.plugin.springsecurity.providerNames</code> instead.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">n/a</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">LDAP factory beans (<code>EmbeddedLdapServerContextSourceFactoryBean</code>, <code>LdapBindAuthenticationManagerFactory</code>, <code>LdapPasswordComparisonAuthenticationManagerFactory</code>)</p></td>
@@ -16534,7 +16544,7 @@ The second service is a listener service which ensures that anytime an answer is
 <div id="footer">
 <div id="footer-text">
 Version 8.0.0-SNAPSHOT<br>
-Last updated 2026-04-25 18:48:45 UTC
+Last updated 2026-04-25 20:16:03 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
