@@ -75,6 +75,7 @@ dependencies {
 	implementation 'jline:jline', {
 		// comp: ConsoleReader
 	}
+	compileOnly "org.jline:jline-reader:$jlineReaderVersion" // Required for Groovy static type checking (referenced via Groovy 5.x groovysh by the grails-plugin gradle compiler)
 	implementation 'org.apache.grails.data:grails-datamapping-core', {
 		// impl: @Transactional(runtime)
 	}
