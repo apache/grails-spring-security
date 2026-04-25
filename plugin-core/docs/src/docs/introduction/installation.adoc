@@ -74,9 +74,11 @@ dependencies {
 
 === Spring Boot Auto-Configuration
 
-The plugin automatically excludes Spring Boot security auto-configuration classes (such as `SecurityAutoConfiguration`, `SecurityFilterAutoConfiguration`, and `UserDetailsServiceAutoConfiguration`) that conflict with the plugin's own security setup. This means you do not need to manually add `spring.autoconfigure.exclude` entries to your `application.yml`.
+The plugin automatically excludes Spring Boot's servlet security auto-configuration classes (such as `SecurityAutoConfiguration`, `SecurityFilterAutoConfiguration`, `UserDetailsServiceAutoConfiguration`, the OAuth2 client/resource-server/authorization-server starters, and the SAML2 relying-party starter) that conflict with the plugin's own security setup. This means you do not need to manually add `spring.autoconfigure.exclude` entries to your `application.yml`.
 
-If you need to disable this automatic exclusion - for example, to use Spring Boot's security auto-configuration directly alongside the plugin - set the following property in `application.yml`:
+IMPORTANT: While the plugin is active, `grails.plugin.springsecurity.*` is the authoritative configuration namespace for security. Spring Boot's `spring.security.*` properties are not merged into the plugin configuration. Use the plugin's keys to configure security; do not mix them with Boot's `spring.security.*` keys.
+
+If you need to disable this automatic exclusion - for example, to delegate the entire servlet security stack to Spring Boot instead of the plugin - set the following property in `application.yml`:
 
 [source,yaml]
 ----
@@ -85,6 +87,8 @@ grails:
     springsecurity:
       excludeSpringSecurityAutoConfiguration: false
 ----
+
+WARNING: Disabling the exclusion is intentionally a footgun. The plugin can no longer guarantee that its filter chain is the only servlet security stack in the application context, and a startup `WARN` will be logged.
 
 === Verifying Installation
 

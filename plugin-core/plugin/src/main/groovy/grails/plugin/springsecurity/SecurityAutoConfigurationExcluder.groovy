@@ -19,6 +19,7 @@
 package grails.plugin.springsecurity
 
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata
@@ -29,30 +30,46 @@ import org.springframework.core.env.Environment
  * Automatically excludes Spring Boot security auto-configuration classes that
  * conflict with the Grails Spring Security plugin.
  *
- * <p>When the Grails Spring Security plugin is on the classpath together with
- * one of Spring Boot's split-out security modules (such as
- * {@code spring-boot-security}, {@code spring-boot-starter-security} or
- * {@code spring-boot-security-oauth2-client}), Spring Boot's security
- * auto-configurations create duplicate {@code SecurityFilterChain} beans and
- * other security infrastructure that conflicts with the plugin's own bean
- * definitions in
- * {@link SpringSecurityCoreGrailsPlugin#doWithSpring}.</p>
+ * <h2>Why this filter exists</h2>
+ *
+ * <p>The Grails Spring Security plugin owns the servlet security stack of a
+ * Grails application: it builds its own {@code FilterChainProxy}
+ * ({@code springSecurityFilterChain}), {@code UserDetailsService}
+ * ({@code GormUserDetailsService}), and request-mapping/access-decision
+ * infrastructure from the {@code grails.plugin.springsecurity.*} configuration
+ * namespace.</p>
+ *
+ * <p>Spring Boot ships its own auto-configurations that try to do the same job
+ * from the {@code spring.security.*} configuration namespace. When both are
+ * active, Spring Boot can register an additional {@code SecurityFilterChain},
+ * an in-memory {@code UserDetailsService}, OAuth2 client/authorization-server
+ * filter chains, etc., resulting in two parallel servlet security stacks with
+ * no defined precedence between them.</p>
+ *
+ * <p><strong>Configuration contract:</strong> while this filter is enabled
+ * (the default), {@code grails.plugin.springsecurity.*} is the authoritative
+ * configuration source for the application's security. Boot's
+ * {@code spring.security.*} properties are <em>not</em> merged into the plugin
+ * configuration and are <em>not</em> applied by Boot's auto-configuration.
+ * Use the plugin's keys, not Spring Boot's, to configure security when this
+ * plugin is active.</p>
+ *
+ * <h2>What this filter excludes</h2>
  *
  * <p>In Spring Boot 4 the security auto-configurations were moved out of
  * {@code spring-boot-autoconfigure} into dedicated {@code spring-boot-security*}
  * modules and re-packaged under {@code org.springframework.boot.security.*}.
- * Adding any of those starters/modules to a Grails application would
- * re-introduce the conflicting servlet auto-configurations. This filter prevents
- * that by excluding them during Spring Boot's auto-configuration discovery
- * phase.</p>
+ * Adding any of those starters/modules to a Grails application would otherwise
+ * re-introduce the conflicting servlet auto-configurations. This filter excludes
+ * them during Spring Boot's auto-configuration discovery phase, so users do not
+ * need to maintain a manual {@code spring.autoconfigure.exclude} list.</p>
  *
- * <p>Previously, users had to manually exclude up to 7 auto-configuration classes
- * in {@code application.yml}. This filter removes that requirement by
- * automatically filtering them out during Spring Boot's auto-configuration
- * discovery phase.</p>
+ * <h2>Opt-out</h2>
  *
  * <p>To disable this filter and allow Spring Boot's security auto-configurations
- * to run, set the following property in {@code application.yml}:</p>
+ * to run (for example, to delegate the entire servlet security stack to Spring
+ * Boot instead of the plugin), set the following property in
+ * {@code application.yml}:</p>
  *
  * <pre>
  * grails:
@@ -61,82 +78,126 @@ import org.springframework.core.env.Environment
  *       excludeSpringSecurityAutoConfiguration: false
  * </pre>
  *
+ * <p>Disabling this filter is intentionally a footgun: the plugin can no longer
+ * guarantee that its filter chain is the only servlet security stack in the
+ * application context, and a startup {@code WARN} is logged when it is turned
+ * off.</p>
+ *
  * <p>Registered via {@code META-INF/spring.factories} as an
  * {@link AutoConfigurationImportFilter}. This runs before auto-configuration
  * bytecode is loaded, so there is no performance overhead from excluded classes.</p>
  *
- * @since 8.0.0
+ * @since 7.0.2
  * @see AutoConfigurationImportFilter
  */
 @CompileStatic
+@Slf4j
 class SecurityAutoConfigurationExcluder implements AutoConfigurationImportFilter, EnvironmentAware {
 
-    static final String ENABLED_PROPERTY = 'grails.plugin.springsecurity.excludeSpringSecurityAutoConfiguration'
+	static final String ENABLED_PROPERTY = 'grails.plugin.springsecurity.excludeSpringSecurityAutoConfiguration'
 
-    private boolean enabled = true
+	private boolean enabled = true
 
-    @Override
-    void setEnvironment(Environment environment) {
-        this.enabled = environment.getProperty(ENABLED_PROPERTY, Boolean, true)
-    }
+	@Override
+	void setEnvironment(Environment environment) {
+		this.enabled = environment.getProperty(ENABLED_PROPERTY, Boolean, true)
+		if (!this.enabled) {
+			log.warn(
+					'Spring Boot security auto-configuration exclusion is DISABLED via {}=false. ' +
+					'Spring Boot may now register a parallel servlet security stack alongside the ' +
+					'Grails Spring Security plugin (additional SecurityFilterChain, UserDetailsService, ' +
+					'or OAuth2/SAML2 filter chains). The plugin can no longer guarantee that its ' +
+					'filter chain is the only servlet security stack in the application context.',
+					ENABLED_PROPERTY)
+		}
+	}
 
-    /**
-     * Spring Boot 4 security auto-configuration classes that conflict with the
-     * Grails Spring Security plugin's servlet-based security stack. These are
-     * excluded unconditionally when the plugin is on the classpath.
-     *
-     * <p>Verified against the {@code AutoConfiguration.imports} files in the
-     * Spring Boot 4 {@code spring-boot-security} and
-     * {@code spring-boot-security-oauth2-client} modules.</p>
-     *
-     * <ul>
-     *   <li>{@code SecurityAutoConfiguration} - creates a default
-     *       {@code SecurityFilterChain} that conflicts with the plugin's
-     *       {@code FilterChainProxy}</li>
-     *   <li>{@code UserDetailsServiceAutoConfiguration} - creates an in-memory
-     *       {@code UserDetailsService} from {@code spring.security.user.*}
-     *       properties that conflicts with the plugin's
-     *       {@code GormUserDetailsService}</li>
-     *   <li>{@code SecurityFilterAutoConfiguration} - registers a
-     *       {@code DelegatingFilterProxyRegistrationBean} that duplicates the
-     *       plugin's {@code springSecurityFilterChainRegistrationBean}</li>
-     *   <li>{@code ServletWebSecurityAutoConfiguration} - new in Spring Boot 4;
-     *       contributes the servlet {@code SecurityFilterChain} wiring that
-     *       conflicts with the plugin's filter chain</li>
-     *   <li>{@code ManagementWebSecurityAutoConfiguration} - Actuator security
-     *       that conflicts when Actuator is on the classpath</li>
-     *   <li>{@code OAuth2ClientAutoConfiguration} - registers the
-     *       {@code ClientRegistrationRepository} and authorized-client services
-     *       that the {@code spring-security-oauth2} plugin owns</li>
-     *   <li>{@code OAuth2ClientWebSecurityAutoConfiguration} - registers the
-     *       OAuth2 client servlet {@code SecurityFilterChain} that duplicates
-     *       the plugin's OAuth2 client filter chain</li>
-     * </ul>
-     */
-    private static final Set<String> EXCLUDED_AUTO_CONFIGURATIONS = [
-            'org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration',
-            'org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration',
-            'org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration',
-            'org.springframework.boot.security.autoconfigure.web.servlet.ServletWebSecurityAutoConfiguration',
-            'org.springframework.boot.security.autoconfigure.actuate.web.servlet.ManagementWebSecurityAutoConfiguration',
-            'org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientAutoConfiguration',
-            'org.springframework.boot.security.oauth2.client.autoconfigure.servlet.OAuth2ClientWebSecurityAutoConfiguration',
-    ].toSet().asImmutable()
+	/**
+	 * Spring Boot 4 servlet security auto-configuration classes that conflict
+	 * with the Grails Spring Security plugin's servlet security stack. These
+	 * are excluded unconditionally when the plugin is on the classpath.
+	 *
+	 * <p>Verified against the
+	 * {@code META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports}
+	 * files in the following Spring Boot 4 modules:
+	 * {@code spring-boot-security}, {@code spring-boot-security-oauth2-client},
+	 * {@code spring-boot-security-oauth2-resource-server},
+	 * {@code spring-boot-security-saml2}, and
+	 * {@code spring-boot-security-oauth2-authorization-server}.</p>
+	 *
+	 * <p>Reactive variants (e.g. {@code ReactiveWebSecurityAutoConfiguration},
+	 * {@code ReactiveOAuth2ResourceServerAutoConfiguration}) are intentionally
+	 * NOT excluded here. They are guarded by
+	 * {@code @ConditionalOnWebApplication(REACTIVE)} and do not activate in a
+	 * standard servlet-based Grails application; mixed servlet/reactive
+	 * security is outside this plugin's threat model.</p>
+	 *
+	 * <ul>
+	 *   <li>{@code SecurityAutoConfiguration} - enables {@code SecurityProperties}
+	 *       and contributes {@code AuthenticationEventPublisher}/{@code SecurityDataConfiguration}
+	 *       that conflict with the plugin's wiring</li>
+	 *   <li>{@code UserDetailsServiceAutoConfiguration} - creates an in-memory
+	 *       {@code UserDetailsService} from {@code spring.security.user.*}
+	 *       properties that conflicts with the plugin's
+	 *       {@code GormUserDetailsService}</li>
+	 *   <li>{@code SecurityFilterAutoConfiguration} - registers a
+	 *       {@code DelegatingFilterProxyRegistrationBean} that duplicates the
+	 *       plugin's {@code springSecurityFilterChainRegistrationBean}</li>
+	 *   <li>{@code ServletWebSecurityAutoConfiguration} - new in Spring Boot 4;
+	 *       contributes the servlet {@code SecurityFilterChain} wiring that
+	 *       conflicts with the plugin's filter chain</li>
+	 *   <li>{@code ManagementWebSecurityAutoConfiguration} - Actuator security
+	 *       that conflicts when Actuator is on the classpath</li>
+	 *   <li>{@code OAuth2ClientAutoConfiguration} - registers the
+	 *       {@code ClientRegistrationRepository} and authorized-client services
+	 *       that the {@code spring-security-oauth2} plugin owns</li>
+	 *   <li>{@code OAuth2ClientWebSecurityAutoConfiguration} - registers the
+	 *       OAuth2 client servlet {@code SecurityFilterChain} that duplicates
+	 *       the plugin's OAuth2 client filter chain</li>
+	 *   <li>{@code OAuth2ResourceServerAutoConfiguration} (servlet) - configures
+	 *       a JWT/Opaque-token-based {@code SecurityFilterChain} that conflicts
+	 *       with the plugin's REST/token authentication wiring</li>
+	 *   <li>{@code Saml2RelyingPartyAutoConfiguration} - registers a SAML2
+	 *       relying-party {@code SecurityFilterChain} that conflicts with the
+	 *       plugin's SAML wiring</li>
+	 *   <li>{@code OAuth2AuthorizationServerAutoConfiguration} (servlet) -
+	 *       registers a high-precedence authorization-server
+	 *       {@code SecurityFilterChain} plus a default
+	 *       {@code anyRequest().authenticated()} chain that would override the
+	 *       plugin's request-mapping rules</li>
+	 *   <li>{@code OAuth2AuthorizationServerJwtAutoConfiguration} (servlet) -
+	 *       authorization-server JWT companion that pulls in additional
+	 *       authorization-server beans</li>
+	 * </ul>
+	 */
+	private static final Set<String> EXCLUDED_AUTO_CONFIGURATIONS = [
+			'org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration',
+			'org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration',
+			'org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration',
+			'org.springframework.boot.security.autoconfigure.web.servlet.ServletWebSecurityAutoConfiguration',
+			'org.springframework.boot.security.autoconfigure.actuate.web.servlet.ManagementWebSecurityAutoConfiguration',
+			'org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientAutoConfiguration',
+			'org.springframework.boot.security.oauth2.client.autoconfigure.servlet.OAuth2ClientWebSecurityAutoConfiguration',
+			'org.springframework.boot.security.oauth2.server.resource.autoconfigure.servlet.OAuth2ResourceServerAutoConfiguration',
+			'org.springframework.boot.security.saml2.autoconfigure.Saml2RelyingPartyAutoConfiguration',
+			'org.springframework.boot.security.oauth2.server.authorization.autoconfigure.servlet.OAuth2AuthorizationServerAutoConfiguration',
+			'org.springframework.boot.security.oauth2.server.authorization.autoconfigure.servlet.OAuth2AuthorizationServerJwtAutoConfiguration',
+	].toSet().asImmutable()
 
-    @Override
-    boolean[] match(String[] autoConfigurationClasses, AutoConfigurationMetadata autoConfigurationMetadata) {
-        autoConfigurationClasses.collect {
-            !enabled || !(it in EXCLUDED_AUTO_CONFIGURATIONS)
-        } as boolean[]
-    }
+	@Override
+	boolean[] match(String[] autoConfigurationClasses, AutoConfigurationMetadata autoConfigurationMetadata) {
+		autoConfigurationClasses.collect {
+			!enabled || !(it in EXCLUDED_AUTO_CONFIGURATIONS)
+		} as boolean[]
+	}
 
-    /**
-     * Returns the set of auto-configuration class names that this filter excludes.
-     * Exposed for testing and diagnostic purposes.
-     *
-     * @return unmodifiable set of excluded class names
-     */
-    static Set<String> getExcludedAutoConfigurations() {
-        EXCLUDED_AUTO_CONFIGURATIONS
-    }
+	/**
+	 * Returns the set of auto-configuration class names that this filter excludes.
+	 * Exposed for testing and diagnostic purposes.
+	 *
+	 * @return unmodifiable set of excluded class names
+	 */
+	static Set<String> getExcludedAutoConfigurations() {
+		EXCLUDED_AUTO_CONFIGURATIONS
+	}
 }
