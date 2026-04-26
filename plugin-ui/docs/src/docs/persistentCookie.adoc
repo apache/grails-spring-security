@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[persistentCookie]]
+[[ui-persistentCookie]]
 == Persistent Cookie Management
 
 Persistent cookies aren't enabled by default - you must enable them by running the `s2-create-persistent-token` script. See the https://apache.github.io/grails-spring-security/latest/index.html#rememberMeCookie[Spring Security Core Plugin documentation] for details about this feature.
@@ -26,7 +26,7 @@ The Persistent Logins menu is only shown if this feature is enabled.
 
 === Persistent logins search
 
-The default action for the PersistentLogin controller is search. By default only the standard fields (`username`, `token`, and `series`) are available but this is customizable with the <<s2ui-override>> script - see the <<customization>> section for details.
+The default action for the PersistentLogin controller is search. By default only the standard fields (`username`, `token`, and `series`) are available but this is customizable with the <<ui-s2ui-override>> script - see the <<ui-customization>> section for details.
 
 You can search by any combination of fields, and all fields have an Ajax autocomplete to assist in finding instances. Leave all fields empty to return all instances.
 

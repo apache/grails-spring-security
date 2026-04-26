@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[switchUser]]
+[[core-switchUser]]
 == Switch User
 
 To enable a user to switch from the current `Authentication` to another user's, set the `useSwitchUserFilter` attribute to `true`. This feature is similar to the "`su`" command in Unix. It enables, for example, an admin to act as a regular user to perform some actions, and then switch back.

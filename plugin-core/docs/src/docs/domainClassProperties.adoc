@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[domainClassProperties]]
+[[core-domainClassProperties]]
 == User, Authority (Role), and Requestmap Properties
 
 Properties you are most likely to override are the `User` and  `Authority` (and `Requestmap` if you use the database to store mappings) class and property names.

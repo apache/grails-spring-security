@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[basicAndDigestAuth]]
+[[core-basicAndDigestAuth]]
 === Basic and Digest Authentication
 
 To use https://en.wikipedia.org/wiki/Basic_access_authentication[HTTP Basic Authentication] in your application, set the `useBasicAuth` attribute to `true`. Also change the `basic.realmName` default value to one that suits your application, for example:

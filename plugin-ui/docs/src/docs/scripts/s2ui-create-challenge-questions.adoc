@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[s2ui-create-challenge-questions]]
+[[ui-s2ui-create-challenge-questions]]
 === s2ui-create-challenge-questions
 
 .Purpose

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[hashing]]
+[[core-hashing]]
 === Password Hashing
 
 By default the plugin uses the bcrypt algorithm to hash passwords. You can customize this with the `grails.plugin.springsecurity.password.algorithm` attribute as described below. In addition you can increase the security of your passwords by adding a salt, which can be a property of the `UserDetails` instance, a global static value, or any custom value you want.

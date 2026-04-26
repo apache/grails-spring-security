@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[whatsNew]]
+[[core-whatsNew]]
 == What's New in Grails Spring Security Core Plugin 6.0.0
 
 This release is more than just an upgrade; it's a transformative step towards elevating your application's security, compatibility, and development experience. Get ready to embark on a journey of enhancements that will empower you to build robust, modern web applications. Let's dive into the exciting changes that version 6.0.0 brings.

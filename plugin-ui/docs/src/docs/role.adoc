@@ -17,12 +17,12 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[role]]
+[[ui-role]]
 == Role Management
 
 === Role search
 
-The default action for the Role controller is search. By default only the `authority` field is available but this is customizable with the <<s2ui-override>> script - see the <<customization>> section for details.
+The default action for the Role controller is search. By default only the `authority` field is available but this is customizable with the <<ui-s2ui-override>> script - see the <<ui-customization>> section for details.
 
 The `authority` field has an Ajax autocomplete to assist in finding instances. Leave the field empty to return all instances.
 

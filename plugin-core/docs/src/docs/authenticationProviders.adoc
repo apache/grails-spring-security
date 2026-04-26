@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[authenticationProviders]]
+[[core-authenticationProviders]]
 == Authentication Providers
 
 The plugin registers authentication providers that perform authentication by implementing the {apidocs}org/springframework/security/authentication/AuthenticationProvider.html[AuthenticationProvider] interface.

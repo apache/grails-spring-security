@@ -55,12 +55,13 @@ The following are the configuration properties available:
 |`401`
 |===
 
-=== Extracting credentials from the request
+[[rest-extracting-credentials]]
+== Extracting credentials from the request
 
 The plugin supports 2 ways of extracting the username and password: using request parameters, and using a JSON payload.
 To align with the RESTful principles, JSON payload is the default behaviour.
 
-==== From a JSON request
+=== From a JSON request
 
 .JSON credentials extraction configuration properties
 [cols="80,20"]
@@ -120,7 +121,7 @@ include::{sourcedir}/grails/plugin/springsecurity/rest/credentials/DefaultJsonPa
 
 Once you are done, register it in `resources.groovy` with the name `credentialsExtractor`.
 
-==== From request parameters
+=== From request parameters
 
 Note that the name of the parameters can also be customised:
 
@@ -139,7 +140,8 @@ Note that the name of the parameters can also be customised:
 |`password`
 |===
 
-=== Logout
+[[rest-logout]]
+== Logout
 
 [NOTE]
 ====

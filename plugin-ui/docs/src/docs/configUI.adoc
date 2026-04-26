@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[configUI]]
+[[ui-configUI]]
 == Security Configuration UI
 
 The Security Info menu has links for several pages that contain read-only views of much of the Spring Security configuration:

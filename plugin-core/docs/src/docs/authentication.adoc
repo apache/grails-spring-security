@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[authentication]]
+[[core-authentication]]
 == Authentication
 
 The Spring Security plugin supports several approaches to authentication.

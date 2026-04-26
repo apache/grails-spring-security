@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 
-[[x509]]
+[[core-x509]]
 === Certificate (X.509) Login Authentication
 
 Another authentication mechanism supported by Spring Security is certificate-based, or "`mutual authentication`". It requires HTTPS, and you must configure the server to require a client certificate (ordinarily only the server provides a certificate). Your username is extracted from the client certificate if it is valid, and you are "`pre-authenticated`". As long as a corresponding username exists in the database, your authentication succeeds and you are not asked for a password. Your `Authentication` contains the authorities associated with your username.

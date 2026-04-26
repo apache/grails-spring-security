@@ -18,11 +18,12 @@ under the License.
 ////
 
 By default, the plugin generates JWT tokens. Note that when using JWT, you can't plug any other token generator. For
-more information about how this plugin uses JWT's, check the <<tokenStorage>> section.
+more information about how this plugin uses JWT's, check the <<rest-jwt>> section.
 
-=== JWT
+[[rest-tokenGeneration]]
+== JWT
 
-==== Claims
+=== Claims
 
 It is possible, to include additional claims in the JWT generated. To do so, you can plug one or more implementations of the interface
 {baseGroovyApiUrl}grails/plugin/springsecurity/rest/token/generation/jwt/CustomClaimProvider.html[CustomClaimProvider],
@@ -58,7 +59,7 @@ CustomClaimProvider bookListClaimProvider() {
 }
 ----
 
-==== Algorithms
+=== Algorithms
 
 This plugin uses http://connect2id.com/products/nimbus-jose-jwt[Nimbus JOSE+JWT] library to generate and parse JWT's,
 and the signing / encryption algorithms are configurable, as long as they are supported in Nimbus.
@@ -95,7 +96,7 @@ When using encrypted JWT's, those are the possible configuration options:
 
 
 
-=== Memcached, GORM, Redis, Grails Cache
+== Memcached, GORM, Redis, Grails Cache
 
 If you are not using JWT, but any stateful strategy like Memcached or GORM, the following strategies are available:
 
