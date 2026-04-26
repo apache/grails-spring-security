@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>Grails Spring Security Plugins - Combined Reference Documentation</h1>
 <div class="details">
-<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://apache.github.io/grails-spring-security/snapshot/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/snapshot/guide/index.html'>8.0.0-SNAPSHOT</option></select></span></p>
+<p><strong>Version:</strong>&nbsp;<span style='display:inline-block;'><select onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://apache.github.io/grails-spring-security/snapshot/guide/index.html'>SNAPSHOT</option><option selected='selected' value='https://apache.github.io/grails-spring-security/snapshot/guide/index.html'>7.0.2-SNAPSHOT</option></select></span></p>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -587,34 +587,51 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#core-logoutHandlers">4.19. Logout Handlers</a></li>
 <li><a href="#core-voters">4.20. Voters</a></li>
 <li><a href="#core-miscProperties">4.21. Miscellaneous Properties</a></li>
-<li><a href="#core-tutorials">4.22. Tutorials</a>
+<li><a href="#configuration-properties">4.22. Configuration Properties</a>
 <ul class="sectlevel3">
-<li><a href="#core-usingControllerAnnotations">4.22.1. Using Controller Annotations to Secure URLs</a></li>
+<li><a href="#general-configuration-properties">4.22.1. General configuration properties.</a></li>
+<li><a href="#domain-class-configuration-properties">4.22.2. Domain class configuration properties.</a></li>
+<li><a href="#authentication-and-authorization-configuration-properties">4.22.3. Authentication and authorization configuration properties.</a></li>
+<li><a href="#login-and-logout-configuration-properties">4.22.4. Login and logout configuration properties.</a></li>
+<li><a href="#password-encoding-configuration-properties">4.22.5. Password encoding configuration properties.</a></li>
+<li><a href="#remember-me-cookie-configuration-properties">4.22.6. Remember-me cookie configuration properties.</a></li>
+<li><a href="#session-and-security-context-configuration-properties">4.22.7. Session and security context configuration properties.</a></li>
+<li><a href="#url-mapping-configuration-properties">4.22.8. URL mapping configuration properties.</a></li>
+<li><a href="#basic-and-digest-http-authentication-properties">4.22.9. Basic and digest HTTP authentication properties.</a></li>
+<li><a href="#switch-user-impersonation-configuration-properties">4.22.10. Switch user (impersonation) configuration properties.</a></li>
+<li><a href="#port-mapping-and-secure-channel-configuration-properties">4.22.11. Port mapping and secure channel configuration properties.</a></li>
+<li><a href="#x-509-client-certificate-authentication-properties">4.22.12. X.509 client certificate authentication properties.</a></li>
+<li><a href="#miscellaneous-configuration-properties">4.22.13. Miscellaneous configuration properties.</a></li>
 </ul>
 </li>
-<li><a href="#core-examples">4.23. Example Applications</a>
+<li><a href="#core-tutorials">4.23. Tutorials</a>
 <ul class="sectlevel3">
-<li><a href="#the-repos">4.23.1. The Repos</a></li>
-<li><a href="#the-example-apps">4.23.2. The Example Apps</a></li>
+<li><a href="#core-usingControllerAnnotations">4.23.1. Using Controller Annotations to Secure URLs</a></li>
 </ul>
 </li>
-<li><a href="#core-controllerMethods">4.24. Controller Methods</a>
+<li><a href="#core-examples">4.24. Example Applications</a>
 <ul class="sectlevel3">
-<li><a href="#isloggedin-2">4.24.1. isLoggedIn</a></li>
-<li><a href="#getprincipal-2">4.24.2. getPrincipal</a></li>
-<li><a href="#getauthenticateduser">4.24.3. getAuthenticatedUser</a></li>
+<li><a href="#the-repos">4.24.1. The Repos</a></li>
+<li><a href="#the-example-apps">4.24.2. The Example Apps</a></li>
 </ul>
 </li>
-<li><a href="#core-i18n">4.25. Internationalization</a></li>
-<li><a href="#core-scripts">4.26. Scripts</a>
+<li><a href="#core-controllerMethods">4.25. Controller Methods</a>
 <ul class="sectlevel3">
-<li><a href="#core-s2-quickstart">4.26.1. s2-quickstart</a></li>
-<li><a href="#core-s2-create-persistent-token">4.26.2. s2-create-persistent-token</a></li>
-<li><a href="#core-s2-create-role-hierarchy-entry">4.26.3. s2-create-role-hierarchy-entry</a></li>
+<li><a href="#isloggedin-2">4.25.1. isLoggedIn</a></li>
+<li><a href="#getprincipal-2">4.25.2. getPrincipal</a></li>
+<li><a href="#getauthenticateduser">4.25.3. getAuthenticatedUser</a></li>
 </ul>
 </li>
-<li><a href="#core-debugging">4.27. Debugging</a></li>
-<li><a href="#api-reference">4.28. API Reference</a></li>
+<li><a href="#core-i18n">4.26. Internationalization</a></li>
+<li><a href="#core-scripts">4.27. Scripts</a>
+<ul class="sectlevel3">
+<li><a href="#core-s2-quickstart">4.27.1. s2-quickstart</a></li>
+<li><a href="#core-s2-create-persistent-token">4.27.2. s2-create-persistent-token</a></li>
+<li><a href="#core-s2-create-role-hierarchy-entry">4.27.3. s2-create-role-hierarchy-entry</a></li>
+</ul>
+</li>
+<li><a href="#core-debugging">4.28. Debugging</a></li>
+<li><a href="#api-reference">4.29. API Reference</a></li>
 </ul>
 </li>
 <li><a href="#acl-plugin">5. ACL Plugin</a>
@@ -1208,7 +1225,7 @@ Key changes that may affect your application:</p>
 <p><strong>Jakarta EE namespace</strong>: Spring Security 6 uses <code>jakarta.servlet</code> instead of <code>javax.servlet</code>. See the <a href="https://docs.spring.io/spring-security/reference/migration/index.html">Spring Security Migration Guide</a> for details.</p>
 </li>
 <li>
-<p><strong>Security filter chain configuration</strong>: The <code>WebSecurityConfigurerAdapter</code> has been removed in Spring Security 6. If you have custom security configurations extending this class, you will need to migrate to the component-based approach described in <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>. The Grails Spring Security plugin handles the core filter chain configuration internally through the <code>grails.plugin.springsecurity.*</code> namespace, so for most apps no migration is needed. However, user-defined <code>@Bean SecurityFilterChain</code>, <code>@Bean WebSecurityCustomizer</code>, <code>@Bean AuthenticationManager</code>, and <code>@Bean UserDetailsManager</code> beans are not automatically wired into the plugin&#8217;s filter chain, authentication providers, or user lookup. See the "Coexistence with the component-based Spring Security configuration model" section in the Installation chapter for the full coexistence matrix and the equivalent plugin configuration for each pattern.</p>
+<p><strong>Security filter chain configuration</strong>: The <code>WebSecurityConfigurerAdapter</code> has been removed in Spring Security 6. If you have custom security configurations extending this class, you will need to migrate to the component-based approach. The Grails Spring Security plugin handles the core filter chain configuration internally, but any custom Spring Security beans may need updating.</p>
 </li>
 <li>
 <p><strong>Default security behaviors</strong>: Some default behaviors have changed in Spring Security 6 (e.g., CSRF protection, session management). Review the <a href="https://docs.spring.io/spring-security/reference/migration-7/index.html">Spring Security reference documentation</a> for the complete list of changes.</p>
@@ -1289,7 +1306,7 @@ Your existing <code>application.groovy</code> or <code>application.yml</code> se
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     // ... other dependencies
-    implementation 'org.apache.grails:grails-spring-security:8.0.0-SNAPSHOT'
+    implementation 'org.apache.grails:grails-spring-security:7.0.2-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -1312,7 +1329,7 @@ Your existing <code>application.groovy</code> or <code>application.yml</code> se
 </div>
 </li>
 <li>
-<p>The Spring Security Core Plugin 8.0.0-SNAPSHOT is now installed and integrated into your Grails project.</p>
+<p>The Spring Security Core Plugin 7.0.2-SNAPSHOT is now installed and integrated into your Grails project.</p>
 </li>
 <li>
 <p>You can start using the plugin&#8217;s features and commands in your application.</p>
@@ -1331,81 +1348,10 @@ Your existing <code>application.groovy</code> or <code>application.yml</code> se
 <div class="sect4">
 <h5 id="spring-boot-auto-configuration">Spring Boot Auto-Configuration</h5>
 <div class="paragraph">
-<p>The plugin automatically excludes Spring Boot&#8217;s servlet security auto-configuration classes (such as <code>SecurityAutoConfiguration</code>, <code>SecurityFilterAutoConfiguration</code>, <code>UserDetailsServiceAutoConfiguration</code>, the OAuth2 client/resource-server/authorization-server starters, and the SAML2 relying-party starter) that conflict with the plugin&#8217;s own security setup. This means you do not need to manually add <code>spring.autoconfigure.exclude</code> entries to your <code>application.yml</code>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-While the plugin is active, <code>grails.plugin.springsecurity.*</code> is the authoritative configuration namespace for security. Spring Boot&#8217;s <code>spring.security.*</code> properties are not merged into the plugin configuration. Use the plugin&#8217;s keys to configure security; do not mix them with Boot&#8217;s <code>spring.security.*</code> keys.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect5">
-<h6 id="coexistence-with-the-component-based-spring-security-configuration-model">Coexistence with the component-based Spring Security configuration model</h6>
-<div class="paragraph">
-<p>Spring Security 5.7 deprecated and Spring Security 6 removed <code>WebSecurityConfigurerAdapter</code>, replacing it with a component-based configuration model that registers individual <code>@Bean</code> components (see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">Spring Security without the WebSecurityConfigurerAdapter</a>). This plugin pre-dates that model and provides equivalent functionality through the <code>grails.plugin.springsecurity.*</code> configuration namespace, but it now <strong>blends</strong> the most common component-based patterns automatically. You can configure security from either side (or both) and the effective configuration is the union of both sources.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Spring component-based pattern</th>
-<th class="tableblock halign-left valign-top">Blending behaviour with this plugin active</th>
-<th class="tableblock halign-left valign-top">Disable via</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean SecurityFilterChain</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Auto-merged</strong> into the plugin&#8217;s <code>FilterChainProxy</code>; user chains are prepended (higher precedence) so their typically more-specific request matchers win against the plugin&#8217;s catch-all chain.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoMergeSecurityFilterChain: false</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean AuthenticationProvider</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Auto-merged</strong> into the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>); user providers are appended so the plugin&#8217;s primary GORM-backed provider runs first; providers already declared via <code>providerNames</code> are not re-added.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoMergeAuthenticationProviders: false</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean InMemoryUserDetailsManager</code> / <code>JdbcUserDetailsManager</code> (or any extra <code>UserDetailsService</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For each additional <code>UserDetailsService</code> bean, a new <code>DaoAuthenticationProvider</code> is created and <strong>appended</strong> to the plugin&#8217;s <code>authenticationManager</code> providers list. The plugin&#8217;s primary GORM-backed provider runs first; if it does not authenticate the user, each additional provider is tried in turn. (Spring Security 7 made <code>DaoAuthenticationProvider.userDetailsService</code> final, so we add new providers instead of mutating the existing one.)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.autoChainUserDetailsServices: false</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.security.user.name</code> / <code>spring.security.user.password</code> / <code>spring.security.user.roles</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>spring.security.user.name</code> is set, an <code>InMemoryUserDetailsManager</code> is created from those properties (mimicking what Spring Boot&#8217;s <code>UserDetailsServiceAutoConfiguration</code> would have done), wrapped in a <code>DaoAuthenticationProvider</code>, and added to the plugin&#8217;s authenticationManager.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.componentBased.bridgeSpringSecurityUserProperties: false</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean WebSecurityCustomizer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Still a no-op. The plugin does not use Spring&#8217;s <code>WebSecurity</code> builder. To exclude URLs from security checks, use <code>grails.plugin.springsecurity.staticRules</code> with <code>permitAll</code>, or <code>grails.plugin.springsecurity.ipRestrictions</code>.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">n/a</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Bean AuthenticationManager</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Conflicts with the plugin&#8217;s <code>authenticationManager</code> (<code>ProviderManager</code>) bean by name. Use <code>@Bean AuthenticationProvider</code> (auto-merged - see above) or <code>grails.plugin.springsecurity.providerNames</code> instead.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">n/a</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LDAP factory beans (<code>EmbeddedLdapServerContextSourceFactoryBean</code>, <code>LdapBindAuthenticationManagerFactory</code>, <code>LdapPasswordComparisonAuthenticationManagerFactory</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Coexist but are not wired into the plugin&#8217;s authentication providers.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Use the <code>grails-spring-security-ldap</code> plugin and the <code>grails.plugin.springsecurity.ldap.*</code> configuration.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>To delegate the entire servlet security stack to Spring Boot&#8217;s component-based model (and stop using the plugin&#8217;s <code>grails.plugin.springsecurity.*</code> configuration), disable the excluder via the property below.</p>
+<p>The plugin automatically excludes Spring Boot security auto-configuration classes (such as <code>SecurityAutoConfiguration</code>, <code>SecurityFilterAutoConfiguration</code>, and <code>UserDetailsServiceAutoConfiguration</code>) that conflict with the plugin&#8217;s own security setup. This means you do not need to manually add <code>spring.autoconfigure.exclude</code> entries to your <code>application.yml</code>.</p>
 </div>
 <div class="paragraph">
-<p>If you need to disable this automatic exclusion - for example, to delegate the entire servlet security stack to Spring Boot instead of the plugin - set the following property in <code>application.yml</code>:</p>
+<p>If you need to disable this automatic exclusion - for example, to use Spring Boot&#8217;s security auto-configuration directly alongside the plugin - set the following property in <code>application.yml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1413,19 +1359,6 @@ While the plugin is active, <code>grails.plugin.springsecurity.*</code> is the a
   plugin:
     springsecurity:
       excludeSpringSecurityAutoConfiguration: false</code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-Disabling the exclusion is intentionally a footgun. The plugin can no longer guarantee that its filter chain is the only servlet security stack in the application context, and a startup <code>WARN</code> will be logged.
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -1489,7 +1422,7 @@ Disabling the exclusion is intentionally a footgun. The plugin can no longer gua
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     implementation 'org.grails.plugins:cxf:3.1.1'
     // CXF above security.
-    implementation 'org.apache.grails:grails-spring-security:8.0.0-SNAPSHOT'
+    implementation 'org.apache.grails:grails-spring-security:7.0.2-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -1506,7 +1439,7 @@ Disabling the exclusion is intentionally a footgun. The plugin can no longer gua
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.apache.grails:grails-spring-security:8.0.0-SNAPSHOT'</code></pre>
+<pre class="prettyprint highlight"><code data-lang="gradle">implementation 'org.apache.grails:grails-spring-security:7.0.2-SNAPSHOT'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1548,7 +1481,7 @@ Running the same command will inject the spring beans into your <code>GrailsPlug
 </ol>
 </div>
 <div class="paragraph">
-<p>By following these steps, your Grails application will be ready to leverage the Spring Security plugin for enhanced security. While in-depth knowledge of Spring Security isn&#8217;t mandatory, having a basic understanding of its underlying implementation can be helpful. For more details, refer to the [Spring Security documentation](<a href="https://https://docs.spring.io/spring-security/reference/7.0.4/" class="bare">https://https://docs.spring.io/spring-security/reference/7.0.4/</a>).</p>
+<p>By following these steps, your Grails application will be ready to leverage the Spring Security plugin for enhanced security. While in-depth knowledge of Spring Security isn&#8217;t mandatory, having a basic understanding of its underlying implementation can be helpful. For more details, refer to the [Spring Security documentation](<a href="https://https://docs.spring.io/spring-security/reference/6.5.7/" class="bare">https://https://docs.spring.io/spring-security/reference/6.5.7/</a>).</p>
 </div>
 </div>
 </div>
@@ -1608,7 +1541,7 @@ Running the same command will inject the spring beans into your <code>GrailsPlug
 <div class="sect3">
 <h4 id="core-personClass">4.3.1. Person Class</h4>
 <div class="paragraph">
-<p>Spring Security uses an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/Authentication.html">Authentication</a> object to determine whether the current user is allowed to perform a secured action, such as accessing a URL, manipulating a secured domain object, invoking a secured method, and so on. This object is created during login. Typically overlap occurs between the need for authentication data and the need to represent a user in the application in ways that are unrelated to security. The mechanism for populating the authentication is completely pluggable in Spring Security; you only need to provide an implementation of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html">UserDetailsService</a> and implement its one method, <code>loadUserByUsername(String username)</code>.</p>
+<p>Spring Security uses an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/Authentication.html">Authentication</a> object to determine whether the current user is allowed to perform a secured action, such as accessing a URL, manipulating a secured domain object, invoking a secured method, and so on. This object is created during login. Typically overlap occurs between the need for authentication data and the need to represent a user in the application in ways that are unrelated to security. The mechanism for populating the authentication is completely pluggable in Spring Security; you only need to provide an implementation of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html">UserDetailsService</a> and implement its one method, <code>loadUserByUsername(String username)</code>.</p>
 </div>
 <div class="paragraph">
 <p>By default the plugin uses a Grails "<code>person</code>" domain class to manage this data. <code>username</code>, <code>enabled</code>, and <code>password</code> are the default names of the core required properties. You can easily plug in your own implementation (<a href="#core-userDetailsService">Custom UserDetailsService</a>), and rename the class, package, and properties. In addition, you should define an <code>authorities</code> property to retrieve roles; this can be a property or a <code>getAuthorities()</code> method, and it can be defined through a traditional GORM many-to-many or a custom mapping.</p>
@@ -2679,7 +2612,7 @@ springSecurityService.clearCachedRequestmaps()</code></pre>
 <p>With <code>IS_AUTHENTICATED_FULLY</code> you can implement a security scheme whereby users can check a remember-me checkbox during login and be auto-authenticated each time they return to your site, but must still log in with a password for some parts of the site. For example, allow regular browsing and adding items to a shopping cart with only a cookie, but require an explicit login to check out or view purchase history.</p>
 </div>
 <div class="paragraph">
-<p>For more information on <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, and <code>IS_AUTHENTICATED_ANONYMOUSLY</code>, see the Javadoc for <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/vote/AuthenticatedVoter.html">AuthenticatedVoter</a></p>
+<p>For more information on <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, and <code>IS_AUTHENTICATED_ANONYMOUSLY</code>, see the Javadoc for <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/vote/AuthenticatedVoter.html">AuthenticatedVoter</a></p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -3178,7 +3111,7 @@ springSecurityService.clearCachedRequestmaps()</code></pre>
 <div class="sect3">
 <h4 id="core-expressions">4.4.7. Using Expressions to Create Descriptive, Fine-Grained Rules</h4>
 <div class="paragraph">
-<p>Spring Security uses the <a href="https://docs.spring.io/spring-framework/reference/6.2.x/expressions.html">Spring Expression Language (SpEL)</a>, which allows you to declare the rules for guarding URLs more descriptively than does the traditional approach, and also allows much more fine-grained rules. Where you traditionally would specify a list of role names and/or special tokens (for example, <code>IS_AUTHENTICATED_FULLY</code>), with <a href="https://https://docs.spring.io/spring-security/reference/7.0.4/#el-access">Spring Security&#8217;s expression support</a>, you can instead use the embedded scripting language to define simple or complex access rules.</p>
+<p>Spring Security uses the <a href="https://docs.spring.io/spring-framework/reference/6.2.x/expressions.html">Spring Expression Language (SpEL)</a>, which allows you to declare the rules for guarding URLs more descriptively than does the traditional approach, and also allows much more fine-grained rules. Where you traditionally would specify a list of role names and/or special tokens (for example, <code>IS_AUTHENTICATED_FULLY</code>), with <a href="https://https://docs.spring.io/spring-security/reference/6.5.7/#el-access">Spring Security&#8217;s expression support</a>, you can instead use the embedded scripting language to define simple or complex access rules.</p>
 </div>
 <div class="paragraph">
 <p>You can use expressions with any of the previously described approaches to securing application URLs. For example, consider this annotated controller:</p>
@@ -3233,7 +3166,7 @@ new Requestmap(url: "/secure/someOtherAction",
 </div>
 </div>
 <div class="paragraph">
-<p>The Spring Security docs have a <a href="https://https://docs.spring.io/spring-security/reference/7.0.4/#el-common-built-in">table listing the standard expressions</a>, which is copied here for reference:</p>
+<p>The Spring Security docs have a <a href="https://https://docs.spring.io/spring-security/reference/6.5.7/#el-common-built-in">table listing the standard expressions</a>, which is copied here for reference:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 6. Spring Security expressions</caption>
@@ -3753,10 +3686,10 @@ You're not a user
 <div class="sect4">
 <h5 id="getauthentication">getAuthentication()</h5>
 <div class="paragraph">
-<p>Retrieves the current user&#8217;s <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/Authentication.html">Authentication</a>. If authenticated, this will typically be a <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/UsernamePasswordAuthenticationToken.html">UsernamePasswordAuthenticationToken</a>.</p>
+<p>Retrieves the current user&#8217;s <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/Authentication.html">Authentication</a>. If authenticated, this will typically be a <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/UsernamePasswordAuthenticationToken.html">UsernamePasswordAuthenticationToken</a>.</p>
 </div>
 <div class="paragraph">
-<p>If not authenticated and the <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/web/authentication/AnonymousAuthenticationFilter.html">AnonymousAuthenticationFilter</a> is active (true by default) then the anonymous user&#8217;s authentication will be returned. This will be an instance of <code>grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationToken</code> with a standard <code>org.springframework.security.core.userdetails.User</code> instance as its Principal. The authentication will have a single granted role, <code>ROLE_ANONYMOUS</code>.</p>
+<p>If not authenticated and the <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/web/authentication/AnonymousAuthenticationFilter.html">AnonymousAuthenticationFilter</a> is active (true by default) then the anonymous user&#8217;s authentication will be returned. This will be an instance of <code>grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationToken</code> with a standard <code>org.springframework.security.core.userdetails.User</code> instance as its Principal. The authentication will have a single granted role, <code>ROLE_ANONYMOUS</code>.</p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -3782,10 +3715,10 @@ You're not a user
 <div class="sect4">
 <h5 id="getprincipal">getPrincipal()</h5>
 <div class="paragraph">
-<p>Retrieves the currently logged in user&#8217;s <code>Principal</code>. If authenticated, the principal will be a <code>grails.plugin.springsecurity.userdetails.GrailsUser</code>, unless you have created a custom <code>UserDetailsService</code>, in which case it will be whatever implementation of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/UserDetails.html">UserDetails</a> you use there.</p>
+<p>Retrieves the currently logged in user&#8217;s <code>Principal</code>. If authenticated, the principal will be a <code>grails.plugin.springsecurity.userdetails.GrailsUser</code>, unless you have created a custom <code>UserDetailsService</code>, in which case it will be whatever implementation of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/UserDetails.html">UserDetails</a> you use there.</p>
 </div>
 <div class="paragraph">
-<p>If not authenticated and the <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/web/authentication/AnonymousAuthenticationFilter.html">AnonymousAuthenticationFilter</a> is active (true by default) then a standard <code>org.springframework.security.core.userdetails.User</code> is used.</p>
+<p>If not authenticated and the <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/web/authentication/AnonymousAuthenticationFilter.html">AnonymousAuthenticationFilter</a> is active (true by default) then a standard <code>org.springframework.security.core.userdetails.User</code> is used.</p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -3960,7 +3893,7 @@ You're not a user
 <div class="sect4">
 <h5 id="reauthenticate">reauthenticate()</h5>
 <div class="paragraph">
-<p>Rebuilds an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/Authentication.html">Authentication</a> for the given username and registers it in the security context. You typically use this method after updating a user&#8217;s authorities or other data that is cached in the <code>Authentication</code> or <code>Principal</code>. It also removes the user from the user cache to force a refresh at next login.</p>
+<p>Rebuilds an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/Authentication.html">Authentication</a> for the given username and registers it in the security context. You typically use this method after updating a user&#8217;s authorities or other data that is cached in the <code>Authentication</code> or <code>Principal</code>. It also removes the user from the user cache to force a refresh at next login.</p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -4007,7 +3940,7 @@ You're not a user
 <div class="sect4">
 <h5 id="authoritiestoroles">authoritiesToRoles()</h5>
 <div class="paragraph">
-<p>Extracts role names from an array or <code>Collection</code> of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/GrantedAuthority.html">GrantedAuthority</a>.</p>
+<p>Extracts role names from an array or <code>Collection</code> of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/GrantedAuthority.html">GrantedAuthority</a>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -4019,7 +3952,7 @@ You're not a user
 <div class="sect4">
 <h5 id="parseauthoritiesstring">parseAuthoritiesString()</h5>
 <div class="paragraph">
-<p>Splits a comma-delimited String containing role names into a <code>List</code> of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/GrantedAuthority.html">GrantedAuthority</a>.</p>
+<p>Splits a comma-delimited String containing role names into a <code>List</code> of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/GrantedAuthority.html">GrantedAuthority</a>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -4078,7 +4011,7 @@ You're not a user
 <div class="sect4">
 <h5 id="registerprovider">registerProvider()</h5>
 <div class="paragraph">
-<p>Used by dependent plugins to register an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/AuthenticationProvider.html">AuthenticationProvider</a> bean name.</p>
+<p>Used by dependent plugins to register an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/AuthenticationProvider.html">AuthenticationProvider</a> bean name.</p>
 </div>
 </div>
 <div class="sect4">
@@ -4113,7 +4046,7 @@ You're not a user
 <div class="sect2">
 <h3 id="core-events">4.6. Events</h3>
 <div class="paragraph">
-<p>Spring Security fires application events after various security-related actions such as successful login, unsuccessful login, and so on. Spring Security uses two main event classes, <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/event/AbstractAuthenticationEvent.html">AbstractAuthenticationEvent</a> and <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/event/AbstractAuthorizationEvent.html">AbstractAuthorizationEvent</a>.</p>
+<p>Spring Security fires application events after various security-related actions such as successful login, unsuccessful login, and so on. Spring Security uses two main event classes, <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/event/AbstractAuthenticationEvent.html">AbstractAuthenticationEvent</a> and <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/event/AbstractAuthorizationEvent.html">AbstractAuthorizationEvent</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="core-eventNotification">4.6.1. Event Notification</h4>
@@ -4133,7 +4066,7 @@ You're not a user
 <div class="sect4">
 <h5 id="authenticationeventpublisher">AuthenticationEventPublisher</h5>
 <div class="paragraph">
-<p>Spring Security publishes events using an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/AuthenticationEventPublisher.html">AuthenticationEventPublisher</a> which in turn fire events using the <a href="https://docs.spring.io/spring-framework/docs/6.2.x/javadoc-api/org/springframework/context/ApplicationEventPublisher.html">ApplicationEventPublisher</a>. By default no events are fired since the <code>AuthenticationEventPublisher</code> instance registered is a <code>grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher</code>. But you can enable event publishing by setting <code>grails.plugin.springsecurity.useSecurityEventListener = true</code> in <code>grails-app/conf/application.groovy</code>.</p>
+<p>Spring Security publishes events using an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/AuthenticationEventPublisher.html">AuthenticationEventPublisher</a> which in turn fire events using the <a href="https://docs.spring.io/spring-framework/docs/6.2.x/javadoc-api/org/springframework/context/ApplicationEventPublisher.html">ApplicationEventPublisher</a>. By default no events are fired since the <code>AuthenticationEventPublisher</code> instance registered is a <code>grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher</code>. But you can enable event publishing by setting <code>grails.plugin.springsecurity.useSecurityEventListener = true</code> in <code>grails-app/conf/application.groovy</code>.</p>
 </div>
 <div class="paragraph">
 <p>You can use the <code>useSecurityEventListener</code> setting to temporarily disable and enable the callbacks, or enable them per-environment.</p>
@@ -4195,7 +4128,7 @@ You're not a user
 <p>This holds for all exceptions except <code>UsernameNotFoundException</code> which triggers an <code>AuthenticationFailureBadCredentialsEvent</code> just like a <code>BadCredentialsException</code>. This is a good idea since it doesn&#8217;t expose extra information - there&#8217;s no differentiation between a bad password and a missing user. In addition, by default a missing user will trigger a <code>BadCredentialsException</code> for the same reasons. You can configure Spring Security to re-throw the original <code>UsernameNotFoundException</code> instead of converting it to a <code>BadCredentialsException</code> by setting <code>grails.plugin.springsecurity.dao.hideUserNotFoundExceptions = false</code> in <code>grails-app/conf/application.groovy</code>.</p>
 </div>
 <div class="paragraph">
-<p>Fortunately all subclasses of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/event/AbstractAuthenticationFailureEvent.html">AbstractAuthenticationFailureEvent</a> have a <code>getException()</code> method that gives you access to the exception that triggered the event, so you can use that to differentiate between a bad password and a missing user (if <code>hideUserNotFoundExceptions=false</code>).</p>
+<p>Fortunately all subclasses of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/event/AbstractAuthenticationFailureEvent.html">AbstractAuthenticationFailureEvent</a> have a <code>getException()</code> method that gives you access to the exception that triggered the event, so you can use that to differentiate between a bad password and a missing user (if <code>hideUserNotFoundExceptions=false</code>).</p>
 </div>
 </div>
 </div>
@@ -4706,7 +4639,7 @@ grails.plugin.springsecurity.digest.realmName = "Ralph's Bait and Tackle"</code>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">atr.rememberMeClass</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/RememberMeAuthenticationToken.html">RememberMeAuthenticationToken</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/RememberMeAuthenticationToken.html">RememberMeAuthenticationToken</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">remember-me authentication class</p></td>
 </tr>
 </tbody>
@@ -4730,7 +4663,7 @@ grails.plugin.springsecurity.digest.realmName = "Ralph's Bait and Tackle"</code>
 <div class="sect4">
 <h5 id="persistent-logins">Persistent Logins</h5>
 <div class="paragraph">
-<p>The remember-me cookie is very secure, but for an even stronger solution you can use persistent logins that store the username in the database. See the <a href="https://https://docs.spring.io/spring-security/reference/7.0.4/#remember-me">Spring Security docs</a> for a description of the implementation.</p>
+<p>The remember-me cookie is very secure, but for an even stronger solution you can use persistent logins that store the username in the database. See the <a href="https://https://docs.spring.io/spring-security/reference/6.5.7/#remember-me">Spring Security docs</a> for a description of the implementation.</p>
 </div>
 <div class="paragraph">
 <p>Persistent login is also useful for authentication schemes like Facebook, where you do not manage passwords in your database, but most of the other user information is stored locally. Without a password you cannot use the standard cookie format, so persistent logins enable remember-me cookies in these scenarios.</p>
@@ -5154,7 +5087,7 @@ $(function() {
 <div class="sect2">
 <h3 id="core-authenticationProviders">4.9. Authentication Providers</h3>
 <div class="paragraph">
-<p>The plugin registers authentication providers that perform authentication by implementing the <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/AuthenticationProvider.html">AuthenticationProvider</a> interface.</p>
+<p>The plugin registers authentication providers that perform authentication by implementing the <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/AuthenticationProvider.html">AuthenticationProvider</a> interface.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 14. Authentication provider configuration options</caption>
@@ -5212,7 +5145,7 @@ beans = {
 <div class="sect2">
 <h3 id="core-userDetailsService">4.10. Custom UserDetailsService</h3>
 <div class="paragraph">
-<p>When you authenticate users from a database using <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html">DaoAuthenticationProvider</a> (the default mode in the plugin if you have not enabled OpenID, LDAP, and so on), an implementation of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html">UserDetailsService</a> is required. This class is responsible for returning a concrete implementation of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/UserDetails.html">UserDetails</a>. The plugin provides <code>grails.plugin.springsecurity.userdetails.GormUserDetailsService</code> as its <code>UserDetailsService</code> implementation and <code>grails.plugin.springsecurity.userdetails.GrailsUser</code> (which extends Spring Security&#8217;s <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/User.html">User</a>) as its <code>UserDetails</code> implementation.</p>
+<p>When you authenticate users from a database using <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html">DaoAuthenticationProvider</a> (the default mode in the plugin if you have not enabled OpenID, LDAP, and so on), an implementation of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html">UserDetailsService</a> is required. This class is responsible for returning a concrete implementation of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/UserDetails.html">UserDetails</a>. The plugin provides <code>grails.plugin.springsecurity.userdetails.GormUserDetailsService</code> as its <code>UserDetailsService</code> implementation and <code>grails.plugin.springsecurity.userdetails.GrailsUser</code> (which extends Spring Security&#8217;s <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/User.html">User</a>) as its <code>UserDetails</code> implementation.</p>
 </div>
 <div class="paragraph">
 <p>You can extend or replace <code>GormUserDetailsService</code> with your own implementation by defining a bean in <code>grails-app/conf/spring/resources.groovy</code> with the same bean name, <code>userDetailsService</code>. This works because application beans are configured after plugin beans and there can only be one bean for each name. The plugin uses an extension of <code>UserDetailsService</code>, <code>grails.plugin.springsecurity.userdetails.GrailsUserDetailsService</code>, which adds the method <code>UserDetails loadUserByUsername(String username, boolean loadRoles)</code> to support use cases like in LDAP where you often infer all roles from LDAP but might keep application-specific user details in the database. Create the class in <code>src/groovy</code> and not in <code>grails-app/services</code> - although the interface name includes "<code>Service</code>", this is just a coincidence and the bean wouldn&#8217;t benefit from being a Grails service.</p>
@@ -5459,7 +5392,7 @@ If you rely on them to be higher, set them manually when testing.
 </table>
 </div>
 <div class="paragraph">
-<p>There are two approaches to using salted passwords in the plugin - defining a property in the <code>UserDetails</code> class to access by reflection, or by directly implementing <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/dao/SaltSource.html">SaltSource</a> yourself.</p>
+<p>There are two approaches to using salted passwords in the plugin - defining a property in the <code>UserDetails</code> class to access by reflection, or by directly implementing <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/dao/SaltSource.html">SaltSource</a> yourself.</p>
 </div>
 <div class="sect4">
 <h5 id="dao-reflectionsaltsourceproperty">dao.reflectionSaltSourceProperty</h5>
@@ -5472,7 +5405,7 @@ If you rely on them to be higher, set them manually when testing.
 </div>
 </div>
 <div class="paragraph">
-<p>This property belongs to the <code>UserDetails</code> class. By default it is an instance of <code>grails.plugin.springsecurity.userdetails.GrailsUser</code>, which extends the standard Spring Security <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/userdetails/User.html">User class</a> and not your "<code>person</code>" domain class. This limits the available properties unless you use a custom UserDetailsService (<a href="#core-userDetailsService">Custom UserDetailsService</a>).</p>
+<p>This property belongs to the <code>UserDetails</code> class. By default it is an instance of <code>grails.plugin.springsecurity.userdetails.GrailsUser</code>, which extends the standard Spring Security <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/userdetails/User.html">User class</a> and not your "<code>person</code>" domain class. This limits the available properties unless you use a custom UserDetailsService (<a href="#core-userDetailsService">Custom UserDetailsService</a>).</p>
 </div>
 <div class="paragraph">
 <p>As long as the username does not change, this approach works well for the salt. If you choose a property that the user can change, the user cannot log in again after changing it unless you re-hash the password with the new value. So it&#8217;s best to use a property that doesn&#8217;t change.</p>
@@ -5484,7 +5417,7 @@ If you rely on them to be higher, set them manually when testing.
 <div class="sect4">
 <h5 id="systemwidesaltsource-and-custom-saltsource">SystemWideSaltSource and Custom SaltSource</h5>
 <div class="paragraph">
-<p>Spring Security supplies a simple <code>SaltSource</code> implementation, <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/dao/SystemWideSaltSource.html">SystemWideSaltSource</a>, which uses the same salt for each user. It&#8217;s less robust than using a different value for each user but still better than no salt at all.</p>
+<p>Spring Security supplies a simple <code>SaltSource</code> implementation, <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/dao/SystemWideSaltSource.html">SystemWideSaltSource</a>, which uses the same salt for each user. It&#8217;s less robust than using a different value for each user but still better than no salt at all.</p>
 </div>
 <div class="paragraph">
 <p>An example override of the salt source bean using SystemWideSaltSource would look like this:</p>
@@ -5624,22 +5557,22 @@ beans = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isAccountNonExpired()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountExpired</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/AccountExpiredException.html">AccountExpiredException</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/AccountExpiredException.html">AccountExpiredException</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isAccountNonLocked()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountLocked</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/LockedException.html">LockedException</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/LockedException.html">LockedException</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isCredentialsNonExpired()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>passwordExpired</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/CredentialsExpiredException.html">CredentialsExpiredException</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/CredentialsExpiredException.html">CredentialsExpiredException</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isEnabled()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/authentication/DisabledException.html">DisabledException</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/authentication/DisabledException.html">DisabledException</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -5940,7 +5873,7 @@ class ExpirePasswordsJob {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">failureHandler.exceptionMappings</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>none</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Map of exception class name (subclass of <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/AuthenticationException.html">AuthenticationException</a>) to which the URL will redirect for that exception type after authentication failure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of exception class name (subclass of <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/AuthenticationException.html">AuthenticationException</a>) to which the URL will redirect for that exception type after authentication failure</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">failureHandler.useForward</p></td>
@@ -6838,10 +6771,10 @@ grails.plugin.springsecurity.secureChannel.insecureHeaderValue = '...'</code></p
 <div class="sect2">
 <h3 id="core-logoutHandlers">4.19. Logout Handlers</h3>
 <div class="paragraph">
-<p>You register a list of logout handlers by implementing the <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a> interface. The list is called when a user explicitly logs out.</p>
+<p>You register a list of logout handlers by implementing the <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a> interface. The list is called when a user explicitly logs out.</p>
 </div>
 <div class="paragraph">
-<p>By default, a <code>securityContextLogoutHandler</code> bean is registered to clear the <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/context/SecurityContextHolder.html">SecurityContextHolder</a>. Also, unless you are using Facebook or OpenID, <code>rememberMeServices</code> bean is registered to reset your cookie. (Facebook and OpenID authenticate externally so we don&#8217;t have access to the password to create a remember-me cookie.) If you are using Facebook, a <code>facebookLogoutHandler</code> is registered to reset its session cookies.</p>
+<p>By default, a <code>securityContextLogoutHandler</code> bean is registered to clear the <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/context/SecurityContextHolder.html">SecurityContextHolder</a>. Also, unless you are using Facebook or OpenID, <code>rememberMeServices</code> bean is registered to reset your cookie. (Facebook and OpenID authenticate externally so we don&#8217;t have access to the password to create a remember-me cookie.) If you are using Facebook, a <code>facebookLogoutHandler</code> is registered to reset its session cookies.</p>
 </div>
 <div class="paragraph">
 <p>To customize this list, you define a <code>logout.handlerNames</code> attribute with a list of bean names.</p>
@@ -6898,7 +6831,7 @@ beans = {
 <div class="sect2">
 <h3 id="core-voters">4.20. Voters</h3>
 <div class="paragraph">
-<p>Voters are classes that implement the Spring Security <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/AccessDecisionVoter.html">AccessDecisionVoter</a> interface and are used to confirm whether a successful authentication is authorized for the current request.</p>
+<p>Voters are classes that implement the Spring Security <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/AccessDecisionVoter.html">AccessDecisionVoter</a> interface and are used to confirm whether a successful authentication is authorized for the current request.</p>
 </div>
 <div class="paragraph">
 <p>You can register the voters to use with the <code>voterNames</code> setting; each element in the collection is the name of an existing Spring bean.</p>
@@ -6926,7 +6859,7 @@ beans = {
 </tbody>
 </table>
 <div class="paragraph">
-<p>The default voters include a <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/vote/RoleHierarchyVoter.html">RoleHierarchyVoter</a> to ensure users have the required roles for the request, an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/vote/AuthenticatedVoter.html">AuthenticatedVoter</a> to support <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, and <code>IS_AUTHENTICATED_ANONYMOUSLY</code> tokens, a <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/web/access/expression/WebExpressionVoter.html">WebExpressionVoter</a> to evaluate SpEL expressions, and a <code>grails.plugin.springsecurity.access.vote.ClosureVoter</code> to invoke annotation closures.</p>
+<p>The default voters include a <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/vote/RoleHierarchyVoter.html">RoleHierarchyVoter</a> to ensure users have the required roles for the request, an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/vote/AuthenticatedVoter.html">AuthenticatedVoter</a> to support <code>IS_AUTHENTICATED_FULLY</code>, <code>IS_AUTHENTICATED_REMEMBERED</code>, and <code>IS_AUTHENTICATED_ANONYMOUSLY</code> tokens, a <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/web/access/expression/WebExpressionVoter.html">WebExpressionVoter</a> to evaluate SpEL expressions, and a <code>grails.plugin.springsecurity.access.vote.ClosureVoter</code> to invoke annotation closures.</p>
 </div>
 <div class="paragraph">
 <p>To customize this list, you define a <code>voterNames</code> attribute with a list of bean names. Any existing bean that implements the interface can be used, whether it is declared by this plugin, in your application&#8217;s resources.groovy, another plugin, or any other source.</p>
@@ -7002,7 +6935,7 @@ beans = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">useHttpSession EventPublisher</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, an <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/web/session/HttpSessionEventPublisher.html">HttpSession EventPublisher</a> will be configured</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, an <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/web/session/HttpSessionEventPublisher.html">HttpSession EventPublisher</a> will be configured</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cacheUsers</p></td>
@@ -7067,7 +7000,7 @@ beans = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">registerLoggerListener</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, registers a <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/access/event/LoggerListener.html">LoggerListener</a> that logs interceptor-related application events</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, registers a <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/access/event/LoggerListener.html">LoggerListener</a> that logs interceptor-related application events</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">scr.allowSessionCreation</p></td>
@@ -7092,7 +7025,7 @@ beans = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sch.strategyName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>SecurityContextHolder.MODE_THREADLOCAL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The strategy to use for storing the <code>SecurityContext</code> - can be one of <code>MODE_THREADLOCAL</code>, <code>MODE_INHERITABLETHREADLOCAL</code>, or <code>MODE_GLOBAL</code>, or the name of a class implementing <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/apidocs/org/springframework/security/core/context/SecurityContextHolderStrategy.html">SecurityContextHolderStrategy</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The strategy to use for storing the <code>SecurityContext</code> - can be one of <code>MODE_THREADLOCAL</code>, <code>MODE_INHERITABLETHREADLOCAL</code>, or <code>MODE_GLOBAL</code>, or the name of a class implementing <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/apidocs/org/springframework/security/core/context/SecurityContextHolderStrategy.html">SecurityContextHolderStrategy</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">debug.useFilter</p></td>
@@ -7113,9 +7046,987 @@ beans = {
 </table>
 </div>
 <div class="sect2">
-<h3 id="core-tutorials">4.22. Tutorials</h3>
+<h3 id="configuration-properties">4.22. Configuration Properties</h3>
+<div class="paragraph">
+<p>This page is generated from <code>spring-configuration-metadata.json</code>. For IDE auto-completion of these properties, ensure the plugin JAR is on your classpath.</p>
+</div>
 <div class="sect3">
-<h4 id="core-usingControllerAnnotations">4.22.1. Using Controller Annotations to Secure URLs</h4>
+<h4 id="general-configuration-properties">4.22.1. General configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.active</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the plugin is enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.excludeSpringSecurityAutoConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to automatically exclude Spring Boot security auto-configuration classes that conflict with the plugin.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.printStatusMessages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to print status messages such as "Configuring Spring Security Core &#8230;&#8203;".</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rejectIfNoRule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strict mode where a request mapping is required for all resources.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useBasicAuth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to enable HTTP Basic authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useDigestAuth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to enable HTTP Digest authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useExternalClasses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, use external domain classes.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useRoleGroups</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, enable role groups.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useSwitchUserFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to enable the switch user filter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useX509</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to enable X.509 authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="domain-class-configuration-properties">4.22.2. Domain class configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.authority.className</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Role class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.authority.groupAuthorityNameField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Role class authority group name property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.authority.nameField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Role class role name property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>authority</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.requestMap.className</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requestmap class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.requestMap.configAttributeField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requestmap class role and token property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>configAttribute</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.requestMap.httpMethodField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requestmap class HTTP method property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>httpMethod</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.requestMap.urlField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requestmap class URL pattern property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.accountExpiredPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class account expired property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountExpired</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.accountLockedPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class account locked property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountLocked</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.authoritiesPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class role collection property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorities</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.authorityJoinClassName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User and role many-to-many join class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.enabledPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class enabled property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>enabled</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.passwordExpiredPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class password expired property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>passwordExpired</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.passwordPropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class password property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.userDomainClassName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.usernameIgnoreCase</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ignore case when searching for usernamePropertyName.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.userLookup.usernamePropertyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User class username property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="authentication-and-authorization-configuration-properties">4.22.3. Authentication and authorization configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.afterInvocationManagerProviderNames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AfterInvocationManager provider bean names.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.anon.key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anonymousProcessingFilter key.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>foo</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.continueChainBeforeSuccessfulAuthentication</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to continue calling subsequent filters in the filter chain.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.atr.anonymousClass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Anonymous token class.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationToken</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.atr.rememberMeClass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remember-me token class.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.security.authentication.RememberMeAuthenticationToken</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.dao.hideUserNotFoundExceptions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, throws BadCredentialsException for both bad username and bad password.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.fii.alwaysReauthenticate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, re-authenticates when there is an Authentication in the SecurityContext.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.fii.observeOncePerRequest</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If false, allow checks to happen multiple times.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.fii.publishAuthorizationSuccess</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to publish an AuthorizedEvent after successful access check.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.fii.rejectPublicInvocations</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disallow URL access when there is no request mapping.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.fii.validateConfigAttributes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to check that all ConfigAttribute instances are valid at startup.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.providerManager.eraseCredentialsAfterAuthentication</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to remove the password from the Authentication and its child objects after successful authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.providerNames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bean names of authentication providers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[daoAuthenticationProvider, anonymousAuthenticationProvider, rememberMeAuthenticationProvider]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.roleHierarchy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hierarchical role definition.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>""</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.voterNames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bean names of voters.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[authenticatedVoter, roleVoter, closureVoter]</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="login-and-logout-configuration-properties">4.22.4. Login and logout configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.adh.ajaxErrorPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the 403 error page for Ajax requests.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/ajaxDenied</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.adh.errorPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the 403 error page (or set to null to send a 403 error and not render a page).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/denied</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.adh.useForward</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true a forward will be used to render the error page, otherwise a redirect is used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.filterProcessesUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Login form post URL, intercepted by Spring Security filter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/authenticate</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.passwordParameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Login form password parameter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.postOnly</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to allow only POST login requests.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.usernameParameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Login form username parameter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.auth.ajaxLoginFormUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL of Ajax login page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/authAjax</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.auth.forceHttps</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, redirects login page requests to HTTPS.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.auth.loginFormUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL of login page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/auth</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.auth.useForward</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to render the login page (true) or redirect (false).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.failureHandler.ajaxAuthFailUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redirect URL for failed Ajax logins.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/authfail?ajax=true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.failureHandler.defaultFailureUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redirect URL for failed logins.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/authfail?login_error=1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.failureHandler.exceptionMappings</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of AuthenticationException subclasses to redirect URLs after authentication failure.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.failureHandler.useForward</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to render the error page (true) or redirect (false).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.afterLogoutUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL for redirect after logout.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.alwaysUseDefaultTargetUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to always use afterLogoutUrl as the post-logout URL.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.clearAuthentication</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true removes the Authentication from the SecurityContext to prevent issues with concurrent requests.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.filterProcessesUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logout URL, intercepted by Spring Security filter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/logoff</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.handlerNames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logout handler bean names.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[rememberMeServices, securityContextLogoutHandler]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.postOnly</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true only POST requests will be allowed to logout.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.redirectToReferer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use the Referer header value as the post-logout URL.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.targetUrlParameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The querystring parameter name for the post-logout URL.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.successHandler.ajaxSuccessUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL for redirect after successful Ajax login.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/ajaxSuccess</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.successHandler.alwaysUseDefault</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to always redirect to successHandler.defaultTargetUrl after successful authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.successHandler.defaultTargetUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default post-login URL if there is no saved request that triggered the login.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.successHandler.targetUrlParameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of optional login form parameter that specifies destination after successful login.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring-security-redirect</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.successHandler.useReferer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use the HTTP Referer header to determine post-login destination.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="password-encoding-configuration-properties">4.22.5. Password encoding configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.dao.reflectionSaltSourceProperty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Which property to use for the reflection-based salt source.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.password.algorithm</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Password encoding algorithm.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bcrypt</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.password.bcrypt.logrounds</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BCrypt log rounds.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.password.encodeHashAsBase64</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to Base64 encode password hashes.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.password.hash.iterations</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hashing iterations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10000</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="remember-me-cookie-configuration-properties">4.22.6. Remember-me cookie configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.alwaysRemember</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to always remember users.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.cookieDomain</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remember-me cookie domain.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.cookieName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remember-me cookie name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails_remember_me</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.createSessionOnSuccess</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to create a session after remember-me login.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key used to identify remember-me tokens.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grailsRocks</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.parameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remember-me parameter name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>remember-me</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.persistent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use persistent remember-me tokens.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.persistentToken.domainClassName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Persistent token domain class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.persistentToken.seriesLength</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Persistent token series length.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>16</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.persistentToken.tokenLength</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Persistent token token length.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>16</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.tokenValiditySeconds</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Remember-me token validity in seconds.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1209600</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.rememberMe.useSecureCookie</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use a secure remember-me cookie.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="session-and-security-context-configuration-properties">4.22.7. Session and security context configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.allowSessionCreation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to allow authentication to create an HTTP session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.apf.storeLastUsername</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to store the login username in the HTTP session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.failureHandler.allowSessionCreation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to enable session creation to store the authentication failure exception.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.logout.invalidateHttpSession</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to invalidate the HTTP session when logging out.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.requestCache.createSession</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether caching SavedRequest can trigger the creation of a session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.sch.strategyName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The strategy to use for storing the SecurityContext.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SecurityContextHolder.MODE_THREADLOCAL</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.scpf.forceEagerSessionCreation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to eagerly create a session in the securityContextRepository bean.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.scr.allowSessionCreation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to allow creating a session in the securityContextRepository bean.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.scr.disableUrlRewriting</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to disable URL rewriting (and the jsessionid attribute).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.scr.springSecurityContextKey</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP session key to store the SecurityContext under.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.sessionFixationPrevention.alwaysCreateSession</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to always create a session for session fixation prevention.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.sessionFixationPrevention.migrate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to migrate the session on authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useHttpSessionEventPublisher</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, an HttpSessionEventPublisher will be configured.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useSessionFixationPrevention</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use session fixation prevention.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="url-mapping-configuration-properties">4.22.8. URL mapping configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.controllerAnnotations.lowercase</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to do URL comparisons using lowercase.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.controllerAnnotations.staticRules</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extra rules that cannot be mapped using annotations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.interceptUrlMap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request mapping definition when using InterceptUrlMap.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.redirectStrategy.contextRelative</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, the redirect URL will be the value after the request context path.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.securityConfigType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of request mapping to use, one of Annotation, Requestmap, or InterceptUrlMap.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Annotation</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="basic-and-digest-http-authentication-properties">4.22.9. Basic and digest HTTP authentication properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.basic.credentialsCharset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Credentials charset for HTTP Basic authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-8</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.basic.realmName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Realm name for HTTP Basic authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Grails Realm</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.createAuthenticatedToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to create authenticated tokens for digest auth.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key for HTTP Digest authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>changeme</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.nonceValiditySeconds</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Digest nonce validity in seconds.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>300</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.passwordAlreadyEncoded</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether digest passwords are already encoded.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.realmName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Realm name for HTTP Digest authentication.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Grails Realm</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.digest.useCleartextPasswords</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use cleartext passwords for digest auth.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="switch-user-impersonation-configuration-properties">4.22.10. Switch user (impersonation) configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.switchUser.exitUserUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL used to exit switched user.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/logout/impersonate</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.switchUser.switchFailureUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Failure URL for switch user.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.switchUser.switchUserUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL used to switch users.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/login/impersonate</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.switchUser.targetUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Target URL after switching user.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.switchUser.usernameParameter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Username parameter for switch user.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="port-mapping-and-secure-channel-configuration-properties">4.22.11. Port mapping and secure channel configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.portMapper.httpPort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP port for port mapping.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8080</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.portMapper.httpsPort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTPS port for port mapping.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8443</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.definition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Secure channel definition rules.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.insecureConfigAttributeKeyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Config attribute keyword for insecure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>REQUIRES_INSECURE_CHANNEL</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.insecureHeaderName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header name indicating insecure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-Forwarded-Proto</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.insecureHeaderValue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header value indicating insecure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>https</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.secureConfigAttributeKeyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Config attribute keyword for secure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>REQUIRES_SECURE_CHANNEL</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.secureHeaderName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header name indicating secure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-Forwarded-Proto</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.secureHeaderValue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header value indicating secure channel.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.secureChannel.useHeaderCheckChannelSecurity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use header based channel security.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="x-509-client-certificate-authentication-properties">4.22.12. X.509 client certificate authentication properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.checkForPrincipalChanges</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to check for principal changes.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.continueFilterChainOnUnsuccessfulAuthentication</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to continue filter chain when X.509 authentication fails.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.invalidateSessionOnPrincipalChange</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to invalidate the session when the principal changes.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.subjectDnClosure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Closure to extract principal from subject DN.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.subjectDnRegex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Regex for extracting username from subject DN.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">`CN=(.*?)(?:,</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$)`</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.x509.throwExceptionWhenTokenRejected</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to throw an exception when the token is rejected.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="miscellaneous-configuration-properties">4.22.13. Miscellaneous configuration properties.</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 50%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.ajaxCheckClosure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An optional closure that can determine if a request is Ajax.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.ajaxHeader</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header name sent by Ajax library, used to detect Ajax.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-Requested-With</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.beanTypeResolverClass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bean type resolver class name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.BeanTypeResolver</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.cacheUsers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, logins are cached using an EhCache.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.debug.useFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use the DebugFilter to log request debug information to the console.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.gsp.layoutAuth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layout name for auth views.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.gsp.layoutDenied</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Layout name for denied views.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.ipRestrictions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of IP addresses allowed by the IP restriction filter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.registerLoggerListener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, registers a LoggerListener that logs interceptor-related application events.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugin.springsecurity.useSecurityEventListener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, configure SecurityEventListener.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="core-tutorials">4.23. Tutorials</h3>
+<div class="sect3">
+<h4 id="core-usingControllerAnnotations">4.23.1. Using Controller Annotations to Secure URLs</h4>
 <div class="sect4">
 <h5 id="1-create-your-grails-application">1. Create your Grails application.</h5>
 <div class="literalblock">
@@ -7782,12 +8693,12 @@ class SecureController {
 </div>
 </div>
 <div class="sect2">
-<h3 id="core-examples">4.23. Example Applications</h3>
+<h3 id="core-examples">4.24. Example Applications</h3>
 <div class="paragraph">
 <p>Sometimes the best way to learn is by example. We have an ever-expanding list of example apps created to do just that&#8230;&#8203; help you learn how to utilize the grails-spring-security plugin in your current application.</p>
 </div>
 <div class="sect3">
-<h4 id="the-repos">4.23.1. The Repos</h4>
+<h4 id="the-repos">4.24.1. The Repos</h4>
 <div class="paragraph">
 <p>A comprehensive list of example spring security apps may be found at:</p>
 </div>
@@ -7797,7 +8708,7 @@ class SecureController {
 </div>
 </div>
 <div class="sect3">
-<h4 id="the-example-apps">4.23.2. The Example Apps</h4>
+<h4 id="the-example-apps">4.24.2. The Example Apps</h4>
 <div class="sect4">
 <h5 id="spring-security-ui">spring-security-ui</h5>
 <div class="paragraph">
@@ -7882,12 +8793,12 @@ class SecureController {
 </div>
 </div>
 <div class="sect2">
-<h3 id="core-controllerMethods">4.24. Controller Methods</h3>
+<h3 id="core-controllerMethods">4.25. Controller Methods</h3>
 <div class="paragraph">
 <p>The plugin registers some convenience methods into all controllers in your application. As of version 3.1.0 this is implemented by a trait that is applied to all controllers but was implemented in earlier versions by adding methods to each controller&#8217;s <code>MetaClass</code>. All are accessor methods, so they can be called as methods or properties. They include:</p>
 </div>
 <div class="sect3">
-<h4 id="isloggedin-2">4.24.1. isLoggedIn</h4>
+<h4 id="isloggedin-2">4.25.1. isLoggedIn</h4>
 <div class="paragraph">
 <p>Returns <code>true</code> if there is an authenticated user.</p>
 </div>
@@ -7922,7 +8833,7 @@ class SecureController {
 </div>
 </div>
 <div class="sect3">
-<h4 id="getprincipal-2">4.24.2. getPrincipal</h4>
+<h4 id="getprincipal-2">4.25.2. getPrincipal</h4>
 <div class="paragraph">
 <p>Retrieves the current authenticated user&#8217;s Principal (a <code>GrailsUser</code> instance unless you&#8217;ve customized this) or <code>null</code> if not authenticated.</p>
 </div>
@@ -7949,7 +8860,7 @@ class SecureController {
 </div>
 </div>
 <div class="sect3">
-<h4 id="getauthenticateduser">4.24.3. getAuthenticatedUser</h4>
+<h4 id="getauthenticateduser">4.25.3. getAuthenticatedUser</h4>
 <div class="paragraph">
 <p>Loads the user domain class instance from the database that corresponds to the currently authenticated user, or <code>null</code> if not authenticated. This is the equivalent of adding a dependency injection for <code>springSecurityService</code> and calling <code>PersonDomainClassName.get(springSecurityService.principal.id)</code> (the typical way that this is often done).</p>
 </div>
@@ -7977,7 +8888,7 @@ class SecureController {
 </div>
 </div>
 <div class="sect2">
-<h3 id="core-i18n">4.25. Internationalization</h3>
+<h3 id="core-i18n">4.26. Internationalization</h3>
 <div class="paragraph">
 <p>The plugin includes i18n messages in several languages. To customize or translate these, add messages for the following keys to your i18n resource bundle(s) for each exception:</p>
 </div>
@@ -8075,9 +8986,9 @@ class SecureController {
 </table>
 </div>
 <div class="sect2">
-<h3 id="core-scripts">4.26. Scripts</h3>
+<h3 id="core-scripts">4.27. Scripts</h3>
 <div class="sect3">
-<h4 id="core-s2-quickstart">4.26.1. s2-quickstart</h4>
+<h4 id="core-s2-quickstart">4.27.1. s2-quickstart</h4>
 <div class="paragraph">
 <div class="title">Purpose</div>
 <p>Creates a user and role class (and optionally a requestmap class) in the specified package.
@@ -8123,7 +9034,7 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 </div>
 <div class="sect3">
-<h4 id="core-s2-create-persistent-token">4.26.2. s2-create-persistent-token</h4>
+<h4 id="core-s2-create-persistent-token">4.27.2. s2-create-persistent-token</h4>
 <div class="paragraph">
 <div class="title">Purpose</div>
 <p>Creates a persistent token domain class for storing remember-me cookie information in the database. The general format is:</p>
@@ -8145,7 +9056,7 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 </div>
 <div class="sect3">
-<h4 id="core-s2-create-role-hierarchy-entry">4.26.3. s2-create-role-hierarchy-entry</h4>
+<h4 id="core-s2-create-role-hierarchy-entry">4.27.3. s2-create-role-hierarchy-entry</h4>
 <div class="paragraph">
 <div class="title">Purpose</div>
 <p>Creates a persistent role hierarchy entry domain class for storing role hierarchy information in the database. The general format is:</p>
@@ -8168,7 +9079,7 @@ If you specify the uiOnly flag, no domain classes are created but the plugin set
 </div>
 </div>
 <div class="sect2">
-<h3 id="core-debugging">4.27. Debugging</h3>
+<h3 id="core-debugging">4.28. Debugging</h3>
 <div class="paragraph">
 <p>If you need debug information, you can specify the following entries in logback.groovy:</p>
 </div>
@@ -8181,9 +9092,9 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="api-reference">4.28. API Reference</h3>
+<h3 id="api-reference">4.29. API Reference</h3>
 <div class="paragraph">
-<p>The Core plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/core-plugin/groovydoc/index.html">Core Plugin API Reference</a>.</p>
+<p>The Core plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/core-plugin/groovydoc/index.html">Core Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -8216,7 +9127,7 @@ logger 'grails.plugin.springsecurity', DEBUG, ['STDOUT'], false</code></pre>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
    ...
-   implementation 'org.apache.grails:grails-spring-security-acl:8.0.0-SNAPSHOT'
+   implementation 'org.apache.grails:grails-spring-security-acl:7.0.2-SNAPSHOT'
    ...</code></pre>
 </div>
 </div>
@@ -10201,7 +11112,7 @@ the body content
 <div class="sect2">
 <h3 id="api-reference-2">5.10. API Reference</h3>
 <div class="paragraph">
-<p>The ACL plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/acl-plugin/groovydoc/index.html">ACL Plugin API Reference</a>.</p>
+<p>The ACL plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/acl-plugin/groovydoc/index.html">ACL Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -10247,7 +11158,7 @@ the body content
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
    ...
-   implementation 'org.apache.grails:grails-spring-security-cas:8.0.0-SNAPSHOT'
+   implementation 'org.apache.grails:grails-spring-security-cas:7.0.2-SNAPSHOT'
    ...</code></pre>
 </div>
 </div>
@@ -10553,7 +11464,7 @@ the body content
 <div class="sect2">
 <h3 id="api-reference-3">6.5. API Reference</h3>
 <div class="paragraph">
-<p>The CAS plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/cas-plugin/groovydoc/index.html">CAS Plugin API Reference</a>.</p>
+<p>The CAS plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/cas-plugin/groovydoc/index.html">CAS Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -10570,7 +11481,7 @@ the body content
 <p>Once you have configured your Grails application as an LDAP client you can delegate authentication to LDAP and not have to manage users' authentication information in your application. By default, roles are inferred from LDAP group membership and you can store additional application-specific roles in your database.</p>
 </div>
 <div class="paragraph">
-<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/7.0.4/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
+<p>Please refer to the <a href="https://docs.spring.io/spring-security/reference/6.5.7/servlet/authentication/passwords/ldap.html">Spring Security LDAP documentation</a> for details of the underlying implementation.</p>
 </div>
 </div>
 <div class="sect2">
@@ -10600,7 +11511,7 @@ the body content
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
    ...
-   implementation 'org.apache.grails:grails-spring-security-ldap:8.0.0-SNAPSHOT'
+   implementation 'org.apache.grails:grails-spring-security-ldap:7.0.2-SNAPSHOT'
 }</code></pre>
 </div>
 </div>
@@ -10611,8 +11522,8 @@ the body content
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
     ...
-    implementation "org.apache.grails:grails-spring-security:8.0.0-SNAPSHOT"
-    implementation "org.apache.grails:grails-spring-security-ldap:8.0.0-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security:7.0.2-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security-ldap:7.0.2-SNAPSHOT"
 }</code></pre>
 </div>
 </div>
@@ -10726,10 +11637,10 @@ the body content
 <div class="sect3">
 <h4 id="custom-userdetailscontextmapper">7.2.3. Custom UserDetailsContextMapper</h4>
 <div class="paragraph">
-<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
+<p>There are three options for mapping LDAP attributes to <code>UserDetails</code> data (as specified by the <code>grails.plugin.springsecurity.ldap.mapper.userDetailsClass</code> config attribute) and hopefully one of those will be sufficient for your needs. If not, it&#8217;s easy to implement <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> yourself.</p>
 </div>
 <div class="paragraph">
-<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/7.0.4/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
+<p>Create a Groovy or Java class in <code>src/main/groovy</code> that implements <a href="https://docs.spring.io/spring-security/site/docs/6.5.7/api/org/springframework/security/ldap/userdetails/UserDetailsContextMapper.html">UserDetailsContextMapper</a> and register it in <code>grails-app/conf/spring/resources.groovy</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -11193,7 +12104,7 @@ class MyUserDetails extends User {
 <div class="sect2">
 <h3 id="api-reference-4">7.4. API Reference</h3>
 <div class="paragraph">
-<p>The LDAP plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/ldap-plugin/groovydoc/index.html">LDAP Plugin API Reference</a>.</p>
+<p>The LDAP plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/ldap-plugin/groovydoc/index.html">LDAP Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -11290,7 +12201,7 @@ class MyUserDetails extends User {
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
-    implementation "org.apache.grails:grails-spring-security-oauth2:8.0.0-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security-oauth2:7.0.2-SNAPSHOT"
 }</code></pre>
 </div>
 </div>
@@ -11636,7 +12547,7 @@ protected void authenticateAndRedirect(OAuth2SpringToken oAuthToken, redirectUrl
 <div class="sect2">
 <h3 id="api-reference-5">8.5. API Reference</h3>
 <div class="paragraph">
-<p>The OAuth2 plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/oauth2-plugin/groovydoc/index.html">OAuth2 Plugin API Reference</a>.</p>
+<p>The OAuth2 plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/oauth2-plugin/groovydoc/index.html">OAuth2 Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -12453,7 +13364,7 @@ look at the [new chapter in the documentation|guide:tokenValidation].</p>
 
     //Other dependencies
 
-    implementation "org.apache.grails:grails-spring-security-rest:8.0.0-SNAPSHOT"
+    implementation "org.apache.grails:grails-spring-security-rest:7.0.2-SNAPSHOT"
 
 }</code></pre>
 </div>
@@ -12465,7 +13376,7 @@ artifact. For instance, for Memcached:</p>
 <div class="listingblock">
 <div class="title"><code>build.gradle</code></div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">ext.springSecurityRestVersion = '8.0.0-SNAPSHOT'
+<pre class="prettyprint highlight"><code data-lang="groovy">ext.springSecurityRestVersion = '7.0.2-SNAPSHOT'
 
 dependencies {
 
@@ -12502,7 +13413,7 @@ used. Every submodule of the above list will automatically configure the token s
 </div>
 <div class="paragraph">
 <p>If you want your own token storage system, you need to implement
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/TokenStorageService.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/TokenStorageService.html">role=include</a>
 and register it in <code>resources.groovy</code> as <code>tokenStorageService</code>.</p>
 </div>
 </div>
@@ -12686,7 +13597,7 @@ grails.plugin.springsecurity.onRestTokenCreationEvent = { e, appCtx -&gt;
 that you need.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/RestAuthenticationFilter.html">authentication filter</a>
+<p>The <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/RestAuthenticationFilter.html">authentication filter</a>
 uses the default <code>authenticationManager</code> bean, which in turn uses all the registered authentication
 providers. See the <a href="https://apache.github.io/grails-spring-security/latest/index.html#authenticationProviders">Spring Security Core guide</a>
 for more information about how to define your own providers. Note that you can easily plug any Spring Security sub-plugin
@@ -12820,7 +13731,7 @@ grails.plugin.springsecurity.rest.login.passwordPropertyName = 'pwd'</code></pre
 </div>
 <div class="paragraph">
 <p>If your JSON request format is different, you can plug your own implementation by defining a class which extends
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/credentials/AbstractJsonPayloadCredentialsExtractor.html">AbstractJsonPayloadCredentialsExtractor</a>.
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/credentials/AbstractJsonPayloadCredentialsExtractor.html">AbstractJsonPayloadCredentialsExtractor</a>.
 The default implementation looks like this:</p>
 </div>
 <div class="listingblock">
@@ -12904,7 +13815,7 @@ class DefaultJsonPayloadCredentialsExtractor extends AbstractJsonPayloadCredenti
 <div class="paragraph">
 <p>Logout is not possible when using JWT tokens (the default strategy), as no state is kept in the server. If
 you still want to have logout, you can provide your own implementation by creating a subclass of
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/jwt/JwtTokenStorageService.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/jwt/JwtTokenStorageService.html">role=include</a>
 and overriding the methods <code>storeToken</code> and <code>removeToken</code>.</p>
 </div>
 <div class="paragraph">
@@ -12920,7 +13831,7 @@ on every access).</p>
 </table>
 </div>
 <div class="paragraph">
-<p>The <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/RestLogoutFilter.html">logout filter</a>
+<p>The <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/RestLogoutFilter.html">logout filter</a>
 exposes an endpoint for deleting tokens. It will read the token from an HTTP header. If found, will delete it from the
 storage, sending a 200 response. Otherwise, it will send a 404 response.</p>
 </div>
@@ -12961,12 +13872,12 @@ more information about how this plugin uses JWT&#8217;s, check the <a href="#res
 <h4 id="claims">9.32.1. Claims</h4>
 <div class="paragraph">
 <p>It is possible, to include additional claims in the JWT generated. To do so, you can plug one or more implementations of the interface
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/jwt/CustomClaimProvider.html">CustomClaimProvider</a>,
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/jwt/CustomClaimProvider.html">CustomClaimProvider</a>,
 and register them in Spring.</p>
 </div>
 <div class="paragraph">
 <p>The plugin comes prepackaged with a
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/jwt/IssuerClaimProvider.html">IssuerClaimProvider</a>,
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/jwt/IssuerClaimProvider.html">IssuerClaimProvider</a>,
 that sets the <code>iss</code> field of the JWT claim set, and which value is configurable using the following configuration property:
 <code>grails.plugin.springsecurity.rest.token.generation.jwt.issuer</code>.</p>
 </div>
@@ -13074,10 +13985,10 @@ and the signing / encryption algorithms are configurable, as long as they are su
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/SecureRandomTokenGenerator.html">Using java.security.SecureRandom</a>.</p>
+<p><a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/SecureRandomTokenGenerator.html">Using java.security.SecureRandom</a>.</p>
 </li>
 <li>
-<p><a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/UUIDTokenGenerator.html">Using java.util.UUID</a>.</p>
+<p><a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/UUIDTokenGenerator.html">Using java.util.UUID</a>.</p>
 </li>
 </ul>
 </div>
@@ -13113,13 +14024,13 @@ and the signing / encryption algorithms are configurable, as long as they are su
 <div class="paragraph">
 <p>That should be enough for most of the human beings. But if you still want to provide your own implementation,
 simply write a class implementing
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/TokenGenerator.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/generation/TokenGenerator.html">role=include</a>
 and wire it up in <code>resources.groovy</code> as <code>tokenGenerator</code>.</p>
 </div>
 <div class="paragraph">
 <p>The tokens are stored on the server using a <code>tokenStorageService</code> bean. The plugin comes with out-of-the-box support
 for JWT, Memcached, GORM and <a href="http://grails.org/plugin/cache">Grails Cache</a>, but you can use your own strategy implementing the
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/TokenStorageService.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/storage/TokenStorageService.html">role=include</a>
 interface.</p>
 </div>
 <div class="admonitionblock note">
@@ -13861,7 +14772,7 @@ the chapter about token validation first.</p>
 </div>
 <div class="paragraph">
 <p>If you want your own implementation, simply create a class implementing
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/rendering/AccessTokenJsonRenderer.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/rendering/AccessTokenJsonRenderer.html">role=include</a>
 and wire it up in <code>resources.groovy</code> with name <code>accessTokenJsonRenderer</code>.</p>
 </div>
 <div class="admonitionblock note">
@@ -13961,7 +14872,7 @@ grails.plugin.springsecurity.rest.token.validation.headerName = 'X-Auth-Token'</
 </div>
 <div class="paragraph">
 <p>If you still want to have full access and read the token from a different part of the request, you can implement a
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/reader/TokenReader.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/token/reader/TokenReader.html">role=include</a>
 and register it in your <code>resources.groovy</code>  as <code>tokenReader</code>.</p>
 </div>
 <div class="admonitionblock note">
@@ -14228,9 +15139,9 @@ the token value as parameter:</p>
 </div>
 <div class="paragraph">
 <p>Upon successful OAuth authorisation (after step 6.1 in the above diagram), an
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/oauth/OauthUser.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/oauth/OauthUser.html">role=include</a>
 will be stored in the security context. This is done by a bean named <code>oauthUserDetailsService</code>. The
-<a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/oauth/DefaultOauthUserDetailsService.html">role=include</a>
+<a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/grails/plugin/springsecurity/rest/oauth/DefaultOauthUserDetailsService.html">role=include</a>
 delegates to the configured <code>userDetailsService</code> bean, passing the profile ID as the username:</p>
 </div>
 <div class="listingblock">
@@ -14602,7 +15513,7 @@ way of using HTTP sessions. So not acceptable.</p>
 <div class="sect2">
 <h3 id="api-reference-6">9.48. API Reference</h3>
 <div class="paragraph">
-<p>The REST plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/rest-plugin/groovydoc/index.html">REST Plugin API Reference</a>.</p>
+<p>The REST plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/rest-plugin/groovydoc/index.html">REST Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -14645,7 +15556,7 @@ in forms. For more details, refer to the
 <div class="listingblock">
 <div class="title"><code>build.gradle</code></div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">implementation 'org.apache.grails:grails-spring-security-ui:8.0.0-SNAPSHOT'</code></pre>
+<pre class="prettyprint highlight"><code data-lang="groovy">implementation 'org.apache.grails:grails-spring-security-ui:7.0.2-SNAPSHOT'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -16535,7 +17446,7 @@ The second service is a listener service which ensures that anytime an answer is
 <div class="sect2">
 <h3 id="api-reference-7">10.13. API Reference</h3>
 <div class="paragraph">
-<p>The UI plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/8.0.0-SNAPSHOT/ui-plugin/groovydoc/index.html">UI Plugin API Reference</a>.</p>
+<p>The UI plugin Groovydoc API documentation is available at <a href="https://apache.github.io/grails-spring-security/7.0.2-SNAPSHOT/ui-plugin/groovydoc/index.html">UI Plugin API Reference</a>.</p>
 </div>
 </div>
 </div>
@@ -16543,8 +17454,8 @@ The second service is a listener service which ensures that anytime an answer is
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 8.0.0-SNAPSHOT<br>
-Last updated 2026-04-25 20:16:03 UTC
+Version 7.0.2-SNAPSHOT<br>
+Last updated 2026-04-26 18:59:16 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
