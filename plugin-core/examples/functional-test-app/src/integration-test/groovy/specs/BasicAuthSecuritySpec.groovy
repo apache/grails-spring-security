@@ -16,12 +16,8 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package specs
 
-import spock.lang.Stepwise
-
-import grails.testing.mixin.integration.Integration
 import pages.LoginPage
 import pages.role.CreateRolePage
 import pages.role.ListRolePage
@@ -30,6 +26,9 @@ import pages.user.CreateUserPage
 import pages.user.ListUserPage
 import pages.user.ShowUserPage
 import spock.lang.IgnoreIf
+import spock.lang.Stepwise
+
+import grails.testing.mixin.integration.Integration
 
 @Integration
 @Stepwise
@@ -211,7 +210,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
@@ -224,7 +223,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
@@ -237,35 +236,35 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated', 'admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/index', 'admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/otherAction', 'admin1', 'password1')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/admin2', 'admin1', 'password1')
 
 		then:
-		pageSource.contains('Error 403 Forbidden')
+		waitFor { pageSource.contains('Error 403 Forbidden') }
 	}
 
 	void 'check allowed for admin2'() {
@@ -282,7 +281,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
@@ -295,7 +294,7 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
@@ -308,35 +307,35 @@ class BasicAuthSecuritySpec extends AbstractSecuritySpec {
 		login('admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated', 'admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/index', 'admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/otherAction', 'admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 
 		when:
 		logout()
 		getWithAuth('secureClassAnnotated/admin2', 'admin2', 'password2')
 
 		then:
-		pageSource.contains('you have ROLE_ADMIN')
+		waitFor { pageSource.contains('you have ROLE_ADMIN') }
 	}
 
 	protected void logout() {

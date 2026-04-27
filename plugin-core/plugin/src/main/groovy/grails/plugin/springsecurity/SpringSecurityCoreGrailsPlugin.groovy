@@ -25,6 +25,7 @@ import grails.plugin.springsecurity.access.vote.ClosureVoter
 import grails.plugin.springsecurity.authentication.GrailsAnonymousAuthenticationProvider
 import grails.plugin.springsecurity.authentication.NullAuthenticationEventPublisher
 import grails.plugin.springsecurity.cache.SpringUserCacheFactoryBean
+import grails.plugin.springsecurity.componentbased.ComponentBasedConfigBlender
 import grails.plugin.springsecurity.userdetails.DefaultPostAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.DefaultPreAuthenticationChecks
 import grails.plugin.springsecurity.userdetails.GormUserDetailsService
@@ -58,19 +59,15 @@ import grails.plugin.springsecurity.web.filter.GrailsAnonymousAuthenticationFilt
 import grails.plugin.springsecurity.web.filter.GrailsRememberMeAuthenticationFilter
 import grails.plugin.springsecurity.web.filter.IpAddressFilter
 import grails.plugins.Plugin
-import grails.util.Metadata
 import groovy.util.logging.Slf4j
 import org.grails.web.mime.HttpServletResponseExtension
-import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.cache.jcache.JCacheCacheManager
-import org.springframework.core.Ordered
 import org.springframework.expression.spel.standard.SpelExpressionParser
-import org.springframework.security.access.event.LoggerListener
+import org.springframework.security.authentication.event.LoggerListener
 import org.springframework.security.access.expression.DenyAllPermissionEvaluator
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyAuthoritiesMapper
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
 import org.springframework.security.access.intercept.AfterInvocationProviderManager
 import org.springframework.security.access.intercept.NullRunAsManager
 import org.springframework.security.access.vote.AuthenticatedVoter
@@ -84,6 +81,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.cache.NullUserCache
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -228,12 +226,13 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 		springSecurityBeanFactoryPostProcessor(classFor('springSecurityBeanFactoryPostProcessor', SpringSecurityBeanFactoryPostProcessor))
 
 		// configure the filter and optionally the listener
+		int filterOrder = securityFilterOrder()
 
 		springSecurityFilterChainRegistrationBean(classFor('springSecurityFilterChainRegistrationBean', FilterRegistrationBean)) {
 			filter = ref('springSecurityFilterChain')
 			urlPatterns = ['/*']
 			dispatcherTypes = EnumSet.of(DispatcherType.ERROR, DispatcherType.REQUEST)
-			order = SecurityProperties.DEFAULT_FILTER_ORDER
+			order = filterOrder
 		}
 
 		if (conf.useHttpSessionEventPublisher) {
@@ -381,7 +380,6 @@ class SpringSecurityCoreGrailsPlugin extends Plugin {
 			forceHttps = conf.auth.forceHttps // false
 			useForward = conf.auth.useForward // false
 			portMapper = ref('portMapper')
-			portResolver = ref('portResolver')
 			redirectStrategy = ref('redirectStrategy')
 		}
 
@@ -476,8 +474,7 @@ to default to 'Annotation'; setting value to 'Annotation'
 		preAuthenticationChecks(classFor('preAuthenticationChecks', DefaultPreAuthenticationChecks))
 		postAuthenticationChecks(classFor('postAuthenticationChecks', DefaultPostAuthenticationChecks))
 
-		daoAuthenticationProvider(classFor('daoAuthenticationProvider', DaoAuthenticationProvider)) {
-			userDetailsService = ref('userDetailsService')
+		daoAuthenticationProvider(classFor('daoAuthenticationProvider', DaoAuthenticationProvider), ref('userDetailsService')) {
 			passwordEncoder = ref('passwordEncoder')
 			userCache = ref('userCache')
 			preAuthenticationChecks = ref('preAuthenticationChecks')
@@ -701,6 +698,8 @@ to default to 'Annotation'; setting value to 'Annotation'
 		applicationContext.authenticationManager.providers = createBeanList(providerNames)
 		log.trace 'AuthenticationProviders: {}', applicationContext.authenticationManager.providers
 
+		applyComponentBasedConfigBlending conf, applicationContext, securityFilterChains
+
 		// build handlers list here to give dependent plugins a chance to register some
 		def logoutHandlerNames = (conf.logout.handlerNames ?: SpringSecurityUtils.logoutHandlerNames) +
 				(conf.logout.additionalHandlerNames ?: [])
@@ -773,6 +772,57 @@ to default to 'Annotation'; setting value to 'Annotation'
 	private createRefList = { names -> names.collect { name -> ref(name) } }
 
 	private createBeanList(names) { names.collect { name -> applicationContext.getBean(name) } }
+
+	private void applyComponentBasedConfigBlending(conf, applicationContext, securityFilterChains) {
+		def cb = conf.componentBased
+		boolean mergeFilterChains = cb?.containsKey('autoMergeSecurityFilterChain') ? cb.autoMergeSecurityFilterChain : true
+		boolean mergeProviders = cb?.containsKey('autoMergeAuthenticationProviders') ? cb.autoMergeAuthenticationProviders : true
+		boolean chainUds = cb?.containsKey('autoChainUserDetailsServices') ? cb.autoChainUserDetailsServices : true
+		boolean bridgeUserProps = cb?.containsKey('bridgeSpringSecurityUserProperties') ? cb.bridgeSpringSecurityUserProperties : true
+
+		if (mergeFilterChains) {
+			ComponentBasedConfigBlender.mergeUserSecurityFilterChains applicationContext, securityFilterChains
+		}
+
+		if (mergeProviders) {
+			ComponentBasedConfigBlender.mergeUserAuthenticationProviders applicationContext, applicationContext.authenticationManager
+		}
+
+		if (chainUds || bridgeUserProps) {
+			def primary = applicationContext.userDetailsService
+			List<UserDetailsService> additional = []
+
+			if (bridgeUserProps) {
+				def env = applicationContext.environment
+				String userName = env.getProperty('spring.security.user.name', String)
+				String userPassword = env.getProperty('spring.security.user.password', String)
+				List<String> userRoles = env.getProperty('spring.security.user.roles', List)
+				def bridged = ComponentBasedConfigBlender.bridgeSpringSecurityUserProperties(userName, userPassword, userRoles)
+				if (bridged != null) {
+					additional << (UserDetailsService) bridged
+				}
+			}
+
+			if (chainUds) {
+				def others = applicationContext.getBeansOfType(UserDetailsService).values().findAll { it !== primary }
+				additional.addAll(others)
+			}
+
+			if (additional) {
+				def passwordEncoder = applicationContext.containsBean('passwordEncoder') ? applicationContext.passwordEncoder : null
+				List<DaoAuthenticationProvider> additionalProviders = additional.collect { UserDetailsService uds ->
+					def provider = new DaoAuthenticationProvider(uds)
+					if (passwordEncoder != null) {
+						provider.passwordEncoder = passwordEncoder
+					}
+					provider
+				}
+				applicationContext.authenticationManager.providers.addAll additionalProviders
+				log.info 'Added {} DaoAuthenticationProvider(s) for additional UserDetailsService sources to authenticationManager (the plugin GORM-backed provider remains primary)',
+						additionalProviders.size()
+			}
+		}
+	}
 
 	private configureLogout = { conf ->
 
@@ -866,7 +916,7 @@ to default to 'Annotation'; setting value to 'Annotation'
 
 		// the hierarchy string is set in doWithApplicationContext to support building
 		// from the database using GORM if roleHierarchyEntryClassName is set
-		roleHierarchy(classFor('roleHierarchy', RoleHierarchyImpl))
+		roleHierarchy(classFor('roleHierarchy', MutableRoleHierarchy))
 
 		roleVoter(classFor('roleVoter', RoleHierarchyVoter), ref('roleHierarchy'))
 
@@ -1040,7 +1090,6 @@ to default to 'Annotation'; setting value to 'Annotation'
 		requestMatcher(classFor('requestMatcher', AnyRequestMatcher))
 
 		requestCache(classFor('requestCache', HttpSessionRequestCache)) {
-			portResolver = ref('portResolver')
 			createSessionAllowed = conf.requestCache.createSession // true
 			requestMatcher = ref('requestMatcher')
 		}
@@ -1099,6 +1148,17 @@ to default to 'Annotation'; setting value to 'Annotation'
 		beanTypeResolver.resolveType beanName, defaultType
 	}
 
+	private static int securityFilterOrder() {
+		try {
+			def securityProperties = SpringSecurityCoreGrailsPlugin.classLoader.loadClass(
+					'org.springframework.boot.autoconfigure.security.SecurityProperties'
+			)
+			return (Integer) securityProperties.getField('DEFAULT_FILTER_ORDER').get(null)
+		}
+		catch (Throwable ignored) {
+			return -100
+		}
+	}
 
 	static Map<String, PasswordEncoder> idToPasswordEncoder(ConfigObject conf) {
 

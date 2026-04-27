@@ -16,10 +16,8 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.profile.ProfileCreatePage
 import page.profile.ProfileEditPage
 import page.profile.ProfileListPage
@@ -30,84 +28,93 @@ import page.register.SecurityQuestionsPage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 
+import grails.testing.mixin.integration.Integration
+
 @Integration
 class RegisterSpec extends AbstractSecuritySpec {
 
 	void testRegisterValidation() {
 		when:
-		to(RegisterPage).with {
+		def page = to(RegisterPage).tap {
 			submit()
 		}
-		def registerPage = at(RegisterPage)
 
 		then:
-		pageSource.contains('Username is required')
-		pageSource.contains('Email is required')
-		pageSource.contains('Password is required')
+		waitFor { // We end up back at the register page, but we need to wait for the validation errors to be rendered
+			pageSource.contains('Username is required')
+			pageSource.contains('Email is required')
+			pageSource.contains('Password is required')
+		}
 
 		when:
-		registerPage.with {
-			username = 'admin'
-			email = 'foo'
-			password = 'abcdefghijk'
-			password2 = 'mnopqrstuwzy'
+		page.with {
+			username.text = 'admin'
+			email.text = 'foo'
+			password.text = 'abcdefghijk'
+			password2.text = 'mnopqrstuwzy'
 			submit()
 		}
-		registerPage = at(RegisterPage)
 
 		then:
-		pageSource.contains('The username is taken')
-		pageSource.contains('Please provide a valid email address')
-		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
-		pageSource.contains('Passwords do not match')
+		waitFor { // We end up back at the register page, but we need to wait for the validation errors to be rendered
+			pageSource.contains('The username is taken')
+			pageSource.contains('Please provide a valid email address')
+			pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+			pageSource.contains('Passwords do not match')
+		}
 
 		when:
-		registerPage.with {
-			username = 'abcdef123'
-			email = 'abcdef@abcdef.com'
-			password = 'aaaaaaaa'
-			password2 = 'aaaaaaaa'
+		page.with {
+			username.text = 'abcdef123'
+			email.text = 'abcdef@abcdef.com'
+			password.text = 'aaaaaaaa'
+			password2.text = 'aaaaaaaa'
 			submit()
 		}
 
 		then:
-		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		waitFor { // We end up back at the register page, but we need to wait for the validation errors to be rendered
+			pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		}
 	}
 
 	void testForgotPasswordValidation() {
 		when:
-		to(ForgotPasswordPage).with {
-			submit()
-		}
-		def forgotPasswordPage = at(ForgotPasswordPage)
-
-		then:
-		pageSource.contains('Please enter your username')
-
-		when:
-		forgotPasswordPage.with {
-			username = '1111'
+		def page = to(ForgotPasswordPage).tap {
 			submit()
 		}
 
 		then:
 		at(ForgotPasswordPage)
-		pageSource.contains('No user was found with that username')
+		waitFor { // We end up back at the forgot password page, but we need to wait for the validation errors to be rendered
+			pageSource.contains('Please enter your username')
+		}
+
+		when:
+		page.with {
+			username.text = '1111'
+			submit()
+		}
+
+		then:
+		at(ForgotPasswordPage)
+		waitFor { // We end up back at the forgot password page, but we need to wait for the validation errors to be rendered
+			pageSource.contains('No user was found with that username')
+		}
 	}
 
 	void testRegisterAndForgotPassword() {
 		given:
-		String un = "test_user_abcdef${System.currentTimeMillis()}"
+		def un = "test_user_abcdef${System.currentTimeMillis()}"
 
 		when:
 		go('register/resetPassword?t=123')
 
 		then:
-		pageSource.contains('Sorry, we have no record of that request, or it has expired')
+		waitFor { pageSource.contains('Sorry, we have no record of that request, or it has expired') }
 
 		when:
-		def registerPage = to(RegisterPage)
-		registerPage.with {
+		to(RegisterPage).with {
 			username = un
 			email = "$un@abcdef.com"
 			password = 'aaaaaa1#'
@@ -122,17 +129,17 @@ class RegisterSpec extends AbstractSecuritySpec {
 		to(ProfileCreatePage).with {
 			create(un)
 		}
-		def listPage = at(ProfileListPage)
+		def page = at(ProfileListPage)
 
 		then:
 		pageSource.contains('created')
 
 		when:
-		listPage.editProfile(un)
-		def profileEditPage = at(ProfileEditPage)
+		page.editProfile(un)
+		page = at(ProfileEditPage)
 
 		and:
-		profileEditPage.updateProfile(un)
+		page.updateProfile(un)
 
 		then:
 		at(ProfileListPage)
@@ -143,10 +150,10 @@ class RegisterSpec extends AbstractSecuritySpec {
 		go('')
 
 		then:
-		pageSource.contains('Log in')
+		waitFor { pageSource.contains('Log in') }
 
 		when:
-		to(ForgotPasswordPage).with {
+		via(ForgotPasswordPage).with {
 			username = un
 			submit()
 		}
@@ -156,33 +163,37 @@ class RegisterSpec extends AbstractSecuritySpec {
 
 		when:
 		securityQuestionPage.with {
-			question1 = '1234'
-			question2 = '12345'
+			question1.text = '1234'
+			question2.text = '12345'
 			submit()
 		}
-		def resetPasswordPage = browser.at(ResetPasswordPage)
+		page = at(ResetPasswordPage)
 
 		and:
-		resetPasswordPage.submit()
+		page.submit()
 
 		then:
-		pageSource.contains('Password is required')
+		waitFor { pageSource.contains('Password is required') }
 
 		when:
-		resetPasswordPage.enterNewPassword('abcdefghijk','mnopqrstuwzy')
+		page.enterNewPassword('abcdefghijk','mnopqrstuwzy')
 
 		then:
-		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
-		pageSource.contains('Passwords do not match')
+		waitFor {
+			pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+			pageSource.contains('Passwords do not match')
+		}
 
 		when:
-		resetPasswordPage.enterNewPassword('aaaaaaaa', 'aaaaaaaa')
+		page.enterNewPassword('aaaaaaaa', 'aaaaaaaa')
 
 		then:
-		pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		waitFor {
+			pageSource.contains('Password must have at least one letter, number, and special character: !@#$%^&')
+		}
 
 		when:
-		resetPasswordPage.enterNewPassword('aaaaaa1#', 'aaaaaa1#')
+		page.enterNewPassword('aaaaaa1#', 'aaaaaa1#')
 
 		then:
 		waitFor { pageSource.contains('Your password was successfully changed') }
@@ -192,32 +203,30 @@ class RegisterSpec extends AbstractSecuritySpec {
 		go('')
 
 		then:
-		pageSource.contains('Log in')
+		waitFor { pageSource.contains('Log in') }
 
 		when:
-		to(ProfileListPage)
+		page = to(ProfileListPage)
 
 		and:
-		listPage.editProfile(un)
+		page.editProfile(un)
+		page = at(ProfileEditPage)
 
-		then:
-		def profileEditPage2 = browser.at(ProfileEditPage)
-
-		when:
-		profileEditPage2.deleteProfile()
+		and:
+		page.deleteProfile()
 
 		then:
 		waitFor { pageSource.contains('deleted') }
 
 		when:
 		go("user/edit?username=$un")
+		page = at(UserEditPage)
 
 		then:
-		def userEditPage = at(UserEditPage)
-		userEditPage.username.text == un
+		page.username.text == un
 
 		when:
-		userEditPage.delete()
+		page.delete()
 
 		then:
 		at(UserSearchPage)
@@ -226,6 +235,6 @@ class RegisterSpec extends AbstractSecuritySpec {
 		go("user/edit?username=$un")
 
 		then:
-		pageSource.contains('User not found')
+		waitFor { pageSource.contains('User not found') }
 	}
 }

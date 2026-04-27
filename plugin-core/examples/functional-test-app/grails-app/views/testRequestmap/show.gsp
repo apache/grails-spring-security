@@ -53,10 +53,10 @@
 				</li>
 				</g:if>
 			</ol>
-			<g:form url="[resource:testRequestmap, action:'delete']" method="DELETE">
+			<g:form url="[resource: testRequestmap, action: 'delete']" method="DELETE" onsubmit="return confirm('Are you sure?');">
 				<fieldset class="buttons">
 					<g:link class="edit" action="edit" resource="${testRequestmap}">Edit</g:link>
-					<g:actionSubmit class="delete" action="delete" value='Delete' onclick="return confirm('Are you sure?');" />
+					<input type="submit" class="delete" value="Delete">
 				</fieldset>
 			</g:form>
 		</div>

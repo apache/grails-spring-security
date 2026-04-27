@@ -49,7 +49,7 @@ class GroovyAwareAclVoter implements AccessDecisionVoter<MethodInvocation> {
 	}
 
 	boolean supports(Class<?> clazz) {
-		clazz.isAssignableFrom MethodInvocation
+		MethodInvocation.isAssignableFrom(clazz)
 	}
 
 	int vote(Authentication authentication, MethodInvocation object, Collection<ConfigAttribute> attributes) {

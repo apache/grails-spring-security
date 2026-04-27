@@ -19,6 +19,8 @@
 
 package specs
 
+import spock.lang.Unroll
+
 import grails.testing.mixin.integration.Integration
 import pages.IndexPage
 import pages.LoginPage
@@ -33,6 +35,7 @@ class InheritanceSecuritySpec extends AbstractSecuritySpec {
 		go 'testData/addTestUsers'
 	}
 
+	@Unroll
 	void 'should redirect to login page for anonymous'() {
 		when:
 		go uri

@@ -29,6 +29,7 @@ def publishedProjects = [
         'core-plugin',
         'ldap-plugin',
         'oauth2-plugin',
+        'spring-security-compat',
         'spring-security-rest',
         'spring-security-rest-gorm',
         'spring-security-rest-grailscache',

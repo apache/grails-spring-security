@@ -32,7 +32,7 @@ class RoleSearchPage extends SearchPage {
 	}
 
 	void search(String q) {
-		authority = q
+		authority.text = q
 		submit()
 	}
 }

@@ -16,44 +16,47 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.role.RoleCreatePage
 import page.role.RoleEditPage
 import page.role.RoleSearchPage
+
+import grails.testing.mixin.integration.Integration
 
 @Integration
 class RoleSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def searchPage = to(RoleSearchPage)
+		def page = to(RoleSearchPage)
 
 		then:
-		searchPage.assertNotSearched()
+		page.assertNotSearched()
 
 		when:
-		searchPage.submit()
-		searchPage = at(RoleSearchPage)
+		page.submit()
+		page = at(RoleSearchPage)
 
 		then:
-		searchPage.assertResults(1, 10, 12)
-		pageSource.contains('ROLE_COFFEE')
+		waitFor {
+			page.assertResults(1, 10, 12)
+			pageSource.contains('ROLE_COFFEE')
+		}
 	}
 
 	void testFindByAuthority() {
 		when:
-		to(RoleSearchPage).with {
+		def page = to(RoleSearchPage).tap {
 			search('ad')
 		}
-		def searchPage = at(RoleSearchPage)
 
 		then:
-		searchPage.assertResults(1, 2, 2)
-		pageSource.contains('ROLE_ADMIN')
-		pageSource.contains('ROLE_INSTEAD')
+		waitFor {
+			page.assertResults(1, 2, 2)
+			pageSource.contains('ROLE_ADMIN')
+			pageSource.contains('ROLE_INSTEAD')
+		}
 	}
 
 	void testUniqueName() {
@@ -63,52 +66,51 @@ class RoleSpec extends AbstractSecuritySpec {
 		}
 
 		then:
-		at(RoleCreatePage)
-		pageSource.contains('must be unique')
+		waitFor { pageSource.contains('must be unique') }
+
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newName = "ROLE_NEW_TEST${UUID.randomUUID()}"
+		def newName = "ROLE_NEW_TEST${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
-		to(RoleSearchPage).tap {
+		def page = to(RoleSearchPage).tap {
 			search(newName)
 		}
-		def searchPage = at(RoleSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { page.assertNoResults() }
 
 		// create
 		when:
-		to(RoleCreatePage).with {
+		via(RoleCreatePage).with {
 			create(newName)
 		}
-		def editPage = at(RoleEditPage)
+		page = at(RoleEditPage)
 
 		then:
-		editPage.authority.text == newName
+		page.authority.text == newName
 
 		// edit
 		when:
-		editPage.update("${newName}_new")
-		editPage = at(RoleEditPage)
+		page.update("${newName}_new")
+		page = at(RoleEditPage)
 
 		then:
-		editPage.authority.text == "${newName}_new"
+		waitFor { page.authority.text == "${newName}_new" }
 
 		// delete
 		when:
-		editPage.delete()
-		searchPage = at(RoleSearchPage)
+		page.delete()
+		page = at(RoleSearchPage)
 
 		and:
-		searchPage.search("${newName}_new")
-		searchPage = at(RoleSearchPage)
+		page.search("${newName}_new")
+		page = at(RoleSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { page.assertNoResults() }
 	}
 }

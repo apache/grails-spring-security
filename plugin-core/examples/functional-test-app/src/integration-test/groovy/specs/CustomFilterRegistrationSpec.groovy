@@ -16,26 +16,25 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package specs
 
-import grails.testing.mixin.integration.Integration
-import io.micronaut.http.HttpRequest
-import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
 import spock.lang.IgnoreIf
 import spock.lang.Issue
+import spock.lang.Specification
 
+import grails.testing.mixin.integration.Integration
+import org.apache.grails.testing.http.client.HttpClientSupport
+
+@Integration
 @IgnoreIf({ System.getProperty('TESTCONFIG') != 'issue503' })
 @Issue('https://github.com/apache/grails-spring-security/issues/503')
-@Integration(applicationClass = functional.test.app.Application)
-class CustomFilterRegistrationSpec extends HttpClientSpec {
+class CustomFilterRegistrationSpec extends Specification implements HttpClientSupport {
 
-    void 'GET request to /assets/spinner.gif should not throw error because custom filter is excluded'() {
-        when: "A GET request to the assets directory is made"
-        HttpResponse response = client.exchange(HttpRequest.GET("/assets/spinner.gif"))
+    void 'GET request to spinner image asset should not throw error because custom filter is excluded'() {
+        when: 'A GET request to the assets directory is made'
+        def response = http('/assets/spinner.gif')
 
-        then: "the filter is not invoked because of the chainMap definition of filters: 'none' in application.groovy"
-        response.status == HttpStatus.OK
+        then: 'the filter is not invoked because of the chainMap definition of filters: "none" in application.groovy'
+        response.assertStatus(200)
     }
 }

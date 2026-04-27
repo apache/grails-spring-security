@@ -30,23 +30,23 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @CompileStatic
 class DefaultRestAuthenticationEventPublisher extends DefaultAuthenticationEventPublisher implements RestAuthenticationEventPublisher {
 
-    private ApplicationEventPublisher applicationEventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher
 
-    public DefaultRestAuthenticationEventPublisher() {
-        this(null)
+    DefaultRestAuthenticationEventPublisher() {
+        super()
     }
 
-    public DefaultRestAuthenticationEventPublisher(ApplicationEventPublisher publisher) {
+    DefaultRestAuthenticationEventPublisher(ApplicationEventPublisher publisher) {
         super(publisher)
-        this.setApplicationEventPublisher(publisher)
+        this.applicationEventPublisher = publisher
     }
 
-    public void setApplicationEventPublisher(ApplicationEventPublisher publisher) {
+    void setApplicationEventPublisher(ApplicationEventPublisher publisher) {
         super.setApplicationEventPublisher(publisher)
         this.applicationEventPublisher = publisher
     }
 
-    public void publishTokenCreation(AccessToken accessToken) {
+    void publishTokenCreation(AccessToken accessToken) {
         if (applicationEventPublisher != null) {
             applicationEventPublisher.publishEvent(new RestTokenCreationEvent(accessToken))
         }

@@ -40,13 +40,13 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:testRole, action:'update']" method="PUT" >
+			<g:form url="[resource: testRole, action: 'update']" method="PUT">
 				<g:hiddenField name="version" value="${testRole?.version}" />
 				<fieldset class="form">
 					<g:render template="form"/>
 				</fieldset>
 				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value='Update' />
+					<g:submitButton name="update" class="save" value="Update" />
 				</fieldset>
 			</g:form>
 		</div>

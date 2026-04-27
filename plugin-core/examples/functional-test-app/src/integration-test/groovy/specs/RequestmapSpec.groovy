@@ -20,6 +20,8 @@
 package specs
 
 import com.testapp.TestDataService
+import spock.lang.Stepwise
+
 import grails.testing.mixin.integration.Integration
 import pages.requestmap.CreateRequestmapPage
 import pages.requestmap.EditRequestmapPage
@@ -27,100 +29,82 @@ import pages.requestmap.ListRequestmapPage
 import pages.requestmap.ShowRequestmapPage
 import spock.lang.IgnoreIf
 
+@Stepwise
 @Integration
 @IgnoreIf({ System.getProperty('TESTCONFIG') != 'requestmap' })
 class RequestmapSpec extends AbstractSecuritySpec {
 
 	void 'test request maps are initially present'() {
 		when:
-		go 'testRequestmap/list?max=100'
+		def page = to(ListRequestmapPage, max: 100)
 
 		then:
-		at ListRequestmapPage
-		requestmapRows.size() == TestDataService.URIS_FOR_REQUESTMAPS.size()
+		page.requestmapRows.size() == TestDataService.URIS_FOR_REQUESTMAPS.size()
 	}
 
 	void 'add a requestmap'() {
 		when:
-		to ListRequestmapPage
-		newRequestmapButton.click()
+		to(ListRequestmapPage).with {
+			newRequestmapButton.click()
+		}
+
+		and:
+		def page = at(CreateRequestmapPage)
+		page.urlField.text = '/nuevo/**'
+		page.configAttributeField.text = 'ROLE_ADMIN'
+		page.createButton.click()
+		page = at(ShowRequestmapPage)
 
 		then:
-		at CreateRequestmapPage
+		page.value('URL') == '/nuevo/**'
+		page.configAttribute == 'ROLE_ADMIN'
 
 		when:
-		$('form').url = '/nuevo/**'
-		configAttribute = 'ROLE_ADMIN'
-		createButton.click()
+		page = to(ListRequestmapPage, max: 100)
 
 		then:
-		at ShowRequestmapPage
-		value('URL') == '/nuevo/**'
-		configAttribute == 'ROLE_ADMIN'
-
-		when:
-		go 'testRequestmap/list?max=100'
-
-		then:
-		at ListRequestmapPage
-		requestmapRows.size() == (TestDataService.URIS_FOR_REQUESTMAPS.size() + 1)
+		page.requestmapRows.size() == (TestDataService.URIS_FOR_REQUESTMAPS.size() + 1)
 	}
 
 	void 'edit the details'() {
 		when:
-		go 'testRequestmap/list?max=100'
+		def page = to(ListRequestmapPage, max: 100)
+		page.requestmapRow(19).showLink.click()
+		page = at(ShowRequestmapPage)
+
+		and:
+		page.editButton.click()
+		page = at(EditRequestmapPage)
+
+		and:
+		page.urlField.text = '/secure2/**'
+		page.configAttributeField.text = 'ROLE_ADMINX'
+		page.updateButton.click()
+		page = at(ShowRequestmapPage)
 
 		then:
-		at ListRequestmapPage
-
-		when:
-		requestmapRow(19).showLink.click()
-
-		then:
-		at ShowRequestmapPage
-
-		when:
-		editButton.click()
-
-		then:
-		at EditRequestmapPage
-
-		when:
-		$('form').url = '/secure2/**'
-		configAttribute = 'ROLE_ADMINX'
-		updateButton.click()
-
-		then:
-		at ShowRequestmapPage
-		value('URL') == '/secure2/**'
-		configAttribute == 'ROLE_ADMINX'
+		page.value('URL') == '/secure2/**'
+		page.configAttribute == 'ROLE_ADMINX'
 	}
 
 	void 'delete requestmap'() {
 		when:
-		go 'testRequestmap/list?max=100'
+		def page = to(ListRequestmapPage, max: 100)
+		page.requestmapRow(19).showLink.click()
+		page = at(ShowRequestmapPage)
+		def deletedId = page.id
+
+		and:
+		withConfirm { page.deleteButton.click() }
+		page = at(ListRequestmapPage)
 
 		then:
-		at ListRequestmapPage
+		page.message == "TestRequestmap $deletedId deleted"
 
 		when:
-		requestmapRow(19).showLink.click()
+		page = to(ListRequestmapPage, max: 100)
 
 		then:
-		at ShowRequestmapPage
-
-		when:
-		def deletedId = id
-		withConfirm { deleteButton.click() }
-
-		then:
-		at ListRequestmapPage
-		message == "TestRequestmap $deletedId deleted"
-
-		when:
-		go 'testRequestmap/list?max=100'
-
-		then:
-		requestmapRows.size() == TestDataService.URIS_FOR_REQUESTMAPS.size()
+		page.requestmapRows.size() == TestDataService.URIS_FOR_REQUESTMAPS.size()
 	}
 }

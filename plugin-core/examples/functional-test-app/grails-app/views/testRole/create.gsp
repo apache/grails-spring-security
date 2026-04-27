@@ -39,12 +39,12 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:testRole, action:'save']" >
+			<g:form url="[resource: testRole, action: 'save']">
 				<fieldset class="form">
 					<g:render template="form"/>
 				</fieldset>
 				<fieldset class="buttons">
-					<g:submitButton name="create" class="save" value='Create' />
+					<input type="submit" name="create" class="save" value="Create">
 				</fieldset>
 			</g:form>
 		</div>

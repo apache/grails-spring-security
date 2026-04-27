@@ -16,10 +16,10 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package pages
 
 class CreatePage extends ScaffoldPage {
+
 	static at = {
 		title ==~ /Create.+/
 	}

@@ -82,4 +82,13 @@ class DefaultRestAuthenticationEventPublisherSpec extends Specification {
         then:
         0 * eventPublisher.publishEvent(_)
     }
+
+    void "should not execute parent publishEvent when publisher is not set"() {
+        when:
+        new DefaultRestAuthenticationEventPublisher().publishAuthenticationSuccess(accessToken)
+
+        then:
+        noExceptionThrown()
+        0 * eventPublisher.publishEvent(_)
+    }
 }

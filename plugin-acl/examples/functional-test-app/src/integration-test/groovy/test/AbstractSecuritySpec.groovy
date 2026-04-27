@@ -16,39 +16,42 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package test
+
+import pages.IndexPage
+import pages.ResetDataPage
 
 import grails.gorm.transactions.Rollback
 import grails.plugin.geb.ContainerGebSpec
-import grails.testing.mixin.integration.Integration
 import pages.LoginPage
+import pages.LogoutPage
 import spock.lang.Shared
 
 @Rollback
-@Integration
 abstract class AbstractSecuritySpec extends ContainerGebSpec {
 
 	@Shared boolean reset = false
 
 	void setup() {
 		if (!reset) {
-			go('testData/reset')
+			to(ResetDataPage)
 			reset = true
 		}
 		logout()
 	}
 
 	protected void login(String user) {
-		to(LoginPage).with {
+		via(LoginPage).with {
 			username = user
 			password = 'password'
 			loginButton.click()
 		}
+		at(IndexPage)
 	}
 
 	protected void logout() {
-		go('logout')
+		via(LogoutPage)
+		at(IndexPage)
 		clearCookies()
 	}
 }

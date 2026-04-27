@@ -16,88 +16,103 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package spec
 
-import grails.testing.mixin.integration.Integration
 import page.registrationCode.RegistrationCodeEditPage
 import page.registrationCode.RegistrationCodeSearchPage
+import spock.lang.Stepwise
 
+import grails.testing.mixin.integration.Integration
+
+@Stepwise
 @Integration
 class RegistrationCodeSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def searchPage = to(RegistrationCodeSearchPage)
+		def page = to(RegistrationCodeSearchPage)
 
 		then:
-		searchPage.assertNotSearched()
+		page.assertNotSearched()
 
 		when:
-		searchPage.submit()
-		searchPage = at(RegistrationCodeSearchPage)
+		page.submit()
+		page = at(RegistrationCodeSearchPage)
 
 		then:
-		searchPage.assertResults(1, 10, 14)
-		pageSource.contains('registration_test_2')
-		pageSource.contains('0a154624f36d42e4aa68991a9477bd04')
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 10, 14)
+		}
+		with(pageSource) {
+			contains('registration_test_2')
+			contains('0a154624f36d42e4aa68991a9477bd04')
+		}
 	}
 
 	void testFindByToken() {
 		when:
-		to(RegistrationCodeSearchPage).with {
+		def page = to(RegistrationCodeSearchPage).tap {
 			token = '4a7f88afec3746f7aab2f5d0d8df6d8e'
 			submit()
 		}
-		def searchPage = at(RegistrationCodeSearchPage)
 
 		then:
-		searchPage.assertResults(1, 1, 1)
-		pageSource.contains('registration_test_1')
-		pageSource.contains('4a7f88afec3746f7aab2f5d0d8df6d8e')
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 1, 1)
+		}
+		with(pageSource) {
+			contains('registration_test_1')
+			contains('4a7f88afec3746f7aab2f5d0d8df6d8e')
+		}
 	}
 
 	void testFindByUsername() {
 		when:
-		to(RegistrationCodeSearchPage).tap {
+		def page = to(RegistrationCodeSearchPage).tap {
 			username = 'registration_test_3'
 			submit()
 		}
-		def searchPage = at(RegistrationCodeSearchPage)
 
 		then:
-		searchPage.assertResults(1, 5, 5)
-		pageSource.contains('registration_test_3')
-		pageSource.contains('89f9bbc658b14808ae4c77c6e17e551a')
+		waitFor { // Wait for the search results page to reload
+			page.assertResults(1, 5, 5)
+		}
+		with(pageSource) {
+			contains('registration_test_3')
+			contains('89f9bbc658b14808ae4c77c6e17e551a')
+		}
 	}
 
 	void testEdit() {
 		when:
-		go('registrationCode/edit/4')
-		def editPage = at(RegistrationCodeEditPage)
+		def page = to(RegistrationCodeEditPage, 4)
 
 		then:
-		editPage.username.text == 'registration_test_1'
-		editPage.token.text == 'a50e061e0e2f424fb7fbc2ff3dae597d'
+		with(page) {
+			username.text == 'registration_test_1'
+			token.text == 'a50e061e0e2f424fb7fbc2ff3dae597d'
+		}
 
 		when:
-		editPage.with {
-			username = 'new_user'
-			token = 'new_token'
+		page.with {
+			username.text = 'new_user'
+			token.text = 'new_token'
 			submit()
 		}
-		editPage = at(RegistrationCodeEditPage)
 
 		then:
-		editPage.username.text == 'new_user'
-		editPage.token.text == 'new_token'
+		at(RegistrationCodeEditPage)
 
-		when:
-		go('registrationCode/edit/4')
-		editPage = at(RegistrationCodeEditPage)
+		when: 'visit so the edit page can be verified properly after submit'
+		to(RegistrationCodeSearchPage)
+
+		and:
+		page = to(RegistrationCodeEditPage, 4)
 
 		then:
-		editPage.username.text == 'new_user'
-		editPage.token.text == 'new_token'
+		with(page) {
+			username.text == 'new_user'
+			token.text == 'new_token'
+		}
 	}
 }

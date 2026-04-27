@@ -16,14 +16,15 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package pages
 
 import geb.Page
 
 class ScaffoldPage extends Page {
+
 	static content = {
-		heading { $('h1') }
+		h1 { $('h1') }
+		heading { h1.text() }
 		message { $('div.message').text() }
 	}
 

@@ -29,17 +29,19 @@ class AclSidSpec extends AbstractSecuritySpec {
 
 	void testFindAll() {
 		when:
-		def searchPage = to(AclSidSearchPage)
+		def page = to(AclSidSearchPage)
 
 		then:
-		searchPage.assertNotSearched()
+		page.assertNotSearched()
 
 		when:
-		searchPage.submit()
-		searchPage = at(AclSidSearchPage)
+		page.submit()
+		page = at(AclSidSearchPage)
 
 		then:
-		searchPage.assertResults(1, 3, 3)
+		waitFor { // Wait for the search page to be reloaded
+			page.assertResults(1, 3, 3)
+		}
 	}
 
 	void testFindBySid() {
@@ -47,12 +49,16 @@ class AclSidSpec extends AbstractSecuritySpec {
 		to(AclSidSearchPage).with {
 			search('user')
 		}
-		def searchPage = at(AclSidSearchPage)
+		def page = at(AclSidSearchPage)
 
 		then:
-		searchPage.assertResults(1, 2, 2)
-		pageSource.contains('user1')
-		pageSource.contains('user2')
+		waitFor { // Wait for the search page to be reloaded
+			page.assertResults(1, 2, 2)
+		}
+		with(pageSource) {
+			contains('user1')
+			contains('user2')
+		}
 	}
 
 	void testFindByPrincipal() {
@@ -65,9 +71,11 @@ class AclSidSpec extends AbstractSecuritySpec {
 
 		then:
 		at(AclSidSearchPage)
-		pageSource.contains('user1')
-		pageSource.contains('user2')
-		pageSource.contains('admin')
+		waitFor { // Wait for the search page to be reloaded
+			pageSource.contains('user1')
+			pageSource.contains('user2')
+			pageSource.contains('admin')
+		}
 	}
 
 	void testUniqueName() {
@@ -78,12 +86,14 @@ class AclSidSpec extends AbstractSecuritySpec {
 
 		then:
 		at(AclSidCreatePage)
-		pageSource.contains('must be unique')
+		waitFor { // Wait for the create page to be reloaded
+			pageSource.contains('must be unique')
+		}
 	}
 
 	void testCreateAndEdit() {
 		given:
-		String newName = "newuser${UUID.randomUUID()}"
+		def newName = "newuser${UUID.randomUUID()}"
 
 		// make sure it doesn't exist
 		when:
@@ -91,42 +101,48 @@ class AclSidSpec extends AbstractSecuritySpec {
 			sid = newName
 			submit()
 		}
-		def searchPage = at(AclSidSearchPage)
+		def page = at(AclSidSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { // Wait for the search page to be reloaded
+			page.assertNoResults()
+		}
 
 		// create
 		when:
 		to(AclSidCreatePage).tap {
 			create(newName, true)
 		}
-		def editPage = at(AclSidEditPage)
+		page = at(AclSidEditPage)
 
 		then:
-		editPage.sid.text == newName
-		editPage.principal.checked
+		page.sid.text == newName
+		page.principal.checked
 
 		// edit
 		when:
-		editPage.sid = "${newName}_new"
-		editPage.submit()
-		editPage = at(AclSidEditPage)
+		page.sid = "${newName}_new"
+		page.submit()
+		page = at(AclSidEditPage)
 
 		then:
-		editPage.sid.text == "${newName}_new"
+		waitFor { // Wait for the edit page to be reloaded
+			page.sid.text == "${newName}_new"
+		}
 
 		// delete
 		when:
-		editPage.delete()
-		searchPage = at(AclSidSearchPage)
+		page.delete()
+		page = at(AclSidSearchPage)
 
 		and:
-		searchPage.sid = "${newName}_new"
-		searchPage.submit()
-		searchPage = at(AclSidSearchPage)
+		page.sid = "${newName}_new"
+		page.submit()
+		page = at(AclSidSearchPage)
 
 		then:
-		searchPage.assertNoResults()
+		waitFor { // Wait for the search page to be reloaded
+			page.assertNoResults()
+		}
 	}
 }

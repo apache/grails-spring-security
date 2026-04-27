@@ -16,165 +16,190 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package specs
 
-import functional.test.app.Application
-import grails.testing.mixin.integration.Integration
-import io.micronaut.http.HttpRequest
-import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
-import io.micronaut.http.uri.UriTemplate
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.util.MultiValueMap
+import java.net.http.HttpRequest
+import java.nio.charset.StandardCharsets
+
 import spock.lang.IgnoreIf
 import spock.lang.Issue
 import spock.lang.Shared
+import spock.lang.Specification
 
+import grails.testing.mixin.integration.Integration
+import org.apache.grails.testing.http.client.HttpClientSupport
+
+@Integration
 @IgnoreIf({ System.getProperty('TESTCONFIG') != 'putWithParams' })
 @Issue('https://github.com/apache/grails-spring-security/issues/554')
-@Integration(applicationClass = Application)
-class TestFormParamsControllerSpec extends HttpClientSpec {
+class TestFormParamsControllerSpec extends Specification implements HttpClientSupport {
 
-    @Shared String USERNAME = "Admin"
-    @Shared String PASSWORD = "myPassword"
+    @Shared String USERNAME = 'Admin'
+    @Shared String PASSWORD = 'myPassword'
 
     void 'PUT request with no parameters'() {
+        when: 'A PUT request with no parameters is made'
+        def response = httpPut(
+                '/testFormParams/permitAll',
+                '',
+                'application/x-www-form-urlencoded'
+        )
 
-        when: "A PUT request with no parameters is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT("/testFormParams/permitAll", "").contentType("application/x-www-form-urlencoded"), String)
-
-        then: "the controller responds with the correct status and parameters are null"
-        response.status == HttpStatus.OK
-        response.body() == "username: null, password: null"
+        then: 'the controller responds with the correct status and parameters are null'
+        response.assertEquals(200, 'username: null, password: null')
     }
 
     void 'PUT request with parameters in the URL'() {
-        when: "A PUT request with no parameters is made"
-        String expandUrl = new UriTemplate("/testFormParams/permitAll{?username,password}").expand(["username": USERNAME, "password": PASSWORD])
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT(expandUrl, "").contentType("application/x-www-form-urlencoded"), String)
+        when: 'A PUT request with parameters is made'
+        def response = httpPut(
+                urlWithParams('/testFormParams/permitAll', username: USERNAME, password: PASSWORD),
+                '',
+                'application/x-www-form-urlencoded'
+        )
 
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PUT request with parameters as x-www-form-urlencoded'() {
-        given: "a form with username and password params"
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
-        form.add("username", USERNAME)
-        form.add("password", PASSWORD)
+        when: 'A PUT request with form params is made'
+        def request = newHttpRequestWith('/testFormParams/permitAll') {
+            method('PUT', formBodyWith(username: USERNAME, password: PASSWORD))
+            header('Content-Type', 'application/x-www-form-urlencoded')
+        }
+        def response = sendHttpRequest(request)
 
-        when: "A PUT request with form params is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT("/testFormParams/permitAll", form).contentType("application/x-www-form-urlencoded"), String)
-
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PUT request with NULL Content-Type and parameters in the URL'() {
-        when: "A PUT request with no parameters is made"
-        String expandUrl = new UriTemplate("/testFormParams/permitAll{?username,password}").expand(["username": USERNAME, "password": PASSWORD])
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT(expandUrl, ""), String)
+        when: 'A PUT request with no parameters is made'
+        def url = urlWithParams('/testFormParams/permitAll', username: USERNAME, password: PASSWORD)
+        def request = newHttpRequestWith(url) {
+            method('PUT', HttpRequest.BodyPublishers.ofString(''))
+        }
+        def response = sendHttpRequest(request)
 
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PUT request with NULL Content-Type'() {
-        when: "A PUT request with NULL Content-Type is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT("/testFormParams/permitAll", ""), String)
+        when: 'A PUT request with NULL Content-Type is made'
+        def request = newHttpRequestWith('/testFormParams/permitAll') {
+            method('PUT', HttpRequest.BodyPublishers.noBody())
+        }
+        def response = sendHttpRequest(request)
 
         then: "the controller responds with the correct status and parameters are null"
-        response.status == HttpStatus.OK
-        response.body() == "username: null, password: null"
+        response.assertEquals(200, 'username: null, password: null')
     }
 
     void 'PATCH request with no parameters'() {
-        when: "A PATCH request with no parameters is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH("/testFormParams/permitAll", "").contentType("application/x-www-form-urlencoded"), String)
+        when: 'A PATCH request with no parameters is made'
+        def response = httpPatch(
+                '/testFormParams/permitAll',
+                '',
+                'application/x-www-form-urlencoded'
+        )
 
-        then: "the controller responds with the correct status and parameters are null"
-        response.status == HttpStatus.OK
-        response.body() == "username: null, password: null"
+        then: 'the controller responds with the correct status and parameters are null'
+        response.assertEquals(200, 'username: null, password: null')
     }
 
     void 'PATCH request with parameters in the URL'() {
         when:
-        String expandUrl = new UriTemplate("/testFormParams/permitAll{?username,password}").expand(["username": USERNAME, "password": PASSWORD])
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH(expandUrl, "").contentType("application/x-www-form-urlencoded"), String)
+        def response = httpPatch(
+                urlWithParams('/testFormParams/permitAll', username: USERNAME, password: PASSWORD),
+                '',
+                'application/x-www-form-urlencoded'
+        )
 
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PATCH request with parameters as x-www-form-urlencoded'() {
-        given: "a form with username and password params"
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
-        form.add("username", USERNAME)
-        form.add("password", PASSWORD)
+        when: 'A PATCH request with form params is made'
+        def request = newHttpRequestWith('/testFormParams/permitAll') {
+            method('PATCH', formBodyWith(username: USERNAME, password: PASSWORD))
+            header('Content-Type', 'application/x-www-form-urlencoded')
+        }
+        def response = sendHttpRequest(request)
 
-        when: "A PATCH request with form params is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH("/testFormParams/permitAll", form
-        ).contentType("application/x-www-form-urlencoded"), String)
-
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PUT request to secured endpoint with parameters as x-www-form-urlencoded'() {
-        given: "a form with username and password params"
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
-        form.add("username", USERNAME)
-        form.add("password", PASSWORD)
+        when: 'A PUT request with form params is made to a secured endpoint'
+        def request = newHttpRequestWith('/testFormParams/permitAdmin') {
+            method('PUT', formBodyWith(username: USERNAME, password: PASSWORD))
+            header('Content-Type', 'application/x-www-form-urlencoded')
+        }
+        def response = sendHttpRequest(request)
 
-        when: "A PUT request with form params is made to a secured endpoint"
-        HttpResponse<String> response = client.exchange(HttpRequest.PUT("/testFormParams/permitAdmin", form
-        ).contentType("application/x-www-form-urlencoded"), String)
-
-        then: "the request is not processed by the controller"
-        response.status == HttpStatus.OK // MN Client isn't exposing this is a 302 to login
-        response.body() != "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the request is not processed by the controller'
+        response.assertNotEquals(200, "username: $USERNAME, password: $PASSWORD") // Client redirects to login page
     }
 
     void 'PATCH request to secured endpoint with parameters as x-www-form-urlencoded'() {
-        given:
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
-        form.add("username", USERNAME)
-        form.add("password", PASSWORD)
+        when: 'A PATCH request with form params is made to a secured endpoint'
+        def request = newHttpRequestWith('/testFormParams/permitAdmin') {
+            method('PATCH', formBodyWith(username: USERNAME, password: PASSWORD))
+            header('Content-Type', 'application/x-www-form-urlencoded')
+        }
+        def response = sendHttpRequest(request)
 
-        when: "A PATCH request with form params is made to a secured endpoint"
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH("/testFormParams/permitAdmin", form
-        ).contentType("application/x-www-form-urlencoded"), String)
-
-        then: "the request is not processed by the controller"
-        response.status == HttpStatus.OK // MN Client isn't exposing this is a 302 to login
-        response.body() != "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the request is not processed by the controller'
+        response.assertNotEquals(200, "username: $USERNAME, password: $PASSWORD") // Client redirects to login page
     }
 
     void 'PATCH request with NULL Content-Type and parameters in the URL'() {
         when:
-        String expandUrl = new UriTemplate("/testFormParams/permitAll{?username,password}").expand(["username": USERNAME, "password": PASSWORD])
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH(expandUrl, ""
-        ).contentType("application/x-www-form-urlencoded"), String)
+        def url = urlWithParams('/testFormParams/permitAll', username: USERNAME, password: PASSWORD)
+        def request = newHttpRequestWith(url) {
+            method('PATCH', HttpRequest.BodyPublishers.noBody())
+        }
+        def response = sendHttpRequest(request)
 
-        then: "the controller responds with the correct status and parameters are extracted"
-        response.status == HttpStatus.OK
-        response.body() == "username: ${USERNAME}, password: ${PASSWORD}"
+        then: 'the controller responds with the correct status and parameters are extracted'
+        response.assertEquals(200, "username: $USERNAME, password: $PASSWORD")
     }
 
     void 'PATCH request with NULL Content-Type'() {
-        when: "A PATCH request with NULL Content-Type is made"
-        HttpResponse<String> response = client.exchange(HttpRequest.PATCH("/testFormParams/permitAll", ""
-        ), String)
+        when: 'A PATCH request with NULL Content-Type is made'
+        def request = newHttpRequestWith('/testFormParams/permitAll') {
+            method('PATCH', HttpRequest.BodyPublishers.noBody())
+        }
+        def response = sendHttpRequest(request)
 
-        then: "the controller responds with the correct status and parameters are null"
-        response.status == HttpStatus.OK
-        response.body() == "username: null, password: null"
+        then: 'the controller responds with the correct status and parameters are null'
+        response.assertEquals(200, 'username: null, password: null')
     }
 
+    static String urlWithParams(Map<String, String> params, String url) {
+        if (!params) {
+            return url
+        }
+        def queryString = params.collect { key, value ->
+            "${encode(key)}=${encode(value)}"
+        }.join('&')
+        "$url${url.contains('?') ? '&' : '?'}$queryString"
+    }
+
+    private static HttpRequest.BodyPublisher formBodyWith(Map<String, String> form) {
+        HttpRequest.BodyPublishers.ofString(toFormUrlEncoded(form))
+    }
+
+    private static String toFormUrlEncoded(Map<String, String> form) {
+        form.collect { key, value ->
+            "${encode(key)}=${encode(value)}"
+        }.join('&')
+    }
+
+    private static String encode(String value) {
+        URLEncoder.encode(value, StandardCharsets.UTF_8)
+    }
 }

@@ -68,6 +68,7 @@ dependencies {
     }
 
     api project(':core-plugin')
+    api project(':spring-security-compat')
     api 'org.springframework.security:spring-security-acl'
 }
 
