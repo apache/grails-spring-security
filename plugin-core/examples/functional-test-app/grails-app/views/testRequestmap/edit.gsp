@@ -47,7 +47,7 @@
 					<g:render template="form"/>
 				</fieldset>
 				<fieldset class="buttons">
-					<input type="submit" class="save" value='Update'>
+					<g:submitButton name="update" class="save" value='Update' />
 				</fieldset>
 			</g:form>
 		</div>

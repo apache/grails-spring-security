@@ -26,7 +26,7 @@ group = 'org.apache.grails.security'
 ext {
     publishArtifactId = 'grails-spring-security-compat'
     pomTitle = 'Grails Spring Security Compatibility Module'
-    pomDescription = 'Compatibility classes for Grails Spring Security when running against newer Spring Security versions.'
+    pomDescription = 'Compatibility classes that make Grails Spring Security 8 work with newer Spring Security versions, such as 7 and later.'
     pomDevelopers = [
             matrei: 'Mattias Reichel',
     ]

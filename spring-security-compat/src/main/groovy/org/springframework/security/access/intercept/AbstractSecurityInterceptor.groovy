@@ -23,6 +23,14 @@ import groovy.transform.CompileStatic
 import org.springframework.security.access.AccessDecisionManager
 import org.springframework.security.authentication.AuthenticationManager
 
+/**
+ * Based on the class of the same name in Spring Security, removed in
+ * Spring Security 7. This compatibility shim keeps the property-bag API
+ * (authenticationManager, accessDecisionManager, securityMetadataSource, etc.)
+ * that the Grails Spring Security plugin still relies on, so subclasses such as
+ * the plugin's filter-security and method-security interceptors continue to
+ * compile and run unchanged.
+ */
 @CompileStatic
 abstract class AbstractSecurityInterceptor {
 
