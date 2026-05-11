@@ -1,0 +1,10 @@
+plugins {
+    id 'groovy'
+    id 'java-test-fixtures'
+}
+
+dependencies {
+    testFixturesImplementation(platform("org.apache.grails:grails-bom:$grailsVersion"))
+    testFixturesImplementation(testFixtures(project(':core-plugin')))
+    testFixturesImplementation(testFixtures('org.apache.grails:grails-geb'))
+}
