@@ -25,7 +25,6 @@ import org.springframework.security.config.http.SecurityFiltersMapper
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.web.FilterChainProxy
-import org.springframework.security.web.PortResolverImpl
 import org.springframework.security.web.savedrequest.DefaultSavedRequest
 import org.springframework.web.filter.GenericFilterBean
 import spock.lang.Unroll
