@@ -1,0 +1,614 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Machine-readable companion to THREAT_MODEL.md (§15).
+# THREAT_MODEL.md is canonical; regenerate this file whenever the prose
+# document changes.
+
+project:
+  name: apache/grails-spring-security
+  version_binding: "8.0.x"
+  threat_model: THREAT_MODEL.md
+  status: draft
+  date: "2026-01"
+  disclosure: SECURITY.md
+
+# §2 - component families and their in/out-of-model disposition.
+components:
+  - name: core_authentication_authorization
+    in_model: true
+    representative_files:
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/SpringSecurityCoreGrailsPlugin.groovy
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/SpringSecurityUtils.groovy
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/web/access/intercept/AbstractFilterInvocationDefinition.groovy
+  - name: gorm_user_store
+    in_model: true
+    representative_files:
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/userdetails/GormUserDetailsService.groovy
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/web/authentication/rememberme/GormPersistentTokenRepository.groovy
+  - name: spring_boot_autoconfig_exclusion
+    in_model: true
+    representative_files:
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/SecurityAutoConfigurationExcluder.groovy
+      - plugin-core/plugin/src/main/groovy/grails/plugin/springsecurity/componentbased/ComponentBasedConfigBlender.groovy
+  - name: acl_object_level_permissions
+    in_model: true
+    representative_files:
+      - plugin-acl/plugin/src/main/groovy/grails/plugin/springsecurity/acl/SpringSecurityAclGrailsPlugin.groovy
+      - plugin-acl/plugin/src/main/groovy/grails/plugin/springsecurity/acl/jdbc/GormAclLookupStrategy.groovy
+  - name: spring_security_compat_shim
+    in_model: true
+    notes: "Vendored copies of Spring Security 5.x classes removed in 6/7."
+    representative_files:
+      - spring-security-compat/src/main/groovy/org/springframework/security/web/access/intercept/FilterSecurityInterceptor.groovy
+      - spring-security-compat/src/main/groovy/org/springframework/security/access/vote/AffirmativeBased.groovy
+      - spring-security-compat/src/main/groovy/org/springframework/security/web/util/matcher/AntPathRequestMatcher.groovy
+      - spring-security-compat/src/main/groovy/org/springframework/security/access/intercept/RunAsManagerImpl.groovy
+  - name: ldap_authentication
+    in_model: true
+    representative_files:
+      - plugin-ldap/plugin/src/main/groovy/grails/plugin/springsecurity/ldap/SpringSecurityLdapGrailsPlugin.groovy
+      - plugin-ldap/plugin/grails-app/conf/DefaultLdapSecurityConfig.groovy
+  - name: cas_single_sign_on
+    in_model: true
+    representative_files:
+      - plugin-cas/plugin/src/main/groovy/grails/plugin/springsecurity/cas/SpringSecurityCasGrailsPlugin.groovy
+      - plugin-cas/plugin/grails-app/conf/DefaultCasSecurityConfig.groovy
+  - name: oauth2_client
+    in_model: true
+    representative_files:
+      - plugin-oauth2/plugin/src/main/groovy/grails/plugin/springsecurity/oauth2/service/OAuth2AbstractProviderService.groovy
+      - plugin-oauth2/plugin/src/main/groovy/grails/plugin/springsecurity/oauth2/util/OAuth2ProviderConfiguration.groovy
+  - name: rest_jwt_authentication
+    in_model: true
+    representative_files:
+      - plugin-rest/spring-security-rest/src/main/groovy/grails/plugin/springsecurity/rest/RestAuthenticationFilter.groovy
+      - plugin-rest/spring-security-rest/src/main/groovy/grails/plugin/springsecurity/rest/RestTokenValidationFilter.groovy
+      - plugin-rest/spring-security-rest/grails-app/services/grails/plugin/springsecurity/rest/JwtService.groovy
+  - name: rest_token_storage_backends
+    in_model: true
+    representative_files:
+      - plugin-rest/spring-security-rest-gorm/src/main/groovy/grails/plugin/springsecurity/rest/token/storage/GormTokenStorageService.groovy
+      - plugin-rest/spring-security-rest-redis/src/main/groovy/grails/plugin/springsecurity/rest/token/storage/RedisTokenStorageService.groovy
+      - plugin-rest/spring-security-rest-memcached/src/main/groovy/grails/plugin/springsecurity/rest/token/storage/memcached/MemcachedTokenStorageService.groovy
+      - plugin-rest/spring-security-rest-grailscache/src/main/groovy/grails/plugin/springsecurity/rest/token/storage/GrailsCacheTokenStorageService.groovy
+  - name: ui_plugin_controllers
+    in_model: true
+    notes: "The ONLY plugin that ships live HTTP endpoints."
+    representative_files:
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/UserController.groovy
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/RoleController.groovy
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/RequestmapController.groovy
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/RegisterController.groovy
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/AclEntryController.groovy
+      - plugin-ui/plugin/grails-app/controllers/grails/plugin/springsecurity/ui/SecurityInfoController.groovy
+  - name: examples_and_test_apps
+    in_model: false
+    out_of_model_reason: "Not shipped in plugin distributions (§3)."
+    representative_files:
+      - plugin-acl/examples/
+      - plugin-cas/examples/
+      - plugin-core/examples/
+      - plugin-ldap/examples/
+      - plugin-rest/spring-security-rest-testapp-profile/
+      - plugin-ui/examples/
+
+# §5a - configuration knobs that change the security envelope.
+config_knobs:
+  - name: password.algorithm
+    default: bcrypt
+    security_relevant: true
+    if_changed_to_noop_or_message_digest: OUT-OF-MODEL_non_default_build
+    section: "§5a, §8 P1"
+  - name: password.bcrypt.logrounds
+    default: 10
+    security_relevant: true
+    maintainer_stance: unresolved
+    section: "§5a, §10 #1, §14 wave 1"
+  - name: useSessionFixationPrevention
+    default: true
+    security_relevant: true
+    if_disabled: OUT-OF-MODEL_non_default_build
+    section: "§5a, §8 P2"
+  - name: rejectIfNoRule
+    default: true
+    security_relevant: true
+    if_disabled: OUT-OF-MODEL_non_default_build
+    section: "§5a, §8 P3"
+  - name: fii.rejectPublicInvocations
+    default: true
+    security_relevant: true
+    notes: "Both rejectIfNoRule:false AND fii.rejectPublicInvocations:false silently passes uncovered URLs."
+    section: "§5a"
+  - name: excludeSpringSecurityAutoConfiguration
+    default: true
+    security_relevant: true
+    if_disabled: OUT-OF-MODEL_non_default_build
+    notes: "Documented as a footgun in README.md."
+    section: "§5a, §11"
+  - name: componentBased.bridgeSpringSecurityUserProperties
+    default: true
+    security_relevant: true
+    notes: "Leftover spring.security.user.* config creates {noop}-prefixed credential in production."
+    section: "§5a, §9 false-friend"
+  - name: rememberMe.persistent
+    default: false
+    security_relevant: true
+    notes: "When false, MD5-HMAC TokenBasedRememberMeServices is used."
+    section: "§5a"
+  - name: cacheUsers
+    default: false
+    security_relevant: true
+    notes: "Account lock/disable changes bypassed until cache eviction; documented."
+    section: "§5a"
+  - name: secureChannel.useHeaderCheckChannelSecurity
+    default: false
+    security_relevant: true
+    notes: "Even when true, PortResolverImpl does not consult X-Forwarded-Port."
+    section: "§5a, §9"
+  - name: ipRestrictions
+    default: empty
+    security_relevant: true
+    notes: "IpAddressFilter uses request.remoteAddr only; no X-Forwarded-For."
+    section: "§5a, §9"
+  - name: useSecurityEventListener
+    default: false
+    security_relevant: true
+    notes: "Groovy Closure execution from application.groovy."
+    section: "§5a"
+  - name: useRunAs
+    default: false
+    security_relevant: true
+    notes: "RunAsManagerImpl does not HMAC the substituted token."
+    section: "§5a, §9 false-friend"
+  - name: ldap.context.server
+    default: ldap://localhost:389
+    security_relevant: true
+    notes: "Plaintext by default; must change to ldaps:// in production."
+    section: "§5a, §9"
+  - name: ldap.authenticator.useBind
+    default: true
+    security_relevant: true
+    section: "§5a, §8 P8"
+  - name: ldap.context.referral
+    default: null
+    security_relevant: true
+    notes: "'follow' chases referrals to arbitrary servers."
+    section: "§5a, §11"
+  - name: cas.useSingleSignout
+    default: true
+    security_relevant: true
+    notes: "Forces useSessionFixationPrevention = false globally."
+    section: "§5a, §9 false-friend, §11"
+  - name: cas.key
+    default: grails-spring-security-cas
+    security_relevant: true
+    notes: "Default value is shipped in source; MUST change for production."
+    section: "§5a, §10 #3"
+  - name: cas.proxyCallbackUrl
+    default: null
+    security_relevant: true
+    notes: "When set, exposes PGT receptor endpoint."
+    section: "§5a"
+  - name: oauth2.providers.{name}.debug
+    default: false
+    security_relevant: true
+    notes: "When true, raw OAuth traffic including tokens is logged."
+    section: "§5a, §11"
+  - name: oauth2.registration.roleNames
+    default: ["ROLE_USER"]
+    security_relevant: true
+    notes: "Granted to every OAuth2-authenticated user regardless of provider claims."
+    section: "§5a, §10 #10"
+  - name: oauth2_state_generation
+    default: "java.util.Random over 999_999 space"
+    security_relevant: true
+    notes: "Not cryptographically secure; state-CSRF feasible."
+    section: "§5a, §9"
+  - name: oauth2_pkce
+    default: not_implemented
+    security_relevant: true
+    section: "§5a, §9"
+  - name: rest.token.storage.jwt.secret
+    default: null
+    security_relevant: true
+    notes: "Null + null key provider + useSignedJwt:false + useEncryptedJwt:false enables PlainJWT (alg=none) acceptance."
+    section: "§5a, §8 P10, §9, §11"
+  - name: rest.token.storage.jwt.algorithm
+    default: HS256
+    security_relevant: true
+    notes: "No algorithm allow-list; any Nimbus-supported algorithm accepted."
+    section: "§5a, §9"
+  - name: rest.token.storage.jwt.refreshExpiration
+    default: null
+    security_relevant: true
+    notes: "Refresh tokens never expire by default."
+    section: "§5a, §9, §10 #5"
+  - name: rest.token.validation.active
+    default: true
+    security_relevant: true
+    notes: "When false, validation filter is no-op."
+    section: "§5a"
+  - name: rest.login.useRequestParamsCredentials
+    default: false
+    security_relevant: true
+    notes: "When true, credentials appear in URLs and logs."
+    section: "§5a, §10 #17"
+  - name: security.ui.encodePassword
+    default: false
+    security_relevant: true
+    notes: "When false, UI service stores cleartext passwords. MUST set to true for production."
+    section: "§5a, §10 #8, §11"
+  - name: security.ui.register.requireEmailValidation
+    default: "true"
+    security_relevant: true
+    notes: "When false, accounts activated immediately."
+    section: "§5a"
+  - name: security.ui.register.defaultRoleNames
+    default: ["ROLE_USER"]
+    security_relevant: true
+    notes: "Roles granted on self-registration."
+    section: "§5a, §10 #10"
+
+# §6 - per-input trust.
+entry_points:
+  - surface: form_login
+    parameter: j_username_j_password
+    attacker_controllable: true
+  - surface: basic_or_digest_auth
+    parameter: Authorization_header
+    attacker_controllable: true
+  - surface: remember_me_cookie
+    parameter: cookie_value
+    attacker_controllable: true
+  - surface: rest_login
+    parameter: json_body
+    attacker_controllable: true
+  - surface: bearer_token
+    parameter: Authorization_Bearer
+    attacker_controllable: true
+  - surface: oauth2_callback
+    parameter: code_state_error
+    attacker_controllable: true
+  - surface: cas_callback
+    parameter: ticket
+    attacker_controllable: true
+  - surface: ui_user_crud
+    parameter: form_fields_and_ROLE_checkboxes
+    attacker_controllable: true
+    notes: "Mass-assignment via params; role checkbox names drive role grants."
+  - surface: ui_role_crud
+    parameter: authority_string
+    attacker_controllable: true
+  - surface: ui_requestmap_crud
+    parameter: url_configAttribute_httpMethod
+    attacker_controllable: true
+    notes: "Writes the authorization policy."
+  - surface: ui_acl_crud
+    parameter: mask_granting_sid_aceOrder
+    attacker_controllable: true
+  - surface: ui_register
+    parameter: RegisterCommand
+    attacker_controllable: true
+  - surface: ui_forgot_password
+    parameter: username
+    attacker_controllable: true
+    notes: "Account-enumeration via response differentiation."
+  - surface: ui_reset_password
+    parameter: t_token_and_new_password
+    attacker_controllable: true
+    notes: "No token expiry."
+  - surface: requestmap_table
+    parameter: url_configAttribute
+    attacker_controllable: false
+    trusted_role: developer
+  - surface: acl_class_table
+    parameter: className
+    attacker_controllable: false
+    trusted_role: developer
+    notes: "Loaded via Class.forName in GormAclLookupStrategy."
+  - surface: ldap_manager_credentials
+    parameter: managerDn_managerPassword
+    attacker_controllable: false
+    trusted_role: operator
+  - surface: cas_server_response
+    parameter: xml_body
+    attacker_controllable: false_if_TLS
+    trusted_role: operator
+  - surface: oauth2_provider_response
+    parameter: json_body
+    attacker_controllable: false_if_TLS
+    trusted_role: operator
+  - surface: application_groovy_closures
+    parameter: closure_body
+    attacker_controllable: false
+    trusted_role: developer
+
+# §7 - adversary model summary.
+adversaries:
+  in_scope:
+    - id: unauthenticated_http_end_user
+    - id: authenticated_low_privilege_user
+      notes: "Vertical/horizontal escalation via mass-assignment, role creation, requestmap writes, ACL grants."
+    - id: compromised_external_idp
+      notes: "LDAP, CAS, OAuth2 - returns crafted authn responses."
+  out_of_scope:
+    - id: local_shell_attacker
+    - id: classpath_compromise
+    - id: malicious_grails_plugin
+    - id: build_environment_compromise
+    - id: jvm_co_tenant
+    - id: malicious_profile_via_MavenProfileRepository
+    - id: tls_mitm_on_operator_trusted_channels
+    - id: side_channel_observer
+
+# §8 - claimed security properties.
+properties_provided:
+  - id: P1
+    description: "Passwords stored as bcrypt hashes by default via DelegatingPasswordEncoder."
+    cwe: CWE-256
+    plugin: core
+    severity: security_critical
+    provenance: documented
+    source: plugin-core/docs/src/docs/passwords/hashing.adoc
+  - id: P2
+    description: "Session fixation prevented by default."
+    cwe: CWE-384
+    plugin: core
+    severity: security_critical
+    provenance: documented
+    source: plugin-core/docs/src/docs/sessionFixation.adoc
+  - id: P3
+    description: "Pessimistic URL coverage: rejectIfNoRule denies uncovered URLs by default."
+    cwe: CWE-862
+    plugin: core
+    severity: security_critical
+    provenance: documented
+    source: plugin-core/docs/src/docs/requestMappings.adoc
+  - id: P4
+    description: "FilterSecurityInterceptor enforces @Secured/Requestmap rules at HTTP boundary."
+    cwe: CWE-285
+    plugin: core+compat
+    severity: security_critical
+    provenance: documented
+  - id: P5
+    description: "AclPermissionEvaluator gates object-level permissions for @PreAuthorize(hasPermission)."
+    cwe: CWE-285
+    plugin: acl
+    severity: security_critical
+    provenance: inferred
+  - id: P6
+    description: "Persistent remember-me detects token theft via series/token rotation."
+    cwe: CWE-294
+    plugin: core
+    severity: security_critical
+    provenance: inferred
+  - id: P7
+    description: "Account-status accessors gate authentication."
+    cwe: CWE-287
+    plugin: core
+    severity: security_critical
+    provenance: documented
+    source: plugin-core/docs/src/docs/passwords/locking.adoc
+  - id: P8
+    description: "LDAP bind authentication forwards credentials to LDAP server."
+    cwe: CWE-522
+    plugin: ldap
+    severity: security_critical
+    provenance: documented
+  - id: P9
+    description: "CAS ticket validation contacts CAS server over HTTPS."
+    cwe: CWE-294
+    plugin: cas
+    severity: security_critical
+    provenance: documented
+  - id: P10
+    description: "JWT signature verified before claims trusted (HMAC for signed, RSA for encrypted)."
+    cwe: CWE-347
+    plugin: rest
+    severity: security_critical
+    provenance: inferred
+    open_question: "§14 wave 1 - alg=none acceptance when both secret and key provider are null"
+  - id: P11
+    description: "REST validation filter checks JWT exp claim."
+    cwe: CWE-613
+    plugin: rest
+    severity: security_critical
+    provenance: inferred
+  - id: P12
+    description: "Channel security redirects HTTP to HTTPS when REQUIRES_SECURE_CHANNEL configured."
+    cwe: CWE-319
+    plugin: core+compat
+    severity: security_critical
+    provenance: documented
+    source: plugin-core/docs/src/docs/channelSecurity.adoc
+  - id: P13
+    description: "withForm blocks naive CSRF on UI forms opting in via <s2ui:form useToken=\"true\">."
+    cwe: CWE-352
+    plugin: ui
+    severity: security_critical
+    provenance: inferred
+  - id: P14
+    description: "Password comparison delegates to PasswordEncoder.matches() (constant-time for bcrypt/pbkdf2/argon2/scrypt)."
+    cwe: CWE-208
+    plugin: core
+    severity: hardening
+    provenance: inferred
+  - id: P15
+    description: "Username enumeration via authentication-exception type suppressed by default."
+    cwe: CWE-204
+    plugin: core
+    severity: security_critical
+    provenance: inferred
+
+# §9 - properties the plugins do NOT provide.
+properties_disclaimed:
+  - id: csrf_on_rest_endpoints
+  - id: csrf_on_forms_without_useToken
+  - id: anti_bot_rate_limiting
+  - id: reset_token_expiry
+  - id: account_enumeration_resistance_on_forgot_password
+  - id: refresh_token_rotation
+  - id: stateless_jwt_revocation
+  - id: jwt_claim_validation_beyond_exp
+  - id: jwt_algorithm_allowlist
+  - id: alg_none_rejection_when_both_secret_and_keyprovider_null
+  - id: oauth2_pkce
+  - id: oauth2_secure_state_parameter
+  - id: x_forwarded_for_in_ip_address_filter
+  - id: x_forwarded_port_in_port_resolver
+  - id: cas_certificate_pinning
+  - id: ldap_starttls
+  - id: ldap_tls_default
+  - id: session_fixation_when_cas_slo_enabled
+  - id: mass_assignment_protection_in_ui_bindings
+  - id: default_authorization_on_ui_endpoints
+  - id: password_encoding_when_security_ui_encodePassword_false
+  - id: redis_memcached_deserialization_safety_when_backend_reachable
+  - id: cross_tenant_isolation
+  - id: transport_security
+
+# False-friend properties.
+false_friends:
+  - id: secured_annotation_enforcement
+    looks_like: "Method-level access control."
+    actually_is: "Populates FilterSecurityInterceptor metadata; inert without the interceptor in the filter chain."
+  - id: bindable_false_in_ui_domains
+    looks_like: "Field-level access control."
+    actually_is: "Plugin ships no bindable:false constraints; application must declare them."
+  - id: useToken_on_s2ui_form
+    looks_like: "CSRF protection on all UI forms."
+    actually_is: "Only effective when action wraps body in withForm; register.gsp and resetPassword.gsp do not."
+  - id: hideUserNotFoundExceptions
+    looks_like: "Account-enumeration protection across the board."
+    actually_is: "Only affects authentication exception type; /register/forgotPassword still enumerates."
+  - id: cas_useSingleSignout
+    looks_like: "Security feature."
+    actually_is: "Security feature whose implementation disables session-fixation prevention globally."
+  - id: excludeSpringSecurityAutoConfiguration_false
+    looks_like: "Graceful fallback to Spring Boot defaults."
+    actually_is: "Both stacks register with undefined precedence; documented as a footgun."
+  - id: encrypted_jwt_with_default_rsa_key_provider
+    looks_like: "Production-ready JWE."
+    actually_is: "Ephemeral keys per JVM start; tokens unusable across restarts and pods."
+  - id: rest_token_storage_jwt_algorithm_HS256
+    looks_like: "Algorithm pin."
+    actually_is: "Default for signing only; validation path branches on JWT type, not on this property."
+  - id: ip_restrictions_behind_proxy
+    looks_like: "Network-layer protection."
+    actually_is: "Uses request.remoteAddr only; behind a proxy sees only the proxy address."
+  - id: secureChannel_useHeaderCheckChannelSecurity
+    looks_like: "Proxy-aware channel decision."
+    actually_is: "Channel decision becomes proxy-aware, but PortResolverImpl still uses request.serverPort."
+  - id: run_as_in_compat_shim
+    looks_like: "HMAC-protected privilege substitution."
+    actually_is: "Substituted token unsigned; key validated only on return path."
+  - id: groovyAwareAclVoter
+    looks_like: "ACL voter."
+    actually_is: "Unconditionally grants access for Groovy meta-methods; intentional."
+  - id: affirmativeBased_first_grant_wins
+    looks_like: "Permissive-by-default authorization."
+    actually_is: "Documented Spring Security 5.x semantics; one permissive voter overrides all denials."
+  - id: spring_security_user_name_in_config
+    looks_like: "Spring Boot convenience property."
+    actually_is: "Creates {noop}-prefixed credential in production when componentBased.bridgeSpringSecurityUserProperties:true."
+  - id: security_ui_encodePassword_false
+    looks_like: "Behavior toggle."
+    actually_is: "Default value stores cleartext passwords from UI flows."
+  - id: AntPathRequestMatcher_no_normalization
+    looks_like: "URL pattern matching."
+    actually_is: "No `../` or URL-encoded normalization; relies on servlet container."
+
+# §11a - recurring false positives that automated triage should suppress.
+known_non_findings:
+  - pattern: "Class.forName(name) in GormAclLookupStrategy line 298 driven by AclClass.className"
+    discharged_by: "§6 trust assumption on ACL tables"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "Class.forName(clientClass) in RestOauthService line 62 / grailsApplication.getClassForName(tokenClassName) in GormTokenStorageService"
+    discharged_by: "§6 trust assumption on application.yml"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "GroovyClassLoader.loadClass(className) in SpringSecurityUtils.mergeConfig"
+    discharged_by: "§6 trust assumption on classpath config classes"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "Groovy Closure execution in SecurityEventListener / ClosureVoter"
+    discharged_by: "§6 trust assumption on application.groovy"
+    disposition: "OUT-OF-MODEL: trusted-input"
+    related: "BY-DESIGN: property-disclaimed if assumption violated"
+  - pattern: "Dynamic property access user.\"$propertyName\" in GormUserDetailsService"
+    discharged_by: "§6 trust assumption on securityConfig"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "@PreAuthorize/@PostFilter SpEL evaluation with StandardEvaluationContext"
+    discharged_by: "§6 trust assumption on annotation source"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "AffirmativeBased first-grant-wins decision semantics"
+    discharged_by: "§9 false-friend"
+    disposition: "KNOWN-NON-FINDING"
+  - pattern: "GroovyAwareAclVoter unconditional grant for Groovy meta-methods"
+    discharged_by: "§9 false-friend"
+    disposition: "KNOWN-NON-FINDING"
+  - pattern: "AntPathRequestMatcher does not normalize ../ or URL-encoded segments"
+    discharged_by: "§9 false-friend; container responsibility"
+    disposition: "OUT-OF-MODEL: unsupported-component"
+  - pattern: "Java deserialization in JwtService.deserialize"
+    discharged_by: "§8 P10 signature verification; in-model only if alg=none reachable"
+    disposition: "KNOWN-NON-FINDING"
+  - pattern: "Java deserialization in RedisTokenStorageService / CustomSerializingTranscoder"
+    discharged_by: "§5 environment assumption (network-isolated backend)"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "Serializable plugin domain classes (PersistentLogin, RegistrationCode, User, Person, Role)"
+    discharged_by: "§6 trust assumption on session store"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "@Secured present but no in-method authz logic"
+    discharged_by: "§4 (enforced by FilterSecurityInterceptor, not inline)"
+    disposition: "KNOWN-NON-FINDING"
+  - pattern: "MutableRoleHierarchy.setHierarchy(String) mutates at runtime"
+    discharged_by: "§6 trust assumption on RoleHierarchyEntry table"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "InsecureChannelProcessor actively redirects HTTPS to HTTP"
+    discharged_by: "Operator-opted-in via REQUIRES_INSECURE_CHANNEL"
+    disposition: "KNOWN-NON-FINDING"
+  - pattern: "Cleartext Memcached/Redis protocol traffic"
+    discharged_by: "§5 environment assumption (network-isolated backend)"
+    disposition: "OUT-OF-MODEL: trusted-input"
+  - pattern: "MutableLogoutFilter allows post-logout redirect via targetUrlParameter without origin validation"
+    discharged_by: "Default targetUrlParameter is null"
+    disposition: "OUT-OF-MODEL: non-default-build"
+
+# §13 - closed set of triage dispositions.
+dispositions:
+  - label: VALID
+    licensed_by: ["§8", "§6", "§7"]
+  - label: VALID-HARDENING
+    licensed_by: ["§11"]
+  - label: "OUT-OF-MODEL: trusted-input"
+    licensed_by: ["§6"]
+  - label: "OUT-OF-MODEL: adversary-not-in-scope"
+    licensed_by: ["§7"]
+  - label: "OUT-OF-MODEL: unsupported-component"
+    licensed_by: ["§3"]
+  - label: "OUT-OF-MODEL: non-default-build"
+    licensed_by: ["§5a"]
+  - label: "BY-DESIGN: property-disclaimed"
+    licensed_by: ["§9"]
+  - label: KNOWN-NON-FINDING
+    licensed_by: ["§11a"]
+  - label: MODEL-GAP
+    licensed_by: ["§12"]
+    triggers_revision: true
+
+# Provenance counts (approximate; track THREAT_MODEL.md §1 draft confidence).
+provenance_counts:
+  documented: 22
+  maintainer: 0
+  inferred: 75
