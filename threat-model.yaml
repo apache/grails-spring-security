@@ -20,9 +20,182 @@ project:
   name: apache/grails-spring-security
   version_binding: "8.0.x"
   threat_model: THREAT_MODEL.md
-  status: draft
+  status: draft_awaiting_pmc_review
   date: "2026-01"
   disclosure: SECURITY.md
+  ratification_pr: "https://github.com/apache/grails-spring-security/pull/1224"
+
+# §14 Ratification log - status of the 22 open questions originally collected in
+# the draft. Each entry summarises the resolution; the canonical version with
+# full evidence and code citations is in THREAT_MODEL.md §14.
+ratification_log:
+  wave_1:
+    - id: Q1
+      topic: caller_role_split
+      resolution: confirmed_adopt_as_is
+      summary: "Five roles in §2 are the correct primitives. Anonymous-token posture is a sub-state of unauthenticated; long-lived JWT M2M clients are a sub-state of authenticated low-privilege."
+    - id: Q2
+      topic: ui_plugin_endpoints_unprotected
+      resolution: confirmed
+      disposition_for_reports: "BY-DESIGN: property-disclaimed (when operator did not add a rule); VALID (when operator did configure protection)"
+      evidence: "zero @Secured annotations across all 13 UI controllers; zero Requestmap rows in DefaultUiSecurityConfig.groovy; zero authz wiring in SpringSecurityUiGrailsPlugin"
+    - id: Q3
+      topic: jwt_alg_none_acceptance
+      resolution: confirmed_reachable_misconfiguration
+      disposition_for_reports: "OUT-OF-MODEL: non-default-build (requires explicit useSignedJwt:false); MODEL-GAP if a reachable configuration path is found that does not require operator opt-out"
+      evidence: "JwtService.groovy:71-76 - PlainJWT branch only throws when jwtSecret OR keyProvider is truthy; checkJwtSecret guard is inside the useSignedJwt:true branch only"
+      followup: F1
+    - id: Q4
+      topic: cas_useSingleSignout_session_fixation
+      resolution: confirmed_by_design
+      disposition_for_reports: "BY-DESIGN: property-disclaimed"
+      evidence: "DefaultCasSecurityConfig.groovy:33 - useSingleSignout=true default; SpringSecurityCasGrailsPlugin.groovy:85-89 forces useSessionFixationPrevention=false with explicit source comment"
+      followup: F2
+    - id: Q5
+      topic: ui_encodePassword_default_false
+      resolution: keep_default_false
+      reasoning: "s2-quickstart generates Person with PasswordEncoderListener that hashes on beforeInsert/beforeUpdate; flipping default would double-hash and break authentication silently"
+      followup: F3
+    - id: Q6
+      topic: bcrypt_logrounds_production_default
+      resolution: confirmed_10_is_production_default
+      evidence: "DefaultSecurityConfig.groovy:193-207 - TEST=4, all other environments=10; matches Spring Security upstream BCryptPasswordEncoder default strength of 10"
+      hardening_recommendation: "§10 #1 recommends >=12 above the default for sensitive deployments"
+    - id: Q7
+      topic: spring_security_user_bridge
+      resolution: confirmed_intentional
+      evidence: "SpringSecurityCoreGrailsPlugin.groovy:781 hard-codes default true; ComponentBasedConfigBlender.groovy:193-208 wires {noop}-prefixed InMemoryUserDetailsManager mirroring Spring Boot's UserDetailsServiceAutoConfiguration"
+  wave_2:
+    - id: Q8
+      topic: ipAddressFilter_x_forwarded_for
+      resolution: confirmed_by_design
+      disposition_for_reports: "BY-DESIGN: property-disclaimed"
+      evidence: "IpAddressFilter.groovy:109,130 uses request.remoteAddr only; IpAddressMatcher.matches(HttpServletRequest) internally calls request.getRemoteAddr(); zero X-Forwarded-For references in repo"
+    - id: Q9
+      topic: portResolverImpl_x_forwarded_port
+      resolution: confirmed_by_design_with_asymmetry_note
+      disposition_for_reports: "BY-DESIGN: property-disclaimed"
+      evidence: "PortResolverImpl.groovy:31-33 returns request.serverPort; RetryWithHttps/HttpEntryPoint:39 build redirect URL via portResolver and request.serverName; SecurityRequestHolderFilter:83-113 makes channel DECISION proxy-aware but redirect URL CONSTRUCTION is not"
+    - id: Q10
+      topic: oauth2_state_javautilRandom
+      resolution: valid_hardening
+      evidence: "OAuth2AbstractProviderService.groovy:103 - new Random().nextInt(999_999); zero SecureRandom usage in plugin-oauth2 tree"
+      followup: F4
+    - id: Q11
+      topic: oauth2_pkce_absent
+      resolution: valid_hardening
+      evidence: "OAuth2AbstractProviderService.buildScribeService (115-128) never invokes ServiceBuilder.withPkce(); zero withPkce/pkce/code_challenge/code_verifier matches"
+      followup: F5
+    - id: Q12
+      topic: refresh_token_no_rotation
+      resolution: confirmed_by_design
+      disposition_for_reports: "BY-DESIGN: property-disclaimed"
+      evidence: "RestOauthController.groovy:173-181 reassigns supplied refreshToken back onto new AccessToken; none of JWT/GORM/Redis/Memcached storage backends invalidate presented refresh token on use"
+      followup: F6
+    - id: Q13
+      topic: jwt_logout_no_op
+      resolution: confirmed_by_design
+      disposition_for_reports: "BY-DESIGN: property-disclaimed (JWT backend); VALID only if stateful backend delete fails"
+      evidence: "JwtTokenStorageService.groovy:124-128 throws TokenNotFoundException unconditionally; RestLogoutFilter.groovy:72-77 catches and sends HTTP 404; GORM/Redis/Memcached implement real removeToken"
+    - id: Q14
+      topic: jwt_algorithm_no_allow_list
+      resolution: valid_hardening
+      evidence: "JwtService.parse() (53-78) dispatches on Nimbus Java type (SignedJWT/EncryptedJWT/PlainJWT), never compares alg header to configured rest.token.storage.jwt.algorithm"
+      followup: F7
+  wave_3:
+    - id: Q15
+      topic: run_as_compat_shim_no_hmac
+      resolution: known_non_finding_with_nuance
+      disposition_for_reports: "KNOWN-NON-FINDING (when useRunAs=false default OR RUN_AS_* attribute is not injectable)"
+      evidence: "RunAsManagerImpl.buildRunAs builds plain UsernamePasswordAuthenticationToken; key field never read in either RunAsManagerImpl or RunAsImplAuthenticationProvider"
+      nuance: "Compat shim is MORE permissive than upstream Spring Security 5.x, which performs a keyHash equality check via hashCode(). Verified at upstream SHA 4942459 of spring-projects/spring-security."
+      followup: F8
+    - id: Q16
+      topic: aclClass_className_operator_trusted
+      resolution: confirmed_section6_trusted_input
+      disposition_for_reports: "OUT-OF-MODEL: trusted-input (provided ACL administration endpoints are authorized)"
+      evidence: "GormAclLookupStrategy.groovy:296-299 - Class.forName(className, true, contextClassLoader); className from AclClass.className DB column at line 259"
+      nuance: "AclClassController (Q2) ships without @Secured, so the write path is unprotected unless operator adds Requestmap rule"
+      followup: F9
+    - id: Q17
+      topic: gorm_serialization_user_person_role
+      resolution: known_non_finding
+      evidence: "Plugin does not ship User/Person/Role as source - generated from s2-quickstart templates. All 22 example domain classes implement Serializable with serialVersionUID=1L; no custom readObject/writeObject"
+    - id: Q18
+      topic: ajaxSearch_paramName_unvalidated
+      resolution: valid_hardening
+      evidence: "AbstractS2UiDomainController.groovy:189-210 - params.paramName drives GORM criterion property name AND is concatenated into raw HQL order-by string at doSearch:171 with only double-quote wrapping"
+      followup: F10
+    - id: Q19
+      topic: section_13_dispositions_complete
+      resolution: confirmed
+  meta:
+    - id: Q20
+      topic: document_ownership
+      resolution: confirmed
+      summary: "Repo-root file, maintained by PMC, revised on §12 triggers; release branches fork with own version binding"
+    - id: Q21
+      topic: security_md_coexistence
+      resolution: confirmed
+      summary: "SECURITY.md is disclosure-process artifact; this document is the model. SECURITY.md already cross-references §3-§11a; no further change needed"
+    - id: Q22
+      topic: per_plugin_docs_coexistence
+      resolution: confirmed
+      summary: "Per-plugin AsciiDoc remains end-user-facing; threat model is triage-facing; Appendix A back-map enumerates the citations"
+
+# Follow-up items identified during ratification - tracked as separate issues,
+# not blocking on this document's ratification.
+followup_items:
+  - id: F1
+    question: Q3
+    location: SpringSecurityRestGrailsPlugin.groovy bean wiring
+    action: "Reject startup when useSignedJwt=false AND useEncryptedJwt=false AND jwtSecret=null AND no keyProvider bean"
+    severity: high
+  - id: F2
+    question: Q4
+    location: plugin-cas/docs/src/docs/configuration.adoc
+    action: "Add doc note linking useSingleSignout=true to forced useSessionFixationPrevention=false"
+    severity: low_doc_only
+  - id: F3
+    question: Q5
+    location: SpringSecurityUiService.initialize()
+    action: "Emit startup WARN when encodePassword=false AND no PasswordEncoderListener-style hook detected on User class"
+    severity: medium
+  - id: F4
+    question: Q10
+    location: OAuth2AbstractProviderService.groovy:103
+    action: "Replace new Random().nextInt(999_999) with SecureRandom full-int-range or UUID.randomUUID()"
+    severity: medium
+  - id: F5
+    question: Q11
+    location: OAuth2AbstractProviderService.buildScribeService (115-128)
+    action: "Invoke ServiceBuilder.withPkce(); add per-provider usePkce config (default true)"
+    severity: medium
+  - id: F6
+    question: Q12
+    location: plugin-rest/docs/src/docs/tokenStorage.adoc
+    action: "Add WARNING citing RFC 6749 §10.4 on refresh-token replay; point operators at refreshExpiration mitigation"
+    severity: low_doc_only
+  - id: F7
+    question: Q14
+    location: JwtService.parse() (53-78)
+    action: "After JWTParser.parse(), compare jwt.header.algorithm to configured rest.token.storage.jwt.algorithm and throw JOSEException on mismatch"
+    severity: medium
+  - id: F8
+    question: Q15
+    location: RunAsImplAuthenticationProvider.groovy:32-39
+    action: "Port upstream Spring Security 5.x keyHash equality check"
+    severity: low
+  - id: F9
+    question: Q16
+    location: GormAclLookupStrategy.lookupClass() (296-299)
+    action: "Add allow-list or package-prefix check on className before Class.forName"
+    severity: medium
+  - id: F10
+    question: Q18
+    location: AbstractS2UiDomainController.ajaxSearch (189-210)
+    action: "Validate paramName against classMappings[clazz] keys; validate params.order in ['asc','desc']"
+    severity: medium
 
 # §2 - component families and their in/out-of-model disposition.
 components:
@@ -114,8 +287,8 @@ config_knobs:
   - name: password.bcrypt.logrounds
     default: 10
     security_relevant: true
-    maintainer_stance: unresolved
-    section: "§5a, §10 #1, §14 wave 1"
+    maintainer_stance: "Resolved per §14 Q6: 10 is the supported production default; matches Spring Security upstream BCryptPasswordEncoder. Test environment uses 4 (DefaultSecurityConfig.groovy:193-207). §10 #1 recommends >=12 for hardening above the default."
+    section: "§5a, §10 #1"
   - name: useSessionFixationPrevention
     default: true
     security_relevant: true
@@ -140,6 +313,7 @@ config_knobs:
   - name: componentBased.bridgeSpringSecurityUserProperties
     default: true
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q7: intentional; {noop} prefix mirrors Spring Boot's UserDetailsServiceAutoConfiguration. Default hard-coded true in SpringSecurityCoreGrailsPlugin.groovy:781. §11 misuse pattern (leftover dev credential in production) stands."
     notes: "Leftover spring.security.user.* config creates {noop}-prefixed credential in production."
     section: "§5a, §9 false-friend"
   - name: rememberMe.persistent
@@ -155,11 +329,13 @@ config_knobs:
   - name: secureChannel.useHeaderCheckChannelSecurity
     default: false
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q9: asymmetry confirmed. SecurityRequestHolderFilter:83-113 makes the channel DECISION proxy-aware via X-Forwarded-Proto; PortResolverImpl:31-33 returns raw request.serverPort so redirect URL CONSTRUCTION is not proxy-aware. Operators must rely on the proxy to rewrite the Location header when a redirect fires."
     notes: "Even when true, PortResolverImpl does not consult X-Forwarded-Port."
     section: "§5a, §9"
   - name: ipRestrictions
     default: empty
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q8: BY-DESIGN. IpAddressFilter.groovy:109,130 uses request.remoteAddr only; reports of proxy bypass are BY-DESIGN: property-disclaimed."
     notes: "IpAddressFilter uses request.remoteAddr only; no X-Forwarded-For."
     section: "§5a, §9"
   - name: useSecurityEventListener
@@ -170,8 +346,9 @@ config_knobs:
   - name: useRunAs
     default: false
     security_relevant: true
-    notes: "RunAsManagerImpl does not HMAC the substituted token."
-    section: "§5a, §9 false-friend"
+    maintainer_stance: "Resolved per §14 Q15: KNOWN-NON-FINDING. Compat shim's RunAsImplAuthenticationProvider is MORE permissive than upstream Spring Security 5.x - the key field is declared in both RunAsManagerImpl and RunAsImplAuthenticationProvider but never read (upstream performs a keyHash equality check; the shim does not). Default useRunAs:false keeps this opt-in. Follow-up F8 considers porting the upstream hashCode guard."
+    notes: "RunAsImplAuthenticationProvider.authenticate() is pass-through; supports() returns true unconditionally."
+    section: "§5a, §9 false-friend, §11a"
   - name: ldap.context.server
     default: ldap://localhost:389
     security_relevant: true
@@ -189,6 +366,7 @@ config_knobs:
   - name: cas.useSingleSignout
     default: true
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q4: BY-DESIGN. DefaultCasSecurityConfig.groovy:33 default is true; SpringSecurityCasGrailsPlugin.groovy:85-89 forces useSessionFixationPrevention=false with explicit source comment. Reports against this trade-off are BY-DESIGN: property-disclaimed. Follow-up F2 adds the doc note to plugin-cas configuration.adoc."
     notes: "Forces useSessionFixationPrevention = false globally."
     section: "§5a, §9 false-friend, §11"
   - name: cas.key
@@ -214,25 +392,30 @@ config_knobs:
   - name: oauth2_state_generation
     default: "java.util.Random over 999_999 space"
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q10: VALID-HARDENING. OAuth2AbstractProviderService.groovy:103 confirms `new Random().nextInt(999_999)`; zero SecureRandom usage in plugin-oauth2 tree. Follow-up F4 migrates to SecureRandom."
     notes: "Not cryptographically secure; state-CSRF feasible."
     section: "§5a, §9"
   - name: oauth2_pkce
     default: not_implemented
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q11: VALID-HARDENING. OAuth2AbstractProviderService.buildScribeService (lines 115-128) does not invoke ServiceBuilder.withPkce(). Zero matches for withPkce/pkce/code_challenge/code_verifier in the plugin-oauth2 tree. Follow-up F5 adds PKCE."
     section: "§5a, §9"
   - name: rest.token.storage.jwt.secret
     default: null
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q3: reachable misconfiguration when operator sets useSignedJwt:false (default is true) AND useEncryptedJwt:false (default) AND secret:null AND no key provider. JwtService.groovy:71-76 confirms PlainJWT acceptance in this state. Follow-up F1 adds startup-time rejection."
     notes: "Null + null key provider + useSignedJwt:false + useEncryptedJwt:false enables PlainJWT (alg=none) acceptance."
     section: "§5a, §8 P10, §9, §11"
   - name: rest.token.storage.jwt.algorithm
     default: HS256
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q14: VALID-HARDENING. JwtService.parse() (lines 53-78) dispatches on Nimbus JWT Java type, never compares alg header to configured algorithm. Follow-up F7 adds algorithm allow-list pinning."
     notes: "No algorithm allow-list; any Nimbus-supported algorithm accepted."
     section: "§5a, §9"
   - name: rest.token.storage.jwt.refreshExpiration
     default: null
     security_relevant: true
+    maintainer_stance: "Resolved per §14 Q12: BY-DESIGN; refresh token reused verbatim. RestOauthController.groovy:173-181 reassigns supplied refreshToken back onto the new AccessToken; none of the four storage backends (JWT/GORM/Redis/Memcached) invalidate the presented token on use. Operators implement RFC 6749 §10.4 rotation at the application layer. Follow-up F6 adds doc warning."
     notes: "Refresh tokens never expire by default."
     section: "§5a, §9, §10 #5"
   - name: rest.token.validation.active
@@ -248,7 +431,8 @@ config_knobs:
   - name: security.ui.encodePassword
     default: false
     security_relevant: true
-    notes: "When false, UI service stores cleartext passwords. MUST set to true for production."
+    maintainer_stance: "Resolved per §14 Q5: keep false as default. DefaultUiSecurityConfig.groovy:23 sets default false; SpringSecurityUiService.groovy:810 confirms fallback. Flipping to true would double-hash passwords in s2-quickstart-generated applications (Person template has PasswordEncoderListener). Follow-up F3 adds startup WARN when encodePassword:false and no listener detected."
+    notes: "When false, UI service stores submitted passwords without encoding. Operators using older Person template (no listener) MUST set true for production."
     section: "§5a, §10 #8, §11"
   - name: security.ui.register.requireEmailValidation
     default: "true"
@@ -414,12 +598,12 @@ properties_provided:
     severity: security_critical
     provenance: documented
   - id: P10
-    description: "JWT signature verified before claims trusted (HMAC for signed, RSA for encrypted)."
+    description: "JWT signature verified before claims trusted (HMAC for signed, RSA for encrypted). Defeated when useSignedJwt:false AND useEncryptedJwt:false AND secret:null AND no keyProvider - PlainJWT (alg=none) is accepted per JwtService.groovy:71-76. The operator must explicitly disable useSignedJwt (default true) to reach this state."
     cwe: CWE-347
     plugin: rest
     severity: security_critical
-    provenance: inferred
-    open_question: "§14 wave 1 - alg=none acceptance when both secret and key provider are null"
+    provenance: maintainer
+    maintainer_stance: "Resolved per §14 Q3; follow-up F1 adds startup-time rejection of the all-null configuration."
   - id: P11
     description: "REST validation filter checks JWT exp claim."
     cwe: CWE-613
@@ -610,5 +794,6 @@ dispositions:
 # Provenance counts (approximate; track THREAT_MODEL.md §1 draft confidence).
 provenance_counts:
   documented: 22
-  maintainer: 0
-  inferred: 75
+  maintainer: 18
+  inferred: 57
+  notes: "PR #1224 ratification log resolved 22 §14 open questions. 18 inline tag promotions in this PR; the remaining inferred claims are general environment assumptions, deferred wave-2 config knobs, and framework-level negative claims that are not tied to the 22 explicit questions. The §14 ratification log carries the canonical resolution record."
