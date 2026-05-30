@@ -33,3 +33,15 @@ github:
         - id: sbglasius
           type: User
       wait_timer: 0
+  rulesets:
+    - name: "Default Branch Protection"
+      type: branch
+      branches:
+        includes:
+          - "~DEFAULT_BRANCH"
+          - "*.x"
+        excludes: []
+      bypass_teams:
+        - root
+      restrict_deletion: true
+      restrict_force_push: true
