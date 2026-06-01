@@ -16,6 +16,10 @@ limitations under the License.
 
 # Agent Guide for grails-spring-security
 
+This file is read by automated agents (security scanners, code analyzers,
+AI assistants) operating on this repository. It points them at the
+human-authored references they should consult before producing output.
+
 > **IMPORTANT**: This is the source repository for the Apache Grails Spring Security **plugins** (a multi-module Gradle monorepo), NOT a Grails application. The plugins integrate [Spring Security](https://spring.io/projects/spring-security) into Grails® framework applications through the `grails.plugin.springsecurity.*` configuration namespace.
 >
 > For building Grails **applications** that consume these plugins, follow the upstream Grails framework guidance in [grails-core `AGENTS.md`](https://github.com/apache/grails-core/blob/7.0.x/AGENTS.md) and the [Grails documentation](https://grails.apache.org/).
@@ -168,6 +172,10 @@ CI iterates `TESTCONFIG` over: `static`, `annotation`, `requestmap`, `basic`, `b
 
 - Do **not** open public issues, discussions, or PRs for suspected vulnerabilities. Email the ASF Security Team at [security@apache.org](mailto:security@apache.org) with `grails-spring-security` in the subject.
 - See [`SECURITY.md`](./SECURITY.md) for the reporting process and supported versions, and [`THREAT_MODEL.md`](./THREAT_MODEL.md) for the authoritative scope of what the plugins do and do not defend against.
+
+Security model: [SECURITY.md](./SECURITY.md) -> [THREAT_MODEL.md](./THREAT_MODEL.md)
+
+Agents that scan this repository should consult `SECURITY.md` and the linked `THREAT_MODEL.md` for the project's threat model - in-scope / out-of-scope declarations, security properties claimed and disclaimed, and known non-findings - before reporting issues.
 
 ## Resources
 
